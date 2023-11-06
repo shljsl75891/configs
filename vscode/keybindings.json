@@ -1,0 +1,84 @@
+[
+  // file explorer bindings
+  {
+    "command": "workbench.files.action.focusFilesExplorer",
+    "key": "ctrl+b",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "n",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "shift+n",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "command": "filesExplorer.paste",
+    "key": "p",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "workbench.files.action.collapseExplorerFolders",
+    "key": "ctrl+a",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "workbench.action.toggleMaximizedPanel",
+    "key": "ctrl+shift+m"
+  },
+  {
+    "command": "renameFile",
+    "key": "r",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  // multiple terminal bindings
+  {
+    "command": "workbench.action.terminal.focusNext",
+    "key": "ctrl+]",
+    "when": "terminalFocus"
+  },
+  {
+    "command": "workbench.action.terminal.focusPrevious",
+    "key": "ctrl+[",
+    "when": "terminalFocus"
+  },
+  {
+    "command": "workbench.action.terminal.new",
+    "key": "ctrl+shift+n",
+    "when": "terminalFocus"
+  },
+  {
+    "command": "workbench.action.terminal.kill",
+    "key": "ctrl+shift+k",
+    "when": "terminalFocus"
+  },
+  // match emmet tags
+  {
+    "command": "editor.emmet.action.matchTag",
+    "key": "ctrl+shift+5"
+  },
+  // navigation using <C-n> & <C-p> instead of up and down arrows
+  {
+    "command": "selectNextSuggestion",
+    "key": "ctrl+n",
+    "when": "editorTextFocus && suggestWidgetVisible"
+  },
+  {
+    "command": "selectPrevSuggestion",
+    "key": "ctrl+p",
+    "when": "editorTextFocus && suggestWidgetVisible"
+  },
+  {
+    "command": "workbench.action.quickOpenSelectNext",
+    "key": "ctrl+n",
+    "when": "inQuickOpen || inCommandPalette"
+  },
+  {
+    "command": "workbench.action.quickOpenSelectPrevious",
+    "key": "ctrl+p",
+    "when": "inQuickOpen || inCommandPalette"
+  }
+]

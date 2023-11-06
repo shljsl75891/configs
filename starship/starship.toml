@@ -1,0 +1,63 @@
+# ~/.config/starship.toml
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# Change the default prompt characters
+[character]                            # The name of the module we are configuring is "character"
+success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+error_symbol = "[✗](bold red)"
+
+[directory]
+home_symbol = "󰋜"
+read_only = " "
+truncate_to_repo = false
+read_only_style = "197"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = " "
+format = "on [$symbol$branch]($style) "
+style = "bold green"
+
+[git_status]
+format = '[$all_status$ahead_behind]($style) '
+style = "bold green"
+conflicted = " "
+up_to_date = " "
+untracked = " "
+ahead = "⇡${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+behind = "⇣${count} "
+stashed = " "
+modified = " "
+staged = '[++\($count\)](green)'
+renamed = "󰛿 "
+deleted = " "
+
+[terraform]
+format = "via [ terraform $version]($style) 壟 [$workspace]($style) "
+
+[vagrant]
+format = "via [ vagrant $version]($style) "
+
+[docker_context]
+format = "via [ $context](bold blue) "
+
+[helm]
+format = "via [ $version](bold purple) "
+
+[python]
+symbol = "󰌠 "
+python_binary = "python3"
+
+[nodejs]
+format = "via [ $version](bold green) "
+disabled = false
+
+[ruby]
+format = "via [ $version]($style) "
+
+[kubernetes]
+format = 'on [ $context\($namespace\)](bold purple) '
+disabled = false

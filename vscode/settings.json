@@ -1,0 +1,199 @@
+{
+  // default formatters
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // editor settings
+  "breadcrumbs.enabled": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.codeLens": false,
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "block",
+  "editor.cursorSurroundingLines": 8,
+  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.guides.highlightActiveBracketPair": false,
+  "editor.guides.highlightActiveIndentation": false,
+  "editor.guides.indentation": false,
+  "editor.hover.enabled": false,
+  "editor.lineHeight": 1.4,
+  "editor.lineNumbers": "relative",
+  "editor.linkedEditing": true,
+  "editor.matchBrackets": "never",
+  "editor.minimap.autohide": true,
+  "editor.minimap.maxColumn": 60,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.size": "fit",
+  "editor.occurrencesHighlight": "off",
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.scrollbar.horizontalScrollbarSize": 0,
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.verticalScrollbarSize": 0,
+  "editor.smoothScrolling": true,
+  "editor.tabSize": 2,
+  // explorer settings
+  "explorer.compactFolders": false,
+  // imporve vim extension performance
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "search.searchOnType": false,
+  // terminal settings
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyleInactive": "block",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.smoothScrolling": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  // turn off annoyances
+  "update.showReleaseNotes": false,
+  // vscode-vim extension config
+  "vim.enableNeovim": true,
+  "vim.foldfix": true,
+  "vim.gdefault": true,
+  "vim.handleKeys": {
+    // vim keys
+    "<C-a>": true,
+    "<C-o>": true,
+    "<C-r>": true,
+    "<C-u>": true,
+    "<C-v>": true,
+    "<C-w>": true,
+    "<C-x>": true
+  },
+  "vim.highlightedyank.color": "#fe801960",
+  "vim.highlightedyank.duration": 80,
+  "vim.highlightedyank.enable": true,
+  "vim.leader": " ",
+  // vim keybindings for normal mode
+  "vim.normalModeKeyBindings": [
+    // editor tabs navigations
+    {
+      "before": ["<S-h>"],
+      "commands": ["workbench.action.previousEditor"]
+    },
+    {
+      "before": ["<S-l>"],
+      "commands": ["workbench.action.nextEditor"]
+    },
+    {
+      "before": ["<leader>", "c", "o"],
+      "commands": ["workbench.action.closeOtherEditors"]
+    },
+    // vertical movements
+    {
+      "after": ["<C-u>", "z", "z"],
+      "before": ["<C-u>"]
+    },
+    {
+      "after": ["<C-d>", "z", "z"],
+      "before": ["<C-d>"]
+    },
+    // lsp actions
+    {
+      "before": ["K"],
+      "commands": ["editor.action.showDefinitionPreviewHover"]
+    },
+    {
+      "before": ["<leader>", "r", "r"],
+      "commands": ["editor.action.goToReferences"]
+    },
+    {
+      "before": ["<leader>", "r", "n"],
+      "commands": ["editor.action.rename"]
+    },
+    {
+      "before": ["<leader>", "c", "a"],
+      "commands": ["editor.action.quickFix"]
+    },
+    // diagnostics navigation
+    {
+      "before": ["]", "d"],
+      "commands": ["editor.action.marker.next"]
+    },
+    {
+      "before": ["<leader>", "h"],
+      "commands": ["editor.action.triggerParameterHints"]
+    },
+    {
+      "before": ["[", "d"],
+      "commands": ["editor.action.marker.prev"]
+    }
+  ],
+  "vim.useCtrlKeys": false,
+  "vim.useSystemClipboard": false,
+  // vim keybindings for visual mode
+  "vim.visualModeKeyBindings": [
+    // indentation
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"]
+    },
+    // moving lines
+    {
+      "before": ["J"],
+      "commands": ["editor.action.moveLinesDownAction"]
+    },
+    {
+      "before": ["K"],
+      "commands": ["editor.action.moveLinesUpAction"]
+    }
+  ],
+  // vim recursive keybindings for visual mode
+  "vim.visualModeKeyBindingsNonRecursive": [
+    // overrides register and paste
+    {
+      "after": ["p", "g", "v", "y"],
+      "before": ["p"]
+    }
+  ],
+  // window settings
+  "window.commandCenter": false,
+  "window.dialogStyle": "custom",
+  "window.menuBarVisibility": "toggle",
+  "window.zoomLevel": -0.6,
+  //workbench settings
+  "workbench.activityBar.location": "top",
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#282828"
+  },
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.revealIfOpen": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.layoutControl.enabled": false,
+  "workbench.list.smoothScrolling": true,
+  "workbench.productIconTheme": "material-product-icons",
+  "workbench.sideBar.location": "right",
+  "workbench.startupEditor": "none",
+  "workbench.tree.renderIndentGuides": "none"
+}
