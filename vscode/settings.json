@@ -31,7 +31,7 @@
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorStyle": "block",
   "editor.cursorSurroundingLines": 8,
-  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
@@ -86,7 +86,7 @@
     "<C-w>": true,
     "<C-x>": true
   },
-  "vim.highlightedyank.color": "#fe801960",
+  "vim.highlightedyank.color": "#484848",
   "vim.highlightedyank.duration": 80,
   "vim.highlightedyank.enable": true,
   "vim.leader": " ",
@@ -186,14 +186,14 @@
   "workbench.colorCustomizations": {
     "editor.lineHighlightBackground": "#282828"
   },
-  "workbench.colorTheme": "Default Dark+",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.layoutControl.enabled": false,
   "workbench.list.smoothScrolling": true,
   "workbench.productIconTheme": "material-product-icons",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.tree.renderIndentGuides": "none"
+  "workbench.tree.renderIndentGuides": "none",
+  "vsicons.dontShowNewVersionMessage": true
 }
