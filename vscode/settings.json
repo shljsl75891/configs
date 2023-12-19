@@ -31,7 +31,7 @@
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorStyle": "block",
   "editor.cursorSurroundingLines": 8,
-  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
@@ -61,6 +61,7 @@
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1
   },
+  "git.openRepositoryInParentFolders": "always",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
   // terminal settings
@@ -176,6 +177,7 @@
       "before": ["p"]
     }
   ],
+  "vsicons.dontShowNewVersionMessage": true,
   // window settings
   "window.commandCenter": false,
   "window.dialogStyle": "custom",
@@ -194,6 +196,5 @@
   "workbench.productIconTheme": "material-product-icons",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.tree.renderIndentGuides": "none",
-  "vsicons.dontShowNewVersionMessage": true
+  "workbench.tree.renderIndentGuides": "none"
 }
