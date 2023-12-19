@@ -6,6 +6,15 @@ return {
 		local lsp_defaults = lspconfig.util.default_config
 		local builtin = require("telescope.builtin")
 
+		local function organize_imports()
+			local params = {
+				command = "_typescript.organizeImports",
+				arguments = { vim.api.nvim_buf_get_name(0) },
+				title = "",
+			}
+			vim.lsp.buf.execute_command(params)
+		end
+
 		lsp_defaults.capabilities =
 			vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
@@ -26,6 +35,37 @@ return {
 				Remap("n", "[d", vim.diagnostic.goto_prev, opts)
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
 			end,
+		})
+
+		-- LSPs setup
+		lspconfig.tailwindcss.setup({})
+		lspconfig.cssls.setup({})
+		lspconfig.emmet_ls.setup({})
+		lspconfig.lua_ls.setup({
+			settings = {
+				Lua = {
+					runtime = {
+						version = "LuaJIT",
+					},
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = {
+							vim.env.VIMRUNTIME,
+						},
+					},
+				},
+			},
+		})
+
+		lspconfig.tsserver.setup({
+			commands = {
+				OrganizeImports = {
+					organize_imports,
+					description = "Organize Imports",
+				},
+			},
 		})
 	end,
 }

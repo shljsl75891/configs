@@ -1,6 +1,7 @@
 return {
 	"theprimeagen/harpoon",
 	config = function()
+		require("harpoon").setup({ tabline = true })
 		local mark = require("harpoon.mark")
 		local ui = require("harpoon.ui")
 
