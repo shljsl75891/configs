@@ -7,12 +7,12 @@
   },
   {
     "command": "explorer.newFile",
-    "key": "n",
+    "key": ";",
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
     "command": "explorer.newFolder",
-    "key": "shift+n",
+    "key": "shift+;",
     "when": "explorerViewletFocus"
   },
   {
