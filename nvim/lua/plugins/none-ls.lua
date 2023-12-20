@@ -17,9 +17,9 @@ return {
 		null_ls.setup({
 			root_dir = null_ls_utils.root_pattern(".null-ls-root", "Makefile", ".git", "package.json"),
 			sources = {
-				formatting.prettier,
+				formatting.prettierd,
 				formatting.stylua, -- lua formatter
-				diagnostics.eslint.with({ -- js/ts linter
+				diagnostics.eslint_d.with({ -- js/ts linter
 					condition = function(utils)
 						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }) -- only enable if root has eslint config
 					end,
