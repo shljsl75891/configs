@@ -189,6 +189,7 @@
   "workbench.colorCustomizations": {
     "editor.lineHighlightBackground": "#282828"
   },
+  "workbench.colorTheme": "Gruvbox Dark Medium",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.iconTheme": "vscode-icons",
