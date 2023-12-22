@@ -44,6 +44,9 @@ local localOptions = {
 	-- Better windows direction
 	splitbelow = true,
 	splitright = true,
+	-- auto refresh
+	autoread = true,
+	autowrite = true,
 }
 
 for k, v in pairs(localOptions) do
