@@ -31,7 +31,7 @@ return {
 			contrast = "hard", -- can be "hard", "soft" or empty string
 			overrides = {
 				LspSignatureActiveParameter = { bg = nil, fg = "#fabd2f", bold = true },
-				NormalFloat = { bg = "#282828" },
+				NormalFloat = { bg = "#3c3836" },
 			},
 			dim_inactive = false,
 			transparent_mode = true,
