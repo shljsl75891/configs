@@ -2,7 +2,7 @@ return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
 	opts = {
-		shell = "powershell.exe",
+		shell = "powershell.exe -nologo",
 		direction = "float",
 		float_opts = {
 			border = "solid",
