@@ -18,6 +18,7 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 # Aliases
 function cd... { Set-Location ..\.. }
 function cd.... { Set-Location ..\..\.. }
+function ll { ls -Force }
 function kcon { Get-Process conhost | Where-Object { $_.CPU -ge 0 } | Stop-Process -Force }
 function knode { Get-Process node | Stop-Process -Force }
 
