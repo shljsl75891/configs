@@ -12,30 +12,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Colorscheme setup
 return {
-	"ellisonleao/gruvbox.nvim",
+	"Mofiqul/vscode.nvim",
 	priority = 1000,
 	config = function()
-		local theme = require("gruvbox")
-		theme.setup({
-			terminal_colors = true, -- add neovim terminal colors
-			undercurl = true,
-			underline = true,
-			bold = true,
-			italic = {
-				strings = false,
-				emphasis = false,
-				comments = false,
-				operators = false,
-				folds = false,
+		local c = require("vscode.colors").get_colors()
+		require("vscode").setup({
+			transparent = true,
+			italic_comments = true,
+			disable_nvimtree_bg = true,
+			group_overrides = {
+				LspSignatureActiveParameter = { fg = c.vscYellow, bg = c.vscDarkBlue },
 			},
-			contrast = "hard", -- can be "hard", "soft" or empty string
-			overrides = {
-				LspSignatureActiveParameter = { bg = nil, fg = "#fabd2f", bold = true },
-				NormalFloat = { bg = "#3c3836" },
-			},
-			dim_inactive = false,
-			transparent_mode = true,
 		})
-		theme.load()
+		require("vscode").load()
 	end,
 }

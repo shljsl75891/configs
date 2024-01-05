@@ -1,23 +1,23 @@
 [
-  // file explorer bindings
+  // File Tree
   {
     "command": "workbench.files.action.focusFilesExplorer",
     "key": "ctrl+b",
-    "when": "editorTextFocus"
+    "when": "editorTextFocus || terminalFocus"
+  },
+  {
+    "command": "workbench.action.focusActiveEditorGroup",
+    "key": "ctrl+b",
+    "when": "filesExplorerFocus"
   },
   {
     "command": "explorer.newFile",
-    "key": ";",
+    "key": "n",
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
     "command": "explorer.newFolder",
-    "key": "shift+;",
-    "when": "explorerViewletFocus"
-  },
-  {
-    "command": "filesExplorer.paste",
-    "key": "p",
+    "key": "shift+n",
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
@@ -26,15 +26,15 @@
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
-    "command": "workbench.action.toggleMaximizedPanel",
-    "key": "ctrl+shift+m"
-  },
-  {
     "command": "renameFile",
     "key": "r",
     "when": "filesExplorerFocus && !inputFocus"
   },
-  // multiple terminal bindings
+  // Terminal
+  {
+    "command": "workbench.action.toggleMaximizedPanel",
+    "key": "ctrl+shift+m"
+  },
   {
     "command": "workbench.action.terminal.focusNext",
     "key": "ctrl+]",
@@ -55,12 +55,16 @@
     "key": "ctrl+shift+k",
     "when": "terminalFocus"
   },
-  // match emmet tags
+  // Navigation in suggestions
   {
-    "command": "editor.emmet.action.matchTag",
-    "key": "ctrl+shift+5"
+    "command": "workbench.action.quickOpen",
+    "key": "ctrl+p",
+    "when": "editorTextFocus"
   },
-  // navigation using <C-n> & <C-p> instead of up and down arrows
+  {
+    "command": "-workbench.action.quickOpen",
+    "key": "ctrl+p"
+  },
   {
     "command": "selectNextSuggestion",
     "key": "ctrl+n",

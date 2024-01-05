@@ -27,12 +27,9 @@
     "source.organizeImports": "explicit"
   },
   "editor.codeLens": false,
-  "editor.cursorBlinking": "phase",
-  "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorStyle": "block",
-  "editor.cursorSurroundingLines": 8,
-  "editor.fontFamily": "FiraCode Nerd Font",
-  "editor.fontLigatures": true,
+  "editor.fontFamily": "CaskaydiaCove Nerd Font",
+  "editor.fontLigatures": "'calt', 'ss01', 'zero'",
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
@@ -53,8 +50,17 @@
   "editor.scrollbar.horizontalScrollbarSize": 0,
   "editor.scrollbar.vertical": "hidden",
   "editor.scrollbar.verticalScrollbarSize": 0,
-  "editor.smoothScrolling": true,
   "editor.tabSize": 2,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": ["comment", "punctuation.definition.comment"],
+        "settings": {
+          "fontStyle": "italic"
+        }
+      }
+    ]
+  },
   // explorer settings
   "explorer.compactFolders": false,
   // imporve vim extension performance
@@ -68,14 +74,11 @@
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyleInactive": "block",
-  "terminal.integrated.fontSize": 13,
   "terminal.integrated.gpuAcceleration": "on",
-  "terminal.integrated.smoothScrolling": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
   // turn off annoyances
   "update.showReleaseNotes": false,
   // vscode-vim extension config
-  "vim.enableNeovim": true,
   "vim.foldfix": true,
   "vim.gdefault": true,
   "vim.handleKeys": {
@@ -178,24 +181,23 @@
       "before": ["p"]
     }
   ],
-  "vsicons.dontShowNewVersionMessage": true,
   // window settings
   "window.commandCenter": false,
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
-  "window.zoomLevel": -0.6,
+  "window.zoomLevel": -1.2,
   //workbench settings
   "workbench.activityBar.location": "top",
   "workbench.colorCustomizations": {
-    "editor.lineHighlightBackground": "#282828"
+    "editor.lineHighlightBackground": "#282828",
+    "list.activeSelectionBackground": "#454545",
+    "list.focusBackground": "#282828",
+    "list.focusOutline": "#000"
   },
-  "workbench.colorTheme": "Gruvbox Dark Medium",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.layoutControl.enabled": false,
-  "workbench.list.smoothScrolling": true,
-  "workbench.productIconTheme": "material-product-icons",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.tree.renderIndentGuides": "none"
