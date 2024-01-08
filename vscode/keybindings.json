@@ -59,7 +59,7 @@
   {
     "command": "workbench.action.quickOpen",
     "key": "ctrl+p",
-    "when": "editorTextFocus"
+    "when": "!terminalFocus"
   },
   {
     "command": "-workbench.action.quickOpen",
