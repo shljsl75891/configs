@@ -12,18 +12,59 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Colorscheme setup
 return {
-	"Mofiqul/vscode.nvim",
+	"folke/tokyonight.nvim",
+	lazy = false,
 	priority = 1000,
 	config = function()
-		local c = require("vscode.colors").get_colors()
-		require("vscode").setup({
-			transparent = true,
-			italic_comments = true,
-			disable_nvimtree_bg = true,
-			group_overrides = {
-				LspSignatureActiveParameter = { fg = c.vscYellow, bg = c.vscDarkBlue },
+		require("tokyonight").setup({
+			style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+			transparent = true, -- Enable this to disable setting the background color
+			terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+			styles = {
+				comments = { italic = true },
+				keywords = { italic = true },
+				functions = { bold = true, italic = true },
+				variables = {},
+				sidebars = "dark", -- style for sidebars, see below
+				floats = "dark", -- style for floating windows
 			},
+			on_highlights = function(highlights, colors)
+				highlights.LspSignatureActiveParameter = {
+					bg = nil,
+					fg = colors.cyan,
+					bold = true,
+				}
+				local prompt = "#2d3149"
+				highlights.TelescopeNormal = {
+					bg = colors.bg_dark,
+					fg = colors.fg_dark,
+				}
+				highlights.TelescopeBorder = {
+					bg = colors.bg_dark,
+					fg = colors.bg_dark,
+				}
+				highlights.TelescopePromptNormal = {
+					bg = prompt,
+				}
+				highlights.TelescopePromptBorder = {
+					bg = prompt,
+					fg = prompt,
+				}
+				highlights.TelescopePromptTitle = {
+					bg = prompt,
+					fg = prompt,
+				}
+				highlights.TelescopePreviewTitle = {
+					bg = colors.bg_dark,
+					fg = colors.bg_dark,
+				}
+				highlights.TelescopeResultsTitle = {
+					bg = colors.bg_dark,
+					fg = colors.bg_dark,
+				}
+			end,
 		})
-		require("vscode").load()
+
+		vim.cmd.colorscheme("tokyonight")
 	end,
 }

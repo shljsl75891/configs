@@ -58,6 +58,18 @@
         "settings": {
           "fontStyle": "italic"
         }
+      },
+      {
+        "scope": ["entity.name.function"],
+        "settings": {
+          "fontStyle": "bold italic"
+        }
+      },
+      {
+        "scope": ["keyword"],
+        "settings": {
+          "fontStyle": "bold"
+        }
       }
     ]
   },
@@ -189,10 +201,10 @@
   //workbench settings
   "workbench.activityBar.location": "top",
   "workbench.colorCustomizations": {
-    "editor.lineHighlightBackground": "#282828",
+    /*"editor.lineHighlightBackground": "#282828"
     "list.activeSelectionBackground": "#454545",
     "list.focusBackground": "#282828",
-    "list.focusOutline": "#000"
+    "list.focusOutline": "#000" */
   },
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
@@ -200,5 +212,6 @@
   "workbench.layoutControl.enabled": false,
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.tree.renderIndentGuides": "none"
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.colorTheme": "Tokyo Night"
 }
