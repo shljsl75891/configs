@@ -60,12 +60,11 @@ return {
 		})
 
 		lspconfig.tsserver.setup({
-			commands = {
-				OrganizeImports = {
-					organize_imports,
-					description = "Organize Imports",
-				},
-			},
+			on_attach = function()
+				vim.api.nvim_create_user_command("OrganizeImports", organize_imports, {
+					desc = "Organize Imports using tsserver",
+				})
+			end,
 		})
 	end,
 }
