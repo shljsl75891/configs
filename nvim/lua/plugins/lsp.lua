@@ -38,7 +38,18 @@ return {
 		})
 
 		-- LSPs setup
-		lspconfig.tailwindcss.setup({})
+		lspconfig.tailwindcss.setup({
+			root_dir = lspconfig.util.root_pattern(
+				"tailwind.config.js",
+				"tailwind.config.cjs",
+				"tailwind.config.mjs",
+				"tailwind.config.ts",
+				"postcss.config.js",
+				"postcss.config.cjs",
+				"postcss.config.mjs",
+				"postcss.config.ts"
+			),
+		})
 		lspconfig.cssls.setup({})
 		lspconfig.emmet_ls.setup({})
 		lspconfig.lua_ls.setup({
