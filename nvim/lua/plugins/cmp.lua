@@ -4,7 +4,7 @@ return {
 	dependencies = {
 		-- Sources
 		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
+		"FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
 		"saadparwaiz1/cmp_luasnip",
 		-- Snippet Engine
@@ -45,7 +45,7 @@ return {
 			},
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
-				{ name = "path" },
+				{ name = "async_path" },
 				{ name = "luasnip" },
 				{ name = "buffer" },
 			}),
