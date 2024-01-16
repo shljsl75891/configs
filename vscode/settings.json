@@ -28,7 +28,7 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "OperatorMono Nerd Font Light",
+  "editor.fontFamily": "JetBrainsMono Nerd Font Light",
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.formatOnSave": true,

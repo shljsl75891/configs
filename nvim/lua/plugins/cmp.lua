@@ -6,7 +6,6 @@ return {
 		"hrsh7th/cmp-buffer",
 		"FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
-		"saadparwaiz1/cmp_luasnip",
 		-- Snippet Engine
 		"L3MON4D3/LuaSnip",
 	},
@@ -27,26 +26,10 @@ return {
 				["<C-e>"] = cmp.mapping.abort(),
 				["<CR>"] = cmp.mapping.confirm({ select = true }),
 				["<C-l>"] = cmp.mapping.complete(),
-				-- Super Tab navigation
-				["<Tab>"] = cmp.mapping(function(fallback)
-					if luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<S-Tab>"] = cmp.mapping(function(fallback)
-					if luasnip.locally_jumpable(-1) then
-						luasnip.jump(-1)
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
 			},
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
 				{ name = "async_path" },
-				{ name = "luasnip" },
 				{ name = "buffer" },
 			}),
 		})
