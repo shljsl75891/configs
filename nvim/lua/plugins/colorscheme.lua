@@ -21,9 +21,9 @@ return {
 			transparent = true, -- Enable this to disable setting the background color
 			terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
 			styles = {
-				comments = { italic = true },
-				keywords = { italic = true },
-				functions = { bold = true, italic = true },
+				comments = { italic = false },
+				keywords = { italic = false },
+				functions = { bold = true, italic = false },
 				variables = {},
 				sidebars = "dark", -- style for sidebars, see below
 				floats = "dark", -- style for floating windows

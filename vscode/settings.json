@@ -28,7 +28,7 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "JetBrainsMono Nerd Font Light",
+  "editor.fontFamily": "FiraCode Nerd Font Mono",
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
@@ -56,17 +56,11 @@
       {
         "scope": ["comment", "punctuation.definition.comment"],
         "settings": {
-          "fontStyle": "italic"
+          "fontStyle": ""
         }
       },
       {
-        "scope": ["entity.name.function"],
-        "settings": {
-          "fontStyle": "bold italic"
-        }
-      },
-      {
-        "scope": ["keyword"],
+        "scope": ["entity.name.function", "keyword"],
         "settings": {
           "fontStyle": "bold"
         }
