@@ -47,6 +47,10 @@ local localOptions = {
 	-- auto refresh
 	autoread = true,
 	autowrite = true,
+	-- items in completion menu
+	pumheight = 5,
+	-- disable vi compatibilty
+	compatible = false,
 }
 
 for k, v in pairs(localOptions) do
