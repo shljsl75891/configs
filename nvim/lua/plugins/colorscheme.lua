@@ -12,59 +12,74 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Colorscheme setup
 return {
-	"folke/tokyonight.nvim",
+	"ellisonleao/gruvbox.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		require("tokyonight").setup({
-			style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-			transparent = true, -- Enable this to disable setting the background color
-			terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
-			styles = {
-				comments = { italic = false },
-				keywords = { italic = false },
-				functions = { bold = true, italic = false },
-				variables = {},
-				sidebars = "dark", -- style for sidebars, see below
-				floats = "dark", -- style for floating windows
+		local theme = require("gruvbox")
+		local palette = theme.palette
+		theme.setup({
+			bold = true,
+			italic = {
+				strings = false,
+				emphasis = true,
+				comments = true,
+				operators = false,
+				folds = true,
 			},
-			on_highlights = function(highlights, colors)
-				highlights.LspSignatureActiveParameter = {
+			contrast = "hard",
+			overrides = {
+				LspSignatureActiveParameter = {
 					bg = nil,
-					fg = colors.cyan,
+					fg = palette.bright_yellow,
 					bold = true,
-				}
-				local prompt = "#2d3149"
-				highlights.TelescopeNormal = {
-					bg = colors.bg_dark,
-					fg = colors.fg_dark,
-				}
-				highlights.TelescopeBorder = {
-					bg = colors.bg_dark,
-					fg = colors.bg_dark,
-				}
-				highlights.TelescopePromptNormal = {
-					bg = prompt,
-				}
-				highlights.TelescopePromptBorder = {
-					bg = prompt,
-					fg = prompt,
-				}
-				highlights.TelescopePromptTitle = {
-					bg = prompt,
-					fg = prompt,
-				}
-				highlights.TelescopePreviewTitle = {
-					bg = colors.bg_dark,
-					fg = colors.bg_dark,
-				}
-				highlights.TelescopeResultsTitle = {
-					bg = colors.bg_dark,
-					fg = colors.bg_dark,
-				}
-			end,
+				},
+				NormalFloat = {
+					bg = palette.dark0_soft,
+				},
+				TelescopeNormal = {
+					bg = palette.dark0,
+					fg = palette.dark0,
+				},
+				TelescopeResultsNormal = {
+					bg = palette.dark0,
+					fg = palette.light4,
+				},
+				TelescopeBorder = {
+					bg = palette.dark0,
+					fg = palette.light0_soft,
+				},
+				TelescopeSelection = {
+					bg = palette.dark0_soft,
+					fg = palette.light0_soft,
+				},
+				TelescopePromptNormal = {
+					bg = palette.dark0_hard,
+				},
+				TelescopePromptBorder = {
+					bg = palette.dark0_hard,
+					fg = palette.dark0_hard,
+				},
+				TelescopePromptTitle = {
+					bg = palette.dark0_hard,
+					fg = palette.dark0_hard,
+				},
+				TelescopePreviewTitle = {
+					bg = palette.dark0,
+					fg = palette.dark0,
+				},
+				TelescopeResultsTitle = {
+					bg = palette.dark0,
+					fg = palette.dark0,
+				},
+				TelescopeMatching = {
+					fg = palette.bright_aqua,
+					bold = true,
+				},
+			},
+			transparent_mode = true,
 		})
 
-		vim.cmd.colorscheme("tokyonight")
+		theme.load()
 	end,
 }

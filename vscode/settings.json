@@ -28,9 +28,9 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "FiraCode Nerd Font Mono",
+  "editor.fontFamily": "HackZeroSlash Nerd Font",
   "editor.fontLigatures": true,
-  "editor.fontSize": 16,
+  "editor.fontSize": 15,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
   "editor.guides.highlightActiveBracketPair": false,
@@ -56,13 +56,19 @@
       {
         "scope": ["comment", "punctuation.definition.comment"],
         "settings": {
-          "fontStyle": ""
+          "fontStyle": "italic"
         }
       },
       {
-        "scope": ["entity.name.function", "keyword"],
+        "scope": ["keyword"],
         "settings": {
           "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": ["entity.name.function"],
+        "settings": {
+          "fontStyle": "bold italic"
         }
       }
     ]
@@ -194,18 +200,18 @@
   "window.zoomLevel": -1.2,
   //workbench settings
   "workbench.activityBar.location": "top",
-  "workbench.colorCustomizations": {
-    /*"editor.lineHighlightBackground": "#282828"
+  /*   "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#282828",
     "list.activeSelectionBackground": "#454545",
     "list.focusBackground": "#282828",
-    "list.focusOutline": "#000" */
-  },
+    "list.focusOutline": "#00000000"
+    }, */
+  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.layoutControl.enabled": false,
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.tree.renderIndentGuides": "none",
-  "workbench.colorTheme": "Tokyo Night"
+  "workbench.tree.renderIndentGuides": "none"
 }
