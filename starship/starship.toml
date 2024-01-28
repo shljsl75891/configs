@@ -1,15 +1,22 @@
-add_newline = false
-
-# A minimal left prompt
 format = """$directory\
-$git_branch\
+$git_state\
 $git_status\
+$git_branch\
+$git_metrics\
 $character"""
+
+add_newline = false
 
 [directory]
 truncation_length = 2
 truncation_symbol = '…/'
 
 [character]
-success_symbol = "[❯](blue)"
-error_symbol = "[✘](red)"
+success_symbol = '[❯](yellow)'
+error_symbol = '[✘](red)'
+
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+
+[git_metrics]
+disabled = false
