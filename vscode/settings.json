@@ -28,16 +28,16 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "HackZeroSlash Nerd Font",
+  "editor.fontFamily": "UbuntuMono Nerd Font",
   "editor.fontLigatures": true,
-  "editor.fontSize": 15,
+  "editor.fontSize": 18,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
   "editor.guides.highlightActiveBracketPair": false,
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
-  "editor.lineHeight": 1.4,
+  "editor.lineHeight": 1.15,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "never",
@@ -197,7 +197,7 @@
   "window.commandCenter": false,
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
-  "window.zoomLevel": -1.2,
+  "window.zoomLevel": -1,
   //workbench settings
   "workbench.activityBar.location": "top",
   /*   "workbench.colorCustomizations": {
@@ -213,5 +213,6 @@
   "workbench.layoutControl.enabled": false,
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.tree.renderIndentGuides": "none"
+  "workbench.tree.renderIndentGuides": "none",
+  "terminal.integrated.fontSize": 16
 }

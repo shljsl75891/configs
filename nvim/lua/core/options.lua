@@ -48,7 +48,7 @@ local localOptions = {
 	autoread = true,
 	autowrite = true,
 	-- items in completion menu
-	pumheight = 5,
+	pumheight = 8,
 	-- disable vi compatibilty
 	compatible = false,
 }

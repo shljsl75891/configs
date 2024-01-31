@@ -6,15 +6,6 @@ return {
 		local lsp_defaults = lspconfig.util.default_config
 		local builtin = require("telescope.builtin")
 
-		local function organize_imports()
-			local params = {
-				command = "_typescript.organizeImports",
-				arguments = { vim.api.nvim_buf_get_name(0) },
-				title = "",
-			}
-			vim.lsp.buf.execute_command(params)
-		end
-
 		lsp_defaults.capabilities =
 			vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
@@ -36,49 +27,5 @@ return {
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
 			end,
 		})
-
-		-- LSPs setup
-		lspconfig.tailwindcss.setup({
-			root_dir = lspconfig.util.root_pattern(
-				"tailwind.config.js",
-				"tailwind.config.cjs",
-				"tailwind.config.mjs",
-				"tailwind.config.ts",
-				"postcss.config.js",
-				"postcss.config.cjs",
-				"postcss.config.mjs",
-				"postcss.config.ts"
-			),
-		})
-		lspconfig.cssls.setup({})
-		lspconfig.emmet_ls.setup({})
-		lspconfig.lua_ls.setup({
-			settings = {
-				Lua = {
-					runtime = {
-						version = "LuaJIT",
-					},
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						library = {
-							vim.env.VIMRUNTIME,
-						},
-					},
-					telemetry = {
-						enable = false,
-					},
-				},
-			},
-		})
-
-		lspconfig.tsserver.setup({
-			on_attach = function()
-				vim.api.nvim_create_user_command("OrganizeImports", organize_imports, {
-					desc = "Organize Imports using tsserver",
-				})
-			end,
-		})
-	end,
+  end
 }
