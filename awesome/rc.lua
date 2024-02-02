@@ -57,7 +57,12 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "Ubuntu Nerd Font Medium 10"
+beautiful.font = "Ubuntu Nerd Font 10"
+beautiful.bg_normal = "#1D2021"
+beautiful.fg_normal = "#FBF1C7"
+beautiful.bg_focus = "#1D2021"
+beautiful.fg_focus = "#D65D0E"
+beautiful.border_width = 2
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "kitty"
@@ -262,14 +267,14 @@ awful.screen.connect_for_each_screen(function(s)
 				ac_prefix = "|  󰂋 ",
 				battery_prefix = "|  󰂀 ",
 				percent_colors = {
-					{ 30, "red" },
-					{ 70, "orange" },
-					{ 999, "green" },
+					{ 30, "#CC241D" },
+					{ 70, "#689D6A" },
+					{ 999, "#D79921" },
 				},
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "Ubuntu Nerd Font Medium 10",
+				widget_font = "Ubuntu Nerd Font 10",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
@@ -343,9 +348,12 @@ globalkeys = gears.table.join(
 	end, { description = "go back", group = "client" }),
 
 	-- Standard program
-	awful.key({ modkey }, "e", function()
-		awful.spawn.with_shell("nautilus")
-	end, { description = "open a explorer", group = "launcher" }),
+	awful.key({}, "Print", function()
+		awful.spawn.with_shell("flameshot gui --clipboard")
+	end, { description = "capture partial screenshot", group = "launcher" }),
+	awful.key({ "Control" }, "Print", function()
+		awful.spawn.with_shell("flameshot full --clipboard")
+	end, { description = "capture full screenshot", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		awful.spawn.with_shell("thorium-browser")
 	end, { description = "open a browser", group = "launcher" }),
@@ -390,7 +398,15 @@ globalkeys = gears.table.join(
 
 	-- Dmenu Prompt
 	awful.key({ modkey }, "r", function()
-		awful.spawn.with_shell("dmenu_run")
+		awful.spawn(
+			string.format(
+				"dmenu_run -i -fn 'Ubuntu Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				beautiful.bg_normal,
+				beautiful.fg_normal,
+				beautiful.bg_focus,
+				beautiful.fg_focus
+			)
+		)
 	end, { description = "dmenu run prompt", group = "launcher" }),
 
 	awful.key({ modkey }, "x", function()
@@ -631,10 +647,10 @@ end)
 end) ]]
 
 client.connect_signal("focus", function(c)
-	c.border_color = beautiful.border_focus
+	c.border_color = "#FABD2F"
 end)
 client.connect_signal("unfocus", function(c)
-	c.border_color = beautiful.border_normal
+	c.border_color = "#32302F"
 end)
 -- }}}
 
