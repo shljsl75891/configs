@@ -14,6 +14,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local battery_widget = require("battery-widget")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -255,6 +256,23 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			wibox.widget.systray(),
+			battery_widget({
+				-- pass options here
+				ac = "AC",
+				adapter = "BAT0",
+				ac_prefix = "AC: ",
+				battery_prefix = "| Bat: ",
+				percent_colors = {
+					{ 25, "red" },
+					{ 50, "orange" },
+					{ 999, "green" },
+				},
+				listen = true,
+				timeout = 10,
+				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
+				widget_font = "Ubuntu 9",
+				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
+			}),
 			mytextclock,
 			-- s.mylayoutbox,
 		},
