@@ -57,6 +57,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.font = "Ubuntu Nerd Font Medium 10"
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "kitty"
@@ -258,19 +259,17 @@ awful.screen.connect_for_each_screen(function(s)
 			wibox.widget.systray(),
 			battery_widget({
 				-- pass options here
-				ac = "AC",
-				adapter = "BAT0",
-				ac_prefix = "AC: ",
-				battery_prefix = "| Bat: ",
+				ac_prefix = "|  󰂋 ",
+				battery_prefix = "|  󰂀 ",
 				percent_colors = {
-					{ 25, "red" },
-					{ 50, "orange" },
+					{ 30, "red" },
+					{ 70, "orange" },
 					{ 999, "green" },
 				},
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "Ubuntu 9",
+				widget_font = "Ubuntu Nerd Font Medium 10",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
