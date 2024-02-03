@@ -57,7 +57,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "Ubuntu Nerd Font 10"
+beautiful.font = "Ubuntu Nerd Font Medium 8"
 beautiful.bg_normal = "#1D2021"
 beautiful.fg_normal = "#FBF1C7"
 beautiful.bg_focus = "#1D2021"
@@ -65,8 +65,8 @@ beautiful.fg_focus = "#D65D0E"
 beautiful.border_width = 2
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "kitty"
-local editor = os.getenv("EDITOR") or "editor"
+local terminal = "alacritty"
+local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -246,8 +246,10 @@ awful.screen.connect_for_each_screen(function(s)
 		buttons = tasklist_buttons,
 	})
 
+	local systray = wibox.widget.systray()
+
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s })
+	s.mywibox = awful.wibar({ position = "top", screen = s, height = 20 })
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -261,7 +263,7 @@ awful.screen.connect_for_each_screen(function(s)
 		s.mytasklist, -- Middle widget
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
-			wibox.widget.systray(),
+			systray,
 			battery_widget({
 				-- pass options here
 				ac_prefix = "|  󰂋 ",
@@ -274,7 +276,7 @@ awful.screen.connect_for_each_screen(function(s)
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "Ubuntu Nerd Font 10",
+				widget_font = "Ubuntu Nerd Font Medium 10",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
