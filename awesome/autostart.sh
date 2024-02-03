@@ -8,7 +8,6 @@ function run {
 }
 
 # programs
-run "flameshot"
 run "picom"
 run "nitrogen --restore"
 run "nm-applet"

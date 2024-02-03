@@ -63,6 +63,8 @@ beautiful.fg_normal = "#FBF1C7"
 beautiful.bg_focus = "#1D2021"
 beautiful.fg_focus = "#D65D0E"
 beautiful.border_width = 2
+beautiful.taglist_squares_sel = nil
+beautiful.taglist_squares_unsel = nil
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "alacritty"
@@ -276,7 +278,7 @@ awful.screen.connect_for_each_screen(function(s)
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "Ubuntu Nerd Font Medium 10",
+				widget_font = "Ubuntu Nerd Font Medium 8",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
@@ -351,11 +353,8 @@ globalkeys = gears.table.join(
 
 	-- Standard program
 	awful.key({}, "Print", function()
-		awful.spawn.with_shell("flameshot gui --clipboard")
+		awful.spawn.with_shell("maim -sD | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
-	awful.key({ "Control" }, "Print", function()
-		awful.spawn.with_shell("flameshot full --clipboard")
-	end, { description = "capture full screenshot", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		awful.spawn.with_shell("thorium-browser")
 	end, { description = "open a browser", group = "launcher" }),
