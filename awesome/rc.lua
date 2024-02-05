@@ -355,9 +355,15 @@ globalkeys = gears.table.join(
 	awful.key({}, "Print", function()
 		awful.spawn.with_shell("maim -sD | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
+	awful.key({ modkey }, "l", function()
+		awful.spawn.with_shell("slock")
+	end, { description = "locks the screen", group = "screen" }),
 	awful.key({ modkey }, "b", function()
 		awful.spawn.with_shell("thorium-browser")
 	end, { description = "open a browser", group = "launcher" }),
+	awful.key({ modkey }, "e", function()
+		awful.spawn("nautilus")
+	end, { description = "open a explorer", group = "launcher" }),
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
