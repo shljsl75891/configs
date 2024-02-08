@@ -9,6 +9,6 @@ function run {
 
 # programs
 run "picom"
-run "nitrogen --restore"
+run "nitrogen --set-scaled --random /home/sahil.jassal/Pictures/Wallpapers"
 run "nm-applet"
 run "blueman-applet"
