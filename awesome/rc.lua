@@ -57,12 +57,12 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "Ubuntu Nerd Font Medium 8"
+beautiful.font = "NotoSans Nerd Font Medium 8"
 beautiful.bg_normal = "#1D2021"
 beautiful.fg_normal = "#FBF1C7"
-beautiful.bg_focus = "#1D2021"
-beautiful.fg_focus = "#D65D0E"
-beautiful.border_width = 2
+beautiful.fg_focus = "#1D2021"
+beautiful.bg_focus = "#686D43"
+beautiful.border_width = 1
 beautiful.taglist_squares_sel = nil
 beautiful.taglist_squares_unsel = nil
 
@@ -278,7 +278,7 @@ awful.screen.connect_for_each_screen(function(s)
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "Ubuntu Nerd Font Medium 8",
+				widget_font = "NotoSans Nerd Font Medium 9",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
@@ -407,7 +407,7 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "r", function()
 		awful.spawn(
 			string.format(
-				"dmenu_run -i -fn 'Ubuntu Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'NotoSans Nerd Font-9' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,
