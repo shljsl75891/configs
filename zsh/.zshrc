@@ -1,3 +1,18 @@
+# Enable colors
+autoload -U colors && colors
+
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.cache/zsh/history
+
+# Basic auto/tab complete:
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
+
 # ALIASES
 alias ls='lsd -lh --color=auto'
 alias ll='lsd -alh --color=auto'
@@ -9,7 +24,6 @@ alias cd..='cd ..'
 alias cd...='cd ../..'
 alias cd....='cd ../../..'
 alias cd.....='cd ../../../..'
-alias tmux='tmux -u2'
 alias tk='tmux kill-server'
 
 # Prompt
@@ -23,3 +37,5 @@ export NVM_DIR="$HOME/.nvm"
 # Plugins
 source $HOME/personal/configs/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/personal/configs/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
