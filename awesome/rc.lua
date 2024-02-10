@@ -57,7 +57,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "NotoSans Nerd Font Medium 8"
+beautiful.font = "NotoSans Nerd Font Medium 9"
 beautiful.bg_normal = "#1D2021"
 beautiful.fg_normal = "#FBF1C7"
 beautiful.fg_focus = "#1D2021"
@@ -251,7 +251,16 @@ awful.screen.connect_for_each_screen(function(s)
 	local systray = wibox.widget.systray()
 
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s, height = 20 })
+	s.mywibox = awful.wibar({
+		position = "bottom",
+		height = 20,
+		border_width = 3,
+		screen = s,
+		opacity = 0.8,
+		shape = function(cr, width, height)
+			gears.shape.rounded_rect(cr, width, height, 8)
+		end,
+	})
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -590,8 +599,7 @@ awful.rules.rules = {
 	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
-	-- { rule = { class = "Firefox" },
-	--   properties = { screen = 1, tag = "2" } },
+	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "comm" } },
 }
 -- }}}
 
@@ -662,7 +670,7 @@ end)
 -- }}}
 
 -- Gaps between windows
-beautiful.useless_gap = 5
+beautiful.useless_gap = 3
 
 -- AutoStart script
 awful.spawn.with_shell("xinput set-prop 'Elan Touchpad' 'libinput Tapping Enabled' 1")
