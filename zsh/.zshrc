@@ -39,3 +39,6 @@ source $HOME/personal/configs/zsh/plugins/zsh-autosuggestions/zsh-autosuggestion
 source $HOME/personal/configs/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
