@@ -14,8 +14,8 @@ compinit
 _comp_options+=(globdots)		# Include hidden files.
 
 # ALIASES
-alias ls='lsd -lh --color=auto --sort extension'
-alias ll='lsd -alh --color=auto --sort extension'
+alias ls='lsd -l'
+alias ll='lsd -Al'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
