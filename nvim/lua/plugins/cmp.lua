@@ -8,10 +8,13 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		-- Snippet Engine
 		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
+
+		require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./snips" } })
 
 		cmp.setup({
 			snippet = {
@@ -31,6 +34,7 @@ return {
 				{ name = "nvim_lsp" },
 				{ name = "async_path" },
 				{ name = "buffer" },
+				{ name = "luasnip" },
 			}),
 		})
 	end,
