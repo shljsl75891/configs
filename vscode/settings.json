@@ -28,16 +28,16 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "UbuntuMono Nerd Font",
+  "editor.fontFamily": "MesloLGS Nerd Font",
   "editor.fontLigatures": true,
-  "editor.fontSize": 18,
+  "editor.fontSize": 16,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
   "editor.guides.highlightActiveBracketPair": false,
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
-  "editor.lineHeight": 1.15,
+  "editor.lineHeight": 1.4,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "never",
@@ -51,28 +51,6 @@
   "editor.scrollbar.vertical": "hidden",
   "editor.scrollbar.verticalScrollbarSize": 0,
   "editor.tabSize": 2,
-  "editor.tokenColorCustomizations": {
-    "textMateRules": [
-      {
-        "scope": ["comment", "punctuation.definition.comment"],
-        "settings": {
-          "fontStyle": "italic"
-        }
-      },
-      {
-        "scope": ["keyword"],
-        "settings": {
-          "fontStyle": "bold"
-        }
-      },
-      {
-        "scope": ["entity.name.function"],
-        "settings": {
-          "fontStyle": "bold italic"
-        }
-      }
-    ]
-  },
   // explorer settings
   "explorer.compactFolders": false,
   // imporve vim extension performance
