@@ -2,12 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
-		local lspconfig = require("lspconfig")
-		local lsp_defaults = lspconfig.util.default_config
 		local builtin = require("telescope.builtin")
-
-		lsp_defaults.capabilities =
-			vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 		-- Settings for LSP Attached buffer
 		vim.api.nvim_create_autocmd("LspAttach", {
@@ -27,5 +22,5 @@ return {
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
 			end,
 		})
-  end
+	end,
 }

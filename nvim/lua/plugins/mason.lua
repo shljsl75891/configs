@@ -7,7 +7,12 @@ return {
 	lazy = false,
 	config = function()
 		local lspconfig = require("lspconfig")
-		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local lsp_capabilities = vim.tbl_deep_extend(
+			"force",
+			vim.lsp.protocol.make_client_capabilities(),
+			require("cmp_nvim_lsp").default_capabilities()
+		)
+		lsp_capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
 		local default_setup = function(server)
 			lspconfig[server].setup({
@@ -31,6 +36,7 @@ return {
 				default_setup,
 				lua_ls = function()
 					lspconfig.lua_ls.setup({
+						capabilities = lsp_capabilities,
 						settings = {
 							Lua = {
 								runtime = {
@@ -50,6 +56,7 @@ return {
 				end,
 				tsserver = function()
 					lspconfig.tsserver.setup({
+						capabilities = lsp_capabilities,
 						commands = {
 							OrganizeImports = {
 								organize_imports,
