@@ -23,7 +23,7 @@
     "body": ["useCallback(() => {", "  $1", "}, [$2]);"]
   },
   "React useMemo": {
-    "prefix": "umm",
+    "prefix": "um",
     "body": ["useMemo(() => {", "  $1", "}, [$2]);"]
   },
   "React Arrow Functional Component": {

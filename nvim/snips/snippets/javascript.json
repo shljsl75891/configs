@@ -1,4 +1,12 @@
 {
+  "Named Import": {
+    "prefix": "nim",
+    "body": ["import {$2} from \"$1\""]
+  },
+  "Default Import": {
+    "prefix": "dim",
+    "body": ["import $2 from \"$1\""]
+  },
   "Console Log": {
     "prefix": "cl",
     "body": ["console.log($1);"]
