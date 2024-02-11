@@ -1,7 +1,11 @@
 {
   "React useState": {
     "prefix": "us",
-    "body": ["const [$1, set$2] = useState($3);"]
+    "body": ["const [$1, set$2] = useState<$3>($4);"]
+  },
+  "React useRef": {
+    "prefix": "ur",
+    "body": ["const [$1, set$2] = useRef<$3>($4);"]
   },
   "React useEffect": {
     "prefix": "ue",
