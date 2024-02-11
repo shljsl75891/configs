@@ -43,3 +43,5 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # arrow keys
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
+bindkey '^H' backward-kill-word
+bindkey '5~' kill-word
