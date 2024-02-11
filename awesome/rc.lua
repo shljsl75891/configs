@@ -14,10 +14,14 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local battery_widget = require("battery-widget")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+
+-- Widgets
+local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
@@ -252,9 +256,9 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
-		position = "bottom",
-		height = 20,
-		border_width = 3,
+		position = "top",
+		height = 22,
+		border_width = 5,
 		screen = s,
 		opacity = 0.8,
 		shape = function(cr, width, height)
@@ -275,20 +279,23 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			systray,
+			volume_widget({
+				card = 0,
+				widget_type = "horizontal_bar",
+				with_icon = true,
+			}),
+			brightness_widget({
+				type = "icon_and_text",
+				percentage = true,
+				program = "xbacklight",
+				step = 2,
+			}),
 			battery_widget({
-				-- pass options here
-				ac_prefix = "|  󰂋 ",
-				battery_prefix = "|  󰂀 ",
-				percent_colors = {
-					{ 30, "#CC241D" },
-					{ 70, "#689D6A" },
-					{ 999, "#D79921" },
-				},
-				listen = true,
-				timeout = 10,
-				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "NotoSans Nerd Font Condensed Medium 10",
-				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
+				show_current_level = true,
+				timeout = 2,
+				margin_left = 5,
+				margin_right = 5,
+				font = "NotoSans Nerd Font Condensed 10",
 			}),
 			mytextclock,
 			-- s.mylayoutbox,
@@ -310,19 +317,24 @@ end)
 -- {{{ Key bindings
 globalkeys = gears.table.join(
 	awful.key({}, "XF86MonBrightnessUp", function()
-		awful.util.spawn("xbacklight -inc 15")
+		-- awful.util.spawn("xbacklight -inc 15")
+		brightness_widget:inc()
 	end, { description = "increase brightness", group = "hotkeys" }),
 	awful.key({}, "XF86MonBrightnessDown", function()
-		awful.util.spawn("xbacklight -dec 15")
+		-- awful.util.spawn("xbacklight -dec 15")
+		brightness_widget:dec()
 	end, { description = "decrease brightness", group = "hotkeys" }),
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.spawn("amixer -D pulse sset Master 5%+", false)
+		volume_widget.inc()
+		-- awful.spawn("amixer -q -D pulse sset Master 5%+", false)
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.spawn("amixer -D pulse sset Master 5%-", false)
+		volume_widget.dec()
+		-- awful.spawn("amixer -q -D pulse sset Master 5%-", false)
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-		awful.spawn("amixer -D pulse sset Master toggle")
+		volume_widget.toggle()
+		-- awful.spawn("amixer -q -D pulse sset Master toggle")
 	end, { description = "toggle mute", group = "hotkeys" }),
 	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
 	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
