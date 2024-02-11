@@ -60,15 +60,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "NotoSans Nerd Font Condensed Medium 10"
-beautiful.bg_normal = "#1D2021"
-beautiful.fg_normal = "#FBF1C7"
-beautiful.fg_focus = "#1D2021"
-beautiful.bg_focus = "#686D43"
-beautiful.border_width = 1
-beautiful.taglist_squares_sel = nil
-beautiful.taglist_squares_unsel = nil
+beautiful.init("~/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "alacritty -e tmux -u2"
@@ -217,7 +209,7 @@ awful.screen.connect_for_each_screen(function(s)
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	awful.tag({ "work", "dev", "test", "db", "pers", "comm" }, s, awful.layout.layouts[1])
+	awful.tag({ " ", "", "", "󰆼", " ", " " }, s, awful.layout.layouts[1])
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
@@ -257,8 +249,8 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Create the wibox
 	s.mywibox = awful.wibar({
 		position = "top",
-		height = 22,
-		border_width = 5,
+		height = 20,
+		border_width = 3,
 		screen = s,
 		opacity = 0.8,
 		shape = function(cr, width, height)
@@ -283,6 +275,9 @@ awful.screen.connect_for_each_screen(function(s)
 				card = 0,
 				widget_type = "horizontal_bar",
 				with_icon = true,
+				width = 80,
+				shape = "octogon",
+				margins = 6,
 			}),
 			brightness_widget({
 				type = "icon_and_text",
@@ -295,7 +290,7 @@ awful.screen.connect_for_each_screen(function(s)
 				timeout = 2,
 				margin_left = 5,
 				margin_right = 5,
-				font = "NotoSans Nerd Font Condensed 10",
+				font = beautiful.font,
 			}),
 			mytextclock,
 			-- s.mylayoutbox,
@@ -611,7 +606,7 @@ awful.rules.rules = {
 	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
-	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "comm" } },
+	{ rule = { class = "Slack" }, properties = { screen = 1, tag = " " } },
 }
 -- }}}
 
@@ -674,15 +669,12 @@ end)
 end) ]]
 
 client.connect_signal("focus", function(c)
-	c.border_color = "#FABD2F"
+	c.border_color = beautiful.border_focus
 end)
 client.connect_signal("unfocus", function(c)
-	c.border_color = "#32302F"
+	c.border_color = beautiful.border_normal
 end)
 -- }}}
-
--- Gaps between windows
-beautiful.useless_gap = 3
 
 -- AutoStart script
 awful.spawn.with_shell("xinput set-prop 'Elan Touchpad' 'libinput Tapping Enabled' 1")
