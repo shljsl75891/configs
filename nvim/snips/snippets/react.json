@@ -1,8 +1,4 @@
 {
-  "Console Log": {
-    "prefix": "cl",
-    "body": ["console.log($1);"]
-  },
   "React useState": {
     "prefix": "us",
     "body": ["const [$1, set$2] = useState($3);"]
