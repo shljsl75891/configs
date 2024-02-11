@@ -19,11 +19,6 @@ return {
 			sources = {
 				formatting.prettierd,
 				formatting.stylua, -- lua formatter
-				diagnostics.eslint_d.with({ -- js/ts linter
-					condition = function(utils)
-						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }) -- only enable if root has eslint config
-					end,
-				}),
 			},
 
 			-- configure format on save
