@@ -22,7 +22,7 @@
     "featured": false,
     "paused": false,
     "search": "",
-    "timeout": 86400,
+    "timeout": 86500,
     "topics": "bo8jQKTaE0Y"
   },
   "data/hbYe5W_023WO": {
@@ -51,7 +51,7 @@
   "timeZone": null,
   "widget/2O2AOQT0tlJ8": {
     "display": {
-      "fontFamily": "NotoSans Nerd Font ",
+      "fontFamily": "NotoSans Nerd Font Condensed",
       "fontSize": 20,
       "position": "middleCentre"
     },
@@ -61,7 +61,7 @@
   },
   "widget/default-greeting": {
     "display": {
-      "fontFamily": "NotoSans Nerd Font",
+      "fontFamily": "NotoSans Nerd Font Condensed",
       "fontSize": 12,
       "fontWeight": 500,
       "position": "middleCentre"
@@ -72,9 +72,9 @@
   },
   "widget/default-time": {
     "display": {
-      "fontFamily": "NotoSans Nerd Font",
+      "fontFamily": "NotoSans Nerd Font Condensed",
       "fontSize": 20,
-      "fontWeight": 400,
+      "fontWeight": 500,
       "position": "middleCentre"
     },
     "id": "default-time",
@@ -83,7 +83,7 @@
   },
   "widget/hbYe5W_023WO": {
     "display": {
-      "fontFamily": "NotoSans Nerd Font",
+      "fontFamily": "NotoSans Nerd Font Condensed",
       "fontSize": 14,
       "position": "bottomRight"
     },

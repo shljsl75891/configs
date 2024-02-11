@@ -57,7 +57,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "NotoSans Nerd Font Medium 9"
+beautiful.font = "NotoSans Nerd Font Condensed Medium 10"
 beautiful.bg_normal = "#1D2021"
 beautiful.fg_normal = "#FBF1C7"
 beautiful.fg_focus = "#1D2021"
@@ -287,7 +287,7 @@ awful.screen.connect_for_each_screen(function(s)
 				listen = true,
 				timeout = 10,
 				widget_text = "${AC_BAT}${color_on}${percent}%${color_off} | ",
-				widget_font = "NotoSans Nerd Font Medium 9",
+				widget_font = "NotoSans Nerd Font Condensed Medium 10",
 				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
 			}),
 			mytextclock,
@@ -416,7 +416,7 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "r", function()
 		awful.spawn(
 			string.format(
-				"dmenu_run -i -fn 'NotoSans Nerd Font-9' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'Iosevka Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,
