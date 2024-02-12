@@ -11,7 +11,15 @@ return {
 			vim.lsp.protocol.make_client_capabilities(),
 			require("cmp_nvim_lsp").default_capabilities()
 		)
-		capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+
+		-- Diagnostics config
+		vim.diagnostic.config({
+			virtual_text = true,
+			signs = true,
+			underline = false,
+			update_in_insert = true,
+			severity_sort = false,
+		})
 
 		-- Settings for LSP Attached buffer
 		local opts = { noremap = true, silent = true }
