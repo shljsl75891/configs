@@ -5,7 +5,7 @@
   },
   "React useRef": {
     "prefix": "ur",
-    "body": ["const [$1, set$2] = useRef<$3>($4);"]
+    "body": ["const $1 = useRef<$2>($3);"]
   },
   "React useEffect": {
     "prefix": "ue",
