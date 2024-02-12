@@ -13,13 +13,21 @@ fi
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
+# Check if TMUX is not set and tmux is not running
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
     tmux -u2 new-session -s $selected_name -c $selected
-    exit 0
+else
+    # If there is no existing tmux session with the specified name, create a new one
+    if ! tmux has-session -t=$selected_name 2> /dev/null; then
+        tmux -u2 new-session -ds $selected_name -c $selected
+    fi
+
+    # If the script is running within a tmux session, switch the client
+    if [[ -n $TMUX ]]; then
+        tmux -u2 switch-client -t $selected_name
+    else
+        # If the script is not running within a tmux session, attach to the tmux session
+        tmux -u2 attach-session -t $selected_name
+    fi
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux -u2 new-session -ds $selected_name -c $selected
-fi
-
-tmux switch-client -t $selected_name
