@@ -13,7 +13,7 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff" },
 				lualine_c = { "diagnostics" },
-				lualine_x = { "filename" },
+				lualine_x = { { "filename", path = 1 } },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},
