@@ -371,6 +371,9 @@ globalkeys = gears.table.join(
 	awful.key({}, "Print", function()
 		awful.spawn.with_shell("maim -sD | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "r", function()
+		awful.spawn.with_shell("simplescreenrecorder")
+	end, { description = "starts the screen recording", group = "screen" }),
 	awful.key({ modkey }, "`", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
