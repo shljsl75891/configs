@@ -27,6 +27,9 @@ return {
 			opts.buffer = bufnr
 			-- Lsp APIs
 			Remap("n", "K", vim.lsp.buf.hover, opts)
+			Remap("n", "<leader>fo", function()
+				require("conform").format({ async = true, lsp_fallback = true })
+			end)
 			Remap("n", "gd", builtin.lsp_definitions, opts)
 			Remap("n", "<leader>rr", builtin.lsp_references, opts)
 			Remap("i", "<C-h>", vim.lsp.buf.signature_help, opts)
