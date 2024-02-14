@@ -33,9 +33,3 @@ Remap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- Quickfix Navigation
 Remap("n", "<C-Up>", "<cmd>cprev<CR>zz")
 Remap("n", "<C-Down>", "<cmd>cnext<CR>zz")
-
--- Splits resizing
-Remap("n", "=", ":resize +2<CR>")
-Remap("n", "-", ":resize -2<CR>")
-Remap("n", "+", ":vertical resize +2<CR>")
-Remap("n", "_", ":vertical resize -2<CR>")
