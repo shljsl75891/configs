@@ -3,7 +3,7 @@
     "prefix": "html5",
     "body": [
       "<!DOCTYPE html>",
-      "<html lang=\"$1en\">",
+      "<html lang=\"en\">",
       "\t<head>",
       "\t\t<meta charset=\"UTF-8\">",
       "\t\t<meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">",
