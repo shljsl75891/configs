@@ -1,6 +1,5 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	dependencies = { "windwp/nvim-ts-autotag" },
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
 	config = function()
@@ -31,21 +30,6 @@ return {
 			sync_install = false,
 			highlight = { enable = true },
 			indent = { enable = true },
-			autotag = {
-				enable = true,
-				enable_rename = true,
-				enable_close = true,
-				enable_close_on_slash = false,
-				filetypes = {
-					"html",
-					"javascript",
-					"typescript",
-					"javascriptreact",
-					"typescriptreact",
-					"tsx",
-					"jsx",
-				},
-			},
 		})
 	end,
 }
