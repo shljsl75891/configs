@@ -46,3 +46,16 @@ bindkey "^[[1;5C" forward-word
 bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "~/.config/tmux/sessionizer\n"
+
+# convert apt with nala
+apt() { 
+  command nala "$@"
+}
+sudo() {
+  if [ "$1" = "apt" ]; then
+    shift
+    command sudo nala "$@"
+  else
+    command sudo "$@"
+  fi
+}
