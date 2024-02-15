@@ -3,23 +3,32 @@ return {
 	tag = "0.1.5",
 	dependencies = { "nvim-lua/plenary.nvim" },
 	config = function()
-		-- Keymaps
+		local actions = require("telescope.actions")
 		local builtin = require("telescope.builtin")
+		-- Keymaps
 		Remap("n", "<leader>ff", builtin.find_files, {})
 		Remap("n", "<leader>fb", builtin.buffers, {})
-		Remap("n", "<leader>fo", builtin.oldfiles, {})
 		Remap("n", "<leader>lg", builtin.live_grep, {})
 		Remap("n", "<leader>cp", builtin.registers, {})
-		Remap("n", "<leader>gb", builtin.git_branches, {})
 		Remap("n", "<leader>ht", builtin.help_tags, {})
+		Remap("n", "<leader>fw", builtin.grep_string)
 
 		require("telescope").setup({
 			defaults = {
 				mappings = {
-					i = {},
+					n = {
+						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
+					},
+					i = {
+						["<C-j>"] = actions.cycle_history_next,
+						["<C-k>"] = actions.cycle_history_prev,
+					},
 				},
 			},
 			pickers = {
+				find_files = {
+					find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
+				},
 				lsp_definitions = { fname_width = 100 },
 				lsp_references = { fname_width = 100 },
 			},
