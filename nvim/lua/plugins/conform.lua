@@ -1,32 +1,27 @@
 return {
-  "stevearc/conform.nvim",
-  event = { "BufWritePre" },
-  cmd = { "ConformInfo" },
-  keys = {
-    {
-      -- Customize or remove this keymap to your liking
-      "<leader>fr",
-      function()
-        require("conform").format({ async = true, lsp_fallback = true })
-      end,
-      mode = "",
-      desc = "Format buffer",
-    },
-  },
-  -- Everything in opts will be passed to setup()
-  opts = {
-    -- Define your formatters
-    formatters_by_ft = {
-      javascript = { "prettierd" },
-      typescript = { "prettierd" },
-      javascriptreact = { "prettierd" },
-      typescriptreact = { "prettierd" },
-      css = { "prettierd" },
-      html = { "prettierd" },
-      json = { "prettierd" },
-      yaml = { "prettierd" },
-      markdown = { "prettierd" },
-      lua = { "stylua" },
-    },
-  },
+	"stevearc/conform.nvim",
+	event = { "BufWritePre" },
+	cmd = { "ConformInfo" },
+	-- Everything in opts will be passed to setup()
+	opts = {
+		-- Define your formatters
+		formatters_by_ft = {
+			javascript = { "prettierd" },
+			typescript = { "prettierd" },
+			javascriptreact = { "prettierd" },
+			typescriptreact = { "prettierd" },
+			css = { "prettierd" },
+			html = { "prettierd" },
+			json = { "prettierd" },
+			yaml = { "prettierd" },
+			markdown = { "prettierd" },
+			lua = { "stylua" },
+		},
+		format_on_save = {
+			-- These options will be passed to conform.format()
+			quiet = true,
+			timeout_ms = 1000,
+			lsp_fallback = true,
+		},
+	},
 }
