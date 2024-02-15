@@ -12,5 +12,18 @@ return {
 		Remap("n", "<leader>cp", builtin.registers, {})
 		Remap("n", "<leader>gb", builtin.git_branches, {})
 		Remap("n", "<leader>ht", builtin.help_tags, {})
+
+		require("telescope").setup({
+			defaults = {
+				mappings = {
+					i = {},
+				},
+			},
+			pickers = {
+				lsp_definitions = { fname_width = 100 },
+				lsp_references = { fname_width = 100 },
+			},
+			extensions = {},
+		})
 	end,
 }
