@@ -283,7 +283,7 @@ awful.screen.connect_for_each_screen(function(s)
 				type = "icon_and_text",
 				percentage = true,
 				program = "xbacklight",
-				step = 2,
+				step = 10,
 			}),
 			battery_widget({
 				show_current_level = true,
