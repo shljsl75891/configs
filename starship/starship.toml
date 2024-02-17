@@ -27,7 +27,7 @@ color_yellow = '#D79921'
 style = "fg:color_fg0 bg:color_orange"
 format = "[ $path ]($style)"
 truncation_length = 1
-truncation_symbol = '… /'
+truncation_symbol = '…/'
 
 [character]
 success_symbol = ''
