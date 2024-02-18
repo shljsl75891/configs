@@ -4,15 +4,6 @@ return {
 	config = function()
 		local builtin = require("telescope.builtin")
 
-		-- Diagnostics config
-		vim.diagnostic.config({
-			virtual_text = true,
-			signs = true,
-			underline = true,
-			update_in_insert = false,
-			severity_sort = false,
-		})
-
 		-- Settings for LSP Attached buffer
 		vim.api.nvim_create_autocmd("LspAttach", {
 			desc = "LSP actions",
