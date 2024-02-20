@@ -28,7 +28,7 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
