@@ -243,13 +243,14 @@ awful.screen.connect_for_each_screen(function(s)
 		buttons = tasklist_buttons,
 	})
 
+	local seperator = wibox.widget.textbox(" | ")
 	local systray = wibox.widget.systray()
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
 		position = "top",
-		height = dpi(20),
-		border_width = dpi(4),
+		height = dpi(18),
+		border_width = dpi(3),
 		screen = s,
 		opacity = 0.85,
 		shape = function(cr, width, height)
@@ -270,28 +271,31 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			systray,
+			seperator,
 			volume_widget({
 				card = 0,
 				widget_type = "horizontal_bar",
 				with_icon = true,
 				width = 80,
 				shape = "octogon",
-				margins = 6,
+				margins = 8,
 			}),
+			seperator,
 			brightness_widget({
 				type = "icon_and_text",
 				percentage = true,
 				program = "xbacklight",
 				step = 10,
 			}),
+			seperator,
 			battery_widget({
 				show_current_level = true,
 				timeout = 2,
-				margin_left = 5,
-				margin_right = 5,
 				font = beautiful.font,
 			}),
+			seperator,
 			mytextclock,
+			wibox.widget.textbox("   "),
 			-- s.mylayoutbox,
 		},
 	})
