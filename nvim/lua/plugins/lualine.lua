@@ -14,7 +14,7 @@ return {
 				lualine_b = { "branch", "diff" },
 				lualine_c = { { "filename", path = 1 } },
 				lualine_x = { "diagnostics" },
-				lualine_y = { "progress" },
+				lualine_y = { "lsp_progress", "tabnine" },
 				lualine_z = { "location" },
 			},
 		})
