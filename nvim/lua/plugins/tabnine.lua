@@ -6,8 +6,10 @@ return {
 			disable_auto_comment = true,
 			accept_keymap = "]",
 			dismiss_keymap = "[",
-			debounce_ms = 800,
-			suggestion_color = { gui = "#808080", cterm = 244 },
+			debounce_ms = 200,
+			codelens_enabled = false,
+			suggestion_color = { gui = "#928374", cterm = 256 },
+			codelens_color = { gui = "#928374", cterm = 256 },
 			exclude_filetypes = { "TelescopePrompt", "NvimTree" },
 			log_file_path = nil, -- absolute path to Tabnine log file
 		})

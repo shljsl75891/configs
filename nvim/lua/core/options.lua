@@ -31,7 +31,6 @@ local localOptions = {
 	autoindent = true,
 	smartindent = true,
 	-- Better options
-	colorcolumn = "80",
 	termguicolors = true,
 	wrap = false,
 	undofile = true,
@@ -39,7 +38,6 @@ local localOptions = {
 	backup = false,
 	scrolloff = 8,
 	signcolumn = "yes",
-	cursorline = true,
 	updatetime = 80,
 	-- Better windows direction
 	splitbelow = true,
