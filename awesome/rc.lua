@@ -276,9 +276,9 @@ awful.screen.connect_for_each_screen(function(s)
 				card = 0,
 				widget_type = "horizontal_bar",
 				with_icon = true,
-				width = 80,
+				width = 60,
 				shape = "octogon",
-				margins = 8,
+				margins = 6,
 			}),
 			seperator,
 			brightness_widget({
