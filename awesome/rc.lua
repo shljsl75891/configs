@@ -403,18 +403,12 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "e", function()
 		awful.spawn("nautilus")
 	end, { description = "open a explorer", group = "launcher" }),
-	awful.key({ modkey }, "Return", function()
+	awful.key({ modkey }, "t", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
 
-	awful.key({ altkey }, "l", function()
-		awful.tag.incmwfact(0.05)
-	end, { description = "increase master width factor", group = "layout" }),
-	awful.key({ altkey }, "h", function()
-		awful.tag.incmwfact(-0.05)
-	end, { description = "decrease master width factor", group = "layout" }),
 	awful.key({ modkey, "Shift" }, "h", function()
 		awful.tag.incnmaster(1, nil, true)
 	end, { description = "increase the number of master clients", group = "layout" }),
@@ -470,6 +464,37 @@ globalkeys = gears.table.join(
 )
 
 clientkeys = gears.table.join(
+
+	-- Resize windows
+	awful.key({ altkey }, "k", function(c)
+		if c.floating then
+			c:relative_move(0, 0, 0, -10)
+		else
+			awful.client.incwfact(0.025)
+		end
+	end, { description = "Floating Resize Vertical -", group = "client" }),
+	awful.key({ altkey }, "j", function(c)
+		if c.floating then
+			c:relative_move(0, 0, 0, 10)
+		else
+			awful.client.incwfact(-0.025)
+		end
+	end, { description = "Floating Resize Vertical +", group = "client" }),
+	awful.key({ altkey }, "h", function(c)
+		if c.floating then
+			c:relative_move(0, 0, -10, 0)
+		else
+			awful.tag.incmwfact(-0.025)
+		end
+	end, { description = "Floating Resize Horizontal -", group = "client" }),
+	awful.key({ altkey }, "l", function(c)
+		if c.floating then
+			c:relative_move(0, 0, 10, 0)
+		else
+			awful.tag.incmwfact(0.025)
+		end
+	end, { description = "Floating Resize Horizontal +", group = "client" }),
+
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
@@ -477,13 +502,8 @@ clientkeys = gears.table.join(
 	awful.key({ modkey }, "q", function(c)
 		c:kill()
 	end, { description = "close", group = "client" }),
-	awful.key(
-		{ modkey, "Control" },
-		"space",
-		awful.client.floating.toggle,
-		{ description = "toggle floating", group = "client" }
-	),
-	awful.key({ modkey, "Control" }, "Return", function(c)
+	awful.key({ modkey }, "o", awful.client.floating.toggle, { description = "toggle floating", group = "client" }),
+	awful.key({ modkey }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
 	awful.key({ modkey }, "o", function(c)
