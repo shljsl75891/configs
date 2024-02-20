@@ -6,6 +6,7 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+local dpi = require("beautiful.xresources").apply_dpi
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -247,10 +248,10 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Create the wibox
 	s.mywibox = awful.wibar({
 		position = "top",
-		height = 20,
-		border_width = 3,
+		height = dpi(20),
+		border_width = dpi(4),
 		screen = s,
-		opacity = 0.8,
+		opacity = 0.85,
 		shape = function(cr, width, height)
 			gears.shape.rounded_rect(cr, width, height, 8)
 		end,
@@ -335,9 +336,9 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
 	awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
 
-	awful.key({ modkey }, "w", function()
+	--[[ awful.key({ modkey }, "w", function()
 		mymainmenu:show()
-	end, { description = "show main menu", group = "awesome" }),
+	end, { description = "show main menu", group = "awesome" }), ]]
 
 	-- By-direction client focus
 	awful.key({ modkey }, "j", function()
