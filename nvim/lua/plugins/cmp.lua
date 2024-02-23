@@ -4,7 +4,7 @@ return {
 	dependencies = {
 		-- Sources
 		"hrsh7th/cmp-buffer",
-		"FelipeLema/cmp-async-path",
+		"https://codeberg.org/FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
 		-- Snippet Engine
 		"L3MON4D3/LuaSnip",
