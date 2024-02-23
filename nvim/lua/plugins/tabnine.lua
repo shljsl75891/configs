@@ -4,8 +4,8 @@ return {
 	config = function()
 		require("tabnine").setup({
 			disable_auto_comment = true,
-			accept_keymap = "]",
-			dismiss_keymap = "[",
+			accept_keymap = "<Tab>",
+			dismiss_keymap = "<S-Tab>",
 			debounce_ms = 200,
 			codelens_enabled = false,
 			suggestion_color = { gui = "#928374", cterm = 256 },
