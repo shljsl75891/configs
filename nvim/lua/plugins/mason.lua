@@ -26,10 +26,19 @@ return {
 
 		require("mason").setup({})
 		require("mason-tool-installer").setup({
-			ensure_installed = { "prettierd", "stylua" },
+			ensure_installed = {
+				"eslint",
+				"clangd",
+				"tsserver",
+				"lua_ls",
+				"tailwindcss",
+				"cssls",
+				"emmet_ls",
+				"prettierd",
+				"stylua",
+			},
 		})
 		require("mason-lspconfig").setup({
-			ensure_installed = { "eslint", "clangd", "tsserver", "lua_ls", "tailwindcss", "cssls", "emmet_ls" },
 			handlers = {
 				default_setup,
 				tsserver = function()
