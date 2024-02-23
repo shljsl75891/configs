@@ -47,4 +47,4 @@ bindkey "^[[1;5C" forward-word
 bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "~/.config/tmux/sessionizer\n"
-bindkey '\t' autosuggest-accept
+bindkey ']' autosuggest-accept
