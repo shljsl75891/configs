@@ -177,7 +177,7 @@ function theme.at_screen_connect(s)
 		border_width = dpi(3),
 		bg = theme.bg_normal,
 		fg = theme.fg_normal,
-		opacity = 0.85,
+		opacity = 0.9,
 		shape = function(cr, width, height)
 			gears.shape.rounded_rect(cr, width, height, 8)
 		end,
