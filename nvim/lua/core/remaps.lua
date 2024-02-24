@@ -33,3 +33,9 @@ Remap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- Quickfix Navigation
 Remap("n", "<C-Up>", "<cmd>cprev<CR>zz")
 Remap("n", "<C-Down>", "<cmd>cnext<CR>zz")
+
+-- Resizing windows
+Remap("n", "<M-->", ":resize -2<CR>")
+Remap("n", "<M-=>", ":resize +2<CR>")
+Remap("n", "<M-_>", ":vertical resize -4<CR>")
+Remap("n", "<M-+>", ":vertical resize +4<CR>")
