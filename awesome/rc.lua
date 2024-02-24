@@ -470,34 +470,34 @@ globalkeys = gears.table.join(
 clientkeys = gears.table.join(
 
 	-- Resize windows
-	awful.key({ altkey }, "k", function(c)
+	awful.key({ altkey }, "Up", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, -10)
+			c:relative_move(0, 0, 0, -20)
 		else
-			awful.client.incwfact(0.025)
+			awful.client.incwfact(0.05)
 		end
-	end, { description = "Floating Resize Vertical -", group = "client" }),
-	awful.key({ altkey }, "j", function(c)
+	end, { description = "Window Resize Vertical -", group = "client" }),
+	awful.key({ altkey }, "Down", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, 10)
+			c:relative_move(0, 0, 0, 20)
 		else
-			awful.client.incwfact(-0.025)
+			awful.client.incwfact(-0.05)
 		end
-	end, { description = "Floating Resize Vertical +", group = "client" }),
-	awful.key({ altkey }, "h", function(c)
+	end, { description = "Window Resize Vertical +", group = "client" }),
+	awful.key({ altkey }, "Left", function(c)
 		if c.floating then
-			c:relative_move(0, 0, -10, 0)
+			c:relative_move(0, 0, -20, 0)
 		else
 			awful.tag.incmwfact(-0.025)
 		end
-	end, { description = "Floating Resize Horizontal -", group = "client" }),
-	awful.key({ altkey }, "l", function(c)
+	end, { description = "Window Resize Horizontal -", group = "client" }),
+	awful.key({ altkey }, "Right", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 10, 0)
+			c:relative_move(0, 0, 20, 0)
 		else
 			awful.tag.incmwfact(0.025)
 		end
-	end, { description = "Floating Resize Horizontal +", group = "client" }),
+	end, { description = "Window Resize Horizontal +", group = "client" }),
 
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
@@ -510,9 +510,9 @@ clientkeys = gears.table.join(
 	awful.key({ modkey }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
-	awful.key({ modkey }, "o", function(c)
-		c:move_to_screen()
-	end, { description = "move to screen", group = "client" }),
+	-- awful.key({ modkey }, "o", function(c)
+	-- 	c:move_to_screen()
+	-- end, { description = "move to screen", group = "client" }),
 	awful.key({ modkey }, "t", function(c)
 		c.ontop = not c.ontop
 	end, { description = "toggle keep on top", group = "client" }),
@@ -727,6 +727,43 @@ client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
 -- }}}
+
+-- save the last tag before exiting awesome
+awesome.connect_signal("exit", function(reason_restart)
+	if not reason_restart then
+		return
+	end
+
+	local file = io.open("/tmp/awesomewm-last-selected-tags", "w+")
+
+	for s in screen do
+		file:write(s.selected_tag.index, "\n")
+	end
+
+	file:close()
+end)
+
+-- move to the last selected tag after starting wm
+awesome.connect_signal("startup", function()
+	local file = io.open("/tmp/awesomewm-last-selected-tags", "r")
+	if not file then
+		return
+	end
+
+	local selected_tags = {}
+
+	for line in file:lines() do
+		table.insert(selected_tags, tonumber(line))
+	end
+
+	for s in screen do
+		local i = selected_tags[s.index]
+		local t = s.tags[i]
+		t:view_only()
+	end
+
+	file:close()
+end)
 
 -- AutoStart script
 awful.spawn.with_shell("xinput set-prop 'Elan Touchpad' 'libinput Tapping Enabled' 1")
