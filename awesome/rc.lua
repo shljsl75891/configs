@@ -79,14 +79,14 @@ local modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	-- awful.layout.suit.floating,
-	-- awful.layout.suit.tile,
+	awful.layout.suit.tile,
 	-- awful.layout.suit.tile.left,
 	-- awful.layout.suit.tile.bottom,
 	-- awful.layout.suit.tile.top,
 	-- awful.layout.suit.fair,
 	-- awful.layout.suit.fair.horizontal,
 	-- awful.layout.suit.spiral,
-	awful.layout.suit.spiral.dwindle,
+	-- awful.layout.suit.spiral.dwindle,
 	-- awful.layout.suit.max,
 	-- awful.layout.suit.max.fullscreen,
 	-- awful.layout.suit.magnifier,
@@ -660,12 +660,11 @@ awful.rules.rules = {
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
+	-- Set the windows at the slave,
+	-- i.e. put it at the end of others instead of setting it master.
 	if not awesome.startup then
 		awful.client.setslave(c)
 	end
-	-- Set the windows at the slave,
-	-- i.e. put it at the end of others instead of setting it master.
-	-- if not awesome.startup then awful.client.setslave(c) end
 	c.shape = function(cr, w, h)
 		gears.shape.rounded_rect(cr, w, h, 8)
 	end
