@@ -101,7 +101,6 @@ local markup = lain.util.markup
 local separators = lain.util.separators
 
 -- Textclock
-local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch("date +'%a %b %d, %I:%M %p'", 60, function(widget, stdout)
 	widget:set_markup(" " .. markup.font(theme.font, stdout))
 end)
@@ -110,7 +109,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = theme.font,
+		font = "JetBrainsMono Nerd Font 8",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
@@ -124,66 +123,15 @@ local mem = lain.widget.mem({
 	end,
 })
 
--- Battery
-local baticon = wibox.widget.imagebox(theme.widget_battery)
-local bat = lain.widget.bat({
-	settings = function()
-		if bat_now.status and bat_now.status ~= "N/A" then
-			if bat_now.ac_status == 1 then
-				baticon:set_image(theme.widget_ac)
-			elseif not bat_now.perc and tonumber(bat_now.perc) <= 5 then
-				baticon:set_image(theme.widget_battery_empty)
-			elseif not bat_now.perc and tonumber(bat_now.perc) <= 15 then
-				baticon:set_image(theme.widget_battery_low)
-			else
-				baticon:set_image(theme.widget_battery)
-			end
-			widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
-		else
-			widget:set_markup(markup.font(theme.font, " AC "))
-			baticon:set_image(theme.widget_ac)
-		end
-	end,
-})
-
--- ALSA volume
-local volicon = wibox.widget.imagebox(theme.widget_vol)
-theme.volume = lain.widget.alsa({
-	settings = function()
-		if volume_now.status == "off" then
-			volicon:set_image(theme.widget_vol_mute)
-		elseif tonumber(volume_now.level) == 0 then
-			volicon:set_image(theme.widget_vol_no)
-		elseif tonumber(volume_now.level) <= 50 then
-			volicon:set_image(theme.widget_vol_low)
-		else
-			volicon:set_image(theme.widget_vol)
-		end
-
-		widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
-	end,
-})
-theme.volume.widget:buttons(awful.util.table.join(
-	awful.button({}, 4, function()
-		awful.util.spawn("amixer set Master 1%+")
-		theme.volume.update()
-	end),
-	awful.button({}, 5, function()
-		awful.util.spawn("amixer set Master 1%-")
-		theme.volume.update()
-	end)
-))
-
 -- Net
-local neticon = wibox.widget.imagebox(theme.widget_net)
 local net = lain.widget.net({
 	settings = function()
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup("#EBDBB2", " " .. string.format("%2.0f", net_now.sent) .. "KB/s ")
+				markup(theme.fg_normal, " " .. string.format("%2.0f", net_now.sent) .. "KB/s ")
 					.. " "
-					.. markup("#F9F5D7", " " .. string.format("%2.0f", net_now.received) .. "KB/s ")
+					.. markup(theme.fg_normal, " " .. string.format("%2.0f", net_now.received) .. "KB/s ")
 			)
 		)
 	end,
