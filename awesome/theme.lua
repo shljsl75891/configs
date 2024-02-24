@@ -18,17 +18,19 @@ local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
 theme.font = "NotoSans Nerd Font Bold 8"
-theme.fg_normal = "#DDDDFF"
+theme.fg_normal = "#FBF1C7"
 theme.fg_focus = "#8EC07C"
-theme.fg_urgent = "#722529"
+theme.fg_urgent = "#FB4934"
 theme.bg_normal = "#1A1A1A"
 theme.bg_focus = "#313131"
-theme.bg_urgent = "#427B58"
+theme.bg_urgent = "#000000"
 theme.border_width = dpi(2)
 theme.border_normal = "#3F3F3F"
 theme.border_focus = "#FABD2F"
 theme.border_marked = "#CC9393"
-theme.powerline_spr = "#525742"
+theme.powerline_spr1 = "#3C3836"
+theme.powerline_spr2 = "#62693E"
+theme.bg_systray = theme.powerline_spr1
 theme.tasklist_bg_focus = "#1A1A1A"
 theme.titlebar_bg_focus = theme.bg_focus
 theme.titlebar_bg_normal = theme.bg_normal
@@ -179,9 +181,9 @@ local net = lain.widget.net({
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup("#EBDBB2", " " .. string.format("%2.0f", net_now.sent) .. "KB/s ")
+				markup("#EBDBB2", " " .. string.format("%2.0f", net_now.sent) .. "KB/s ")
 					.. " "
-					.. markup("#F9F5D7", " " .. string.format("%2.0f", net_now.received) .. "KB/s ")
+					.. markup("#F9F5D7", " " .. string.format("%2.0f", net_now.received) .. "KB/s ")
 			)
 		)
 	end,
@@ -235,8 +237,8 @@ function theme.at_screen_connect(s)
 
 	-- Separators
 	local spr = wibox.widget.textbox(" ")
-	local arrl_dl = separators.arrow_left(theme.powerline_spr, "alpha")
-	local arrl_ld = separators.arrow_left("alpha", theme.powerline_spr)
+	local arrow = separators.arrow_left
+	local systray = wibox.widget.systray()
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -252,41 +254,77 @@ function theme.at_screen_connect(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			spr,
-			arrl_ld,
-			wibox.container.background(neticon, theme.powerline_spr),
-			wibox.container.background(net.widget, theme.powerline_spr),
-			arrl_dl,
-			memicon,
-			mem.widget,
-			cpu_widget({
-				width = 50,
-				step_width = 2,
-				step_spacing = 0,
-				color = "#434c5e",
-			}),
-			arrl_ld,
+			arrow(theme.bg_normal, theme.powerline_spr1),
 			wibox.container.background(
-				volume_widget({
-					card = 0,
-					widget_type = "horizontal_bar",
-					with_icon = true,
-					width = 50,
-					shape = "octogon",
-					margins = 7,
-				}),
-				theme.powerline_spr
+				wibox.container.margin(
+					wibox.widget({ net.widget, layout = wibox.layout.align.horizontal }),
+					dpi(2),
+					dpi(3)
+				),
+				theme.powerline_spr1
 			),
-			wibox.container.background(spr, theme.powerline_spr),
-			arrl_dl,
-			spr,
-			battery_widget({
-				show_current_level = true,
-				timeout = 2,
-				font = theme.font,
-			}),
-			spr,
-			arrl_ld,
-			wibox.container.background(spr, theme.powerline_spr),
+			arrow(theme.powerline_spr1, theme.powerline_spr2),
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({ memicon, mem.widget, layout = wibox.layout.align.horizontal }),
+					dpi(2),
+					dpi(3)
+				),
+				theme.powerline_spr2
+			),
+			arrow(theme.powerline_spr2, theme.powerline_spr1),
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({
+						cpu_widget({
+							width = 25,
+							step_width = 2,
+							step_spacing = 0,
+							color = "#FBF1C7",
+						}),
+						layout = wibox.layout.align.horizontal,
+					}),
+					dpi(2),
+					dpi(3)
+				),
+				theme.powerline_spr1
+			),
+			arrow(theme.powerline_spr1, theme.powerline_spr2),
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({
+						volume_widget({
+							card = 0,
+							widget_type = "horizontal_bar",
+							with_icon = true,
+							width = 40,
+							shape = "octogon",
+							margins = 8,
+						}),
+						layout = wibox.layout.align.horizontal,
+					}),
+					dpi(2),
+					dpi(3)
+				),
+				theme.powerline_spr2
+			),
+			arrow(theme.powerline_spr2, theme.powerline_spr1),
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({
+						battery_widget({
+							show_current_level = true,
+							timeout = 2,
+							font = theme.font,
+						}),
+						layout = wibox.layout.align.horizontal,
+					}),
+					dpi(2),
+					dpi(3)
+				),
+				theme.powerline_spr1
+			),
+			arrow(theme.powerline_spr1, theme.powerline_spr2),
 			wibox.container.background(
 				brightness_widget({
 					type = "icon_and_text",
@@ -294,14 +332,21 @@ function theme.at_screen_connect(s)
 					program = "xbacklight",
 					step = 5,
 				}),
-
-				theme.powerline_spr
+				theme.powerline_spr2
 			),
-			wibox.container.background(spr, theme.powerline_spr),
-			arrl_dl,
-			wibox.widget.systray(),
-			arrl_ld,
-			wibox.container.background(clock, theme.powerline_spr),
+			arrow(theme.powerline_spr2, theme.powerline_spr1),
+			systray,
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({
+						clock,
+						layout = wibox.layout.align.horizontal,
+					}),
+					dpi(3),
+					dpi(8)
+				),
+				theme.powerline_spr1
+			),
 		},
 	})
 end
