@@ -336,9 +336,6 @@ globalkeys = gears.table.join(
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
-	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
-	awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
-	awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
 
 	--[[ awful.key({ modkey }, "w", function()
 		mymainmenu:show()
@@ -407,7 +404,7 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "e", function()
 		awful.spawn("nautilus")
 	end, { description = "open a explorer", group = "launcher" }),
-	awful.key({ modkey }, "t", function()
+	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
@@ -470,34 +467,48 @@ globalkeys = gears.table.join(
 clientkeys = gears.table.join(
 
 	-- Resize windows
-	awful.key({ altkey }, "Up", function(c)
+	awful.key({ modkey }, "Up", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, -20)
+			c:relative_move(0, 0, 0, -50)
 		else
-			awful.client.incwfact(0.05)
+			awful.client.incwfact(0.1)
 		end
 	end, { description = "Window Resize Vertical -", group = "client" }),
-	awful.key({ altkey }, "Down", function(c)
+	awful.key({ modkey }, "Down", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, 20)
+			c:relative_move(0, 0, 0, 50)
 		else
-			awful.client.incwfact(-0.05)
+			awful.client.incwfact(-0.1)
 		end
 	end, { description = "Window Resize Vertical +", group = "client" }),
-	awful.key({ altkey }, "Left", function(c)
+	awful.key({ modkey }, "Left", function(c)
 		if c.floating then
-			c:relative_move(0, 0, -20, 0)
+			c:relative_move(0, 0, -50, 0)
 		else
-			awful.tag.incmwfact(-0.025)
+			awful.tag.incmwfact(-0.05)
 		end
 	end, { description = "Window Resize Horizontal -", group = "client" }),
-	awful.key({ altkey }, "Right", function(c)
+	awful.key({ modkey }, "Right", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 20, 0)
+			c:relative_move(0, 0, 50, 0)
 		else
-			awful.tag.incmwfact(0.025)
+			awful.tag.incmwfact(0.05)
 		end
 	end, { description = "Window Resize Horizontal +", group = "client" }),
+
+	-- Move Floating Windows
+	awful.key({ altkey }, "Down", function(c)
+		c:relative_move(0, 50, 0, 0)
+	end, { description = "Floating Move Down", group = "client" }),
+	awful.key({ altkey }, "Up", function(c)
+		c:relative_move(0, -50, 0, 0)
+	end, { description = "Floating Move Up", group = "client" }),
+	awful.key({ altkey }, "Left", function(c)
+		c:relative_move(-50, 0, 0, 0)
+	end, { description = "Floating Move Left", group = "client" }),
+	awful.key({ altkey }, "Right", function(c)
+		c:relative_move(50, 0, 0, 0)
+	end, { description = "Floating Move Right", group = "client" }),
 
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
@@ -507,13 +518,13 @@ clientkeys = gears.table.join(
 		c:kill()
 	end, { description = "close", group = "client" }),
 	awful.key({ modkey }, "o", awful.client.floating.toggle, { description = "toggle floating", group = "client" }),
-	awful.key({ modkey }, "Return", function(c)
+	awful.key({ modkey, "Shift" }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
 	-- awful.key({ modkey }, "o", function(c)
 	-- 	c:move_to_screen()
 	-- end, { description = "move to screen", group = "client" }),
-	awful.key({ modkey }, "t", function(c)
+	awful.key({ modkey }, "space", function(c)
 		c.ontop = not c.ontop
 	end, { description = "toggle keep on top", group = "client" }),
 	awful.key({ modkey }, "n", function(c)
