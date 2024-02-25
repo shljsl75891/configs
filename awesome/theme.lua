@@ -18,25 +18,25 @@ local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
 theme.font = "NotoSans Nerd Font Bold 8"
-theme.fg_normal = "#FBF1C7"
-theme.fg_focus = "#8EC07C"
+theme.fg_normal = "#B4F9F8"
+theme.fg_focus = "#7AA2F7"
 theme.fg_urgent = "#FB4934"
 theme.bg_normal = "#1A1A1A"
-theme.bg_focus = "#313131"
-theme.bg_urgent = "#000000"
+theme.bg_focus = "#292E42"
+theme.bg_urgent = "#7AA2F7"
 theme.border_width = dpi(2)
-theme.border_normal = "#3F3F3F"
-theme.border_focus = "#FABD2F"
+theme.border_normal = "#1A1B26"
+theme.border_focus = "#9ECE6A"
 theme.border_marked = "#CC9393"
-theme.powerline_spr1 = "#3C3836"
-theme.powerline_spr2 = "#62693E"
+theme.powerline_spr1 = "#444A73"
+theme.powerline_spr2 = "#2F334D"
 theme.bg_systray = theme.powerline_spr1
-theme.tasklist_bg_focus = "#1A1A1A"
+theme.tasklist_align = "center"
+theme.tasklist_bg_focus = theme.bg_normal
 theme.titlebar_bg_focus = theme.bg_focus
 theme.titlebar_bg_normal = theme.bg_normal
 theme.titlebar_fg_focus = theme.fg_focus
 theme.menu_height = dpi(16)
-theme.tasklist_align = "center"
 theme.menu_width = dpi(140)
 theme.menu_submenu_icon = theme.dir .. "/icons/submenu.png"
 theme.layout_tile = theme.dir .. "/icons/tile.png"
@@ -201,7 +201,6 @@ function theme.at_screen_connect(s)
 		s.mytasklist, -- Middle widget
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
-			spr,
 			arrow(theme.bg_normal, theme.powerline_spr1),
 			wibox.container.background(
 				wibox.container.margin(
@@ -212,9 +211,10 @@ function theme.at_screen_connect(s)
 				theme.powerline_spr1
 			),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
+			wibox.container.background(wibox.widget.textbox("󰍛 "), theme.powerline_spr2),
 			wibox.container.background(
 				wibox.container.margin(
-					wibox.widget({ memicon, mem.widget, layout = wibox.layout.align.horizontal }),
+					wibox.widget({ mem.widget, layout = wibox.layout.align.horizontal }),
 					dpi(2),
 					dpi(3)
 				),
@@ -228,7 +228,7 @@ function theme.at_screen_connect(s)
 							width = 25,
 							step_width = 2,
 							step_spacing = 0,
-							color = "#FBF1C7",
+							color = theme.fg_normal,
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
@@ -243,11 +243,8 @@ function theme.at_screen_connect(s)
 					wibox.widget({
 						volume_widget({
 							card = 0,
-							widget_type = "horizontal_bar",
-							with_icon = true,
-							width = 40,
-							shape = "octogon",
-							margins = 8,
+							widget_type = "icon_and_text",
+							icon_dir = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
@@ -263,6 +260,7 @@ function theme.at_screen_connect(s)
 						battery_widget({
 							show_current_level = true,
 							timeout = 2,
+							path_to_icons = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
 							font = theme.font,
 						}),
 						layout = wibox.layout.align.horizontal,
@@ -277,6 +275,7 @@ function theme.at_screen_connect(s)
 				brightness_widget({
 					type = "icon_and_text",
 					percentage = true,
+					path_to_icon = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
 					step = 5,
 				}),
