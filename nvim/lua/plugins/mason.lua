@@ -7,7 +7,8 @@ return {
 	lazy = false,
 	config = function()
 		local lspconfig = require("lspconfig")
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 		local function organize_imports()
 			local params = {
@@ -28,12 +29,12 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
+				"emmet_ls",
 				"clangd",
 				"tsserver",
 				"lua_ls",
 				"tailwindcss",
 				"cssls",
-				"emmet_ls",
 				"prettierd",
 				"stylua",
 			},
@@ -49,6 +50,22 @@ return {
 								organize_imports,
 								description = "Organize Imports",
 							},
+						},
+					})
+				end,
+				emmet_ls = function()
+					require("lspconfig").emmet_ls.setup({
+						cmd = { "emmet-language-server", "--stdio" },
+						capabilities = capabilities,
+						filetypes = {
+							"html",
+							"typescript",
+							"typescriptreact",
+							"javascriptreact",
+							"css",
+							"sass",
+							"scss",
+							"less",
 						},
 					})
 				end,
