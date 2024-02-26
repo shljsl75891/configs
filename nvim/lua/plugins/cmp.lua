@@ -31,7 +31,7 @@ return {
 					select = false,
 				}),
 				["<C-Space>"] = cmp.mapping.complete(),
-				["<C-k>"] = cmp.mapping(function(fallback)
+				["["] = cmp.mapping(function(fallback)
 					if luasnip.expand_or_locally_jumpable() then
 						luasnip.expand_or_jump()
 					else
@@ -39,8 +39,8 @@ return {
 					end
 				end, { "i", "s" }),
 
-				["<C-j>"] = cmp.mapping(function(fallback)
-					if luasnip.jumpable(-1) then
+				["]"] = cmp.mapping(function(fallback)
+					if luasnip.locally_jumpable(-1) then
 						luasnip.jump(-1)
 					else
 						fallback()
