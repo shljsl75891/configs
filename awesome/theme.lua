@@ -243,8 +243,12 @@ function theme.at_screen_connect(s)
 					wibox.widget({
 						volume_widget({
 							card = 0,
-							widget_type = "icon_and_text",
-							icon_dir = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
+							widget_type = "horizontal_bar",
+							with_icon = true,
+							margins = 6,
+							shape = "octagon",
+							bg_color = "#1f2335",
+							-- icon_dir = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
