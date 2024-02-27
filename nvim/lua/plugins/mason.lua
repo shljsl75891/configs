@@ -53,22 +53,6 @@ return {
 						},
 					})
 				end,
-				emmet_ls = function()
-					require("lspconfig").emmet_ls.setup({
-						cmd = { "emmet-language-server", "--stdio" },
-						capabilities = capabilities,
-						filetypes = {
-							"html",
-							"typescript",
-							"typescriptreact",
-							"javascriptreact",
-							"css",
-							"sass",
-							"scss",
-							"less",
-						},
-					})
-				end,
 				tailwindcss = function()
 					lspconfig["tailwindcss"].setup({
 						capabilities = capabilities,
