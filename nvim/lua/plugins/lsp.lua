@@ -13,6 +13,8 @@ return {
 				-- Lsp APIs
 				Remap("n", "K", vim.lsp.buf.hover, opts)
 				Remap("n", "gd", builtin.lsp_definitions, opts)
+				Remap("n", "gD", builtin.lsp_type_definitions, opts)
+				Remap("n", "gI", builtin.lsp_implementations, opts)
 				Remap("n", "<leader>rr", builtin.lsp_references, opts)
 				Remap("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 				Remap("n", "<leader>rn", vim.lsp.buf.rename, opts)
