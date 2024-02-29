@@ -64,6 +64,8 @@ return {
 					bg = c.bg_dark,
 					fg = c.bg_dark,
 				}
+				hl.diffAdded = { link = "DiffAdd" }
+				hl.diffRemoved = { link = "DiffDelete" }
 			end,
 		})
 		theme.load()
