@@ -26,7 +26,7 @@ theme.bg_focus = "#292E42"
 theme.bg_urgent = "#7AA2F7"
 theme.border_width = dpi(2)
 theme.border_normal = "#1A1B26"
-theme.border_focus = "#9ECE6A"
+theme.border_focus = "#E0AF68"
 theme.border_marked = "#CC9393"
 theme.powerline_spr1 = "#444A73"
 theme.powerline_spr2 = "#2F334D"
@@ -129,9 +129,9 @@ local net = lain.widget.net({
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup(theme.fg_normal, " " .. string.format("%2.0f", net_now.sent) .. "KB/s ")
+				markup(theme.fg_normal, " " .. string.format("%0.1f", net_now.sent / 1024) .. "MB/s ")
 					.. " "
-					.. markup(theme.fg_normal, " " .. string.format("%2.0f", net_now.received) .. "KB/s ")
+					.. markup(theme.fg_normal, " " .. string.format("%0.1f", net_now.received / 1024) .. "MB/s ")
 			)
 		)
 	end,
@@ -167,7 +167,8 @@ function theme.at_screen_connect(s)
 	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
 	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+	s.mytasklist = nil
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
