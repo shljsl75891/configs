@@ -747,4 +747,5 @@ tag.connect_signal("property::selected", backham)
 -- AutoStart script
 awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Tapping Enabled' 1")
 awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Natural Scrolling Enabled' 1")
+awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Disable While Typing Enabled' 1")
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
