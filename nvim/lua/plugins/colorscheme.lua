@@ -12,68 +12,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Colorscheme setup
 return {
-	"folke/tokyonight.nvim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		local theme = require("tokyonight")
-		theme.setup({
-			style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-			transparent = true, -- Enable this to disable setting the background color
-			terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
-			styles = {
-				comments = { italic = true },
-				keywords = { bold = true, italic = true },
-				functions = { italic = true },
-				variables = {},
-				sidebars = "dark", -- style for sidebars, see below
-				floats = "dark", -- style for floating windows
-			},
-			hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
-			on_highlights = function(hl, c)
-				local prompt = "#2D3149"
-				hl.LspSignatureActiveParameter = {
-					fg = c.magenta2,
-					bg = c.none,
-					bold = true,
-				}
-				hl.TelescopeNormal = {
-					bg = c.bg_dark,
-					fg = c.fg_dark,
-				}
-				hl.TelescopeBorder = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
-				}
-				hl.TelescopePromptNormal = {
-					bg = prompt,
-				}
-				hl.TelescopePromptBorder = {
-					bg = prompt,
-					fg = prompt,
-				}
-				hl.TelescopePromptTitle = {
-					bg = prompt,
-					fg = prompt,
-				}
-				hl.TelescopePreviewTitle = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
-				}
-				hl.TelescopeResultsTitle = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
-				}
-				hl.diffAdded = { link = "DiffAdd" }
-				hl.diffRemoved = { link = "DiffDelete" }
-			end,
-		})
-		theme.load()
-	end,
-}
-
---[[ return {
-	"",
+	"ellisonleao/gruvbox.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
@@ -144,4 +83,4 @@ return {
 
 		theme.load()
 	end,
-} ]]
+}

@@ -16,7 +16,7 @@ if vim.g.vscode then
 	return
 else
 	require("lazy").setup({ import = "plugins" }, {
-		install = { colorscheme = { "tokyonight" } },
+		install = { colorscheme = { "gruvbox" } },
 		checker = { enabled = true, notify = false },
 		change_detection = {
 			notify = false,

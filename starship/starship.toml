@@ -1,27 +1,15 @@
 format = """
 $directory\
-[](fg:color_blue bg:color_purple)\
+[](fg:color_red bg:color_yellow)\
 $git_branch\
-[](fg:color_purple bg:color_orange)\
+[](fg:color_yellow bg:color_orange)\
 $git_state\
 $git_status\
 [](fg:color_orange)\
 $character"""
 
 add_newline = false
-palette = 'tokyo_night'
-
-[palettes.tokyo_night]
-color_fg0 = '#1A1B26'
-color_bg1 = '#A9B1D6'
-color_bg3 = '#4E5173'
-color_blue = '#7AA2F7'
-color_aqua = '#4ABAAF'
-color_green = '#9ECE6A'
-color_orange = '#E0AF68'
-color_purple = '#B16286'
-color_red = '#F7768E'
-color_yellow = '#FFC777'
+palette = 'gruvbox_dark'
 
 [palettes.gruvbox_dark]
 color_fg0 = '#FBF1C7'
@@ -32,11 +20,11 @@ color_aqua = '#689D6A'
 color_green = '#98971A'
 color_orange = '#D65D0E'
 color_purple = '#B16286'
-color_red = '#CC241D'
+color_red = '#722529'
 color_yellow = '#D79921'
 
 [directory]
-style = "fg:color_fg0 bg:color_blue"
+style = "fg:color_fg0 bg:color_red"
 format = "[ $path ]($style)"
 truncation_length = 1
 truncation_symbol = '…/'
@@ -47,8 +35,8 @@ error_symbol = ''
 
 [git_branch]
 symbol = ""
-style = "bg:color_purple"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_purple)]($style)'
+style = "bg:color_yellow"
+format = '[[ $symbol $branch ](fg:color_bg1 bg:color_yellow)]($style)'
 
 [git_state]
 style = "bg:color_orange"

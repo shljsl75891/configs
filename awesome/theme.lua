@@ -18,18 +18,18 @@ local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
 theme.font = "NotoSans Nerd Font Bold 8"
-theme.fg_normal = "#B4F9F8"
-theme.fg_focus = "#7AA2F7"
+theme.fg_normal = "#fbf1c7"
+theme.fg_focus = "#32302f"
 theme.fg_urgent = "#FB4934"
-theme.bg_normal = "#1A1A1A"
-theme.bg_focus = "#292E42"
+theme.bg_normal = "#1d2021"
+theme.bg_focus = "#79740e"
 theme.bg_urgent = "#7AA2F7"
 theme.border_width = dpi(2)
 theme.border_normal = "#1A1B26"
-theme.border_focus = "#E0AF68"
+theme.border_focus = "#fabd2f"
 theme.border_marked = "#CC9393"
-theme.powerline_spr1 = "#444A73"
-theme.powerline_spr2 = "#2F334D"
+theme.powerline_spr1 = "#722529"
+theme.powerline_spr2 = "#5a633a"
 theme.bg_systray = theme.powerline_spr1
 theme.tasklist_align = "center"
 theme.tasklist_bg_focus = theme.bg_normal
@@ -70,7 +70,7 @@ theme.widget_mail = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon = true
-theme.useless_gap = dpi(3)
+theme.useless_gap = dpi(5)
 theme.titlebar_close_button_focus = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -249,7 +249,7 @@ function theme.at_screen_connect(s)
 							margins = 6,
 							shape = "octagon",
 							bg_color = "#1f2335",
-							-- icon_dir = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
+							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
@@ -265,7 +265,7 @@ function theme.at_screen_connect(s)
 						battery_widget({
 							show_current_level = true,
 							timeout = 2,
-							path_to_icons = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/",
+							path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 							font = theme.font,
 						}),
 						layout = wibox.layout.align.horizontal,
@@ -280,7 +280,7 @@ function theme.at_screen_connect(s)
 				brightness_widget({
 					type = "icon_and_text",
 					percentage = true,
-					path_to_icon = "/home/sahil.jassal/.icons/Tokyonight-Dark-Cyan/status/symbolic/display-brightness-medium-symbolic.svg",
+					path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
 					step = 5,
 				}),
