@@ -17,7 +17,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
-theme.font = "NotoSans Nerd Font Bold 8"
+theme.font = "NotoSans Nerd Font Bold 9"
 theme.fg_normal = "#FBF1C7"
 theme.fg_focus = "#32302F"
 theme.fg_urgent = "#FBF1C7"
@@ -174,7 +174,7 @@ function theme.at_screen_connect(s)
 	s.mywibox = awful.wibar({
 		position = "top",
 		screen = s,
-		height = dpi(18),
+		height = dpi(22),
 		border_width = dpi(3),
 		bg = theme.bg_normal,
 		fg = theme.fg_normal,
@@ -246,7 +246,7 @@ function theme.at_screen_connect(s)
 							card = 0,
 							widget_type = "horizontal_bar",
 							with_icon = true,
-							margins = 6,
+							margins = 8,
 							shape = "octagon",
 							bg_color = "#1f2335",
 							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
