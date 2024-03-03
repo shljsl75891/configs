@@ -25,27 +25,7 @@
     "timeout": 86500,
     "topics": "bo8jQKTaE0Y"
   },
-  "data/hbYe5W_023WO": {
-    "items": [
-      {
-        "completed": true,
-        "contents": "Learn Advance Git",
-        "id": "ki_wlSf0c2HdxWZcu7ifM"
-      },
-      {
-        "completed": true,
-        "contents": "Loopback soft delete issue",
-        "id": "4_V9q2wLYZXvPmojbtK0L"
-      },
-      {
-        "completed": false,
-        "contents": "30 mins DSA",
-        "id": "dsYRPpKJbnrbmuY_3DBAZ"
-      }
-    ],
-    "keyBind": "T",
-    "show": 10
-  },
+  "data/hbYe5W_023WO": { "items": [], "keyBind": "T", "show": 10 },
   "focus": false,
   "locale": "en",
   "timeZone": null,
@@ -93,3 +73,4 @@
   },
   "version": 3
 }
+
