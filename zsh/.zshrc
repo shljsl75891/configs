@@ -30,6 +30,9 @@ alias tk='tmux kill-server'
 # Prompt
 eval "$(starship init zsh)"
 
+# Increase JS Heap memory
+export NODE_OPTIONS=--max-old-space-size=16384
+
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
