@@ -16,7 +16,7 @@ return {
 				Remap("n", "gD", builtin.lsp_type_definitions, opts)
 				Remap("n", "gI", builtin.lsp_implementations, opts)
 				Remap("n", "<leader>rr", builtin.lsp_references, opts)
-				Remap("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+				-- Remap("i", "<C-h>", vim.lsp.buf.signature_help, opts) Already works using Ctrl + Backspace
 				Remap("n", "<leader>rn", vim.lsp.buf.rename, opts)
 				Remap("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 				-- Diagnostics APIs
