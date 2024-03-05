@@ -249,6 +249,7 @@ function theme.at_screen_connect(s)
 							margins = 8,
 							shape = "octagon",
 							bg_color = "#1f2335",
+							mute_color = theme.bg_urgent,
 							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
