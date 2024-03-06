@@ -15,6 +15,18 @@ return {
 
 		require("telescope").setup({
 			defaults = {
+				-- could be `horizontal` or `vertical
+				layout_strategy = "horizontal",
+				layout_config = {
+					horizontal = {
+						width = 0.85,
+						preview_width = 0.45,
+					},
+					vertical = {
+						width = 0.6,
+						preview_width = 0.5,
+					},
+				},
 				mappings = {
 					n = {
 						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
