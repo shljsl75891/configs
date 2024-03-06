@@ -20,11 +20,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias bt='bluetoothctl'
-alias cd..='cd ..'
-alias cd..='cd ..'
-alias cd...='cd ../..'
-alias cd....='cd ../../..'
-alias cd.....='cd ../../../..'
+alias clear='clear && /home/sahil.jassal/.config/ufetch-ubuntu.sh'
 alias tk='tmux kill-server'
 
 # Prompt
@@ -51,3 +47,6 @@ bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "~/.config/tmux/sessionizer\n"
 bindkey ']' autosuggest-accept
+
+# ufetch - simple system details
+/home/sahil.jassal/.config/ufetch-ubuntu.sh

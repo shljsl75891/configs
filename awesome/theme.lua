@@ -70,7 +70,7 @@ theme.widget_mail = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon = true
-theme.useless_gap = dpi(5)
+theme.useless_gap = dpi(3)
 theme.titlebar_close_button_focus = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -174,7 +174,7 @@ function theme.at_screen_connect(s)
 	s.mywibox = awful.wibar({
 		position = "top",
 		screen = s,
-		height = dpi(22),
+		height = dpi(20),
 		border_width = dpi(3),
 		bg = theme.bg_normal,
 		fg = theme.fg_normal,
