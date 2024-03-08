@@ -12,14 +12,10 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-if vim.g.vscode then
-	return
-else
-	require("lazy").setup({ import = "plugins" }, {
-		install = { colorscheme = { "gruvbox" } },
-		checker = { enabled = true, notify = false },
-		change_detection = {
-			notify = false,
-		},
-	})
-end
+require("lazy").setup({ import = "plugins" }, {
+  install = { colorscheme = { "gruvbox" } },
+  checker = { enabled = true, notify = false },
+  change_detection = {
+    notify = false,
+  },
+})

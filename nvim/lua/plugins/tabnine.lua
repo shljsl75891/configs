@@ -3,9 +3,9 @@ return {
 	build = "./dl_binaries.sh",
 	config = function()
 		require("tabnine").setup({
-			disable_auto_comment = true,
-			accept_keymap = "<Tab>",
-			dismiss_keymap = "<S-Tab>",
+			disable_auto_comment = false,
+			accept_keymap = "<C-y>",
+			dismiss_keymap = "<C-e>",
 			debounce_ms = 200,
 			codelens_enabled = false,
 			suggestion_color = { gui = "#928374", cterm = 256 },

@@ -34,10 +34,12 @@ local localOptions = {
 	termguicolors = true,
 	wrap = false,
 	undofile = true,
+	undodir = os.getenv("HOME") .. "/.vim/undodir",
 	swapfile = false,
 	backup = false,
 	scrolloff = 8,
 	signcolumn = "yes",
+	colorcolumn = "80",
 	updatetime = 80,
 	-- Better windows direction
 	splitbelow = true,
