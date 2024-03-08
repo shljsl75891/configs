@@ -49,7 +49,6 @@ local localOptions = {
 	pumheight = 8,
 	-- disable vi compatibilty
 	compatible = false,
-	showmode = false,
 }
 
 for k, v in pairs(localOptions) do
