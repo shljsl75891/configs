@@ -22,11 +22,11 @@ return {
 			bold = true,
 			italic = {
 				strings = false,
-				emphasis = true,
-				comments = true,
+				emphasis = false,
+				comments = false,
 				operators = false,
 				folds = false,
-				functions = true,
+				functions = false,
 			},
 			contrast = "hard",
 			overrides = {
