@@ -1,10 +1,6 @@
 -- Open Explorer
 Remap("n", "<leader>b", vim.cmd.Ex)
 
--- Horizontal scrolling
-Remap("n", "<C-l>", "20zl")
-Remap("n", "<C-h>", "20zh")
-
 -- Keeps screen centered
 Remap("n", "<C-d>", "<C-d>zz0")
 Remap("n", "<C-u>", "<C-u>zz0")

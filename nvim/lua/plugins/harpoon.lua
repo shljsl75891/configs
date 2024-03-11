@@ -13,10 +13,10 @@ return {
 		Remap("n", "<C-k>", function()
 			ui.nav_file(2)
 		end)
-		Remap("n", "<C-n>", function()
+		Remap("n", "<C-h>", function()
 			ui.nav_file(3)
 		end)
-		Remap("n", "<C-m>", function()
+		Remap("n", "<C-n>", function()
 			ui.nav_file(4)
 		end)
 	end,
