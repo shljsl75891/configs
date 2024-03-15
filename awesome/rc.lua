@@ -353,10 +353,10 @@ globalkeys = mytable.join(
 	end, { description = "restore minimized", group = "client" }),
 
 	-- Dropdown application
-	awful.key({ modkey }, "z", function()
+	--[[ awful.key({ modkey }, "z", function()
 		awful.screen.focused().quake:toggle()
 	end, { description = "dropdown application", group = "launcher" }),
-
+]]
 	-- Widgets popups
 	awful.key({ altkey }, "c", function()
 		if beautiful.cal then
