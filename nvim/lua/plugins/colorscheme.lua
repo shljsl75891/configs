@@ -30,9 +30,6 @@ return {
 			},
 			contrast = "hard",
 			overrides = {
-				LspReferenceRead = { link = "Visual" },
-				LspReferenceText = { link = "Visual" },
-				LspReferenceWrite = { link = "Visual" },
 				LspSignatureActiveParameter = { bg = nil, fg = palette.bright_yellow, bold = true },
 				NormalFloat = { bg = palette.dark0_soft },
 				TelescopeNormal = { bg = palette.dark0, fg = palette.dark0 },

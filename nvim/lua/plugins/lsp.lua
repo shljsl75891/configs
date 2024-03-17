@@ -23,19 +23,6 @@ return {
 				Remap("n", "<leader>di", vim.diagnostic.open_float, opts)
 				Remap("n", "[d", vim.diagnostic.goto_prev, opts)
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
-				--Automatically Highlight References
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				if client and client.server_capabilities.documentHighlightProvider then
-					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-						buffer = ev.buf,
-						callback = vim.lsp.buf.document_highlight,
-					})
-
-					vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-						buffer = ev.buf,
-						callback = vim.lsp.buf.clear_references,
-					})
-				end
 			end,
 		})
 	end,
