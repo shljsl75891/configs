@@ -35,3 +35,6 @@ Remap("n", "<M-->", ":resize -2<CR>")
 Remap("n", "<M-=>", ":resize +2<CR>")
 Remap("n", "<M-_>", ":vertical resize -4<CR>")
 Remap("n", "<M-+>", ":vertical resize +4<CR>")
+
+-- Disable Annoying remap
+Remap("n", "<F1>", "<Nop>")

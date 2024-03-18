@@ -321,7 +321,7 @@ globalkeys = mytable.join(
 	awful.key({ modkey }, "e", function()
 		awful.spawn("nautilus")
 	end, { description = "open a explorer", group = "launcher" }),
-	awful.key({ modkey }, "`", function()
+	awful.key({ modkey }, "BackSpace", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
 
