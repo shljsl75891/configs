@@ -24,6 +24,18 @@ return {
 				Remap("n", "[d", vim.diagnostic.goto_prev, opts)
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
 			end,
+
+			vim.diagnostic.config({
+				update_in_insert = false,
+				float = {
+					focusable = true,
+					style = "minimal",
+					border = "none",
+					source = "always",
+					header = "",
+					prefix = "",
+				},
+			}),
 		})
 	end,
 }
