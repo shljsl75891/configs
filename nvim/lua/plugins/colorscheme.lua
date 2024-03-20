@@ -22,8 +22,8 @@ return {
 			bold = true,
 			italic = {
 				strings = false,
-				emphasis = false,
-				comments = false,
+				emphasis = true,
+				comments = true,
 				operators = false,
 				folds = false,
 				functions = false,
