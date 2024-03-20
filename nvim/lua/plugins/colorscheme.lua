@@ -32,6 +32,7 @@ return {
 			overrides = {
 				LspSignatureActiveParameter = { bg = nil, fg = palette.bright_yellow, bold = true },
 				NormalFloat = { bg = palette.dark0_soft },
+				FloatBorder = { link = "NormalFloat" },
 				TelescopeNormal = { bg = palette.dark0, fg = palette.dark0 },
 				TelescopeResultsNormal = { bg = palette.dark0, fg = palette.light4 },
 				TelescopeBorder = { bg = palette.dark0, fg = palette.light0_soft },

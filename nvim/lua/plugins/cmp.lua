@@ -17,6 +17,16 @@ return {
 		require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./snips" } })
 
 		cmp.setup({
+			window = {
+				completion = cmp.config.window.bordered({
+					border = "none",
+					winhighlight = "Normal:NormalFloat",
+				}),
+				documentation = cmp.config.window.bordered({
+					border = "rounded",
+					winhighlight = "Normal:NormalFloat",
+				}),
+			},
 			snippet = {
 				expand = function(args)
 					luasnip.lsp_expand(args.body)

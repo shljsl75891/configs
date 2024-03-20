@@ -4,6 +4,24 @@ return {
 	config = function()
 		local builtin = require("telescope.builtin")
 
+		-- border = "single", "rounded", "shadow", "double", "none"
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+		vim.lsp.handlers["textDocument/signatureHelp"] =
+			vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+
+		vim.diagnostic.config({
+			virtual_text = true,
+			update_in_insert = false,
+			float = {
+				focusable = true,
+				style = "minimal",
+				border = "rounded",
+				source = "always",
+				header = "",
+				prefix = "",
+			},
+		})
+
 		-- Settings for LSP Attached buffer
 		vim.api.nvim_create_autocmd("LspAttach", {
 			desc = "LSP actions",
@@ -24,18 +42,6 @@ return {
 				Remap("n", "[d", vim.diagnostic.goto_prev, opts)
 				Remap("n", "]d", vim.diagnostic.goto_next, opts)
 			end,
-
-			vim.diagnostic.config({
-				update_in_insert = false,
-				float = {
-					focusable = true,
-					style = "minimal",
-					border = "none",
-					source = "always",
-					header = "",
-					prefix = "",
-				},
-			}),
 		})
 	end,
 }
