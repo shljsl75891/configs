@@ -415,7 +415,7 @@ globalkeys = mytable.join(
 	awful.key({ modkey }, "r", function()
 		os.execute(
 			string.format(
-				"dmenu_run -i -fn 'NotoSans Nerd Font-11' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'Ubuntu Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,

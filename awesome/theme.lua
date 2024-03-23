@@ -17,7 +17,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
-theme.font = "NotoSans Nerd Font Medium 9"
+theme.font = "Ubuntu Nerd Font Medium 9"
 theme.fg_normal = "#FBF1C7"
 theme.fg_focus = "#32302F"
 theme.fg_urgent = "#FBF1C7"
@@ -109,7 +109,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = "MesloLGS Nerd Font 9",
+		font = "UbuntuMono Nerd Font 10",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
