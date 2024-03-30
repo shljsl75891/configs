@@ -40,7 +40,7 @@ local localOptions = {
 	scrolloff = 8,
 	signcolumn = "yes",
 	colorcolumn = "80",
-	updatetime = 750,
+	updatetime = 40,
 	-- Better windows direction
 	splitbelow = true,
 	splitright = true,
