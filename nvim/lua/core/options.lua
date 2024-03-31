@@ -26,6 +26,7 @@ local localOptions = {
 	shiftwidth = 2,
 	tabstop = 2,
 	smarttab = true,
+	mouse = "",
 	expandtab = true,
 	softtabstop = 2,
 	autoindent = true,
