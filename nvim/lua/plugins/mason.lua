@@ -29,8 +29,8 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
-				"emmet_ls",
-				"clangd",
+				"emmet_language_server",
+				"jsonls",
 				"tsserver",
 				"lua_ls",
 				"tailwindcss",
