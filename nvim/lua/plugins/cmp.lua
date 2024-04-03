@@ -40,18 +40,17 @@ return {
 				["<CR>"] = cmp.mapping.confirm({
 					select = false,
 				}),
-				["<C-\\>"] = cmp.mapping.complete(),
-				["<C-l>"] = cmp.mapping(function(fallback)
-					if luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
+				["<C-h>"] = cmp.mapping.complete(), -- HIT BACKSPACE
+				["<C-j>"] = cmp.mapping(function(fallback)
+					if luasnip.locally_jumpable(-1) then
+						luasnip.jump(-1)
 					else
 						fallback()
 					end
 				end, { "i", "s" }),
-
-				["<C-h>"] = cmp.mapping(function(fallback)
-					if luasnip.locally_jumpable(-1) then
-						luasnip.jump(-1)
+				["<C-k>"] = cmp.mapping(function(fallback)
+					if luasnip.expand_or_locally_jumpable() then
+						luasnip.expand_or_jump()
 					else
 						fallback()
 					end
