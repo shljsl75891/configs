@@ -1,5 +1,6 @@
 return {
 	"mbbill/undotree",
+	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local undo_tree_opts = {
 			undotree_SetFocusWhenToggle = 1,
