@@ -29,6 +29,10 @@ eval "$(starship init zsh)"
 # Increase JS Heap memory
 export NODE_OPTIONS=--max-old-space-size=16384
 
+# Bun  
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
