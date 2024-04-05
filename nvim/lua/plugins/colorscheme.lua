@@ -30,6 +30,7 @@ return {
 			},
 			contrast = "hard",
 			overrides = {
+				TabnineSuggestion = { link = "TabLine" },
 				LspSignatureActiveParameter = { bg = nil, fg = palette.bright_yellow, bold = true },
 				NormalFloat = { bg = palette.dark0_soft },
 				FloatBorder = { link = "NormalFloat" },
