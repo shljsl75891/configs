@@ -31,7 +31,7 @@ white   = "#ebdbb2"
 TERM = "xterm-256color"
 
 [font]
-size = 8
+size = 7.8
 
 [font.bold]
 family = "CodeNewRoman Nerd Font"
@@ -134,11 +134,11 @@ mode = "~Alt"
 mods = "Shift"
 
 [scrolling]
-history = 5000
+history = 100000
 
 [window]
 dynamic_padding = true
-opacity = 0.9
+opacity = 0.95
 title = "Alacritty"
 
 [window.class]
