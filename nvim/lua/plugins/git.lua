@@ -1,5 +1,10 @@
 return {
 	"tpope/vim-fugitive",
+	keys = {
+		"<leader>gd",
+		"<leader>gs",
+		"<leader>gb",
+	},
 	config = function()
 		Remap("n", "<leader>gd", function()
 			vim.cmd("Gvdiffsplit")
