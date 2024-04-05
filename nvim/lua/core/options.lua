@@ -42,7 +42,6 @@ local localOptions = {
 	signcolumn = "yes",
 	colorcolumn = "80",
 	updatetime = 40,
-	cursorline = true,
 	-- Better windows direction
 	splitbelow = true,
 	splitright = true,
