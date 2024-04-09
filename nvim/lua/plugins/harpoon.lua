@@ -1,37 +1,54 @@
 return {
-	"theprimeagen/harpoon",
+	"ThePrimeagen/harpoon",
+	branch = "harpoon2",
 	keys = {
 		"<leader>a",
 		"<leader>m",
-		"<a-1>",
-		"<a-2>",
-		"<a-3>",
-		"<a-4>",
+		"<C-j>",
+		"<C-k>",
+		"<C-h>",
+		"<C-n>",
 	},
 	config = function()
-		require("harpoon").setup({
-			tabline = false,
-			menu = {
-				width = 50,
+		local harpoon = require("harpoon")
+
+		-- REQUIRED setup + my custom prefs
+		harpoon:setup({
+			settings = {
+				save_on_toggle = true,
+				sync_on_ui_close = true,
 			},
 		})
-		local mark = require("harpoon.mark")
-		local ui = require("harpoon.ui")
 
-		Remap("n", "<leader>a", mark.add_file)
-		Remap("n", "<leader>m", ui.toggle_quick_menu)
+		local ui_opts = {
+			title = "",
+			border = "solid",
+			title_pos = "center",
+			ui_width_ratio = 0.35,
+		}
 
-		Remap("n", "<a-1>", function()
-			ui.nav_file(1)
+		-- Adding buffers in harpoon list
+		Remap("n", "<leader>a", function()
+			harpoon:list():add()
 		end)
-		Remap("n", "<a-2>", function()
-			ui.nav_file(2)
+
+		-- Toggling harpoon list visibility
+		Remap("n", "<leader>m", function()
+			harpoon.ui:toggle_quick_menu(harpoon:list(), ui_opts)
 		end)
-		Remap("n", "<a-3>", function()
-			ui.nav_file(3)
+
+		-- Opening any buffer in harpoon
+		Remap("n", "<C-j>", function()
+			harpoon:list():select(1)
 		end)
-		Remap("n", "<a-4>", function()
-			ui.nav_file(4)
+		Remap("n", "<C-k>", function()
+			harpoon:list():select(2)
+		end)
+		Remap("n", "<C-h>", function()
+			harpoon:list():select(3)
+		end)
+		Remap("n", "<C-n>", function()
+			harpoon:list():select(4)
 		end)
 	end,
 }
