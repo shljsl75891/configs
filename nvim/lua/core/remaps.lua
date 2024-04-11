@@ -1,6 +1,3 @@
--- Open Explorer
-vim.keymap.set("n", "<leader>b", vim.cmd.Oil)
-
 -- Keeps screen centered
 vim.keymap.set("n", "<C-d>", "<C-d>zz0")
 vim.keymap.set("n", "<C-u>", "<C-u>zz0")

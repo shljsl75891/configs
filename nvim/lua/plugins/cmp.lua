@@ -23,7 +23,7 @@ return {
 					winhighlight = "Normal:NormalFloat",
 				}),
 				documentation = cmp.config.window.bordered({
-					border = "rounded",
+					border = "solid",
 					winhighlight = "Normal:NormalFloat",
 				}),
 			},
