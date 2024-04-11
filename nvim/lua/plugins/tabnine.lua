@@ -4,7 +4,7 @@ return {
 	build = "./dl_binaries.sh",
 	config = function()
 		require("tabnine").setup({
-			disable_auto_comment = true,
+			disable_auto_comment = false,
 			accept_keymap = "<C-y>",
 			dismiss_keymap = "<C-e>",
 			debounce_ms = 250,
