@@ -1,6 +1,3 @@
--- Convienience for remapping
-Remap = vim.keymap.set
-
 local globalOptions = {
 	-- Mapping space as leader key
 	mapleader = " ",

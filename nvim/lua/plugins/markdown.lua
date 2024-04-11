@@ -14,7 +14,7 @@ return {
 				img_dir_txt = "../img",
 			},
 
-			Remap("n", "<leader>p", vim.cmd.PasteImg),
+			vim.keymap.set("n", "<leader>p", vim.cmd.PasteImg),
 		})
 	end,
 }

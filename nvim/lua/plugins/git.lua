@@ -7,13 +7,13 @@ return {
 		"<leader>gb",
 	},
 	config = function()
-		Remap("n", "<leader>gd", function()
+		vim.keymap.set("n", "<leader>gd", function()
 			vim.cmd("Gvdiffsplit")
 		end)
-		Remap("n", "<leader>gs", function()
+		vim.keymap.set("n", "<leader>gs", function()
 			vim.cmd("vertical G")
 		end)
-		Remap("n", "<leader>gb", function()
+		vim.keymap.set("n", "<leader>gb", function()
 			vim.cmd("G blame")
 		end)
 	end,

@@ -6,12 +6,12 @@ return {
 		local actions = require("telescope.actions")
 		local builtin = require("telescope.builtin")
 		-- Keymaps
-		Remap("n", "<leader>ff", builtin.find_files, {})
-		Remap("n", "<leader>fb", builtin.buffers, {})
-		Remap("n", "<leader>lg", builtin.live_grep, {})
-		Remap("n", "<leader>cp", builtin.registers, {})
-		Remap("n", "<leader>ht", builtin.help_tags, {})
-		Remap("n", "<leader>fw", builtin.grep_string)
+		vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+		vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
+		vim.keymap.set("n", "<leader>cp", builtin.registers, {})
+		vim.keymap.set("n", "<leader>ht", builtin.help_tags, {})
+		vim.keymap.set("n", "<leader>fw", builtin.grep_string)
 
 		require("telescope").setup({
 			defaults = {

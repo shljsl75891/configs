@@ -28,26 +28,26 @@ return {
 		}
 
 		-- Adding buffers in harpoon list
-		Remap("n", "<leader>a", function()
+		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
 		end)
 
 		-- Toggling harpoon list visibility
-		Remap("n", "<leader>m", function()
+		vim.keymap.set("n", "<leader>m", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list(), ui_opts)
 		end)
 
 		-- Opening any buffer in harpoon
-		Remap("n", "<C-j>", function()
+		vim.keymap.set("n", "<C-j>", function()
 			harpoon:list():select(1)
 		end)
-		Remap("n", "<C-k>", function()
+		vim.keymap.set("n", "<C-k>", function()
 			harpoon:list():select(2)
 		end)
-		Remap("n", "<C-h>", function()
+		vim.keymap.set("n", "<C-h>", function()
 			harpoon:list():select(3)
 		end)
-		Remap("n", "<C-n>", function()
+		vim.keymap.set("n", "<C-n>", function()
 			harpoon:list():select(4)
 		end)
 	end,
