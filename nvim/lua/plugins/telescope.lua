@@ -11,7 +11,14 @@ return {
 		vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
 		vim.keymap.set("n", "<leader>cp", builtin.registers, {})
 		vim.keymap.set("n", "<leader>ht", builtin.help_tags, {})
-		vim.keymap.set("n", "<leader>fw", builtin.grep_string)
+		vim.keymap.set("n", "<leader>fw", function()
+			local word = vim.fn.expand("<cword>")
+			builtin.grep_string({ search = word })
+		end)
+		vim.keymap.set("n", "<leader>fW", function()
+			local word = vim.fn.expand("<cWORD>")
+			builtin.grep_string({ search = word })
+		end)
 
 		require("telescope").setup({
 			defaults = {
