@@ -109,7 +109,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = "NotoSansM Nerd Font 8",
+		font = "JetBrainsMono Nerd Font 8",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
@@ -129,9 +129,9 @@ local net = lain.widget.net({
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup(theme.fg_normal, " " .. string.format("%0.1f", net_now.sent / 1024) .. "MB/s ")
+				markup(theme.fg_normal, "  " .. string.format("%0.1f", net_now.sent / 1024) .. "MB/s ")
 					.. " "
-					.. markup(theme.fg_normal, " " .. string.format("%0.1f", net_now.received / 1024) .. "MB/s ")
+					.. markup(theme.fg_normal, "  " .. string.format("%0.1f", net_now.received / 1024) .. "MB/s ")
 			)
 		)
 	end,

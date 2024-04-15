@@ -14,6 +14,8 @@ local localOptions = {
 	number = true,
 	relativenumber = true,
 	numberwidth = 2,
+	-- show filetype in default status line
+	statusline = "%f%=%{&filetype}",
 	-- Better searching highlights
 	hlsearch = false,
 	incsearch = true,
