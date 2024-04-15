@@ -10,12 +10,11 @@ local globalOptions = {
 local localOptions = {
 	-- Enable block cusor always
 	guicursor = "",
+	showmode = false,
 	-- Enable relativenumber line
 	number = true,
 	relativenumber = true,
 	numberwidth = 2,
-	-- show filetype in default status line
-	statusline = "%f%=%{&filetype}",
 	-- Better searching highlights
 	hlsearch = false,
 	incsearch = true,
@@ -41,6 +40,7 @@ local localOptions = {
 	signcolumn = "yes",
 	colorcolumn = "80",
 	updatetime = 40,
+	cursorline = true,
 	-- Better windows direction
 	splitbelow = true,
 	splitright = true,
