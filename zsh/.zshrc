@@ -21,6 +21,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias bt='bluetoothctl'
 alias clear='clear && /home/sahil.jassal/.config/ufetch-ubuntu.sh'
+alias psql='psql -h localhost -U postgres -d postgres'
 alias tk='tmux kill-server'
 
 # Prompt
