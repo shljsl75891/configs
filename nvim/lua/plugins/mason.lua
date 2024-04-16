@@ -1,10 +1,10 @@
 return {
 	"williamboman/mason.nvim",
+	event = { "VimEnter" },
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
-	lazy = false,
 	config = function()
 		local lspconfig = require("lspconfig")
 		local capabilities = vim.lsp.protocol.make_client_capabilities()

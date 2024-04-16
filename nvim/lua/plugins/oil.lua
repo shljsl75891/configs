@@ -24,6 +24,6 @@ return {
 		})
 
 		-- Open Explorer
-		vim.keymap.set("n", "<leader>b", vim.cmd.Oil)
+		vim.keymap.set("n", "-", vim.cmd.Oil)
 	end,
 }
