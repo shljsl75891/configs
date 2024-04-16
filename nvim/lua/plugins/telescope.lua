@@ -10,6 +10,9 @@ return {
 		local builtin = require("telescope.builtin")
 		-- Keymaps
 		vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+		vim.keymap.set("n", "<leader>fse", function()
+			builtin.find_files({ search_file = vim.fn.input("Name of File > ") })
+		end, {})
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
 		vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
 		vim.keymap.set("n", "<leader>cp", builtin.registers, {})
