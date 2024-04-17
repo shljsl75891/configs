@@ -44,6 +44,8 @@ return {
 					name = "Launch file",
 					program = "${file}",
 					cwd = "${workspaceFolder}",
+					sourceMaps = true,
+					skipFiles = { "<node_internals>/**", "node_modules/**" },
 				},
 				{
 					type = "pwa-node",
