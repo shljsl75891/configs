@@ -4,13 +4,12 @@ local globalOptions = {
 	maplocalleader = " ",
 	-- NetRW options
 	netrw_banner = 0,
-	netrw_bufsettings = "noma nomod nonu nobl nowrap ro",
+	netrw_browse_split = 0,
 }
 
 local localOptions = {
 	-- Enable block cusor always
 	guicursor = "",
-	showmode = false,
 	-- Enable relativenumber line
 	number = true,
 	relativenumber = true,
@@ -51,6 +50,8 @@ local localOptions = {
 	pumheight = 8,
 	-- disable vi compatibilty
 	compatible = false,
+	-- show filetype in default status line
+	statusline = "%f%=%{&filetype}",
 }
 
 for k, v in pairs(localOptions) do
