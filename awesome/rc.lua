@@ -99,7 +99,7 @@ local terminal = "alacritty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
-local browser = "thorium-browser"
+local browser = "firefox"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { " ", " ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
@@ -402,9 +402,12 @@ globalkeys = mytable.join(
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	-- User programs
+	awful.key({ modkey, "Shift" }, "b", function()
+		awful.spawn(browser .. " -P Personal")
+	end, { description = "run browser with personal profile", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
-		awful.spawn(browser)
-	end, { description = "run browser", group = "launcher" }),
+		awful.spawn(browser .. " -P Professional")
+	end, { description = "run browser with professional profile", group = "launcher" }),
 
 	-- Default
 	--[[ Menubar
