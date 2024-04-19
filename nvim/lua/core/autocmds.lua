@@ -4,7 +4,17 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	group = vim.api.nvim_create_augroup("MarkDownNotes", { clear = true }),
 	callback = function(ev)
 		vim.opt_local.wrap = true
-		vim.api.nvim_buf_set_keymap(ev.buf, "n", "j", "gj", {})
-		vim.api.nvim_buf_set_keymap(ev.buf, "n", "k", "gk", {})
 	end,
+})
+
+-- Highlight on yank
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	callback = function()
+		vim.highlight.on_yank({
+			timeout = 60,
+		})
+	end,
+	group = highlight_group,
+	pattern = "*",
 })
