@@ -5,6 +5,7 @@ local globalOptions = {
 	-- NetRW options
 	netrw_banner = 0,
 	netrw_browse_split = 0,
+	netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu",
 }
 
 local localOptions = {
