@@ -20,7 +20,6 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias bt='bluetoothctl'
-alias clear='clear && /home/sahil.jassal/.config/ufetch-ubuntu.sh'
 alias psql='psql -h localhost -U postgres -d postgres'
 alias tk='tmux kill-server'
 
@@ -52,6 +51,3 @@ bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "^U~/.config/tmux/sessionizer\n"
 bindkey ']' autosuggest-accept
-
-# ufetch - simple system details
-/home/sahil.jassal/.config/ufetch-ubuntu.sh
