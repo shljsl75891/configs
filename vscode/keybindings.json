@@ -2,8 +2,7 @@
   // File Tree
   {
     "command": "workbench.files.action.focusFilesExplorer",
-    "key": "ctrl+b",
-    "when": "editorTextFocus || terminalFocus"
+    "key": "ctrl+b"
   },
   {
     "command": "workbench.action.focusActiveEditorGroup",
@@ -41,6 +40,21 @@
     "when": "terminalFocus"
   },
   {
+    "key": "ctrl+shift+h",
+    "command": "workbench.action.terminal.focus",
+    "when": "terminalTabsFocus"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.terminal.focusTabs",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "r",
+    "command": "workbench.action.terminal.renameActiveTab",
+    "when": "terminalTabsFocus"
+  },
+  {
     "command": "workbench.action.terminal.focusPrevious",
     "key": "ctrl+[",
     "when": "terminalFocus"
@@ -48,12 +62,12 @@
   {
     "command": "workbench.action.terminal.new",
     "key": "ctrl+shift+n",
-    "when": "terminalFocus"
+    "when": "terminalFocus || terminalTabsFocus"
   },
   {
     "command": "workbench.action.terminal.kill",
     "key": "ctrl+shift+k",
-    "when": "terminalFocus"
+    "when": "terminalFocus || terminalTabsFocus"
   },
   // Navigation in suggestions
   {

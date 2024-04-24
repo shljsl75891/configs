@@ -23,12 +23,15 @@
   },
   // editor settings
   "breadcrumbs.enabled": false,
+  "editor.autoClosingBrackets": "never",
+  "editor.autoClosingDelete": "never",
+  "editor.autoClosingQuotes": "never",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontFamily": "UbuntuMono Nerd Font",
   "editor.fontSize": 16,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
@@ -48,17 +51,8 @@
   "editor.scrollbar.horizontalScrollbarSize": 0,
   "editor.scrollbar.vertical": "hidden",
   "editor.scrollbar.verticalScrollbarSize": 0,
+  "editor.selectionHighlight": false,
   "editor.tabSize": 2,
-  "editor.tokenColorCustomizations": {
-    "textMateRules": [
-      {
-        "scope": ["comment", "punctuation.definition.comment"],
-        "settings": {
-          "fontStyle": ""
-        }
-      }
-    ]
-  },
   // explorer settings
   "explorer.compactFolders": false,
   // imporve vim extension performance
@@ -72,12 +66,14 @@
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyleInactive": "block",
-  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.fontSize": 15,
   "terminal.integrated.gpuAcceleration": "on",
   "typescript.updateImportsOnFileMove.enabled": "always",
   // turn off annoyances
   "update.showReleaseNotes": false,
   // vscode-vim extension config
+  "vim.enableNeovim": true,
   "vim.foldfix": true,
   "vim.gdefault": true,
   "vim.handleKeys": {
@@ -90,7 +86,7 @@
     "<C-w>": true,
     "<C-x>": true
   },
-  "vim.highlightedyank.color": "#484848",
+  "vim.highlightedyank.color": "#997B28",
   "vim.highlightedyank.duration": 80,
   "vim.highlightedyank.enable": true,
   "vim.leader": " ",
@@ -104,10 +100,6 @@
     {
       "before": ["<S-l>"],
       "commands": ["workbench.action.nextEditor"]
-    },
-    {
-      "before": ["<leader>", "c", "o"],
-      "commands": ["workbench.action.closeOtherEditors"]
     },
     // vertical movements
     {
@@ -139,10 +131,6 @@
     {
       "before": ["]", "d"],
       "commands": ["editor.action.marker.next"]
-    },
-    {
-      "before": ["<leader>", "h"],
-      "commands": ["editor.action.triggerParameterHints"]
     },
     {
       "before": ["[", "d"],
@@ -182,13 +170,12 @@
   ],
   // window settings
   "window.commandCenter": false,
+  "window.customTitleBarVisibility": "auto",
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
-  "window.zoomLevel": -1.2,
-  //workbench settings
   "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Gruvbox Dark Medium",
-  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreview": true,
   "workbench.editor.revealIfOpen": true,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.layoutControl.enabled": false,
