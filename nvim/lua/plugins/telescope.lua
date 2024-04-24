@@ -1,6 +1,6 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	tag = "0.1.5",
+	tag = "0.1.6",
 	event = { "VimEnter" },
 	dependencies = {
 		"nvim-lua/plenary.nvim",
@@ -10,20 +10,21 @@ return {
 		local builtin = require("telescope.builtin")
 		-- Keymaps
 		vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-		vim.keymap.set("n", "<leader>fse", function()
-			builtin.find_files({ search_file = vim.fn.input("Name of File > ") })
-		end, {})
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
 		vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
 		vim.keymap.set("n", "<leader>cp", builtin.registers, {})
 		vim.keymap.set("n", "<leader>ht", builtin.help_tags, {})
-		vim.keymap.set("n", "<leader>fw", function()
-			local word = vim.fn.expand("<cword>")
-			builtin.grep_string({ search = word })
-		end)
-		vim.keymap.set("n", "<leader>fW", function()
-			local word = vim.fn.expand("<cWORD>")
-			builtin.grep_string({ search = word })
+		vim.keymap.set("n", "<C-f>", function()
+			local search_file = vim.fn.input("Name of File > ")
+			if search_file ~= "" then
+				builtin.find_files({ search_file = search_file })
+			end
+		end, {})
+		vim.keymap.set("n", "<leader>fs", function()
+			local search_string = vim.fn.input("Grep string > ")
+			if search_string ~= "" then
+				builtin.grep_string({ search = search_string })
+			end
 		end)
 
 		require("telescope").setup({
