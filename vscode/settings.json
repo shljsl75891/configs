@@ -87,29 +87,17 @@
     "<C-x>": true
   },
   "vim.highlightedyank.color": "#997B28",
-  "vim.highlightedyank.duration": 80,
+  "vim.highlightedyank.duration": 60,
   "vim.highlightedyank.enable": true,
   "vim.leader": " ",
   // vim keybindings for normal mode
   "vim.normalModeKeyBindings": [
     // editor tabs navigations
-    {
-      "before": ["<S-h>"],
-      "commands": ["workbench.action.previousEditor"]
-    },
-    {
-      "before": ["<S-l>"],
-      "commands": ["workbench.action.nextEditor"]
-    },
+    { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
     // vertical movements
-    {
-      "after": ["<C-u>", "z", "z"],
-      "before": ["<C-u>"]
-    },
-    {
-      "after": ["<C-d>", "z", "z"],
-      "before": ["<C-d>"]
-    },
+    { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
+    { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
     // lsp actions
     {
       "before": ["K"],
@@ -119,67 +107,42 @@
       "before": ["<leader>", "r", "r"],
       "commands": ["editor.action.goToReferences"]
     },
-    {
-      "before": ["<leader>", "r", "n"],
-      "commands": ["editor.action.rename"]
-    },
+    { "before": ["<leader>", "r", "n"], "commands": ["editor.action.rename"] },
     {
       "before": ["<leader>", "c", "a"],
       "commands": ["editor.action.quickFix"]
     },
     // diagnostics navigation
-    {
-      "before": ["]", "d"],
-      "commands": ["editor.action.marker.next"]
-    },
-    {
-      "before": ["[", "d"],
-      "commands": ["editor.action.marker.prev"]
-    }
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] }
   ],
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
   // vim keybindings for visual mode
   "vim.visualModeKeyBindings": [
     // indentation
-    {
-      "before": [">"],
-      "commands": ["editor.action.indentLines"]
-    },
-    {
-      "before": ["<"],
-      "commands": ["editor.action.outdentLines"]
-    },
+    { "before": [">"], "commands": ["editor.action.indentLines"] },
+    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
     // moving lines
-    {
-      "before": ["J"],
-      "commands": ["editor.action.moveLinesDownAction"]
-    },
-    {
-      "before": ["K"],
-      "commands": ["editor.action.moveLinesUpAction"]
-    }
+    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] }
   ],
   // vim recursive keybindings for visual mode
   "vim.visualModeKeyBindingsNonRecursive": [
     // overrides register and paste
-    {
-      "after": ["p", "g", "v", "y"],
-      "before": ["p"]
-    }
+    { "after": ["p", "g", "v", "y"], "before": ["p"] }
   ],
   // window settings
   "window.commandCenter": false,
-  "window.customTitleBarVisibility": "auto",
+  "window.customTitleBarVisibility": "never",
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Gruvbox Dark Medium",
   "workbench.editor.enablePreview": true,
   "workbench.editor.revealIfOpen": true,
-  "workbench.iconTheme": "material-icon-theme",
   "workbench.layoutControl.enabled": false,
-  "workbench.settings.editor": "json",
+  // "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.tree.renderIndentGuides": "none"

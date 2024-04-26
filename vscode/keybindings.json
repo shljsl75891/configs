@@ -1,13 +1,10 @@
 [
   // File Tree
+  { "command": "workbench.action.toggleSidebarVisibility", "key": "ctrl+b" },
   {
     "command": "workbench.files.action.focusFilesExplorer",
-    "key": "ctrl+b"
-  },
-  {
-    "command": "workbench.action.focusActiveEditorGroup",
     "key": "ctrl+b",
-    "when": "filesExplorerFocus"
+    "when": "editorTextFocus"
   },
   {
     "command": "explorer.newFile",
@@ -31,6 +28,16 @@
   },
   // Terminal
   {
+    "key": "ctrl+\\",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "-workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
     "command": "workbench.action.toggleMaximizedPanel",
     "key": "ctrl+shift+m"
   },
@@ -40,34 +47,34 @@
     "when": "terminalFocus"
   },
   {
-    "key": "ctrl+shift+h",
-    "command": "workbench.action.terminal.focus",
-    "when": "terminalTabsFocus"
-  },
-  {
-    "key": "ctrl+shift+l",
-    "command": "workbench.action.terminal.focusTabs",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "r",
-    "command": "workbench.action.terminal.renameActiveTab",
-    "when": "terminalTabsFocus"
-  },
-  {
     "command": "workbench.action.terminal.focusPrevious",
     "key": "ctrl+[",
     "when": "terminalFocus"
   },
   {
+    "key": "ctrl+shift+c",
+    "command": "workbench.action.terminal.changeColorActiveTab",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+i",
+    "command": "workbench.action.terminal.changeIconActiveTab",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.terminal.renameActiveTab",
+    "when": "terminalFocus"
+  },
+  {
     "command": "workbench.action.terminal.new",
     "key": "ctrl+shift+n",
-    "when": "terminalFocus || terminalTabsFocus"
+    "when": "terminalFocus"
   },
   {
     "command": "workbench.action.terminal.kill",
     "key": "ctrl+shift+k",
-    "when": "terminalFocus || terminalTabsFocus"
+    "when": "terminalFocus"
   },
   // Navigation in suggestions
   {
