@@ -142,7 +142,8 @@
   "workbench.editor.enablePreview": true,
   "workbench.editor.revealIfOpen": true,
   "workbench.layoutControl.enabled": false,
-  // "workbench.settings.editor": "json",
+  "workbench.panel.defaultLocation": "right",
+  "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.tree.renderIndentGuides": "none"

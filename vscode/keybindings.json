@@ -39,7 +39,8 @@
   },
   {
     "command": "workbench.action.toggleMaximizedPanel",
-    "key": "ctrl+shift+m"
+    "key": "ctrl+shift+m",
+    "when": "terminalFocus"
   },
   {
     "command": "workbench.action.terminal.focusNext",
@@ -77,15 +78,6 @@
     "when": "terminalFocus"
   },
   // Navigation in suggestions
-  {
-    "command": "workbench.action.quickOpen",
-    "key": "ctrl+p",
-    "when": "!terminalFocus"
-  },
-  {
-    "command": "-workbench.action.quickOpen",
-    "key": "ctrl+p"
-  },
   {
     "command": "selectNextSuggestion",
     "key": "ctrl+n",
