@@ -38,11 +38,6 @@
     "when": "terminal.active"
   },
   {
-    "command": "workbench.action.toggleMaximizedPanel",
-    "key": "ctrl+shift+m",
-    "when": "terminalFocus"
-  },
-  {
     "command": "workbench.action.terminal.focusNext",
     "key": "ctrl+]",
     "when": "terminalFocus"
@@ -97,5 +92,8 @@
     "command": "workbench.action.quickOpenSelectPrevious",
     "key": "ctrl+p",
     "when": "inQuickOpen || inCommandPalette"
-  }
+  },
+  // quality of life resizing
+  { "command": "workbench.action.increaseViewSize", "key": "ctrl+=" },
+  { "command": "workbench.action.decreaseViewSize", "key": "ctrl+-" }
 ]
