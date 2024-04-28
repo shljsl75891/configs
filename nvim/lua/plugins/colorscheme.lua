@@ -8,7 +8,7 @@ return {
 		theme.setup({
 			bold = true,
 			italic = {
-				strings = false,
+				strings = true,
 				emphasis = true,
 				comments = true,
 				operators = false,
@@ -17,7 +17,6 @@ return {
 			},
 			contrast = "hard",
 			overrides = {
-				TabnineSuggestion = { link = "Comment" },
 				LspSignatureActiveParameter = { bg = nil, fg = palette.bright_yellow, bold = true },
 				NormalFloat = { bg = palette.dark0_soft },
 				FloatBorder = { link = "NormalFloat" },

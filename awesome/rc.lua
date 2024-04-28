@@ -95,7 +95,7 @@ awful.spawn.with_shell(
 local chosen_theme = "powerarrow-dark"
 local modkey = "Mod4"
 local altkey = "Mod1"
-local terminal = "alacritty"
+local terminal = "kitty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
@@ -419,7 +419,7 @@ globalkeys = mytable.join(
 	awful.key({ modkey }, "r", function()
 		os.execute(
 			string.format(
-				"dmenu_run -i -fn 'Ubuntu Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'NotoSans Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,
