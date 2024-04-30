@@ -29,6 +29,7 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
+				"angularls",
 				"emmet_language_server",
 				"jsonls",
 				"tsserver",
@@ -42,6 +43,12 @@ return {
 		require("mason-lspconfig").setup({
 			handlers = {
 				default_setup,
+
+				angularls = function()
+					lspconfig["angularls"].setup({
+						filetypes = { "typescript", "angular.html" },
+					})
+				end,
 				tsserver = function()
 					lspconfig["tsserver"].setup({
 						root_dir = require("lspconfig.util").root_pattern(".git"),
