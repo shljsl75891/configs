@@ -27,13 +27,16 @@ theme.bg_focus = "#62693E"
 theme.bg_urgent = "#722529"
 theme.border_width = dpi(2)
 theme.border_normal = "#1A1B26"
-theme.border_focus = "#689D6A"
+theme.border_focus = "#B8BB26"
 theme.border_marked = "#CC9393"
 theme.powerline_spr1 = "#722529"
 theme.powerline_spr2 = "#49503B"
 theme.bg_systray = theme.powerline_spr1
 theme.tasklist_align = "center"
+theme.tasklist_fg_focus = "#B8BB26"
+theme.tasklist_fg_normal = "#5A633A"
 theme.tasklist_bg_focus = theme.bg_normal
+theme.tasklist_font = theme.font
 theme.titlebar_bg_focus = theme.bg_focus
 theme.titlebar_bg_normal = theme.bg_normal
 theme.titlebar_fg_focus = theme.fg_focus
@@ -117,7 +120,7 @@ local markup = lain.util.markup
 local separators = lain.util.separators
 
 -- Textclock
-local clock = awful.widget.watch("date +'%a %b %d, %I:%M %p'", 60, function(widget, stdout)
+local clock = awful.widget.watch("date +'%a %b %d, %I:%M %p'", 30, function(widget, stdout)
 	widget:set_markup(" " .. markup.font(theme.font, stdout))
 end)
 
@@ -183,8 +186,8 @@ function theme.at_screen_connect(s)
 	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
 	-- Create a tasklist widget
-	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
-	s.mytasklist = nil
+	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+	-- s.mytasklist = nil
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
