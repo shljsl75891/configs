@@ -93,11 +93,11 @@ theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/
 
 -- Notification Options
 naughty.config.defaults.ontop = true
-naughty.config.defaults.icon_size = dpi(32)
+naughty.config.defaults.icon_size = dpi(120)
 naughty.config.defaults.timeout = 10
 naughty.config.defaults.hover_timeout = 300
 naughty.config.defaults.opacity = 0.8
-naughty.config.defaults.title = "Notifications"
+-- naughty.config.defaults.title = "Notifications"
 naughty.config.defaults.margin = dpi(8)
 naughty.config.defaults.border_width = 0
 naughty.config.defaults.border_color = theme.border_normal
