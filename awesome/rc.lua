@@ -569,6 +569,18 @@ for i = 1, 9 do
 	)
 end
 
+-- No borders when rearranging only 1 non-floating or maximized client
+screen.connect_signal("arrange", function(s)
+	local only_one = #s.tiled_clients == 1
+	for _, c in pairs(s.clients) do
+		if only_one and not c.floating or c.maximized or c.fullscreen then
+			c.border_width = 0
+		else
+			c.border_width = beautiful.border_width
+		end
+	end
+end)
+
 clientbuttons = mytable.join(
 	awful.button({}, 1, function(c)
 		c:emit_signal("request::activate", "mouse_click", { raise = true })
@@ -753,5 +765,5 @@ tag.connect_signal("property::selected", backham)
 -- AutoStart script
 awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Tapping Enabled' 1")
 awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Natural Scrolling Enabled' 1")
-awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Disable While Typing Enabled' 1")
+
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
