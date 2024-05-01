@@ -92,6 +92,7 @@
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1
   },
+  "html.autoClosingTags": false,
   "git.openRepositoryInParentFolders": "always",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
@@ -115,6 +116,7 @@
     "<C-o>": true,
     "<C-r>": true,
     "<C-u>": true,
+    "<C-h>": true,
     "<C-v>": true,
     "<C-w>": true,
     "<C-x>": true
@@ -131,6 +133,10 @@
     // vertical movements
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
+    // git
+    { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
+    { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
+    { "before": ["<leader>", "g", "s"], "commands": ["workbench.scm.focus"] },
     // lsp actions
     {
       "before": ["K"],
@@ -139,6 +145,10 @@
     {
       "before": ["<leader>", "t", "b"],
       "commands": ["editor.debug.action.toggleBreakpoint"]
+    },
+    {
+      "before": ["g", "D"],
+      "commands": ["editor.action.goToTypeDefinition"]
     },
     {
       "before": ["<leader>", "r", "r"],
@@ -155,6 +165,10 @@
   ],
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
+  // vim keybindings for insert mode
+  "vim.insertModeKeyBindings": [
+    { "before": ["<C-h>"], "commands": ["editor.action.triggerParameterHints"] }
+  ],
   // vim keybindings for visual mode
   "vim.visualModeKeyBindings": [
     // indentation
