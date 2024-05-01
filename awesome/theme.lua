@@ -1,4 +1,5 @@
 local gears = require("gears")
+local naughty = require("naughty")
 local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
@@ -90,6 +91,21 @@ theme.titlebar_maximized_button_normal_active = theme.dir .. "/icons/titlebar/ma
 theme.titlebar_maximized_button_focus_inactive = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
 
+-- Notification Options
+naughty.config.defaults.ontop = true
+naughty.config.defaults.icon_size = dpi(32)
+naughty.config.defaults.timeout = 10
+naughty.config.defaults.hover_timeout = 300
+naughty.config.defaults.opacity = 0.8
+naughty.config.defaults.title = "Notifications"
+naughty.config.defaults.margin = dpi(8)
+naughty.config.defaults.border_width = 0
+naughty.config.defaults.border_color = theme.border_normal
+naughty.config.defaults.position = "top_right"
+naughty.config.defaults.shape = function(cr, w, h)
+	gears.shape.rounded_rect(cr, w, h, dpi(8))
+end
+
 -- Generate taglist squares:
 local taglist_square_size = dpi(0)
 theme.taglist_squares_sel =
@@ -179,8 +195,8 @@ function theme.at_screen_connect(s)
 		bg = theme.bg_normal,
 		fg = theme.fg_normal,
 		opacity = 0.9,
-		shape = function(cr, width, height)
-			gears.shape.rounded_rect(cr, width, height, 8)
+		shape = function(cr, w, h)
+			gears.shape.rounded_rect(cr, w, h, dpi(8))
 		end,
 	})
 
