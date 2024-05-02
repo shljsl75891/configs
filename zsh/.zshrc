@@ -19,10 +19,7 @@ alias ll='lsd -Al'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias bt='bluetoothctl'
 alias psql='psql -h localhost -U postgres -d postgres'
-alias tk='tmux kill-server'
-alias kp='function _killport(){ lsof -ti:$1 | xargs kill -9 }; _killport'
 
 # Prompt
 eval "$(starship init zsh)"

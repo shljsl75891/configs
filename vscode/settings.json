@@ -25,29 +25,20 @@
   "breadcrumbs.enabled": false,
   "debug.console.fontFamily": "JetBrainsMono Nerd Font",
   "debug.console.fontSize": 12,
-  "editor.autoClosingBrackets": "never",
-  "editor.autoClosingDelete": "never",
-  "editor.autoClosingQuotes": "never",
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
   "editor.codeLens": false,
-  "editor.cursorStyle": "block",
   "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
-  "editor.guides.bracketPairs": "active",
+  "editor.guides.bracketPairs": false,
   "editor.guides.highlightActiveBracketPair": false,
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
-  "editor.matchBrackets": "never",
-  "editor.minimap.autohide": true,
-  "editor.minimap.maxColumn": 60,
-  "editor.minimap.renderCharacters": false,
+  "editor.matchBrackets": "near",
+  "editor.minimap.enabled": false,
   "editor.minimap.size": "fit",
   "editor.occurrencesHighlight": "off",
   "editor.scrollbar.horizontal": "hidden",
@@ -59,27 +50,19 @@
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": [
-          "entity.name.type.enum",
-          "variable.other.readwrite",
-          "variable.other.constant"
-        ],
-        "settings": {
-          "fontStyle": "bold"
-        }
-      },
-      {
         "scope": ["entity.name.function"],
         "settings": {
           "fontStyle": "bold italic"
         }
       },
       {
-        "scope": [
-          //following will be in italic
-          "comment",
-          "string.quoted"
-        ],
+        "scope": ["entity.name.type.enum"],
+        "settings": {
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": ["comment"],
         "settings": {
           "fontStyle": "italic"
         }
@@ -99,7 +82,6 @@
   "telemetry.telemetryLevel": "off",
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
-  "terminal.integrated.cursorStyleInactive": "block",
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.fontSize": 12,
   "terminal.integrated.gpuAcceleration": "on",
@@ -127,9 +109,19 @@
   "vim.leader": " ",
   // vim keybindings for normal mode
   "vim.normalModeKeyBindings": [
-    // editor tabs navigations
+    // editor tabs handling
     { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
     { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
+    {
+      "before": ["<leader>", "c", "o"],
+      "commands": ["workbench.action.closeOtherEditors"]
+    },
+    // find and replace
+    { "before": ["/"], "commands": ["actions.find"] },
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["editor.action.startFindReplaceAction"]
+    },
     // vertical movements
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
@@ -176,7 +168,13 @@
     { "before": ["<"], "commands": ["editor.action.outdentLines"] },
     // moving lines
     { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
-    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] }
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
+    // Find and Replace highlighted word
+    { "before": ["/"], "commands": ["actions.find"] },
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["editor.action.startFindReplaceAction"]
+    }
   ],
   // vim recursive keybindings for visual mode
   "vim.visualModeKeyBindingsNonRecursive": [
@@ -188,14 +186,14 @@
   "window.customTitleBarVisibility": "never",
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
-  "workbench.activityBar.location": "top",
+  "workbench.activityBar.location": "hidden",
   "workbench.colorTheme": "Gruvbox Dark Medium",
-  "workbench.editor.enablePreview": true,
+  "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.layoutControl.enabled": false,
-  "workbench.panel.defaultLocation": "right",
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
+  "workbench.statusBar.visible": false,
   "workbench.tree.renderIndentGuides": "none"
 }

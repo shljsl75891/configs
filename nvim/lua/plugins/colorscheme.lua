@@ -8,7 +8,7 @@ return {
 		theme.setup({
 			bold = true,
 			italic = {
-				strings = true,
+				strings = false,
 				emphasis = true,
 				comments = true,
 				operators = false,

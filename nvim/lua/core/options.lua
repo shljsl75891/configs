@@ -9,8 +9,6 @@ local globalOptions = {
 }
 
 local localOptions = {
-	-- Enable block cusor always
-	guicursor = "",
 	-- Enable relativenumber line
 	number = true,
 	relativenumber = true,

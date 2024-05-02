@@ -2,9 +2,19 @@
   // File Tree
   { "command": "workbench.action.toggleSidebarVisibility", "key": "ctrl+b" },
   {
+    "command": "workbench.files.action.collapseExplorerFolders",
+    "key": "ctrl+a",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
     "command": "workbench.files.action.focusFilesExplorer",
     "key": "ctrl+b",
     "when": "editorTextFocus"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "n",
+    "when": "filesExplorerFocus && !inputFocus"
   },
   {
     "command": "explorer.newFile",
@@ -17,8 +27,13 @@
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
-    "command": "workbench.files.action.collapseExplorerFolders",
-    "key": "ctrl+a",
+    "command": "deleteFile",
+    "key": "d",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "renameFile",
+    "key": "r",
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
@@ -36,35 +51,10 @@
     "key": "p",
     "when": "filesExplorerFocus && !inputFocus"
   },
-  {
-    "command": "deleteFile",
-    "key": "d",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  {
-    "command": "renameFile",
-    "key": "r",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
   // Terminal
-  {
-    "key": "ctrl+\\",
-    "command": "workbench.action.terminal.toggleTerminal",
-    "when": "terminal.active"
-  },
-  {
-    "key": "ctrl+`",
-    "command": "-workbench.action.terminal.toggleTerminal",
-    "when": "terminal.active"
-  },
   {
     "command": "workbench.action.terminal.focusNext",
     "key": "ctrl+]",
-    "when": "terminalFocus"
-  },
-  {
-    "command": "workbench.action.terminal.focusPrevious",
-    "key": "ctrl+[",
     "when": "terminalFocus"
   },
   {
@@ -75,6 +65,11 @@
   {
     "key": "ctrl+shift+i",
     "command": "workbench.action.terminal.changeIconActiveTab",
+    "when": "terminalFocus"
+  },
+  {
+    "command": "workbench.action.terminal.focusPrevious",
+    "key": "ctrl+[",
     "when": "terminalFocus"
   },
   {

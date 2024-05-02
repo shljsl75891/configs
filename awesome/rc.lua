@@ -102,7 +102,7 @@ local editor = os.getenv("EDITOR") or "nvim"
 local browser = "thorium-browser"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { " ", " ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
+awful.util.tagnames = { " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
 awful.layout.layouts = {
 	-- awful.layout.suit.floating,
 	awful.layout.suit.tile,
@@ -661,7 +661,8 @@ awful.rules.rules = {
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
-	{ rule = { class = "Code" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "kitty" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "Code" }, properties = { screen = 1, tag = "󰨞 " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
 }
 

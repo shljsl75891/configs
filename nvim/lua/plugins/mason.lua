@@ -43,7 +43,23 @@ return {
 		require("mason-lspconfig").setup({
 			handlers = {
 				default_setup,
-
+				emmet_language_server = function()
+					lspconfig["emmet_language_server"].setup({
+						filetypes = {
+							"css",
+							"eruby",
+							"html",
+							"htmldjango",
+							"javascriptreact",
+							"less",
+							"pug",
+							"sass",
+							"scss",
+							"typescriptreact",
+							"angular.html",
+						},
+					})
+				end,
 				angularls = function()
 					lspconfig["angularls"].setup({
 						filetypes = { "typescript", "angular.html" },

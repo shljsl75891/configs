@@ -1,0 +1,8 @@
+[core]
+  editor = nvim
+[init]
+  defaultBranch = main
+[alias]
+  hidden = ! git ls-files -v . | grep ^S | awk '{ print $2 }'
+  hide = update-index --skip-worktree
+  unhide = update-index --no-skip-worktree

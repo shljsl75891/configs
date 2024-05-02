@@ -9,6 +9,7 @@ $git_status\
 $character"""
 
 add_newline = false
+command_timeout = 2000
 palette = 'gruvbox_dark'
 
 [palettes.gruvbox_dark]
