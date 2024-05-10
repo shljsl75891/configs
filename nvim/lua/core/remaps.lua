@@ -24,17 +24,19 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 -- Quick find and replace
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set(
+	"n",
+	"<leader>s",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Replace all occurrences of word under the cursor" }
+)
 
 -- Quickfix Navigation
-vim.keymap.set("n", "<C-Up>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<C-Down>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-Up>", "<cmd>cprev<CR>zz", { desc = "Go to previous entry in quickfix list" })
+vim.keymap.set("n", "<C-Down>", "<cmd>cnext<CR>zz", { desc = "Go to next entry in quickfix list" })
 
 -- Resizing windows
-vim.keymap.set("n", "<M-->", ":resize -2<CR>")
-vim.keymap.set("n", "<M-=>", ":resize +2<CR>")
-vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>")
-vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>")
-
--- Disable Annoying remap
-vim.keymap.set("n", "<F1>", "<Nop>")
+vim.keymap.set("n", "<M-->", ":resize -2<CR>", { desc = "Decrease size of horizontal window" })
+vim.keymap.set("n", "<M-=>", ":resize +2<CR>", { desc = "Increase size of horizontal window" })
+vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>", { desc = "Decrease size of vertical window" })
+vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>", { desc = "Increase size of vertical window" })

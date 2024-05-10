@@ -30,12 +30,12 @@ return {
 		-- Adding buffers in harpoon list
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
-		end)
+		end, { desc = "[A]dd current file in harpoon list" })
 
 		-- Toggling harpoon list visibility
 		vim.keymap.set("n", "<leader>m", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list(), ui_opts)
-		end)
+		end, { desc = "Open Harpoon quick pop-up" })
 
 		-- Opening any buffer in harpoon
 		vim.keymap.set("n", "<C-j>", function()

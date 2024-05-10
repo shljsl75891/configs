@@ -13,8 +13,6 @@ return {
 			multiline_threshold = 1,
 		})
 
-		vim.keymap.set("n", "<leader>ttc", vim.cmd.TSContextToggle)
-
 		local configs = require("nvim-treesitter.configs")
 		configs.setup({
 			ensure_installed = {

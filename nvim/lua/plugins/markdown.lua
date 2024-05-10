@@ -14,7 +14,7 @@ return {
 				img_dir_txt = "../img",
 			},
 
-			vim.keymap.set("n", "<leader>p", vim.cmd.PasteImg),
+			vim.keymap.set("n", "<leader>p", vim.cmd.PasteImg, { desc = "[P]aste image from clipboard" }),
 		})
 	end,
 }

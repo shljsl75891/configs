@@ -9,23 +9,23 @@ return {
 		local actions = require("telescope.actions")
 		local builtin = require("telescope.builtin")
 		-- Keymaps
-		vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-		vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
-		vim.keymap.set("n", "<leader>cp", builtin.registers, {})
-		vim.keymap.set("n", "<leader>ht", builtin.help_tags, {})
-		vim.keymap.set("n", "<C-f>", function()
+		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind Project [F]iles" })
+		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
+		vim.keymap.set("n", "<leader>lg", builtin.live_grep, { desc = "[L]ive [G]rep Project-wide" })
+		vim.keymap.set("n", "<leader>cr", builtin.registers, { desc = "[C]opy from specific [R]egistrer" })
+		vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "Find [H]elp [T]ags" })
+		vim.keymap.set("n", "<leader>fsf", function()
 			local search_file = vim.fn.input("Name of File > ")
 			if search_file ~= "" then
 				builtin.find_files({ search_file = search_file })
 			end
-		end, {})
-		vim.keymap.set("n", "<leader>fs", function()
+		end, { desc = "[F]ind [S]pecific [F]ile using its name" })
+		vim.keymap.set("n", "<leader>fss", function()
 			local search_string = vim.fn.input("Grep string > ")
 			if search_string ~= "" then
 				builtin.grep_string({ search = search_string })
 			end
-		end)
+		end, { desc = "[F]ind [S]pecific [S]tring" })
 
 		require("telescope").setup({
 			defaults = {
