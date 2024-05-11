@@ -23,10 +23,11 @@
   },
   // editor settings
   "breadcrumbs.enabled": false,
-  "debug.console.fontFamily": "JetBrainsMono Nerd Font",
+  "debug.console.fontFamily": "FiraCode Nerd Font",
   "debug.console.fontSize": 12,
   "editor.codeLens": false,
-  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.cursorStyle": "block",
+  "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
@@ -39,7 +40,6 @@
   "editor.linkedEditing": true,
   "editor.matchBrackets": "near",
   "editor.minimap.enabled": false,
-  "editor.minimap.size": "fit",
   "editor.occurrencesHighlight": "off",
   "editor.scrollbar.horizontal": "hidden",
   "editor.scrollbar.horizontalScrollbarSize": 0,
@@ -47,36 +47,18 @@
   "editor.scrollbar.verticalScrollbarSize": 0,
   "editor.selectionHighlight": false,
   "editor.tabSize": 2,
+  // disable italics in comments
   "editor.tokenColorCustomizations": {
     "textMateRules": [
-      {
-        "scope": ["entity.name.function"],
-        "settings": {
-          "fontStyle": "bold italic"
-        }
-      },
-      {
-        "scope": ["entity.name.type.enum"],
-        "settings": {
-          "fontStyle": "bold"
-        }
-      },
-      {
-        "scope": ["comment"],
-        "settings": {
-          "fontStyle": "italic"
-        }
-      }
+      { "scope": ["comment"], "settings": { "fontStyle": "" } },
+      { "scope": ["entity.name.function"], "settings": { "fontStyle": "bold" } }
     ]
-  },
-  // explorer settings
+  }, // explorer settings
   "explorer.compactFolders": false,
   // imporve vim extension performance
-  "extensions.experimental.affinity": {
-    "vscodevim.vim": 1
-  },
-  "html.autoClosingTags": false,
+  "extensions.experimental.affinity": { "vscodevim.vim": 1 },
   "git.openRepositoryInParentFolders": "always",
+  "html.autoClosingTags": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
   "telemetry.telemetryLevel": "off",
@@ -95,10 +77,10 @@
   "vim.handleKeys": {
     // vim keys
     "<C-a>": true,
+    "<C-h>": true,
     "<C-o>": true,
     "<C-r>": true,
     "<C-u>": true,
-    "<C-h>": true,
     "<C-v>": true,
     "<C-w>": true,
     "<C-x>": true
@@ -106,6 +88,10 @@
   "vim.highlightedyank.color": "#997B28",
   "vim.highlightedyank.duration": 60,
   "vim.highlightedyank.enable": true,
+  // vim keybindings for insert mode
+  "vim.insertModeKeyBindings": [
+    { "before": ["<C-h>"], "commands": ["editor.action.triggerParameterHints"] }
+  ],
   "vim.leader": " ",
   // vim keybindings for normal mode
   "vim.normalModeKeyBindings": [
@@ -116,17 +102,10 @@
       "before": ["<leader>", "c", "o"],
       "commands": ["workbench.action.closeOtherEditors"]
     },
-    // find and replace
-    { "before": ["/"], "commands": ["actions.find"] },
-    {
-      "before": ["<leader>", "s"],
-      "commands": ["editor.action.startFindReplaceAction"]
-    },
     // vertical movements
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
     // git
-    { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
     { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
     { "before": ["<leader>", "g", "s"], "commands": ["workbench.scm.focus"] },
     // lsp actions
@@ -138,10 +117,7 @@
       "before": ["<leader>", "t", "b"],
       "commands": ["editor.debug.action.toggleBreakpoint"]
     },
-    {
-      "before": ["g", "D"],
-      "commands": ["editor.action.goToTypeDefinition"]
-    },
+    { "before": ["g", "D"], "commands": ["editor.action.goToTypeDefinition"] },
     {
       "before": ["<leader>", "r", "r"],
       "commands": ["editor.action.goToReferences"]
@@ -157,10 +133,6 @@
   ],
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
-  // vim keybindings for insert mode
-  "vim.insertModeKeyBindings": [
-    { "before": ["<C-h>"], "commands": ["editor.action.triggerParameterHints"] }
-  ],
   // vim keybindings for visual mode
   "vim.visualModeKeyBindings": [
     // indentation
@@ -168,13 +140,7 @@
     { "before": ["<"], "commands": ["editor.action.outdentLines"] },
     // moving lines
     { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
-    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
-    // Find and Replace highlighted word
-    { "before": ["/"], "commands": ["actions.find"] },
-    {
-      "before": ["<leader>", "s"],
-      "commands": ["editor.action.startFindReplaceAction"]
-    }
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] }
   ],
   // vim recursive keybindings for visual mode
   "vim.visualModeKeyBindingsNonRecursive": [
@@ -187,13 +153,13 @@
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorTheme": "Gruvbox Dark Medium",
+  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.layoutControl.enabled": false,
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": false,
+  "workbench.statusBar.visible": true,
   "workbench.tree.renderIndentGuides": "none"
 }
