@@ -50,7 +50,10 @@
   // disable italics in comments
   "editor.tokenColorCustomizations": {
     "textMateRules": [
-      { "scope": ["comment"], "settings": { "fontStyle": "" } },
+      {
+        "scope": ["comment", "entity.name.type"],
+        "settings": { "fontStyle": "" }
+      },
       { "scope": ["entity.name.function"], "settings": { "fontStyle": "bold" } }
     ]
   }, // explorer settings
@@ -176,7 +179,7 @@
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorTheme": "Rosé Pine (no italics)",
+  "workbench.colorTheme": "NeoRose-VimPine",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.layoutControl.enabled": false,
