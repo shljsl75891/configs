@@ -131,6 +131,29 @@
     { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
     { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] }
   ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // use vscode undo & redo
+    {
+      "before": ["u"],
+      "after": [],
+      "commands": [
+        {
+          "command": "undo",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": ["<C-r>"],
+      "after": [],
+      "commands": [
+        {
+          "command": "redo",
+          "args": []
+        }
+      ]
+    }
+  ],
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
   // vim keybindings for visual mode
