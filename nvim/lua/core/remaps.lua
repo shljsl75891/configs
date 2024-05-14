@@ -40,3 +40,9 @@ vim.keymap.set("n", "<M-->", ":resize -2<CR>", { desc = "Decrease size of horizo
 vim.keymap.set("n", "<M-=>", ":resize +2<CR>", { desc = "Increase size of horizontal window" })
 vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>", { desc = "Decrease size of vertical window" })
 vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>", { desc = "Increase size of vertical window" })
+
+-- Tabs
+vim.keymap.set("n", "<leader>nt", vim.cmd.tabnew)
+vim.keymap.set("n", "<leader>cat", vim.cmd.tabclose)
+vim.keymap.set("n", "<C-Left>", vim.cmd.tabprevious)
+vim.keymap.set("n", "<C-Right>", vim.cmd.tabnext)
