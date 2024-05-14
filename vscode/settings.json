@@ -85,7 +85,7 @@
     "<C-w>": true,
     "<C-x>": true
   },
-  "vim.highlightedyank.color": "#997B28",
+  "vim.highlightedyank.color": "#EB6F92",
   "vim.highlightedyank.duration": 60,
   "vim.highlightedyank.enable": true,
   // vim keybindings for insert mode
@@ -106,8 +106,8 @@
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
     // git
+    { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
     { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
-    { "before": ["<leader>", "g", "s"], "commands": ["workbench.scm.focus"] },
     // lsp actions
     {
       "before": ["K"],
@@ -153,7 +153,7 @@
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "workbench.colorTheme": "Rosé Pine (no italics)",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.layoutControl.enabled": false,

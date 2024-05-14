@@ -12,15 +12,9 @@ local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 
-local os = os
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
-
-local theme = {}
-theme.dir = os.getenv("HOME") .. "/.config/awesome"
-theme.wallpaper = theme.dir .. "/wall.png"
+--[[ Gruvbox Colorscheme
 theme.fg_normal = "#FBF1C7"
 theme.fg_focus = "#32302F"
-theme.font = "NotoSans Nerd Font Medium 8"
 theme.fg_urgent = "#FBF1C7"
 theme.bg_normal = "#1D2021"
 theme.bg_focus = "#62693E"
@@ -31,10 +25,32 @@ theme.border_focus = "#B8BB26"
 theme.border_marked = "#CC9393"
 theme.powerline_spr1 = "#722529"
 theme.powerline_spr2 = "#49503B"
+theme.tasklist_fg_focus = "#B8BB26"
+theme.tasklist_fg_normal = "#5A633A" ]]
+
+local os = os
+local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
+
+local theme = {}
+theme.dir = os.getenv("HOME") .. "/.config/awesome"
+theme.wallpaper = theme.dir .. "/wall.png"
+theme.fg_normal = "#E0DEF4"
+theme.fg_focus = "#32302F"
+theme.font = "NotoSans Nerd Font Medium 8"
+theme.fg_urgent = "#E0DEF4"
+theme.bg_normal = "#1D2021"
+theme.bg_focus = "#31748F"
+theme.bg_urgent = "#EB6F92"
+theme.border_width = dpi(2)
+theme.border_normal = "#1A1B26"
+theme.border_focus = "#F6C177"
+theme.border_marked = "#CC9393"
+theme.powerline_spr1 = "#31748F"
+theme.powerline_spr2 = "#403D52"
 theme.bg_systray = theme.powerline_spr1
 theme.tasklist_align = "center"
-theme.tasklist_fg_focus = "#B8BB26"
-theme.tasklist_fg_normal = "#5A633A"
+theme.tasklist_fg_focus = "#EB6F92"
+theme.tasklist_fg_normal = "#EBBCBA"
 theme.tasklist_bg_focus = theme.bg_normal
 theme.tasklist_font = theme.font
 theme.titlebar_bg_focus = theme.bg_focus
@@ -269,7 +285,7 @@ function theme.at_screen_connect(s)
 							shape = "octagon",
 							bg_color = "#1f2335",
 							mute_color = theme.bg_urgent,
-							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
+							-- icon_dir = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
@@ -285,7 +301,7 @@ function theme.at_screen_connect(s)
 						battery_widget({
 							show_current_level = true,
 							timeout = 2,
-							path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
+							path_to_icons = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
 							font = theme.font,
 						}),
 						layout = wibox.layout.align.horizontal,
@@ -300,7 +316,7 @@ function theme.at_screen_connect(s)
 				brightness_widget({
 					type = "icon_and_text",
 					percentage = true,
-					path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
+					path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
 					step = 5,
 				}),
