@@ -51,7 +51,12 @@
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": ["comment", "entity.name.type"],
+        "scope": [
+          "variable.object",
+          "comment",
+          "entity.name.type",
+          "support.type"
+        ],
         "settings": { "fontStyle": "" }
       },
       { "scope": ["entity.name.function"], "settings": { "fontStyle": "bold" } }
@@ -139,22 +144,12 @@
     {
       "before": ["u"],
       "after": [],
-      "commands": [
-        {
-          "command": "undo",
-          "args": []
-        }
-      ]
+      "commands": [{ "command": "undo", "args": [] }]
     },
     {
       "before": ["<C-r>"],
       "after": [],
-      "commands": [
-        {
-          "command": "redo",
-          "args": []
-        }
-      ]
+      "commands": [{ "command": "redo", "args": [] }]
     }
   ],
   "vim.useCtrlKeys": false,

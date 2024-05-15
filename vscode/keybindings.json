@@ -58,6 +58,11 @@
     "when": "terminalFocus"
   },
   {
+    "command": "workbench.action.toggleMaximizedPanel",
+    "key": "ctrl+shift+m",
+    "when": "terminalFocus"
+  },
+  {
     "command": "workbench.action.terminal.changeColorActiveTab",
     "key": "ctrl+shift+c",
     "when": "terminalFocus"

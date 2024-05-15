@@ -2,14 +2,14 @@
 vim.keymap.set("n", "-", vim.cmd.Ex)
 
 -- Keeps screen centered
-vim.keymap.set("n", "<C-d>", "<C-d>zz0")
-vim.keymap.set("n", "<C-u>", "<C-u>zz0")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "N", "Nzz")
 vim.keymap.set("n", "n", "nzz")
 
 -- Move lines
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":lua Move_lines_down_visual()<CR>")
+vim.keymap.set("v", "K", ":lua Move_lines_up_visual()<CR>")
 
 -- Keeps cursor at front
 vim.keymap.set("n", "J", "mzJ`z")
@@ -41,8 +41,6 @@ vim.keymap.set("n", "<M-=>", ":resize +2<CR>", { desc = "Increase size of horizo
 vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>", { desc = "Decrease size of vertical window" })
 vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>", { desc = "Increase size of vertical window" })
 
--- Tabs
-vim.keymap.set("n", "<leader>nt", vim.cmd.tabnew)
-vim.keymap.set("n", "<leader>cat", vim.cmd.tabclose)
-vim.keymap.set("n", "<C-Left>", vim.cmd.tabprevious)
-vim.keymap.set("n", "<C-Right>", vim.cmd.tabnext)
+-- Horizontal Scrolling
+vim.keymap.set("n", "<C-Left>", "15zh", { desc = "Scroll to left" })
+vim.keymap.set("n", "<C-Right>", "15zl", { desc = "Scroll to right" })
