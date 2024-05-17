@@ -57,7 +57,7 @@ style = "bg:color_gold"
 format = '[[ $symbol $branch ](fg:color_overlay bg:color_gold)]($style)'
 
 [git_state]
-style = "bg:color_rose"
+style = "fg:color_surface bg:color_rose"
 format ='[ $state( $progress_current/$progress_total) ]($style)'
 
 [git_status]
