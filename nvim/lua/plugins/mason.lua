@@ -1,6 +1,6 @@
 return {
 	"williamboman/mason.nvim",
-	event = { "VimEnter" },
+	lazy = false,
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -28,7 +28,7 @@ return {
 		require("mason").setup({})
 		require("mason-tool-installer").setup({
 			ensure_installed = {
-				"eslint",
+				-- Language Servers
 				"angularls",
 				"emmet_language_server",
 				"jsonls",
@@ -36,8 +36,11 @@ return {
 				"lua_ls",
 				"tailwindcss",
 				"cssls",
+				-- Formatters
 				"prettierd",
 				"stylua",
+				-- Linters
+				"eslint_d",
 			},
 		})
 		require("mason-lspconfig").setup({
