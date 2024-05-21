@@ -11,8 +11,8 @@ return {
 				bold = true,
 				italic = {
 					strings = false,
-					emphasis = false,
-					comments = false,
+					emphasis = true,
+					comments = true,
 					operators = false,
 					folds = false,
 					functions = false,
@@ -54,8 +54,8 @@ return {
 					italic = false,
 					transparency = true,
 				},
-
 				highlight_groups = {
+					Comment = { italic = true },
 					LspSignatureActiveParameter = { bg = nil, fg = "love", bold = true },
 					StatusLine = { fg = "text", bg = "muted", blend = 25 },
 					StatusLineNC = { fg = "muted", bg = "muted", blend = 25 },
