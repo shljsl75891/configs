@@ -36,7 +36,7 @@
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
-  "editor.lineNumbers": "relative",
+  "editor.lineNumbers": "on",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "near",
   "editor.minimap.enabled": false,
@@ -117,10 +117,7 @@
     { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
     { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
     // lsp actions
-    {
-      "before": ["K"],
-      "commands": ["editor.action.showDefinitionPreviewHover"]
-    },
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
     {
       "before": ["<leader>", "t", "b"],
       "commands": ["editor.debug.action.toggleBreakpoint"]
