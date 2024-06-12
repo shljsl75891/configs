@@ -25,6 +25,9 @@
   "breadcrumbs.enabled": false,
   "debug.console.fontFamily": "JetBrainsMono Nerd Font",
   "debug.console.fontSize": 12,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
   "editor.fontFamily": "JetBrainsMono Nerd Font",
@@ -36,7 +39,7 @@
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
-  "editor.lineNumbers": "on",
+  "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "near",
   "editor.minimap.enabled": false,
@@ -47,16 +50,14 @@
   "editor.scrollbar.verticalScrollbarSize": 0,
   "editor.selectionHighlight": false,
   "editor.tabSize": 2,
-  // disable italics in comments
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": [
-          "variable.object",
-          "comment",
-          "entity.name.type",
-          "support.type"
-        ],
+        "scope": ["comment"],
+        "settings": { "fontStyle": "italic" }
+      },
+      {
+        "scope": ["variable.object", "entity.name.type", "support.type"],
         "settings": { "fontStyle": "" }
       },
       { "scope": ["entity.name.function"], "settings": { "fontStyle": "bold" } }
@@ -65,8 +66,18 @@
   "explorer.compactFolders": false,
   // imporve vim extension performance
   "extensions.experimental.affinity": { "vscodevim.vim": 1 },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/dist": true
+  },
   "git.openRepositoryInParentFolders": "always",
-  "html.autoClosingTags": false,
+  "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
   "telemetry.telemetryLevel": "off",
@@ -171,6 +182,10 @@
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
+  "workbench.colorCustomizations": {
+    "tab.activeBorder": "#eb6f92",
+    "tab.activeBorderTop": "#eb6f92"
+  },
   "workbench.colorTheme": "NeoRose-VimPine",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
