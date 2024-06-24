@@ -63,23 +63,8 @@
     "when": "terminalFocus"
   },
   {
-    "command": "workbench.action.terminal.changeColorActiveTab",
-    "key": "ctrl+shift+c",
-    "when": "terminalFocus"
-  },
-  {
-    "command": "workbench.action.terminal.changeIconActiveTab",
-    "key": "ctrl+shift+i",
-    "when": "terminalFocus"
-  },
-  {
     "command": "workbench.action.terminal.focusPrevious",
     "key": "ctrl+[",
-    "when": "terminalFocus"
-  },
-  {
-    "command": "workbench.action.terminal.renameActiveTab",
-    "key": "ctrl+shift+r",
     "when": "terminalFocus"
   },
   {
@@ -121,36 +106,5 @@
   {
     "command": "workbench.action.decreaseViewSize",
     "key": "ctrl+-"
-  },
-  // better git keybindings imo
-  {
-    "command": "git.unstageSelectedRanges",
-    "key": "u",
-    "when": "isInDiffEditor && !operationInProgress"
-  },
-  {
-    "command": "-git.unstageSelectedRanges",
-    "key": "ctrl+k ctrl+n",
-    "when": "isInDiffEditor && !operationInProgress"
-  },
-  {
-    "command": "git.stageSelectedRanges",
-    "key": "s",
-    "when": "isInDiffEditor && !operationInProgress"
-  },
-  {
-    "command": "-git.stageSelectedRanges",
-    "key": "ctrl+k ctrl+alt+s",
-    "when": "isInDiffEditor && !operationInProgress"
-  },
-  {
-    "command": "git.revertSelectedRanges",
-    "key": "shift+x",
-    "when": "isInDiffEditor && !operationInProgress"
-  },
-  {
-    "command": "-git.revertSelectedRanges",
-    "key": "ctrl+k ctrl+r",
-    "when": "isInDiffEditor && !operationInProgress"
   }
 ]
