@@ -121,6 +121,14 @@
     { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
     { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
     {
+      "before": ["<C-w>", "v"],
+      "commands": ["workbench.action.splitEditor"]
+    },
+    {
+      "before": ["<C-w>", "s"],
+      "commands": ["workbench.action.splitEditorDown"]
+    },
+    {
       "before": ["<leader>", "c", "o"],
       "commands": ["workbench.action.closeOtherEditors"]
     },
