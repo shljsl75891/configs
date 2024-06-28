@@ -81,6 +81,7 @@
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "liveServer.settings.donotShowInfoMsg": true,
   "search.searchOnType": false,
   "telemetry.telemetryLevel": "off",
   // terminal settings
@@ -121,6 +122,14 @@
     { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
     { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
     {
+      "before": ["<C-w>", "v"],
+      "commands": ["workbench.action.splitEditor"]
+    },
+    {
+      "before": ["<C-w>", "s"],
+      "commands": ["workbench.action.splitEditorDown"]
+    },
+    {
       "before": ["<leader>", "c", "o"],
       "commands": ["workbench.action.closeOtherEditors"]
     },
@@ -131,7 +140,10 @@
     { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
     { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
     // lsp actions
-    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    {
+      "before": ["K"],
+      "commands": ["editor.action.showDefinitionPreviewHover"]
+    },
     {
       "before": ["<leader>", "t", "b"],
       "commands": ["editor.debug.action.toggleBreakpoint"]
@@ -186,8 +198,9 @@
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
   "workbench.colorCustomizations": {
-    "tab.activeBorder": "#eb6f92",
-    "tab.activeBorderTop": "#eb6f92"
+    "tab.activeBorder": "#EB6F92",
+    "tab.activeBorderTop": "#EB6F92",
+    "terminal.tab.activeBorder": "#EB6F92"
   },
   "workbench.colorTheme": "NeoRose-VimPine",
   "workbench.editor.enablePreview": false,
