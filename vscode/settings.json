@@ -23,14 +23,14 @@
   },
   // editor settings
   "breadcrumbs.enabled": false,
-  "debug.console.fontFamily": "JetBrainsMono Nerd Font",
+  "debug.console.fontFamily": "MesloLGS Nerd Font",
   "debug.console.fontSize": 12,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.fontFamily": "MesloLGS Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
