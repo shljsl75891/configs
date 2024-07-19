@@ -119,60 +119,86 @@
   // vim keybindings for normal mode
   "vim.normalModeKeyBindings": [
     // editor tabs handling
-    { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
-    { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
     {
-      "before": ["<C-w>", "v"],
-      "commands": ["workbench.action.splitEditor"]
+      "before": ["<S-h>"],
+      "commands": ["workbench.action.previousEditor"],
+      "silent": true
     },
     {
-      "before": ["<C-w>", "s"],
-      "commands": ["workbench.action.splitEditorDown"]
+      "before": ["<S-l>"],
+      "commands": ["workbench.action.nextEditor"],
+      "silent": true
     },
     {
       "before": ["<leader>", "c", "o"],
-      "commands": ["workbench.action.closeOtherEditors"]
+      "commands": ["workbench.action.closeOtherEditors"],
+      "silent": true
     },
     // vertical movements
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
-    // git
-    { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
-    { "before": ["<leader>", "g", "o"], "commands": ["git.openFile"] },
+    // matching template tags
+    {
+      "before": ["5"],
+      "commands": ["editor.emmet.action.matchTag"],
+      "silent": true
+    },
     // lsp actions
     {
       "before": ["K"],
-      "commands": ["editor.action.showDefinitionPreviewHover"]
+      "commands": ["editor.action.showDefinitionPreviewHover"],
+      "silent": true
     },
     {
       "before": ["<leader>", "t", "b"],
-      "commands": ["editor.debug.action.toggleBreakpoint"]
+      "commands": ["editor.debug.action.toggleBreakpoint"],
+      "silent": true
     },
-    { "before": ["g", "D"], "commands": ["editor.action.goToTypeDefinition"] },
+    {
+      "before": ["g", "D"],
+      "commands": ["editor.action.goToTypeDefinition"],
+      "silent": true
+    },
     {
       "before": ["<leader>", "r", "r"],
-      "commands": ["editor.action.goToReferences"]
+      "commands": ["editor.action.goToReferences"],
+      "silent": true
     },
-    { "before": ["<leader>", "r", "n"], "commands": ["editor.action.rename"] },
+    {
+      "before": ["<leader>", "r", "n"],
+      "commands": ["editor.action.rename"],
+      "silent": true
+    },
     {
       "before": ["<leader>", "c", "a"],
-      "commands": ["editor.action.quickFix"]
+      "commands": ["editor.action.quickFix"],
+      "silent": true
     },
     // diagnostics navigation
-    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
-    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] }
+    {
+      "before": ["]", "d"],
+      "commands": ["editor.action.marker.next"],
+      "silent": true
+    },
+    {
+      "before": ["[", "d"],
+      "commands": ["editor.action.marker.prev"],
+      "silent": true
+    }
   ],
   "vim.normalModeKeyBindingsNonRecursive": [
     // use vscode undo & redo
     {
       "before": ["u"],
       "after": [],
-      "commands": [{ "command": "undo", "args": [] }]
+      "commands": [{ "command": "undo", "args": [] }],
+      "silent": true
     },
     {
       "before": ["<C-r>"],
       "after": [],
-      "commands": [{ "command": "redo", "args": [] }]
+      "commands": [{ "command": "redo", "args": [] }],
+      "silent": true
     }
   ],
   "vim.useCtrlKeys": false,
@@ -180,11 +206,27 @@
   // vim keybindings for visual mode
   "vim.visualModeKeyBindings": [
     // indentation
-    { "before": [">"], "commands": ["editor.action.indentLines"] },
-    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"],
+      "silent": true
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"],
+      "silent": true
+    },
     // moving lines
-    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
-    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] }
+    {
+      "before": ["J"],
+      "commands": ["editor.action.moveLinesDownAction"],
+      "silent": true
+    },
+    {
+      "before": ["K"],
+      "commands": ["editor.action.moveLinesUpAction"],
+      "silent": true
+    }
   ],
   // vim recursive keybindings for visual mode
   "vim.visualModeKeyBindingsNonRecursive": [
@@ -202,7 +244,6 @@
     "tab.activeBorderTop": "#EB6F92",
     "terminal.tab.activeBorder": "#EB6F92"
   },
-  "workbench.colorTheme": "NeoRose-VimPine",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.showIcons": false,
@@ -212,5 +253,6 @@
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.statusBar.visible": true,
-  "workbench.tree.renderIndentGuides": "none"
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.colorTheme": "NeoRose-VimPine"
 }
