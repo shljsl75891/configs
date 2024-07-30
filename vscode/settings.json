@@ -21,10 +21,13 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  // editor settings
   "breadcrumbs.enabled": false,
+  // git blame config
+  "betterGitLineBlame.maxSummaryLength": 1,
+  "betterGitLineBlame.showStatusBarItem": true,
   "debug.console.fontFamily": "MesloLGS Nerd Font",
   "debug.console.fontSize": 12,
+  // editor settings
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
@@ -73,9 +76,9 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
+    "**/node_modules": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/node_modules": true,
     "**/dist": true
   },
   "git.openRepositoryInParentFolders": "always",
@@ -240,6 +243,7 @@
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
   "workbench.colorCustomizations": {
+    "betterGitLineBlame.foregroundColor": "#6E6A86",
     "tab.activeBorder": "#EB6F92",
     "tab.activeBorderTop": "#EB6F92",
     "terminal.tab.activeBorder": "#EB6F92"
