@@ -12,22 +12,6 @@ local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 
---[[ Gruvbox Colorscheme
-theme.fg_normal = "#FBF1C7"
-theme.fg_focus = "#32302F"
-theme.fg_urgent = "#FBF1C7"
-theme.bg_normal = "#1D2021"
-theme.bg_focus = "#62693E"
-theme.bg_urgent = "#722529"
-theme.border_width = dpi(2)
-theme.border_normal = "#1A1B26"
-theme.border_focus = "#B8BB26"
-theme.border_marked = "#CC9393"
-theme.powerline_spr1 = "#722529"
-theme.powerline_spr2 = "#49503B"
-theme.tasklist_fg_focus = "#B8BB26"
-theme.tasklist_fg_normal = "#5A633A" ]]
-
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 

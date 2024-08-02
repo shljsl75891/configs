@@ -76,10 +76,9 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/node_modules": true,
+    "**/dist": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/dist": true
+    "**/Thumbs.db": true
   },
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,

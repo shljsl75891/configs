@@ -12,18 +12,6 @@ add_newline = false
 command_timeout = 2000
 palette = 'rose_pine'
 
-[palettes.gruvbox_dark]
-color_fg0 = '#FBF1C7'
-color_bg1 = '#3C3836'
-color_bg3 = '#665C54'
-color_blue = '#458588'
-color_aqua = '#689D6A'
-color_green = '#98971A'
-color_orange = '#D65D0E'
-color_purple = '#B16286'
-color_red = '#722529'
-color_yellow = '#D79921'
-
 [palettes.rose_pine]
 color_base = "#191724"
 color_surface = "#1F1D2E"
