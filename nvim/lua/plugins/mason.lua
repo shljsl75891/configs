@@ -29,7 +29,7 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				-- Language Servers
-				"angularls",
+				{ "angularls", autoupdate = false, version = "17.3.2" },
 				"emmet_language_server",
 				"jsonls",
 				"tsserver",
@@ -59,13 +59,13 @@ return {
 							"sass",
 							"scss",
 							"typescriptreact",
-							"angular.html",
+							"htmlangular",
 						},
 					})
 				end,
 				angularls = function()
 					lspconfig["angularls"].setup({
-						filetypes = { "typescript", "angular.html" },
+						filetypes = { "typescript", "htmlangular" },
 					})
 				end,
 				tsserver = function()
