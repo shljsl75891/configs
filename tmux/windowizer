@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Get the current active window index
+current_window=$(tmux display-message -p '#{window_index}')
+
+# Get the list of windows excluding the current active window
+window_list=$(tmux list-windows -F '#{window_index} #{window_name}' | grep -v "^$current_window ")
+
+# Use fzf to select a window from the filtered list
+window_index=$(echo "$window_list" | fzf | awk '{ print $1 }')
+
+# Select the chosen window
+tmux select-window -t $window_index
