@@ -26,6 +26,9 @@ eval "$(starship init zsh)"
 # Increase JS Heap memory
 export NODE_OPTIONS=--max-old-space-size=16384
 
+# Chrome for Karma Testing
+export CHROME_BIN=~/chrome-testing/chrome
+
 # Rose Pine for FZF
 export FZF_DEFAULT_OPTS="
 	--color=fg:#908CAA,bg:#191724,hl:#EBBCBA
