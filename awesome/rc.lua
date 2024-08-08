@@ -319,7 +319,7 @@ globalkeys = mytable.join(
 		awful.spawn.with_shell("maim -sD | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
 	awful.key({ modkey }, "e", function()
-		awful.spawn("nautilus")
+		awful.spawn("pcmanfm")
 	end, { description = "open a explorer", group = "launcher" }),
 	awful.key({ modkey }, "BackSpace", function()
 		awful.spawn.with_shell("slock")
