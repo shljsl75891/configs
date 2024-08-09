@@ -31,6 +31,7 @@ return {
 				-- Language Servers
 				{ "angularls", autoupdate = false, version = "17.3.2" },
 				"emmet_language_server",
+				"eslint-lsp",
 				"jsonls",
 				"tsserver",
 				"lua_ls",
@@ -39,8 +40,6 @@ return {
 				-- Formatters
 				"prettierd",
 				"stylua",
-				-- Linters
-				"eslint_d",
 			},
 		})
 		require("mason-lspconfig").setup({
