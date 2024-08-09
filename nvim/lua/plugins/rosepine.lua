@@ -15,7 +15,7 @@ return {
 					transparency = true,
 				},
 				highlight_groups = {
-					Comment = { italic = true },
+					Comment = { italic = false },
 					LspSignatureActiveParameter = { bg = nil, fg = "love", bold = true },
 					StatusLine = { fg = "text", bg = "muted", blend = 25 },
 					StatusLineNC = { fg = "muted", bg = "muted", blend = 25 },

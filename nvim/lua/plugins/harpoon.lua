@@ -22,9 +22,9 @@ return {
 
 		local ui_opts = {
 			title = "",
-			border = "solid",
+			border = "rounded",
 			title_pos = "center",
-			ui_width_ratio = 0.35,
+			ui_width_ratio = 0.45,
 		}
 
 		-- Adding buffers in harpoon list

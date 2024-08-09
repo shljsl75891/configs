@@ -16,7 +16,7 @@ return {
 				focusable = true,
 				style = "minimal",
 				border = "solid",
-				source = "always",
+				source = true,
 				header = "",
 				prefix = "",
 			},

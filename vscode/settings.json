@@ -25,7 +25,7 @@
   // git blame config
   "betterGitLineBlame.maxSummaryLength": 1,
   "betterGitLineBlame.showStatusBarItem": true,
-  "debug.console.fontFamily": "MesloLGS Nerd Font",
+  "debug.console.fontFamily": "JetBrainsMono Nerd Font",
   "debug.console.fontSize": 12,
   // editor settings
   "editor.codeActionsOnSave": {
@@ -33,7 +33,7 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "MesloLGS Nerd Font",
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
@@ -59,7 +59,7 @@
     "textMateRules": [
       {
         "scope": ["comment"],
-        "settings": { "fontStyle": "italic" }
+        "settings": { "fontStyle": "" }
       },
       {
         "scope": ["variable.object", "entity.name.type", "support.type"],
@@ -83,7 +83,6 @@
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "liveServer.settings.donotShowInfoMsg": true,
   "search.searchOnType": false,
   "telemetry.telemetryLevel": "off",
   // terminal settings

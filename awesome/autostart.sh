@@ -11,3 +11,4 @@ function run {
 run "picom"
 run "nitrogen --set-scaled --random /home/sahil.jassal/gitprojects/wallpapers"
 run "nm-applet"
+run "copyq"
