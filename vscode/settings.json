@@ -59,7 +59,7 @@
     "textMateRules": [
       {
         "scope": ["comment"],
-        "settings": { "fontStyle": "" }
+        "settings": { "fontStyle": "italic" }
       },
       {
         "scope": ["variable.object", "entity.name.type", "support.type"],

@@ -99,7 +99,8 @@ local terminal = "kitty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
-local browser = "thorium-browser"
+local personal_browser = "firefox"
+local work_browser = "thorium-browser"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
@@ -403,11 +404,11 @@ globalkeys = mytable.join(
 
 	-- User programs
 	awful.key({ modkey }, "b", function()
-		awful.spawn(browser .. ' --profile-directory="Profile 1"')
+		awful.spawn(work_browser)
 	end, { description = "launch browser with professional profile", group = "launcher" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn(browser .. ' --profile-directory="Default"')
+		awful.spawn(personal_browser)
 	end, { description = "launch browser with personal profile", group = "launcher" }),
 
 	-- Default
@@ -663,6 +664,7 @@ awful.rules.rules = {
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
 	{ rule = { class = "Code" }, properties = { screen = 1, tag = "󰨞 " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "firefox" }, properties = { screen = 1, tag = " " } },
 }
 
 -- }}}

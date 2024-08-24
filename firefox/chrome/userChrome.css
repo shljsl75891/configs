@@ -1,13 +1,19 @@
 /*
- * This theme uses code from
- * - https://github.com/mimipile/firefoxCSS
- */
+*  
+*
+*  This theme uses code from: https://github.com/Bali10050/FirefoxCSS 
+*  
+*/
 
-/* Navbar size calc stuff */
+/* Just comment the lines or block, flex for the elements you WANT to see */
+
+/* ------------------------------------------------------------------------MEDIA QUERIES FOR ONELINE NAVBAR----------------------------------------------------------- */
+
+/* Navbar size calc */
 :root {
-  --tab-border-radius: 6px !important; /*  Tab border radius -- Changes the tabs rounding  */ /*  Default: 6px  */
+  --tab-border-radius: 15px !important; /*  Tab border radius -- Changes the tabs rounding  */ /*  Default: 6px  */
   --NavbarWidth: 43; /*  Default values: 36 - 43  */
-  --TabsHeight: 36; /*  Minimum: 30  */ /*  Default: 36  */
+  --TabsHeight: 25; /*  Minimum: 30  */ /*  Default: 36  */
   --TabsBorder: 8; /*  Doesnt do anything on small layout  */ /*  Default: 8  */
   --NavbarHeightSmall: calc(var(--TabsHeight) + var(--TabsBorder))
     /*  Only on small layout  */
@@ -94,22 +100,48 @@
   min-height: calc(var(--TabsHeight) * 1px) !important;
 }
 
-/* Remove close window button*/
-.titlebar-buttonbox-container {
-  display: none !important;
+/*------------------------------------------------------------------- MENU BUTTON ----------------------------------------------------------------------*/
+#PanelUI-button {
+  -moz-box-ordinal-group: 0 !important;
+  order: -2 !important;
+  margin: 2px !important;
+  display: flex !important;
 }
 
-/* Removes foward/back buttons */
+/* Window control buttons (min, resize and close) */
+.titlebar-buttonbox-container {
+  display: flex !important;
+  margin-right: 12px !important;
+}
+
+/* Page back and foward buttons */
 #back-button,
 #forward-button {
   display: none !important;
 }
 
-/* Remove icons from urlbar */
-/* #identity-permission-box
-*/
+/* Extensions button */
+#unified-extensions-button {
+  order: -3 !important;
+  display: flex !important;
+}
+
+/* Extension name inside URL bar */
+#identity-box.extensionPage #identity-icon-label {
+  visibility: none !important;
+}
+
+/* All tabs (v-like) button */
+#alltabs-button {
+  display: none !important;
+}
+
+/* ----------------------------------------------------------------- END element visibility section ------------------------------------------------------------- */
+
+/* URL bar icons */
+#reload-button,
+#identity-permission-box,
 #star-button-box,
-#alltabs-button,
 #identity-icon-box,
 #picture-in-picture-button,
 #tracking-protection-icon-container,
@@ -118,33 +150,32 @@
   display: none !important;
 }
 
-/* Hide Extension Name in the identity area */
-#identity-box.extensionPage #identity-icon-label {
-  visibility: collapse !important;
-}
-
-/* Panel/menu position */
-#PanelUI-button {
-  -moz-box-ordinal-group: 0 !important;
-  order: -2 !important;
-  margin: 2px !important;
-}
-
-/* Fades window while not in focus */
-#navigator-toolbox-background:-moz-window-inactive {
-  filter: contrast(90%);
+/* "This time search with:..." */
+#urlbar .search-one-offs {
+  display: none !important;
 }
 
 /*  Removes urlbar border/background  */
 #urlbar-background {
   border: none !important;
-  outline: none !important;
+  outline: block !important;
   transition: 0.15s !important;
 }
 
-/* Remove "This time search with:..." */
-#urlbar .search-one-offs {
-  display: none !important;
+/*  Removes the background from the urlbar while not in use  */
+#urlbar:not(:hover):not([breakout][breakout-extend]) > #urlbar-background {
+  box-shadow: none !important;
+  background: #0000 !important;
+}
+
+/*  Removes annoying border  */
+#navigator-toolbox {
+  border: none !important;
+}
+
+/* Fades window while not in focus */
+#navigator-toolbox-background:-moz-window-inactive {
+  filter: contrast(90%);
 }
 
 /* Remove fullscreen warning border */
@@ -153,7 +184,7 @@
   background: -moz-Dialog !important;
 }
 
-/*  X-button on the tabs  */
+/*  Tabs close button  */
 .tabbrowser-tab:not(:hover) .tab-close-button {
   opacity: 0% !important;
   transition: 0.3s !important;
@@ -184,15 +215,4 @@
   background: none !important;
   cursor: pointer;
   display: -moz-box !important;
-}
-
-/*  Removes annoying border  */
-#navigator-toolbox {
-  border: none !important;
-}
-
-/*  Removes the background from the urlbar while not in use  */
-#urlbar:not(:hover):not([breakout][breakout-extend]) > #urlbar-background {
-  box-shadow: none !important;
-  background: #0000 !important;
 }
