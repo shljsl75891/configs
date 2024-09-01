@@ -99,8 +99,8 @@ local terminal = "kitty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
-local personal_browser = "firefox"
-local work_browser = "thorium-browser"
+local firefox = "firefox"
+local thorium = "thorium-browser"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
@@ -404,12 +404,16 @@ globalkeys = mytable.join(
 
 	-- User programs
 	awful.key({ modkey }, "b", function()
-		awful.spawn(work_browser)
-	end, { description = "launch browser with professional profile", group = "launcher" }),
+		awful.spawn(thorium .. " --profile-directory='Profile 1'")
+	end, { description = "launch thorium browser with work profile", group = "launcher" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn(personal_browser)
-	end, { description = "launch browser with personal profile", group = "launcher" }),
+		awful.spawn(thorium .. " --profile-directory='Profile 5'")
+	end, { description = "launch thorium browser with personal profile", group = "launcher" }),
+
+	awful.key({ modkey, "Control" }, "b", function()
+		awful.spawn(firefox)
+	end, { description = "launch firefox browser", group = "launcher" }),
 
 	-- Default
 	--[[ Menubar
