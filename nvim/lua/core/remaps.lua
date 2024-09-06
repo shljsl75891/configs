@@ -1,5 +1,5 @@
 -- Open NetRW
-vim.keymap.set("n", "-", vim.cmd.Ex)
+vim.keymap.set("n", "-", vim.cmd.Oil)
 
 -- Keeps screen centered
 vim.keymap.set("n", "<C-d>", "<C-d>zz")

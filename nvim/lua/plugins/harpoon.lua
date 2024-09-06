@@ -22,7 +22,7 @@ return {
 
 		local ui_opts = {
 			title = "",
-			border = "rounded",
+			border = "solid",
 			title_pos = "center",
 			ui_width_ratio = 0.45,
 		}

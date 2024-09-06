@@ -317,7 +317,7 @@ globalkeys = mytable.join(
 
 	-- Launching programs
 	awful.key({}, "Print", function()
-		awful.spawn.with_shell("maim -sD | xclip -selection clipboard -t image/png")
+		awful.spawn.with_shell("maim -sDo | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
 	awful.key({ modkey }, "e", function()
 		awful.spawn("pcmanfm")
