@@ -33,7 +33,7 @@ return {
 				"emmet_language_server",
 				"eslint-lsp",
 				"jsonls",
-				"tsserver",
+				"ts_ls",
 				"lua_ls",
 				"tailwindcss",
 				"cssls",
@@ -67,8 +67,8 @@ return {
 						filetypes = { "typescript", "htmlangular" },
 					})
 				end,
-				tsserver = function()
-					lspconfig["tsserver"].setup({
+				ts_ls = function()
+					lspconfig["ts_ls"].setup({
 						root_dir = require("lspconfig.util").root_pattern(".git"),
 						capabilities = capabilities,
 						commands = {
