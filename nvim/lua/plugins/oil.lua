@@ -2,6 +2,7 @@ return {
 	"stevearc/oil.nvim",
 	opts = {
 		lsp_file_methods = {
+			enabled = true,
 			-- Time to wait for LSP file operations to complete before skipping
 			timeout_ms = 1000,
 			-- Set to true to autosave buffers that are updated with LSP willRenameFiles
