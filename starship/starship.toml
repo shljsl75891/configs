@@ -8,17 +8,9 @@ $git_status\
 [](fg:color_rose)\
 $character"""
 
-right_format = """
-[](fg:color_gold)\
-$cmd_duration
-[](fg:color_pine bg:color_gold)\
-$nodejs
-"""
-
 add_newline = false
 command_timeout = 2000
 palette = 'rose_pine'
-
 
 [palettes.rose_pine]
 color_base = "#191724"
@@ -63,8 +55,3 @@ format ='[ $state( $progress_current/$progress_total) ]($style)'
 [git_status]
 style = "bg:color_rose"
 format = '[[ ($all_status$ahead_behind )](fg:color_surface bg:color_rose)]($style)'
-
-[nodejs]
-symbol = ""
-style = "bg:color_pine"
-format = '[[ via $symbol ($version) ](fg:color_surface bg:color_pine)]($style)'
