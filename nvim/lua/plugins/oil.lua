@@ -1,6 +1,7 @@
 return {
 	"stevearc/oil.nvim",
 	opts = {
+		skip_confirm_for_simple_edits = true,
 		lsp_file_methods = {
 			enabled = true,
 			-- Time to wait for LSP file operations to complete before skipping
