@@ -53,6 +53,8 @@ local localOptions = {
 	compatible = false,
 	-- show filetype in default status line
 	statusline = "%f%=%{&filetype}",
+	-- enable global status line
+	laststatus = 3,
 }
 
 for k, v in pairs(localOptions) do
