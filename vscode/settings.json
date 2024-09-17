@@ -25,15 +25,17 @@
   // git blame config
   "betterGitLineBlame.maxSummaryLength": 1,
   "betterGitLineBlame.showStatusBarItem": true,
-  "debug.console.fontFamily": "JetBrainsMono Nerd Font",
+  "debug.console.fontFamily": "MesloLGS Nerd Font",
   "debug.console.fontSize": 12,
   // editor settings
+  "editor.autoClosingQuotes": "never",
+  "editor.autoClosingBrackets": "never",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.fontFamily": "MesloLGS Nerd Font",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,

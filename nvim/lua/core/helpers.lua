@@ -42,6 +42,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- For Angular treesitter
 vim.filetype.add({
 	pattern = {
-		[".*%.component%.html"] = "htmlangular", -- Sets the filetype to `angular.html` if it matches the pattern
+		[".*%.component%.html"] = "htmlangular", -- Sets the filetype to `htmlangular` if it matches the pattern
 	},
 })
