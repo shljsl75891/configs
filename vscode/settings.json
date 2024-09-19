@@ -36,7 +36,6 @@
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
   "editor.fontFamily": "MesloLGS Nerd Font",
-  "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
