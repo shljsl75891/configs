@@ -12,3 +12,8 @@
 ```console
 zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv
 ```
+![image](https://github.com/user-attachments/assets/bfc1f97d-aa1f-4695-8941-744d6be04ecd)
+
+![image](https://github.com/user-attachments/assets/1ac6b7e3-2152-46a3-96c5-89b1f0852eba)
+
+![image](https://github.com/user-attachments/assets/f18b83e5-8614-4cd3-a042-6fd57d5f9fc2)
