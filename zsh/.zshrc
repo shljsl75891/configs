@@ -31,15 +31,11 @@ export CHROME_BIN=~/chrome-testing/chrome
 
 # Rose Pine for FZF
 export FZF_DEFAULT_OPTS="
-	--color=fg:#908CAA,hl:#EBBCBA
+	--color=fg:#908CAA,bg:-1,hl:#EBBCBA
 	--color=fg+:#E0DEF4,bg+:#26233A,hl+:#EBBCBA
-	--color=border:#403D52,header:#31748F,gutter:#191724
-	--color=spinner:#F6C177,info:#9CCFD8,separator:#403D52
+	--color=border:#403D52,header:#31748F,gutter:-1
+	--color=spinner:#F6C177,info:#9CCFD8
 	--color=pointer:#C4A7E7,marker:#EB6F92,prompt:#908CAA"
-
-# Bun  
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"
