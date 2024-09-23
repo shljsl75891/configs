@@ -1,0 +1,16 @@
+img {
+  display: block;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  &[alt*="center"] {
+    margin: auto;
+  }
+  &[alt*="left"] {
+    float: left;
+    margin-right: 1rem;
+  }
+  &[alt*="right"] {
+    float: right;
+    margin-left: 1rem;
+  }
+}
