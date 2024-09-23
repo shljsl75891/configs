@@ -51,7 +51,8 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%f%=%{&filetype}",
+	statusline = "%f%=%y",
+	winbar = "%t%m",
 	-- enable global status line
 	laststatus = 3,
 }
