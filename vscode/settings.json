@@ -140,12 +140,6 @@
     // vertical movements
     { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
     { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
-    // matching template tags
-    {
-      "before": ["5"],
-      "commands": ["editor.emmet.action.matchTag"],
-      "silent": true
-    },
     // lsp actions
     {
       "before": ["K"],
