@@ -23,7 +23,7 @@
   },
   "breadcrumbs.enabled": false,
   // git blame config
-  "betterGitLineBlame.maxSummaryLength": 1,
+  "betterGitLineBlame.maxSummaryLength": 50,
   "betterGitLineBlame.showStatusBarItem": true,
   "debug.console.fontFamily": "MesloLGS Nerd Font",
   "debug.console.fontSize": 12,
