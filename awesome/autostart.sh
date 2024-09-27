@@ -9,6 +9,6 @@ function run {
 
 # programs
 run "picom"
-run "nitrogen --set-scaled $HOME/personal/configs/LearnAndEarnWallpaper.png"
+run "nitrogen --set-scaled --random $HOME/gitprojects/wallpapers"
 run "nm-applet"
 run "copyq"
