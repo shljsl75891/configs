@@ -11,6 +11,7 @@ local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -316,6 +317,16 @@ function theme.at_screen_connect(s)
 					}),
 					dpi(3),
 					dpi(8)
+				),
+				theme.powerline_spr1
+			),
+			arrow(theme.powerline_spr1, theme.powerline_spr2),
+			arrow(theme.powerline_spr2, theme.powerline_spr1),
+			wibox.container.background(
+				wibox.container.margin(
+					wibox.widget({ todo_widget(), layout = wibox.layout.align.horizontal }),
+					dpi(2),
+					dpi(3)
 				),
 				theme.powerline_spr1
 			),
