@@ -94,27 +94,6 @@ return {
 						end,
 					})
 				end,
-				lua_ls = function()
-					lspconfig["lua_ls"].setup({
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								runtime = {
-									version = "LuaJIT",
-								},
-								diagnostics = {
-									globals = { "vim" },
-								},
-								workspace = {
-									library = {
-										[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-										[vim.fn.stdpath("config") .. "/lua"] = true,
-									},
-								},
-							},
-						},
-					})
-				end,
 				jsonls = function()
 					lspconfig["jsonls"].setup({
 						capabilities = capabilities,
