@@ -292,12 +292,6 @@ globalkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "k", function()
 		awful.client.swap.byidx(-1)
 	end, { description = "swap with previous client by index", group = "client" }),
-	awful.key({ modkey, "Control" }, "j", function()
-		awful.screen.focus_relative(1)
-	end, { description = "focus the next screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "k", function()
-		awful.screen.focus_relative(-1)
-	end, { description = "focus the previous screen", group = "screen" }),
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
 	awful.key({ modkey }, "Tab", function()
 		if cycle_prev then
@@ -318,6 +312,17 @@ globalkeys = mytable.join(
 	-- awful.key({ modkey, "Shift" }, "space", function()
 	-- 	awful.layout.inc(-1)
 	-- end, { description = "select previous", group = "layout" }),
+	--
+	-- Maybe for Multi-Monitor Setup
+	-- awful.key({ modkey }, "w", function(c)
+	-- 	c:move_to_screen()
+	-- end, { description = "move to screen", group = "client" }),
+	-- awful.key({ modkey, "Control" }, "j", function()
+	-- 	awful.screen.focus_relative(1)
+	-- end, { description = "focus the next screen", group = "screen" }),
+	-- awful.key({ modkey, "Control" }, "k", function()
+	-- 	awful.screen.focus_relative(-1)
+	-- end, { description = "focus the previous screen", group = "screen" }),
 
 	-- Show/hide wibox
 	awful.key({ modkey }, "x", function()
@@ -346,7 +351,7 @@ globalkeys = mytable.join(
 	end, { description = "locks the screen", group = "screen" }),
 	awful.key({ modkey, "Shift" }, "o", function()
 		awful.spawn.with_shell("obsidian")
-	end, { description = "Open the note taking app - Obsidian", group = "screen" }),
+	end, { description = "launch the note taking app - Obsidian", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		awful.spawn(thorium .. " --profile-directory='Profile 1'")
 	end, { description = "launch thorium browser with work profile", group = "launcher" }),
@@ -500,8 +505,6 @@ local clientkeys = mytable.join(
 	awful.key({ altkey }, "Right", function(c)
 		c:relative_move(50, 0, 0, 0)
 	end, { description = "Move Floating Window Right", group = "floating-client" }),
-
-	awful.key({ altkey, "Shift" }, "m", lain.util.magnify_client, { description = "magnify client", group = "client" }),
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
@@ -518,12 +521,9 @@ local clientkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
-	awful.key({ modkey }, "o", function(c)
-		c:move_to_screen()
-	end, { description = "move to screen", group = "client" }),
 	awful.key({ modkey }, "t", function(c)
 		c.ontop = not c.ontop
-	end, { description = "toggle keep on top", group = "client" }),
+	end, { description = "toggle always on top", group = "client" }),
 	awful.key({ modkey }, "n", function(c)
 		-- The client currently has the input focus, so it cannot be
 		-- minimized, since minimized clients can't have the focus.
