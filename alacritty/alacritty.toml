@@ -1,81 +1,10 @@
-# Colors (Rose Pine)
-[colors.primary]
-foreground = "#e0def4"
-background = "#191724"
-dim_foreground = "#908caa"
-bright_foreground = "#e0def4"
-
-[colors.cursor]
-text = "#e0def4"
-cursor = "#524f67"
-
-[colors.vi_mode_cursor]
-text = "#e0def4"
-cursor = "#524f67"
-
-[colors.search.matches]
-foreground = "#908caa"
-background = "#26233a"
-
-[colors.search.focused_match]
-foreground = "#191724"
-background = "#ebbcba"
-
-[colors.hints.start]
-foreground = "#908caa"
-background = "#1f1d2e"
-
-[colors.hints.end]
-foreground = "#6e6a86"
-background = "#1f1d2e"
-
-[colors.line_indicator]
-foreground = "None"
-background = "None"
-
-[colors.footer_bar]
-foreground = "#e0def4"
-background = "#1f1d2e"
-
-[colors.selection]
-text = "#e0def4"
-background = "#403d52"
-
-[colors.normal]
-black = "#26233a"
-red = "#eb6f92"
-green = "#31748f"
-yellow = "#f6c177"
-blue = "#9ccfd8"
-magenta = "#c4a7e7"
-cyan = "#ebbcba"
-white = "#e0def4"
-
-[colors.bright]
-black = "#6e6a86"
-red = "#eb6f92"
-green = "#31748f"
-yellow = "#f6c177"
-blue = "#9ccfd8"
-magenta = "#c4a7e7"
-cyan = "#ebbcba"
-white = "#e0def4"
-
-[colors.dim]
-black = "#6e6a86"
-red = "#eb6f92"
-green = "#31748f"
-yellow = "#f6c177"
-blue = "#9ccfd8"
-magenta = "#c4a7e7"
-cyan = "#ebbcba"
-white = "#e0def4"
+import = [ "./rosepine.toml" ]
 
 [env]
 TERM = "xterm-256color"
 
 [font]
-size = 6.5
+size = 5.5
 
 [font.bold]
 family = "MesloLGS Nerd Font"
@@ -93,102 +22,9 @@ style = "Italic"
 family = "MesloLGS Nerd Font"
 style = "Regular"
 
-[[keyboard.bindings]]
-action = "Paste"
-key = "V"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "PasteSelection"
-key = "Insert"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ResetFontSize"
-key = "Key0"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Equals"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Plus"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "DecreaseFontSize"
-key = "Minus"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ToggleFullscreen"
-key = "F11"
-mods = "None"
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "Paste"
-mods = "None"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "Copy"
-mods = "None"
-
-[[keyboard.bindings]]
-action = "ClearLogNotice"
-key = "L"
-mods = "Control"
-
-[[keyboard.bindings]]
-chars = "\f"
-key = "L"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ScrollPageUp"
-key = "PageUp"
-mode = "~Alt"
-mods = "None"
-
-[[keyboard.bindings]]
-action = "ScrollPageDown"
-key = "PageDown"
-mode = "~Alt"
-mods = "None"
-
-[[keyboard.bindings]]
-action = "ScrollToTop"
-key = "Home"
-mode = "~Alt"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ScrollToBottom"
-key = "End"
-mode = "~Alt"
-mods = "Shift"
-
 [scrolling]
 history = 100000
 
 [window]
 dynamic_padding = true
-opacity = 0.90
-title = "Alacritty"
-
-[window.padding]
-x = 4
-y = 2
-
-[window.class]
-general = "Alacritty"
-instance = "Alacritty"
+opacity = 0.95
