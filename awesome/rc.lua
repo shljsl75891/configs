@@ -424,7 +424,7 @@ globalkeys = mytable.join(
 	awful.key({ modkey }, "r", function()
 		os.execute(
 			string.format(
-				"dmenu_run -i -fn 'NotoSans Nerd Font-10' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'NotoSans Nerd Font-8' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,
@@ -681,7 +681,7 @@ client.connect_signal("manage", function(c)
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
 	c.shape = function(cr, w, h)
-		gears.shape.rounded_rect(cr, w, h, 8)
+		gears.shape.rounded_rect(cr, w, h, 0)
 	end
 
 	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then

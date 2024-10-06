@@ -21,18 +21,19 @@ theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
 theme.fg_normal = "#E0DEF4"
 theme.fg_focus = "#32302F"
-theme.font = "NotoSans Nerd Font Medium 8"
+theme.font = "NotoSans Nerd Font Medium 7"
 theme.fg_urgent = "#E0DEF4"
 theme.bg_normal = "#1D2021"
 theme.bg_focus = "#31748F"
 theme.bg_urgent = "#EB6F92"
-theme.border_width = dpi(2)
+theme.border_width = dpi(1)
 theme.border_normal = "#1A1B26"
 theme.border_focus = "#F6C177"
 theme.border_marked = "#CC9393"
 theme.powerline_spr1 = "#31748F"
 theme.powerline_spr2 = "#403D52"
 theme.bg_systray = theme.powerline_spr1
+theme.systray_icon_spacing = 3
 theme.tasklist_align = "center"
 theme.tasklist_fg_focus = "#EB6F92"
 theme.tasklist_fg_normal = "#EBBCBA"
@@ -76,6 +77,7 @@ theme.widget_mail_on = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon = true
 theme.useless_gap = dpi(2)
+theme.gap_single_client = true
 theme.titlebar_close_button_focus = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -97,7 +99,7 @@ theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/
 
 -- Notification Options
 naughty.config.defaults.ontop = true
-naughty.config.defaults.icon_size = dpi(120)
+naughty.config.defaults.icon_size = dpi(90)
 naughty.config.defaults.timeout = 10
 naughty.config.defaults.hover_timeout = 300
 naughty.config.defaults.opacity = 0.8
@@ -107,7 +109,7 @@ naughty.config.defaults.border_width = 0
 naughty.config.defaults.border_color = theme.border_normal
 naughty.config.defaults.position = "top_right"
 naughty.config.defaults.shape = function(cr, w, h)
-	gears.shape.rounded_rect(cr, w, h, dpi(8))
+	gears.shape.rounded_rect(cr, w, h, dpi(0))
 end
 
 -- Generate taglist squares:
@@ -129,7 +131,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = "MesloLGS Nerd Font 9",
+		font = "MesloLGS Nerd Font 7",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
@@ -194,13 +196,13 @@ function theme.at_screen_connect(s)
 	s.mywibox = awful.wibar({
 		position = "top",
 		screen = s,
-		height = dpi(20),
-		border_width = dpi(2),
+		height = dpi(18),
+		border_width = dpi(1),
 		bg = theme.bg_normal,
 		fg = theme.fg_normal,
 		opacity = 0.9,
 		shape = function(cr, w, h)
-			gears.shape.rounded_rect(cr, w, h, dpi(8))
+			gears.shape.rounded_rect(cr, w, h, dpi(0))
 		end,
 	})
 
