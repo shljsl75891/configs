@@ -268,9 +268,9 @@ function theme.at_screen_connect(s)
 							card = 0,
 							widget_type = "horizontal_bar",
 							with_icon = true,
-							margins = 8,
+							margins = 7,
 							shape = "octagon",
-							bg_color = "#1f2335",
+							bg_color = "#1F2335",
 							mute_color = theme.bg_urgent,
 							-- icon_dir = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
 						}),
@@ -303,9 +303,10 @@ function theme.at_screen_connect(s)
 				brightness_widget({
 					type = "icon_and_text",
 					percentage = true,
+					timeout = 100,
 					path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
-					step = 5,
+					step = 20,
 				}),
 				theme.powerline_spr2
 			),
