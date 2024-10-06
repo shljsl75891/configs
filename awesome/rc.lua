@@ -490,16 +490,16 @@ local clientkeys = mytable.join(
 	-- Move Floating Windows
 	awful.key({ altkey }, "Down", function(c)
 		c:relative_move(0, 50, 0, 0)
-	end, { description = "Floating Move Down", group = "client" }),
+	end, { description = "Move Floating Window Down", group = "floating-client" }),
 	awful.key({ altkey }, "Up", function(c)
 		c:relative_move(0, -50, 0, 0)
-	end, { description = "Floating Move Up", group = "client" }),
+	end, { description = "Move Floating Window Up", group = "floating-client" }),
 	awful.key({ altkey }, "Left", function(c)
 		c:relative_move(-50, 0, 0, 0)
-	end, { description = "Floating Move Left", group = "client" }),
+	end, { description = "Move Floating Window Left", group = "floating-client" }),
 	awful.key({ altkey }, "Right", function(c)
 		c:relative_move(50, 0, 0, 0)
-	end, { description = "Floating Move Right", group = "client" }),
+	end, { description = "Move Floating Window Right", group = "floating-client" }),
 
 	awful.key({ altkey, "Shift" }, "m", lain.util.magnify_client, { description = "magnify client", group = "client" }),
 	awful.key({ modkey }, "f", function(c)
@@ -509,7 +509,12 @@ local clientkeys = mytable.join(
 	awful.key({ modkey }, "q", function(c)
 		c:kill()
 	end, { description = "close", group = "client" }),
-	awful.key({ modkey }, "o", awful.client.floating.toggle, { description = "toggle floating", group = "client" }),
+	awful.key(
+		{ modkey },
+		"o",
+		awful.client.floating.toggle,
+		{ description = "toggle floating window", group = "floating-client" }
+	),
 	awful.key({ modkey, "Shift" }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
