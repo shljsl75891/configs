@@ -99,7 +99,7 @@ local terminal = "alacritty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
-local firefox = "firefox"
+local mercury = "mercury-browser"
 local thorium = "thorium-browser"
 
 awful.util.terminal = terminal
@@ -274,6 +274,18 @@ globalkeys = mytable.join(
 	end, { description = "show main menu", group = "awesome" }), ]]
 
 	-- Layout manipulation
+	awful.key({ modkey }, "=", function()
+		awful.tag.incnmaster(1, nil, true)
+	end, { description = "increase the number of master clients", group = "layout" }),
+	awful.key({ modkey }, "-", function()
+		awful.tag.incnmaster(-1, nil, true)
+	end, { description = "decrease the number of master clients", group = "layout" }),
+	awful.key({ modkey, "Control" }, "=", function()
+		awful.tag.incncol(1, nil, true)
+	end, { description = "increase the number of columns", group = "layout" }),
+	awful.key({ modkey, "Control" }, "-", function()
+		awful.tag.incncol(-1, nil, true)
+	end, { description = "decrease the number of columns", group = "layout" }),
 	awful.key({ modkey, "Shift" }, "j", function()
 		awful.client.swap.byidx(1)
 	end, { description = "swap with next client by index", group = "client" }),
@@ -298,6 +310,15 @@ globalkeys = mytable.join(
 		end
 	end, { description = "cycle with previous/go back", group = "client" }),
 
+	-- Don't know what these bindings are for.....
+
+	-- awful.key({ modkey }, "space", function()
+	-- 	awful.layout.inc(1)
+	-- end, { description = "select next", group = "layout" }),
+	-- awful.key({ modkey, "Shift" }, "space", function()
+	-- 	awful.layout.inc(-1)
+	-- end, { description = "select previous", group = "layout" }),
+
 	-- Show/hide wibox
 	awful.key({ modkey }, "x", function()
 		for s in screen do
@@ -308,14 +329,12 @@ globalkeys = mytable.join(
 		end
 	end, { description = "toggle wibox", group = "awesome" }),
 
-	-- Standard program
+	-- Launching Programs
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
-
-	-- Launching programs
 	awful.key({}, "Print", function()
 		awful.spawn.with_shell("maim -sDo | xclip -selection clipboard -t image/png")
 	end, { description = "capture partial screenshot", group = "launcher" }),
@@ -325,25 +344,18 @@ globalkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
-
-	awful.key({ modkey, "Shift" }, "h", function()
-		awful.tag.incnmaster(1, nil, true)
-	end, { description = "increase the number of master clients", group = "layout" }),
-	awful.key({ modkey, "Shift" }, "l", function()
-		awful.tag.incnmaster(-1, nil, true)
-	end, { description = "decrease the number of master clients", group = "layout" }),
-	awful.key({ modkey, "Control" }, "h", function()
-		awful.tag.incncol(1, nil, true)
-	end, { description = "increase the number of columns", group = "layout" }),
-	awful.key({ modkey, "Control" }, "l", function()
-		awful.tag.incncol(-1, nil, true)
-	end, { description = "decrease the number of columns", group = "layout" }),
-	awful.key({ modkey }, "space", function()
-		awful.layout.inc(1)
-	end, { description = "select next", group = "layout" }),
-	awful.key({ modkey, "Shift" }, "space", function()
-		awful.layout.inc(-1)
-	end, { description = "select previous", group = "layout" }),
+	awful.key({ modkey, "Shift" }, "o", function()
+		awful.spawn.with_shell("obsidian")
+	end, { description = "Open the note taking app - Obsidian", group = "screen" }),
+	awful.key({ modkey }, "b", function()
+		awful.spawn(thorium .. " --profile-directory='Profile 1'")
+	end, { description = "launch thorium browser with work profile", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "b", function()
+		awful.spawn(thorium .. " --profile-directory='Profile 5'")
+	end, { description = "launch thorium browser with personal profile", group = "launcher" }),
+	awful.key({ modkey, "Control" }, "b", function()
+		awful.spawn(mercury)
+	end, { description = "launch mercury browser", group = "launcher" }),
 
 	awful.key({ modkey, "Shift" }, "n", function()
 		local c = awful.client.restore()
@@ -401,19 +413,6 @@ globalkeys = mytable.join(
 		-- beautiful.volume.update()
 		volume_widget.toggle()
 	end, { description = "toggle mute", group = "hotkeys" }),
-
-	-- User programs
-	awful.key({ modkey }, "b", function()
-		awful.spawn(thorium .. " --profile-directory='Profile 1'")
-	end, { description = "launch thorium browser with work profile", group = "launcher" }),
-
-	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn(thorium .. " --profile-directory='Profile 5'")
-	end, { description = "launch thorium browser with personal profile", group = "launcher" }),
-
-	awful.key({ modkey, "Control" }, "b", function()
-		awful.spawn(firefox)
-	end, { description = "launch firefox browser", group = "launcher" }),
 
 	-- Default
 	--[[ Menubar
@@ -666,9 +665,10 @@ awful.rules.rules = {
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
-	{ rule = { class = "Code" }, properties = { screen = 1, tag = "󰨞 " } },
+	{ rule = { class = "Codium" }, properties = { screen = 1, tag = "󰨞 " } },
+	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "firefox" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "mercury-default" }, properties = { screen = 1, tag = " " } },
 }
 
 -- }}}
