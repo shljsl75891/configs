@@ -235,7 +235,7 @@ end)
 -- {{{ Key bindings
 globalkeys = mytable.join(
 	-- Destroy all notifications
-	awful.key({ "Control" }, "space", function()
+	awful.key({ "Control" }, "Backspace", function()
 		naughty.destroy_all_notifications()
 	end, { description = "destroy all notifications", group = "hotkeys" }),
 
@@ -322,7 +322,7 @@ globalkeys = mytable.join(
 	awful.key({ modkey }, "e", function()
 		awful.spawn("thunar")
 	end, { description = "open a explorer", group = "launcher" }),
-	awful.key({ modkey }, "BackSpace", function()
+	awful.key({ modkey, "Shift" }, "l", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
 
