@@ -26,7 +26,7 @@
   "betterGitLineBlame.maxSummaryLength": 50,
   "betterGitLineBlame.showStatusBarItem": true,
   "debug.console.fontFamily": "MesloLGS Nerd Font",
-  "debug.console.fontSize": 12,
+  "debug.console.fontSize": 10,
   // editor settings
   "editor.autoClosingQuotes": "never",
   "editor.autoClosingBrackets": "never",
@@ -36,7 +36,7 @@
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
   "editor.fontFamily": "MesloLGS Nerd Font",
-  "editor.fontSize": 14,
+  "editor.fontSize": 12,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
   "editor.guides.highlightActiveBracketPair": false,
@@ -45,7 +45,7 @@
   "editor.hover.enabled": false,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
-  "editor.matchBrackets": "near",
+  "editor.matchBrackets": "never",
   "editor.minimap.autohide": true,
   "editor.minimap.renderCharacters": false,
   "editor.occurrencesHighlight": "off",
@@ -58,10 +58,7 @@
   "editor.tabSize": 2,
   "editor.tokenColorCustomizations": {
     "textMateRules": [
-      {
-        "scope": ["comment"],
-        "settings": { "fontStyle": "italic" }
-      },
+      { "scope": ["comment"], "settings": { "fontStyle": "italic" } },
       {
         "scope": ["variable.object", "entity.name.type", "support.type"],
         "settings": { "fontStyle": "" }
@@ -70,18 +67,9 @@
     ]
   }, // explorer settings
   "explorer.compactFolders": false,
+  "explorer.excludeGitIgnore": false,
   // imporve vim extension performance
   "extensions.experimental.affinity": { "vscodevim.vim": 1 },
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/dist": true,
-    "**/node_modules": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true
-  },
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -90,7 +78,7 @@
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.fontSize": 10,
   "terminal.integrated.gpuAcceleration": "on",
   "typescript.updateImportsOnFileMove.enabled": "always",
   // turn off annoyances
@@ -111,8 +99,11 @@
     "<C-x>": true,
     "<C-i>": true
   },
-  "vim.highlightedyank.color": "#EB6F92",
+  "vim.highlightedyank.color": "#E0DEF4",
+  "vim.highlightedyank.textColor": "#191724",
   "vim.highlightedyank.duration": 60,
+  "vim.searchMatchColor": "#E0DEF4",
+  "vim.searchMatchTextColor": "#191724",
   "vim.highlightedyank.enable": true,
   // vim keybindings for insert mode
   "vim.insertModeKeyBindings": [
@@ -144,6 +135,11 @@
     {
       "before": ["K"],
       "commands": ["editor.action.showDefinitionPreviewHover"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "r", "v"],
+      "commands": ["workbench.files.action.showActiveFileInExplorer"],
       "silent": true
     },
     {
@@ -240,7 +236,13 @@
     "betterGitLineBlame.foregroundColor": "#6E6A86",
     "tab.activeBorder": "#EB6F92",
     "tab.activeBorderTop": "#EB6F92",
-    "terminal.tab.activeBorder": "#EB6F92"
+    "terminal.tab.activeBorder": "#EB6F92",
+    "tab.activeBackground": "#191724",
+    "tab.inactiveBackground": "#1F1D2E",
+    "activityBar.background": "#26233A",
+    "sideBar.background": "#1F1D2E",
+    "titleBar.activeBackground": "#1F1D2E",
+    "editorGroupHeader.tabsBackground": "#1F1D2E"
   },
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,

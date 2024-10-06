@@ -110,6 +110,7 @@
   // matching html template tags
   {
     "command": "editor.emmet.action.matchTag",
-    "key": "shift+5"
+    "key": "shift+5",
+    "when": "editorLangId == html"
   }
 ]
