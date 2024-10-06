@@ -13,30 +13,53 @@ local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 
+-- Color Palettes
+-- Define color palettes
+local palettes = {
+	["rose-pine"] = {
+		fg_normal = "#E0DEF4",
+		fg_focus = "#32302F",
+		fg_urgent = "#E0DEF4",
+		bg_normal = "#1D2021",
+		bg_focus = "#31748F",
+		bg_urgent = "#EB6F92",
+		border_normal = "#1A1B26",
+		border_focus = "#F6C177",
+		border_marked = "#CC9393",
+		powerline_spr1 = "#31748F",
+		powerline_spr2 = "#403D52",
+		tasklist_fg_focus = "#EB6F92",
+		tasklist_fg_normal = "#EBBCBA",
+	},
+}
+
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
+local active_palette = palettes["rose-pine"]
 
-local theme = {}
+local theme = {
+	fg_normal = active_palette.fg_normal,
+	fg_focus = active_palette.fg_focus,
+	fg_urgent = active_palette.fg_urgent,
+	bg_normal = active_palette.bg_normal,
+	bg_focus = active_palette.bg_focus,
+	bg_urgent = active_palette.bg_urgent,
+	border_normal = active_palette.border_normal,
+	border_focus = active_palette.border_focus,
+	border_marked = active_palette.border_marked,
+	powerline_spr1 = active_palette.powerline_spr1,
+	powerline_spr2 = active_palette.powerline_spr2,
+	tasklist_fg_focus = active_palette.tasklist_fg_focus,
+	tasklist_fg_normal = active_palette.tasklist_fg_normal,
+}
+
 theme.dir = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper = theme.dir .. "/wall.png"
-theme.fg_normal = "#E0DEF4"
-theme.fg_focus = "#32302F"
 theme.font = "NotoSans Nerd Font Medium 7"
-theme.fg_urgent = "#E0DEF4"
-theme.bg_normal = "#1D2021"
-theme.bg_focus = "#31748F"
-theme.bg_urgent = "#EB6F92"
 theme.border_width = dpi(1)
-theme.border_normal = "#1A1B26"
-theme.border_focus = "#F6C177"
-theme.border_marked = "#CC9393"
-theme.powerline_spr1 = "#31748F"
-theme.powerline_spr2 = "#403D52"
 theme.bg_systray = theme.powerline_spr1
 theme.systray_icon_spacing = 3
 theme.tasklist_align = "center"
-theme.tasklist_fg_focus = "#EB6F92"
-theme.tasklist_fg_normal = "#EBBCBA"
 theme.tasklist_bg_focus = theme.bg_normal
 theme.tasklist_font = theme.font
 theme.titlebar_bg_focus = theme.bg_focus
