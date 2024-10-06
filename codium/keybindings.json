@@ -112,5 +112,8 @@
     "command": "editor.emmet.action.matchTag",
     "key": "shift+5",
     "when": "editorLangId == html"
-  }
+  },
+  // disable annoying keybinding
+  { "key": "ctrl+q", "command": "-workbench.action.quit" },
+  { "key": "ctrl+q", "command": "-workbench.action.closeWindow" }
 ]
