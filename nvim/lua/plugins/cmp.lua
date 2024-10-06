@@ -14,8 +14,6 @@ return {
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
 
-		require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./snips" } })
-
 		cmp.setup({
 			window = {
 				completion = cmp.config.window.bordered({
