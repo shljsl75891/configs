@@ -233,7 +233,7 @@ end)
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = mytable.join(
+local globalkeys = mytable.join(
 	-- Destroy all notifications
 	awful.key({ "Control" }, "Backspace", function()
 		naughty.destroy_all_notifications()
@@ -590,7 +590,7 @@ screen.connect_signal("arrange", function(s)
 	end
 end)
 
-clientbuttons = mytable.join(
+local clientbuttons = mytable.join(
 	awful.button({}, 1, function(c)
 		c:emit_signal("request::activate", "mouse_click", { raise = true })
 	end),
