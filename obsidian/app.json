@@ -1,0 +1,21 @@
+{
+  "promptDelete": false,
+  "livePreview": true,
+  "vimMode": true,
+  "tabSize": 4,
+  "showIndentGuide": false,
+  "userIgnoreFilters": null,
+  "defaultViewMode": "source",
+  "newLinkFormat": "relative",
+  "attachmentFolderPath": "Attachments",
+  "alwaysUpdateLinks": true,
+  "readableLineLength": false,
+  "showLineNumber": true,
+  "autoPairBrackets": false,
+  "autoPairMarkdown": false,
+  "strictLineBreaks": false,
+  "showInlineTitle": false,
+  "spellcheck": false,
+  "showRibbon": false,
+  "propertiesInDocument": "visible"
+}
