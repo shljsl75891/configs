@@ -22,9 +22,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "breadcrumbs.enabled": false,
-  // git blame config
-  "betterGitLineBlame.maxSummaryLength": 50,
-  "betterGitLineBlame.showStatusBarItem": true,
   "debug.console.fontFamily": "MesloLGS Nerd Font",
   "debug.console.fontSize": 10,
   // editor settings
@@ -126,6 +123,11 @@
     {
       "before": ["<leader>", "c", "o"],
       "commands": ["workbench.action.closeOtherEditors"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "c", "p"],
+      "commands": ["workbench.action.files.copyPathOfActiveFile"],
       "silent": true
     },
     // vertical movements
