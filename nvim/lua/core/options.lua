@@ -51,9 +51,7 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%f%m%=%y",
-	-- enable global status line
-	laststatus = 3,
+	statusline = "%t%m%=%y",
 }
 
 for k, v in pairs(localOptions) do
