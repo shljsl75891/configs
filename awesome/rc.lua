@@ -235,7 +235,7 @@ end)
 -- {{{ Key bindings
 local globalkeys = mytable.join(
 	-- Destroy all notifications
-	awful.key({ altkey }, "BackSpace", function()
+	awful.key({ modkey }, "BackSpace", function()
 		naughty.destroy_all_notifications()
 	end, { description = "destroy all notifications", group = "hotkeys" }),
 
