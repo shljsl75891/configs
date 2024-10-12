@@ -1,7 +1,16 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	tag = "0.1.8",
-	event = { "VimEnter" },
+	cmd = { "Telescope" },
+	keys = {
+		"<leader>ff",
+		"<leader>fb",
+		"<leader>lg",
+		"<leader>cr",
+		"<leader>ht",
+		"<leader>fsf",
+		"<leader>fss",
+	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
