@@ -1,6 +1,20 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		{
+			"j-hui/fidget.nvim",
+			opts = {
+				notification = {
+					window = {
+						normal_hl = "Comment",
+						winblend = 0,
+						align = "top",
+					},
+				},
+			},
+		},
+	},
 	config = function()
 		local builtin = require("telescope.builtin")
 
