@@ -17,5 +17,8 @@
   "showInlineTitle": false,
   "spellcheck": false,
   "showRibbon": false,
-  "propertiesInDocument": "visible"
+  "propertiesInDocument": "visible",
+  "useMarkdownLinks": false,
+  "showUnsupportedFiles": false,
+  "rightToLeft": false
 }
