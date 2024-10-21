@@ -19,14 +19,6 @@
       "key": "P"
     }
   ],
-  "editor:context-menu": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "Backspace"
-    }
-  ],
   "editor:toggle-bold": [],
   "editor:toggle-italics": [],
   "app:toggle-left-sidebar": [
