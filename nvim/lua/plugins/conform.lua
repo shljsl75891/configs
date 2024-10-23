@@ -18,6 +18,7 @@ return {
 			yaml = { "prettierd" },
 			markdown = { "prettierd" },
 			lua = { "stylua" },
+			python = { "isort", "blue" },
 		},
 		format_on_save = {
 			-- These options will be passed to conform.format()
