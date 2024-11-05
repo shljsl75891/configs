@@ -330,7 +330,7 @@ function theme.at_screen_connect(s)
 					path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
 					base = 5,
-					step = 20,
+					step = 10,
 				}),
 				theme.powerline_spr2
 			),
