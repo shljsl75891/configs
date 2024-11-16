@@ -1,8 +1,8 @@
 {
-  "accentColor": "#eb6f92",
-  "cssTheme": "Rosé Pine",
+  "accentColor": "#ee8c1b",
+  "cssTheme": "Obsidian gruvbox",
   "baseFontSize": 15,
-  "monospaceFontFamily": "MesloLGS Nerd Font",
+  "monospaceFontFamily": "BerkeleyMono Nerd Font",
   "interfaceFontFamily": "NotoSans Nerd Font",
   "textFontFamily": "NotoSans Nerd Font",
   "showViewHeader": false,

@@ -22,7 +22,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "breadcrumbs.enabled": false,
-  "debug.console.fontFamily": "MesloLGS Nerd Font",
+  "debug.console.fontFamily": "BerkeleyMono Nerd Font",
   "debug.console.fontSize": 10,
   // editor settings
   "editor.autoClosingQuotes": "never",
@@ -32,10 +32,12 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "MesloLGS Nerd Font",
+  "editor.fontFamily": "BerkeleyMono Nerd Font",
   "editor.fontSize": 12,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
+  "betterGitLineBlame.showStatusBarItem": true,
+  "betterGitLineBlame.maxSummaryLength": 80,
   "editor.guides.highlightActiveBracketPair": false,
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
@@ -96,11 +98,11 @@
     "<C-x>": true,
     "<C-i>": true
   },
-  "vim.highlightedyank.color": "#E0DEF4",
-  "vim.highlightedyank.textColor": "#191724",
+  "vim.highlightedyank.color": "#FE8019",
+  "vim.highlightedyank.textColor": "#282828",
   "vim.highlightedyank.duration": 60,
-  "vim.searchMatchColor": "#E0DEF4",
-  "vim.searchMatchTextColor": "#191724",
+  "vim.searchMatchColor": "#FE8019",
+  "vim.searchMatchTextColor": "#282828",
   "vim.highlightedyank.enable": true,
   // vim keybindings for insert mode
   "vim.insertModeKeyBindings": [
@@ -234,27 +236,15 @@
   "window.dialogStyle": "custom",
   "window.menuBarVisibility": "toggle",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorCustomizations": {
-    "betterGitLineBlame.foregroundColor": "#6E6A86",
-    "tab.activeBorder": "#EB6F92",
-    "tab.activeBorderTop": "#EB6F92",
-    "terminal.tab.activeBorder": "#EB6F92",
-    "tab.activeBackground": "#191724",
-    "tab.inactiveBackground": "#1F1D2E",
-    "activityBar.background": "#26233A",
-    "sideBar.background": "#1F1D2E",
-    "titleBar.activeBackground": "#1F1D2E",
-    "editorGroupHeader.tabsBackground": "#1F1D2E"
-  },
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.showIcons": false,
-  "workbench.iconTheme": null,
+  "workbench.iconTheme": "gruvbox-material-icon-theme",
   "workbench.layoutControl.enabled": false,
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.statusBar.visible": true,
   "workbench.tree.renderIndentGuides": "none",
-  "workbench.colorTheme": "NeoRose-VimPine"
+  "workbench.colorTheme": "Gruvbox Dark Hard"
 }

@@ -37,6 +37,15 @@ export FZF_DEFAULT_OPTS="
 	--color=spinner:#F6C177,info:#9CCFD8
 	--color=pointer:#C4A7E7,marker:#EB6F92,prompt:#908CAA"
 
+# Gruvbox for FZF
+export FZF_DEFAULT_OPTS="
+	--color=fg:#EBDBB2,bg:-1,hl:#8EC07C
+	--color=fg+:#FBF1C7,bg+:#282828,hl+:#8EC07C
+	--color=border:#665C54,header:#83A598,gutter:-1
+	--color=spinner:#FE8019,info:#FABD2F
+	--color=pointer:#62693e,marker:#D79921,prompt:#FABD2F"
+
+
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

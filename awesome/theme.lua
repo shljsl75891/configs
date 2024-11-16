@@ -31,11 +31,27 @@ local palettes = {
 		tasklist_fg_focus = "#EB6F92",
 		tasklist_fg_normal = "#EBBCBA",
 	},
+	["gruvbox"] = {
+		fg_normal = "#FBF1C7",
+		fg_focus = "#32302F",
+		fg_urgent = "#FBF1C7",
+		bg_normal = "#1D2021",
+		bg_focus = "#62693E",
+		bg_urgent = "#722529",
+		border_width = dpi(2),
+		border_normal = "#1A1B26",
+		border_focus = "#B8BB26",
+		border_marked = "#CC9393",
+		powerline_spr1 = "#722529",
+		powerline_spr2 = "#49503B",
+		tasklist_fg_focus = "#B8BB26",
+		tasklist_fg_normal = "#5A633A",
+	},
 }
 
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
-local active_palette = palettes["rose-pine"]
+local active_palette = palettes["gruvbox"]
 
 local theme = {
 	fg_normal = active_palette.fg_normal,
@@ -154,7 +170,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = "MesloLGS Nerd Font 7",
+		font = "BerkeleyMono Nerd Font 7",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
@@ -295,7 +311,7 @@ function theme.at_screen_connect(s)
 							shape = "octagon",
 							bg_color = "#1F2335",
 							mute_color = theme.bg_urgent,
-							-- icon_dir = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
+							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 						}),
 						layout = wibox.layout.align.horizontal,
 					}),
@@ -311,7 +327,7 @@ function theme.at_screen_connect(s)
 						battery_widget({
 							show_current_level = true,
 							timeout = 2,
-							path_to_icons = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
+							path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 							font = theme.font,
 						}),
 						layout = wibox.layout.align.horizontal,
@@ -327,7 +343,7 @@ function theme.at_screen_connect(s)
 					type = "icon_and_text",
 					percentage = true,
 					timeout = 100,
-					path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
+					path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
 					program = "xbacklight",
 					base = 5,
 					step = 10,
