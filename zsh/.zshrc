@@ -24,7 +24,7 @@ alias egrep='egrep --color=auto'
 eval "$(starship init zsh)"
 
 # Increase JS Heap memory
-export NODE_OPTIONS=--max-old-space-size=16384
+export NODE_OPTIONS=--max-old-space-size=8096
 
 # Chrome for Karma Testing
 export CHROME_BIN=~/chrome-testing/chrome
