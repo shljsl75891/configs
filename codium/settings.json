@@ -33,6 +33,7 @@
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
   "editor.fontFamily": "BerkeleyMono Nerd Font",
+  "editor.fontLigatures": false,
   "editor.fontSize": 12,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
