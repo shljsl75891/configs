@@ -306,6 +306,7 @@ function theme.at_screen_connect(s)
 						volume_widget({
 							card = 0,
 							widget_type = "horizontal_bar",
+							device = "default",
 							with_icon = true,
 							margins = 7,
 							shape = "octagon",
