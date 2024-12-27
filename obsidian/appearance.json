@@ -2,14 +2,12 @@
   "accentColor": "#ee8c1b",
   "cssTheme": "Obsidian gruvbox",
   "baseFontSize": 15,
-  "monospaceFontFamily": "BerkeleyMono Nerd Font",
+  "monospaceFontFamily": "TX02 Nerd Font",
   "interfaceFontFamily": "NotoSans Nerd Font",
   "textFontFamily": "NotoSans Nerd Font",
   "showViewHeader": false,
   "nativeMenus": true,
   "theme": "system",
   "baseFontSizeAction": false,
-  "enabledCssSnippets": [
-    "index"
-  ]
+  "enabledCssSnippets": ["index"]
 }

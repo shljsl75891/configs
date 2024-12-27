@@ -170,7 +170,7 @@ end)
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
 	notification_preset = {
-		font = "BerkeleyMono Nerd Font 7",
+		font = "TX02 Nerd Font 8",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},

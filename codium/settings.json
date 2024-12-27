@@ -22,8 +22,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "breadcrumbs.enabled": false,
-  "debug.console.fontFamily": "BerkeleyMono Nerd Font",
-  "debug.console.fontSize": 10,
+  "debug.console.fontFamily": "TX02 Nerd Font",
+  "debug.console.fontSize": 11,
   // editor settings
   "editor.autoClosingQuotes": "never",
   "editor.autoClosingBrackets": "never",
@@ -32,9 +32,9 @@
   },
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
-  "editor.fontFamily": "BerkeleyMono Nerd Font",
+  "editor.fontFamily": "TX02 Nerd Font",
   "editor.fontLigatures": false,
-  "editor.fontSize": 12,
+  "editor.fontSize": 13,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
   "betterGitLineBlame.showStatusBarItem": true,
@@ -43,6 +43,7 @@
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
+  "editor.lineHeight": 1.2,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "never",
@@ -78,8 +79,9 @@
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.fontSize": 10,
+  "terminal.integrated.fontSize": 11,
   "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.lineHeight": 1,
   "typescript.updateImportsOnFileMove.enabled": "always",
   // turn off annoyances
   "update.showReleaseNotes": false,
