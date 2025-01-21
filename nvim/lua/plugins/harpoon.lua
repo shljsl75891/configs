@@ -7,7 +7,7 @@ return {
 		"<C-j>",
 		"<C-k>",
 		"<C-h>",
-		"<C-n>",
+		"<C-l>",
 	},
 	config = function()
 		local harpoon = require("harpoon")
