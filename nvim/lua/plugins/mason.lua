@@ -14,20 +14,17 @@ return {
 				opts = {
 					ensure_installed = {
 						-- Language Servers
-						"angularls",
+						{ "angularls", version = "14.2.0" },
 						"emmet_language_server",
 						"eslint-lsp",
 						"jsonls",
 						"ts_ls",
 						"lua_ls",
 						"tailwindcss",
-						"pyright",
 						"cssls",
 						-- Formatters
 						"prettierd",
 						"stylua",
-						"isort",
-						"blue",
 					},
 				},
 			},
