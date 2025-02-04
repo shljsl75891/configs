@@ -1,7 +1,7 @@
 return {
 	"iamcco/markdown-preview.nvim",
 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-	build = "cd app && npm install",
+	build = "cd app && npm install && git restore .",
 	dependencies = {
 		{
 			"dfendr/clipboard-image.nvim",
