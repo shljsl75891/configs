@@ -9,7 +9,7 @@ return {
 					window = {
 						normal_hl = "Comment",
 						winblend = 0,
-						align = "top",
+						align = "bottom",
 					},
 				},
 			},

@@ -51,7 +51,11 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%t%m%=%y",
+	statusline = "%f%=[%L lines]%=%y",
+	-- global status line for windows
+	laststatus = 3,
+	-- top bar showing file name on each window
+	winbar = "%=%m %t%=",
 }
 
 for k, v in pairs(localOptions) do
