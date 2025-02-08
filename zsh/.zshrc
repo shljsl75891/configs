@@ -56,6 +56,7 @@ source $HOME/personal/configs/zsh/plugins/zsh-autosuggestions/zsh-autosuggestion
 source $HOME/personal/configs/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_HIGHLIGHT_STYLES[comment]="fg=white,bold"
 
 # arrow keys
 bindkey "^[[1;5D" backward-word
