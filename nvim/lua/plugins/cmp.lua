@@ -61,5 +61,11 @@ return {
 				{ name = "luasnip" },
 			}),
 		})
+		cmp.setup.filetype({ "sql" }, {
+			sources = {
+				{ name = "buffer" },
+				{ name = "vim-dadbod-completion" },
+			},
+		})
 	end,
 }
