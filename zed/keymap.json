@@ -1,0 +1,24 @@
+[
+  {
+    "context": "Editor || Terminal",
+    "bindings": {
+      "ctrl-b": "project_panel::ToggleFocus",
+      "shift-h": "pane::ActivatePrevItem",
+      "shift-l": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "o": "workspace::OpenInTerminal",
+      "ctrl-a": "project_panel::CollapseAllEntries"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-`": "workspace::ToggleBottomDock",
+      "ctrl-n": "workspace::NewTerminal"
+    }
+  }
+]

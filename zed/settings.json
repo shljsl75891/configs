@@ -1,0 +1,44 @@
+{
+  "features": {
+    "inline_completion_provider": "none"
+  },
+  "ui_font_size": 14,
+  "ui_font_family": "NotoSans Nerd Font",
+  "use_autoclose": false,
+  "use_auto_surround": false,
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false
+  },
+  "relative_line_numbers": true,
+  "buffer_font_family": "TX02 Nerd Font",
+  "buffer_font_size": 12.0,
+  "tab_size": 2,
+  "terminal": {
+    "font_size": 11,
+    "line_height": "standard"
+  },
+  "indent_guides": {
+    "enabled": false
+  },
+  "scrollbar": {
+    "show": "never"
+  },
+  "vim_mode": true,
+  "cursor_blink": true,
+  "current_line_highlight": "line",
+  "hover_popover_enabled": false,
+  "confirm_quit": true,
+  "remove_trailing_whitespace_on_save": true,
+  "vim": {
+    "use_system_clipboard": "never",
+    "highlight_on_yank_duration": 80
+  },
+  "show_signature_help_after_edits": true,
+  "auto_signature_help": true,
+  "theme": {
+    "mode": "dark",
+    "light": "Gruvbox Light Hard",
+    "dark": "Gruvbox Dark Hard"
+  }
+}
