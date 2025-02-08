@@ -19,6 +19,8 @@ alias ll='lsd -Al'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias btconnect="bluetoothctl connect 8E:95:F1:F5:5B:D2"
+alias btdisconnect="bluetoothctl disconnect 8E:95:F1:F5:5B:D2"
 
 # Prompt
 eval "$(starship init zsh)"
