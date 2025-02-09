@@ -2,6 +2,32 @@
   "features": {
     "inline_completion_provider": "none"
   },
+  "languages": {
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "JSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    }
+  },
   "ui_font_size": 14,
   "ui_font_family": "NotoSans Nerd Font",
   "use_autoclose": false,
@@ -12,7 +38,7 @@
   },
   "relative_line_numbers": true,
   "buffer_font_family": "TX02 Nerd Font",
-  "buffer_font_size": 12.0,
+  "buffer_font_size": 13.0,
   "tab_size": 2,
   "terminal": {
     "font_size": 11,
@@ -35,7 +61,7 @@
     "highlight_on_yank_duration": 80
   },
   "show_signature_help_after_edits": true,
-  "auto_signature_help": true,
+  "auto_signature_help": false,
   "theme": {
     "mode": "dark",
     "light": "Gruvbox Light Hard",

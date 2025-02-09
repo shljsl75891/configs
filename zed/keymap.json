@@ -1,16 +1,41 @@
 [
   {
-    "context": "Editor || Terminal",
+    "context": "(Editor && vim_mode == normal) || Terminal",
     "bindings": {
       "ctrl-b": "project_panel::ToggleFocus",
       "shift-h": "pane::ActivatePrevItem",
-      "shift-l": "pane::ActivateNextItem"
+      "shift-l": "pane::ActivateNextItem",
+      "shift-escape": null
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "space c o": "pane::CloseInactiveItems",
+      "space c a": "editor::ToggleCodeActions",
+      "space r n": "editor::Rename"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "K": "editor::MoveLineUp",
+      "J": "editor::MoveLineDown"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "ctrl-i": null,
+      "ctrl-h": "editor::ShowSignatureHelp",
+      "shift-escape": null
     }
   },
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "o": "workspace::OpenInTerminal",
+      "r": "project_panel::Rename",
       "ctrl-a": "project_panel::CollapseAllEntries"
     }
   },
