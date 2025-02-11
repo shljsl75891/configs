@@ -6,13 +6,6 @@ local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 local theme_assets = require("beautiful.theme_assets")
 
--- widgets
-local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
-
 -- Color Palettes
 -- Define color palettes
 local palettes = {
@@ -138,7 +131,7 @@ theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/
 
 -- Notification Options
 naughty.config.defaults.ontop = true
-naughty.config.defaults.icon_size = dpi(90)
+naughty.config.defaults.icon_size = dpi(0)
 naughty.config.defaults.timeout = 10
 naughty.config.defaults.hover_timeout = 300
 naughty.config.defaults.opacity = 0.8
@@ -146,7 +139,7 @@ naughty.config.defaults.opacity = 0.8
 naughty.config.defaults.margin = dpi(8)
 naughty.config.defaults.border_width = 0
 naughty.config.defaults.border_color = theme.border_normal
-naughty.config.defaults.position = "top_right"
+naughty.config.defaults.position = "bottom_right"
 naughty.config.defaults.shape = function(cr, w, h)
 	gears.shape.rounded_rect(cr, w, h, dpi(0))
 end
@@ -169,8 +162,10 @@ end)
 -- Calendar
 theme.cal = lain.widget.cal({
 	attach_to = { clock },
+	three = true,
+	week_start = 1, -- Sunday
 	notification_preset = {
-		font = "TX02 Nerd Font 8",
+		font = "TX02 Nerd Font 9",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
 	},
@@ -233,7 +228,7 @@ function theme.at_screen_connect(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
-		position = "top",
+		position = "bottom",
 		screen = s,
 		height = dpi(18),
 		border_width = dpi(1),
@@ -249,131 +244,81 @@ function theme.at_screen_connect(s)
 	local spr = wibox.widget.textbox(" ")
 	local arrow = separators.arrow_left
 	local systray = wibox.widget.systray()
+	-- widgets
+	local widgets = {
+		cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")({
+			width = 25,
+			step_width = 2,
+			step_spacing = 0,
+			color = theme.fg_normal,
+		}),
+		volume = require("awesome-wm-widgets.volume-widget.volume")({
+			card = 0,
+			widget_type = "horizontal_bar",
+			device = "default",
+			with_icon = true,
+			margins = 7,
+			shape = "octagon",
+			bg_color = "#1F2335",
+			mute_color = theme.bg_urgent,
+		}),
+		battery = require("awesome-wm-widgets.battery-widget.battery")({
+			show_current_level = true,
+			timeout = 2,
+			path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
+			font = theme.font,
+		}),
+		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
+			type = "icon_and_text",
+			percentage = true,
+			timeout = 100,
+			path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
+			program = "xbacklight",
+			base = 5,
+			step = 10,
+		}),
+		todo = require("awesome-wm-widgets.todo-widget.todo")(),
+	}
 
-	-- Add widgets to the wibox
+	local function create_powerline_widget(widget, bg_color, margin_x, margin_y)
+		return wibox.container.background(
+			wibox.container.margin(
+				wibox.widget({ widget, layout = wibox.layout.align.horizontal }),
+				dpi(margin_x or 2),
+				dpi(margin_y or 3)
+			),
+			bg_color
+		)
+	end
+
 	s.mywibox:setup({
 		layout = wibox.layout.align.horizontal,
-		{ -- Left widgets
-			layout = wibox.layout.fixed.horizontal,
-			--spr,
-			s.mytaglist,
-			s.mypromptbox,
-			spr,
-		},
-		s.mytasklist, -- Middle widget
-		{ -- Right widgets
+		-- Left widgets
+		{ layout = wibox.layout.fixed.horizontal, s.mytaglist, s.mypromptbox, spr },
+		-- Middle widget (Tasklist)
+		s.mytasklist,
+		-- Right widgets
+		{
 			layout = wibox.layout.fixed.horizontal,
 			arrow(theme.bg_normal, theme.powerline_spr1),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({ net.widget, layout = wibox.layout.align.horizontal }),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr1
-			),
+			create_powerline_widget(net.widget, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
-			wibox.container.background(wibox.widget.textbox("󰍛 "), theme.powerline_spr2),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({ mem.widget, layout = wibox.layout.align.horizontal }),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr2
-			),
+			create_powerline_widget(wibox.widget.textbox("󰍛 "), theme.powerline_spr2),
+			create_powerline_widget(mem.widget, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({
-						cpu_widget({
-							width = 25,
-							step_width = 2,
-							step_spacing = 0,
-							color = theme.fg_normal,
-						}),
-						layout = wibox.layout.align.horizontal,
-					}),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr1
-			),
+			create_powerline_widget(widgets.cpu, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({
-						volume_widget({
-							card = 0,
-							widget_type = "horizontal_bar",
-							device = "default",
-							with_icon = true,
-							margins = 7,
-							shape = "octagon",
-							bg_color = "#1F2335",
-							mute_color = theme.bg_urgent,
-							-- icon_dir = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
-						}),
-						layout = wibox.layout.align.horizontal,
-					}),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr2
-			),
+			create_powerline_widget(widgets.volume, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({
-						battery_widget({
-							show_current_level = true,
-							timeout = 2,
-							path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
-							font = theme.font,
-						}),
-						layout = wibox.layout.align.horizontal,
-					}),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr1
-			),
+			create_powerline_widget(widgets.battery, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
-			wibox.container.background(
-				brightness_widget({
-					type = "icon_and_text",
-					percentage = true,
-					timeout = 100,
-					path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
-					program = "xbacklight",
-					base = 5,
-					step = 10,
-				}),
-				theme.powerline_spr2
-			),
+			create_powerline_widget(widgets.brightness, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
 			systray,
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({
-						clock,
-						layout = wibox.layout.align.horizontal,
-					}),
-					dpi(3),
-					dpi(8)
-				),
-				theme.powerline_spr1
-			),
+			create_powerline_widget(clock, theme.powerline_spr1, 3, 8),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
-			wibox.container.background(
-				wibox.container.margin(
-					wibox.widget({ todo_widget(), layout = wibox.layout.align.horizontal }),
-					dpi(2),
-					dpi(3)
-				),
-				theme.powerline_spr1
-			),
+			create_powerline_widget(widgets.todo, theme.powerline_spr1),
 		},
 	})
 end
