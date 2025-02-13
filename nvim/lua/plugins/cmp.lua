@@ -1,72 +1,30 @@
 return {
-	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
-	dependencies = {
-		-- Sources
-		"hrsh7th/cmp-buffer",
-		"https://codeberg.org/FelipeLema/cmp-async-path",
-		"hrsh7th/cmp-nvim-lsp",
-		-- Snippet Engine
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
+	"Saghen/blink.cmp",
+	version = "*",
+	opts = {
+		keymap = {
+			preset = "default",
+			["<CR>"] = { "select_and_accept", "fallback" },
+		},
+		appearance = {
+			use_nvim_cmp_as_default = true,
+			nerd_font_variant = "normal",
+		},
+		signature = { enabled = true },
+		completion = {
+			documentation = {
+				auto_show = true,
+				auto_show_delay_ms = 350,
+			},
+		},
+		sources = {
+			default = { "lsp", "path", "snippets", "buffer", "dadbod" },
+			providers = {
+				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+			},
+			-- Disable cmdline autocompletion
+			cmdline = {},
+		},
 	},
-	config = function()
-		local cmp = require("cmp")
-		local luasnip = require("luasnip")
-
-		cmp.setup({
-			completion = { completeopt = "menu,menuone,noinsert" },
-			window = {
-				completion = cmp.config.window.bordered({
-					border = "none",
-					winhighlight = "Normal:NormalFloat",
-				}),
-				documentation = cmp.config.window.bordered({
-					border = "solid",
-					winhighlight = "Normal:NormalFloat",
-				}),
-			},
-			snippet = {
-				expand = function(args)
-					luasnip.lsp_expand(args.body)
-				end,
-			},
-			mapping = {
-				-- Custom bindings
-				["<C-n>"] = cmp.mapping.select_next_item(),
-				["<C-p>"] = cmp.mapping.select_prev_item(),
-				["<C-e>"] = cmp.mapping.abort(),
-				["<C-Space>"] = cmp.mapping.complete(),
-				["<CR>"] = cmp.mapping.confirm({
-					select = false,
-				}),
-				["<C-Left>"] = cmp.mapping(function(fallback)
-					if luasnip.locally_jumpable(-1) then
-						luasnip.jump(-1)
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<C-Right>"] = cmp.mapping(function(fallback)
-					if luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-			},
-			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "async_path" },
-				{ name = "buffer" },
-				{ name = "luasnip" },
-			}),
-		})
-		cmp.setup.filetype({ "sql" }, {
-			sources = {
-				{ name = "buffer" },
-				{ name = "vim-dadbod-completion" },
-			},
-		})
-	end,
+	opts_extend = { "sources.default" },
 }
