@@ -15,6 +15,7 @@ return {
 		local luasnip = require("luasnip")
 
 		cmp.setup({
+			completion = { completeopt = "menu,menuone,noinsert" },
 			window = {
 				completion = cmp.config.window.bordered({
 					border = "none",
