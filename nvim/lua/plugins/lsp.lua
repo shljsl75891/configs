@@ -53,6 +53,7 @@ return {
 				vim.keymap.set("n", "gI", builtin.lsp_implementations, opts)
 				opts.desc = "[G]o to All [R]eferences of identifier"
 				vim.keymap.set("n", "<leader>rr", builtin.lsp_references, opts)
+				opts.desc = "LSP Signature [H]elp"
 				vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 				opts.desc = "[R]e[N]ame Symbol"
 				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
