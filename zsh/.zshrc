@@ -49,9 +49,11 @@ export FZF_DEFAULT_OPTS="
 
 
 # Node Version Manager
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+FNM_PATH="/home/sahil.jassal/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/sahil.jassal/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
 
 # Plugins
 source $HOME/personal/configs/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -66,3 +68,4 @@ bindkey "^[[1;5C" forward-word
 bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "^Usessionizer\n"
+
