@@ -11,19 +11,17 @@ return {
 			nerd_font_variant = "normal",
 		},
 		signature = { enabled = true },
+		cmdline = { enabled = false },
 		completion = {
-			documentation = {
-				auto_show = true,
-				auto_show_delay_ms = 350,
-			},
+			menu = { draw = { columns = { { "label", "label_description", gap = 1 } } } },
+			accept = { auto_brackets = { enabled = false } },
+			documentation = { auto_show = true, auto_show_delay_ms = 350 },
 		},
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer", "dadbod" },
 			providers = {
 				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 			},
-			-- Disable cmdline autocompletion
-			cmdline = {},
 		},
 	},
 	opts_extend = { "sources.default" },
