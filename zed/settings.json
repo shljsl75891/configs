@@ -40,8 +40,12 @@
   "buffer_font_family": "TX02 Nerd Font",
   "buffer_font_size": 13.0,
   "tab_size": 2,
+  "project_panel": {
+    "dock": "right"
+  },
   "terminal": {
     "font_size": 11,
+    "dock": "right",
     "line_height": "standard"
   },
   "indent_guides": {

@@ -13,6 +13,7 @@
     "bindings": {
       "space c o": "pane::CloseInactiveItems",
       "space c a": "editor::ToggleCodeActions",
+      "space r r": "editor::FindAllReferences",
       "space r n": "editor::Rename"
     }
   },
@@ -36,13 +37,14 @@
     "bindings": {
       "o": "workspace::OpenInTerminal",
       "r": "project_panel::Rename",
-      "ctrl-a": "project_panel::CollapseAllEntries"
+      "ctrl-a": "project_panel::CollapseAllEntries",
+      "ctrl-b": "git_panel::OpenMenu"
     }
   },
   {
     "context": "Terminal",
     "bindings": {
-      "ctrl-`": "workspace::ToggleBottomDock",
+      "ctrl-`": "workspace::ToggleRightDock",
       "ctrl-n": "workspace::NewTerminal"
     }
   }
