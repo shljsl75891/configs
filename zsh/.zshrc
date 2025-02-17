@@ -69,3 +69,5 @@ bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "^Usessionizer\n"
 
+
+. "$HOME/.cargo/env"
