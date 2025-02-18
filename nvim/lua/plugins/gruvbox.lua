@@ -30,6 +30,7 @@ return {
 					fg = palette.neutral_aqua,
 					bold = true,
 				},
+				BlinkCmpGhostText = { link = "Comment" },
 				FloatBorder = { link = "NormalFloat" },
 				TelescopeNormal = { bg = palette.dark0, fg = palette.dark0 },
 				TelescopeResultsNormal = { bg = palette.dark0, fg = palette.light4 },
