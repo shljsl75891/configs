@@ -10,18 +10,26 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(0)
-theme.taglist_squares_sel =
-	theme_assets.taglist_squares_unsel(taglist_square_size, theme.dir .. "/icons/square_sel.png")
-theme.taglist_squares_unsel =
-	theme_assets.taglist_squares_unsel(taglist_square_size, theme.dir .. "/icons/square_unsel.png")
+theme.taglist_squares_sel = theme_assets.taglist_squares_unsel(
+	taglist_square_size,
+	theme.dir .. "/icons/square_sel.png"
+)
+theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
+	taglist_square_size,
+	theme.dir .. "/icons/square_unsel.png"
+)
 
 local markup = lain.util.markup
 local separators = lain.util.separators
 
 -- Textclock
-local clock = awful.widget.watch("date +'%a %b %d, %I:%M %p'", 30, function(widget, stdout)
-	widget:set_markup(" " .. markup.font(theme.font, stdout))
-end)
+local clock = awful.widget.watch(
+	"date +'%a %b %d, %I:%M %p'",
+	30,
+	function(widget, stdout)
+		widget:set_markup(" " .. markup.font(theme.font, stdout))
+	end
+)
 
 -- Calendar
 theme.cal = lain.widget.cal({
@@ -39,7 +47,12 @@ theme.cal = lain.widget.cal({
 local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
 	settings = function()
-		widget:set_markup(markup.font(theme.font, " " .. string.format("%.2f", mem_now.used / 1024) .. "GB "))
+		widget:set_markup(
+			markup.font(
+				theme.font,
+				" " .. string.format("%.2f", mem_now.used / 1024) .. "GB "
+			)
+		)
 	end,
 })
 
@@ -49,9 +62,17 @@ local net = lain.widget.net({
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup(theme.fg_normal, "  " .. string.format("%0.1f", net_now.sent / 1024) .. "MB/s ")
+				markup(
+					theme.fg_normal,
+					"  " .. string.format("%0.1f", net_now.sent / 1024) .. "MB/s "
+				)
 					.. " "
-					.. markup(theme.fg_normal, "  " .. string.format("%0.1f", net_now.received / 1024) .. "MB/s ")
+					.. markup(
+						theme.fg_normal,
+						"  "
+							.. string.format("%0.1f", net_now.received / 1024)
+							.. "MB/s "
+					)
 			)
 		)
 	end,
@@ -84,10 +105,18 @@ function theme.at_screen_connect(s)
 		end)
 	))
 	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
+	s.mytaglist = awful.widget.taglist(
+		s,
+		awful.widget.taglist.filter.all,
+		awful.util.taglist_buttons
+	)
 
 	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+	s.mytasklist = awful.widget.tasklist(
+		s,
+		awful.widget.tasklist.filter.currenttags,
+		awful.util.tasklist_buttons
+	)
 	-- s.mytasklist = nil
 
 	-- Create the wibox
@@ -167,7 +196,10 @@ function theme.at_screen_connect(s)
 			arrow(theme.bg_normal, theme.powerline_spr1),
 			create_powerline_widget(net.widget, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
-			create_powerline_widget(wibox.widget.textbox("󰍛 "), theme.powerline_spr2),
+			create_powerline_widget(
+				wibox.widget.textbox("󰍛 "),
+				theme.powerline_spr2
+			),
 			create_powerline_widget(mem.widget, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
 			create_powerline_widget(widgets.cpu, theme.powerline_spr1),

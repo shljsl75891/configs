@@ -28,7 +28,8 @@ function Move_lines_up_visual()
 end
 
 -- Highlight on yank
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+local highlight_group =
+	vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank({
@@ -42,6 +43,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- For Angular treesitter
 vim.filetype.add({
 	pattern = {
-		[".*%.component%.html"] = "htmlangular", -- Sets the filetype to `htmlangular` if it matches the pattern
+		-- Sets the filetype to `htmlangular` if it matches the pattern
+		[".*%.component%.html"] = "htmlangular",
 	},
 })

@@ -34,6 +34,7 @@ local localOptions = {
 	wrap = false,
 	undofile = true,
 	undodir = os.getenv("HOME") .. "/.vim/undodir",
+	colorcolumn = "80",
 	swapfile = false,
 	backup = false,
 	scrolloff = 8,

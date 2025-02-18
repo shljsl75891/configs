@@ -25,10 +25,12 @@ return {
 				return
 			end
 			if
-				vim.tbl_contains(
-					{ "javascript", "javascriptreact", "typescript", "typescriptreact" },
-					vim.bo[bufnr].filetype
-				)
+				vim.tbl_contains({
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+				}, vim.bo[bufnr].filetype)
 			then
 				-- organize imports synchronously before formatting
 				vim.lsp.buf_request_sync(0, "workspace/executeCommand", {
@@ -36,7 +38,11 @@ return {
 					arguments = { vim.api.nvim_buf_get_name(bufnr) },
 				}, TIMEOUT)
 			end
-			return { quiet = true, timeout_ms = TIMEOUT, lsp_format = "fallback" }
+			return {
+				quiet = true,
+				timeout_ms = TIMEOUT,
+				lsp_format = "fallback",
+			}
 		end,
 	},
 }

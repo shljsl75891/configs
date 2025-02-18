@@ -2,7 +2,11 @@ return {
 	"kristijanhusak/vim-dadbod-ui",
 	dependencies = {
 		{ "tpope/vim-dadbod", lazy = true },
-		{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+		{
+			"kristijanhusak/vim-dadbod-completion",
+			ft = { "sql", "mysql", "plsql" },
+			lazy = true,
+		},
 	},
 	cmd = {
 		"DBUI",
@@ -22,7 +26,10 @@ return {
 		for _, name in ipairs(db_names) do
 			table.insert(databases, {
 				name = name,
-				url = "postgres://postgres:" .. db_password .. "@localhost:5432/" .. name,
+				url = "postgres://postgres:"
+					.. db_password
+					.. "@localhost:5432/"
+					.. name,
 			})
 		end
 

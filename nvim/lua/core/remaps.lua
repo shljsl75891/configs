@@ -32,14 +32,44 @@ vim.keymap.set(
 )
 
 -- Quickfix Navigation
-vim.keymap.set("n", "<C-Up>", "<cmd>cprev<CR>zz", { desc = "Go to previous entry in quickfix list" })
-vim.keymap.set("n", "<C-Down>", "<cmd>cnext<CR>zz", { desc = "Go to next entry in quickfix list" })
+vim.keymap.set(
+	"n",
+	"<C-Up>",
+	"<cmd>cprev<CR>zz",
+	{ desc = "Go to previous entry in quickfix list" }
+)
+vim.keymap.set(
+	"n",
+	"<C-Down>",
+	"<cmd>cnext<CR>zz",
+	{ desc = "Go to next entry in quickfix list" }
+)
 
 -- Resizing windows
-vim.keymap.set("n", "<M-->", ":resize -2<CR>", { silent = true, desc = "Decrease size of horizontal window" })
-vim.keymap.set("n", "<M-=>", ":resize +2<CR>", { silent = true, desc = "Increase size of horizontal window" })
-vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>", { silent = true, desc = "Decrease size of vertical window" })
-vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>", { silent = true, desc = "Increase size of vertical window" })
+vim.keymap.set(
+	"n",
+	"<M-->",
+	":resize -2<CR>",
+	{ silent = true, desc = "Decrease size of horizontal window" }
+)
+vim.keymap.set(
+	"n",
+	"<M-=>",
+	":resize +2<CR>",
+	{ silent = true, desc = "Increase size of horizontal window" }
+)
+vim.keymap.set(
+	"n",
+	"<M-_>",
+	":vertical resize -4<CR>",
+	{ silent = true, desc = "Decrease size of vertical window" }
+)
+vim.keymap.set(
+	"n",
+	"<M-+>",
+	":vertical resize +4<CR>",
+	{ silent = true, desc = "Increase size of vertical window" }
+)
 
 -- Horizontal Scrolling
 vim.keymap.set("n", "<C-Left>", "15zh", { desc = "Scroll to left" })

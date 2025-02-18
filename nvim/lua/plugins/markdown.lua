@@ -6,14 +6,13 @@ return {
 		{
 			"dfendr/clipboard-image.nvim",
 			keys = {
-				{ "<leader>p", "<cmd>PasteImg<cr>", desc = "[P]aste image from clipboard" },
-			},
-			opts = {
-				default = {
-					img_dir = "assets",
-					img_dir_txt = "/assets",
+				{
+					"<leader>p",
+					"<cmd>PasteImg<cr>",
+					desc = "[P]aste image from clipboard",
 				},
 			},
+			opts = { default = { img_dir = "assets", img_dir_txt = "/assets" } },
 		},
 	},
 	init = function()

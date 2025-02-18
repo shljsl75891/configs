@@ -7,8 +7,8 @@ return {
 		require("nvim-treesitter.install").prefer_git = false
 
 		require("treesitter-context").setup({
-			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+			enable = true,
+			mode = "cursor",
 			line_numbers = true,
 			multiline_threshold = 1,
 		})

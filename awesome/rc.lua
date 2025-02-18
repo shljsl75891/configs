@@ -24,7 +24,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 -- widgets
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local brightness_widget =
+	require("awesome-wm-widgets.brightness-widget.brightness")
 
 require("awful.hotkeys_popup.keys")
 
@@ -72,7 +73,9 @@ end
 -- This function will run once every time Awesome is started
 local function run_once(cmd_arr)
 	for _, cmd in ipairs(cmd_arr) do
-		awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+		awful.spawn.with_shell(
+			string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd)
+		)
 	end
 end
 
@@ -103,7 +106,8 @@ local mercury = "mercury-browser"
 local thorium = "thorium-browser"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
+awful.util.tagnames =
+	{ " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
 awful.layout.layouts = {
 	-- awful.layout.suit.floating,
 	awful.layout.suit.tile,
@@ -151,7 +155,13 @@ awful.util.tasklist_buttons = mytable.join(
 	end)
 )
 
-beautiful.init(string.format("%s/.config/awesome/config.lua", os.getenv("HOME"), chosen_theme))
+beautiful.init(
+	string.format(
+		"%s/.config/awesome/config.lua",
+		os.getenv("HOME"),
+		chosen_theme
+	)
+)
 
 -- }}}
 
@@ -166,7 +176,10 @@ local myawesomemenu = {
 		end,
 	},
 	{ "Manual", string.format("%s -e man awesome", terminal) },
-	{ "Edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
+	{
+		"Edit config",
+		string.format("%s -e %s %s", terminal, editor, awesome.conffile),
+	},
 	{ "Restart", awesome.restart },
 	{
 		"Quit",
@@ -240,7 +253,12 @@ local globalkeys = mytable.join(
 	end, { description = "destroy all notifications", group = "hotkeys" }),
 
 	-- Show help
-	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
+	awful.key(
+		{ modkey },
+		"s",
+		hotkeys_popup.show_help,
+		{ description = "show help", group = "awesome" }
+	),
 
 	-- By-direction client focus
 	awful.key({ modkey }, "j", function()
@@ -274,12 +292,22 @@ local globalkeys = mytable.join(
 	end, { description = "show main menu", group = "awesome" }), ]]
 
 	-- Layout manipulation
-	awful.key({ modkey }, "=", function()
-		awful.tag.incnmaster(1, nil, true)
-	end, { description = "increase the number of master clients", group = "layout" }),
-	awful.key({ modkey }, "-", function()
-		awful.tag.incnmaster(-1, nil, true)
-	end, { description = "decrease the number of master clients", group = "layout" }),
+	awful.key(
+		{ modkey },
+		"=",
+		function()
+			awful.tag.incnmaster(1, nil, true)
+		end,
+		{ description = "increase the number of master clients", group = "layout" }
+	),
+	awful.key(
+		{ modkey },
+		"-",
+		function()
+			awful.tag.incnmaster(-1, nil, true)
+		end,
+		{ description = "decrease the number of master clients", group = "layout" }
+	),
 	awful.key({ modkey, "Control" }, "=", function()
 		awful.tag.incncol(1, nil, true)
 	end, { description = "increase the number of columns", group = "layout" }),
@@ -292,7 +320,12 @@ local globalkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "k", function()
 		awful.client.swap.byidx(-1)
 	end, { description = "swap with previous client by index", group = "client" }),
-	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
+	awful.key(
+		{ modkey },
+		"u",
+		awful.client.urgent.jumpto,
+		{ description = "jump to urgent client", group = "client" }
+	),
 	awful.key({ modkey }, "Tab", function()
 		if cycle_prev then
 			awful.client.focus.history.previous()
@@ -338,10 +371,22 @@ local globalkeys = mytable.join(
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
-	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
-	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
+	awful.key(
+		{ modkey, "Control" },
+		"r",
+		awesome.restart,
+		{ description = "reload awesome", group = "awesome" }
+	),
+	awful.key(
+		{ modkey, "Shift" },
+		"q",
+		awesome.quit,
+		{ description = "quit awesome", group = "awesome" }
+	),
 	awful.key({}, "Print", function()
-		awful.spawn.with_shell("maim -sDo | xclip -selection clipboard -t image/png")
+		awful.spawn.with_shell(
+			"maim -sDo | xclip -selection clipboard -t image/png"
+		)
 	end, { description = "capture partial screenshot", group = "launcher" }),
 	awful.key({ modkey }, "e", function()
 		awful.spawn("thunar")
@@ -349,15 +394,29 @@ local globalkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
-	awful.key({ modkey, "Shift" }, "o", function()
-		awful.spawn.with_shell("obsidian")
-	end, { description = "launch the note taking app - Obsidian", group = "launcher" }),
+	awful.key(
+		{ modkey, "Shift" },
+		"o",
+		function()
+			awful.spawn.with_shell("obsidian")
+		end,
+		{
+			description = "launch the note taking app - Obsidian",
+			group = "launcher",
+		}
+	),
 	awful.key({ modkey }, "b", function()
 		awful.spawn(thorium .. " --profile-directory='Profile 1'")
-	end, { description = "launch thorium browser with work profile", group = "launcher" }),
+	end, {
+		description = "launch thorium browser with work profile",
+		group = "launcher",
+	}),
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn(thorium .. " --profile-directory='Profile 5'")
-	end, { description = "launch thorium browser with personal profile", group = "launcher" }),
+	end, {
+		description = "launch thorium browser with personal profile",
+		group = "launcher",
+	}),
 	awful.key({ modkey, "Control" }, "b", function()
 		awful.spawn(mercury)
 	end, { description = "launch mercury browser", group = "launcher" }),
@@ -502,9 +561,14 @@ local clientkeys = mytable.join(
 	awful.key({ altkey }, "Left", function(c)
 		c:relative_move(-50, 0, 0, 0)
 	end, { description = "Move Floating Window Left", group = "floating-client" }),
-	awful.key({ altkey }, "Right", function(c)
-		c:relative_move(50, 0, 0, 0)
-	end, { description = "Move Floating Window Right", group = "floating-client" }),
+	awful.key(
+		{ altkey },
+		"Right",
+		function(c)
+			c:relative_move(50, 0, 0, 0)
+		end,
+		{ description = "Move Floating Window Right", group = "floating-client" }
+	),
 	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
@@ -666,14 +730,20 @@ awful.rules.rules = {
 	},
 
 	-- Add titlebars to normal clients and dialogs
-	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
+	{
+		rule_any = { type = { "normal", "dialog" } },
+		properties = { titlebars_enabled = false },
+	},
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
 	{ rule = { class = "Codium" }, properties = { screen = 1, tag = "󰨞 " } },
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "mercury-default" }, properties = { screen = 1, tag = " " } },
+	{
+		rule = { class = "mercury-default" },
+		properties = { screen = 1, tag = " " },
+	},
 }
 
 -- }}}
@@ -689,7 +759,11 @@ client.connect_signal("manage", function(c)
 		gears.shape.rounded_rect(cr, w, h, 0)
 	end
 
-	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+	if
+		awesome.startup
+		and not c.size_hints.user_position
+		and not c.size_hints.program_position
+	then
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
 	end
@@ -774,7 +848,11 @@ tag.connect_signal("property::selected", backham)
 -- }}}
 
 -- AutoStart script
-awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Tapping Enabled' 1")
-awful.spawn.with_shell("xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Natural Scrolling Enabled' 1")
+awful.spawn.with_shell(
+	"xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Tapping Enabled' 1"
+)
+awful.spawn.with_shell(
+	"xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Natural Scrolling Enabled' 1"
+)
 
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")

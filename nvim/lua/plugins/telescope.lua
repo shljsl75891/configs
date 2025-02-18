@@ -20,11 +20,36 @@ return {
 		local actions = require("telescope.actions")
 		local builtin = require("telescope.builtin")
 		-- Keymaps
-		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind Project [F]iles" })
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
-		vim.keymap.set("n", "<leader>lg", builtin.live_grep, { desc = "[L]ive [G]rep Project-wide" })
-		vim.keymap.set("n", "<leader>cr", builtin.registers, { desc = "[C]opy from specific [R]egistrer" })
-		vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "Find [H]elp [T]ags" })
+		vim.keymap.set(
+			"n",
+			"<leader>ff",
+			builtin.find_files,
+			{ desc = "[F]ind Project [F]iles" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>fb",
+			builtin.buffers,
+			{ desc = "[F]ind [B]uffers" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>lg",
+			builtin.live_grep,
+			{ desc = "[L]ive [G]rep Project-wide" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>cr",
+			builtin.registers,
+			{ desc = "[C]opy from specific [R]egistrer" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>ht",
+			builtin.help_tags,
+			{ desc = "Find [H]elp [T]ags" }
+		)
 		vim.keymap.set("n", "<leader>np", function()
 			builtin.find_files({ cwd = "~/.local/share/nvim" })
 		end, { desc = "Find [N]eovim [P]lugins" })
@@ -49,14 +74,8 @@ return {
 				-- could be `horizontal` or `vertical
 				layout_strategy = "horizontal",
 				layout_config = {
-					horizontal = {
-						width = 0.85,
-						preview_width = 0.45,
-					},
-					vertical = {
-						width = 0.6,
-						preview_width = 0.5,
-					},
+					horizontal = { width = 0.85, preview_width = 0.45 },
+					vertical = { width = 0.6, preview_width = 0.5 },
 				},
 				mappings = {
 					n = {
