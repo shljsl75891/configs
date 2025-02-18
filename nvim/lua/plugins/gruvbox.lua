@@ -22,7 +22,14 @@ return {
 					bold = true,
 				},
 				NormalFloat = { bg = palette.dark0_soft },
-				BlinkCmpMenuSelection = { bg = palette.dark4, bold = true },
+				BlinkCmpMenu = {
+					bg = palette.dark0,
+				},
+				BlinkCmpMenuSelection = {
+					bg = palette.dark2,
+					fg = palette.neutral_aqua,
+					bold = true,
+				},
 				FloatBorder = { link = "NormalFloat" },
 				TelescopeNormal = { bg = palette.dark0, fg = palette.dark0 },
 				TelescopeResultsNormal = { bg = palette.dark0, fg = palette.light4 },
