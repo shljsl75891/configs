@@ -10,9 +10,10 @@ return {
 		"<leader>ht",
 		"<leader>fsf",
 		"<leader>fss",
+		"<leader>np",
 	},
 	dependencies = {
-		"nvim-lua/plenary.nvim",
+		"nagsvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
 	config = function()
@@ -24,6 +25,11 @@ return {
 		vim.keymap.set("n", "<leader>lg", builtin.live_grep, { desc = "[L]ive [G]rep Project-wide" })
 		vim.keymap.set("n", "<leader>cr", builtin.registers, { desc = "[C]opy from specific [R]egistrer" })
 		vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "Find [H]elp [T]ags" })
+		vim.keymap.set("n", "<leader>np", function()
+			builtin.find_files({ cwd = "~/.local/share/nvim" })
+		end, { desc = "Find [N]eovim [P]lugins" })
+
+		-- Prompt
 		vim.keymap.set("n", "<leader>fsf", function()
 			local search_file = vim.fn.input("Name of File > ")
 			if search_file ~= "" then
@@ -37,6 +43,7 @@ return {
 			end
 		end, { desc = "[F]ind [S]pecific [S]tring" })
 
+		-- Global config
 		require("telescope").setup({
 			defaults = {
 				-- could be `horizontal` or `vertical
