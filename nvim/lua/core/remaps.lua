@@ -74,3 +74,8 @@ vim.keymap.set(
 -- Horizontal Scrolling
 vim.keymap.set("n", "<C-Left>", "15zh", { desc = "Scroll to left" })
 vim.keymap.set("n", "<C-Right>", "15zl", { desc = "Scroll to right" })
+
+-- Executing Lua
+vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>")
+vim.keymap.set("n", "<leader>x", ":.lua <CR>")
+vim.keymap.set("v", "<leader>x", ":lua<CR>")
