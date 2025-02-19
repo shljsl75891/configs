@@ -31,22 +31,25 @@ export NODE_OPTIONS=--max-old-space-size=8096
 # Chrome for Karma Testing
 export CHROME_BIN=~/chrome-testing/chrome
 
-# Rose Pine for FZF
-export FZF_DEFAULT_OPTS="
+# Rose Pine in FZF
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 	--color=fg:#908CAA,bg:-1,hl:#EBBCBA
 	--color=fg+:#E0DEF4,bg+:#26233A,hl+:#EBBCBA
 	--color=border:#403D52,header:#31748F,gutter:-1
 	--color=spinner:#F6C177,info:#9CCFD8
-	--color=pointer:#C4A7E7,marker:#EB6F92,prompt:#908CAA"
+	--color=pointer:#C4A7E7,marker:#EB6F92,prompt:#908CAA
+  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
+  --layout="default" --info="right"'
 
 # Gruvbox for FZF
-export FZF_DEFAULT_OPTS="
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 	--color=fg:#EBDBB2,bg:-1,hl:#8EC07C
 	--color=fg+:#FBF1C7,bg+:#282828,hl+:#8EC07C
 	--color=border:#665C54,header:#83A598,gutter:-1
 	--color=spinner:#FE8019,info:#FABD2F
-	--color=pointer:#62693e,marker:#D79921,prompt:#FABD2F"
-
+	--color=pointer:#62693e,marker:#D79921,prompt:#427B58
+  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
+  --layout="default" --info="right"'
 
 # Node Version Manager
 FNM_PATH="/home/sahil.jassal/.local/share/fnm"
