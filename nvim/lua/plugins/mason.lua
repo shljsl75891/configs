@@ -9,8 +9,6 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"williamboman/mason.nvim",
-			"neovim/nvim-lspconfig",
-			"Saghen/blink.cmp",
 			{
 				"WhoIsSethDaniel/mason-tool-installer.nvim",
 				opts = {
@@ -30,10 +28,12 @@ return {
 					},
 				},
 			},
+			{ "neovim/nvim-lspconfig", dependencies = { "hrsh7th/cmp-nvim-lsp" } },
 		},
 		config = function()
 			local lspconfig = require("lspconfig")
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local default_setup = function(server)
 				require("lspconfig")[server].setup({
