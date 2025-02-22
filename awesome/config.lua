@@ -121,7 +121,7 @@ function theme.at_screen_connect(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
-		position = "bottom",
+		position = "top",
 		screen = s,
 		height = dpi(18),
 		border_width = dpi(1),

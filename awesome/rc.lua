@@ -394,17 +394,12 @@ local globalkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.spawn.with_shell("slock")
 	end, { description = "locks the screen", group = "screen" }),
-	awful.key(
-		{ modkey, "Shift" },
-		"o",
-		function()
-			awful.spawn.with_shell("obsidian")
-		end,
-		{
-			description = "launch the note taking app - Obsidian",
-			group = "launcher",
-		}
-	),
+	awful.key({ modkey, "Shift" }, "o", function()
+		awful.spawn.with_shell("obsidian")
+	end, {
+		description = "launch the note taking app - Obsidian",
+		group = "launcher",
+	}),
 	awful.key({ modkey }, "b", function()
 		awful.spawn(thorium .. " --profile-directory='Profile 1'")
 	end, {
@@ -487,7 +482,7 @@ local globalkeys = mytable.join(
 	awful.key({ modkey }, "r", function()
 		os.execute(
 			string.format(
-				"dmenu_run -b -i -fn 'NotoSans Nerd Font-8' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+				"dmenu_run -i -fn 'NotoSans Nerd Font-8' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
 				beautiful.bg_normal,
 				beautiful.fg_normal,
 				beautiful.bg_focus,
