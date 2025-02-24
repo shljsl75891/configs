@@ -19,7 +19,7 @@ return {
 			window = {
 				completion = cmp.config.window.bordered({
 					border = "none",
-					winhighlight = "Normal:NormalFloat",
+					winhighlight = "Normal:Pmenu,CursorLine:PmenuSel",
 				}),
 				documentation = cmp.config.window.bordered({
 					border = "solid",
@@ -37,23 +37,7 @@ return {
 				["<C-p>"] = cmp.mapping.select_prev_item(),
 				["<C-e>"] = cmp.mapping.abort(),
 				["<C-Space>"] = cmp.mapping.complete(),
-				["<CR>"] = cmp.mapping.confirm({
-					select = false,
-				}),
-				["<C-Left>"] = cmp.mapping(function(fallback)
-					if luasnip.locally_jumpable(-1) then
-						luasnip.jump(-1)
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<C-Right>"] = cmp.mapping(function(fallback)
-					if luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
+				["<CR>"] = cmp.mapping.confirm({ select = true }),
 			},
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },

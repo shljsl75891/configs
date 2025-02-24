@@ -17,10 +17,18 @@ return {
 			contrast = "hard",
 			overrides = {
 				LspSignatureActiveParameter = {
-					bg = nil,
+					bg = palette.dark3,
 					fg = palette.bright_yellow,
 					bold = true,
 				},
+				Pmenu = { fg = "NONE", bg = palette.dark0_soft },
+				PmenuSel = {
+					bg = palette.dark_aqua_hard,
+					fg = palette.bright_aqua,
+					bold = true,
+				},
+				CmpItemAbbrMatch = { fg = palette.bright_aqua },
+				CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },
 				NormalFloat = { bg = palette.dark0_soft },
 				FloatBorder = { link = "NormalFloat" },
 				TelescopeNormal = { bg = palette.dark0, fg = palette.dark0 },
