@@ -38,7 +38,7 @@
       "o": "workspace::OpenInTerminal",
       "r": "project_panel::Rename",
       "ctrl-a": "project_panel::CollapseAllEntries",
-      "ctrl-b": "git_panel::OpenMenu"
+      "ctrl-b": "project_panel::ToggleFocus"
     }
   },
   {
