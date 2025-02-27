@@ -34,13 +34,13 @@ vim.keymap.set(
 -- Quickfix Navigation
 vim.keymap.set(
 	"n",
-	"<C-Up>",
+	"<M-k>",
 	"<cmd>cprev<CR>zz",
 	{ desc = "Go to previous entry in quickfix list" }
 )
 vim.keymap.set(
 	"n",
-	"<C-Down>",
+	"<M-j>",
 	"<cmd>cnext<CR>zz",
 	{ desc = "Go to next entry in quickfix list" }
 )
