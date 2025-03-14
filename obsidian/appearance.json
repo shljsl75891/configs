@@ -9,5 +9,8 @@
   "nativeMenus": true,
   "theme": "system",
   "baseFontSizeAction": false,
-  "enabledCssSnippets": ["index"]
+  "enabledCssSnippets": [
+    "index"
+  ],
+  "showRibbon": false
 }
