@@ -33,7 +33,11 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			capabilities = vim.tbl_deep_extend(
+				"force",
+				capabilities,
+				require("cmp_nvim_lsp").default_capabilities()
+			)
 
 			local default_setup = function(server)
 				require("lspconfig")[server].setup({
@@ -68,7 +72,7 @@ return {
 					end,
 					ts_ls = function()
 						lspconfig["ts_ls"].setup({
-							root_dir = require("lspconfig.util").root_pattern(".git"),
+							root_dir = lspconfig.util.root_pattern("tsconfig.json"),
 							capabilities = capabilities,
 						})
 					end,
@@ -78,7 +82,7 @@ return {
 							hovers = true,
 							suggestions = true,
 							root_dir = function(fname)
-								local root_pattern = require("lspconfig").util.root_pattern(
+								local root_pattern = lspconfig.util.root_pattern(
 									"tailwind.config.cjs",
 									"tailwind.config.js",
 									"postcss.config.js"
