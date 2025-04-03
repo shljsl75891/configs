@@ -44,6 +44,8 @@ return {
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 				opts.desc = "[G]o to [D]efintion of identifier"
 				vim.keymap.set("n", "gd", builtin.lsp_definitions, opts)
+				opts.desc = "Find [D]ocument [S]ymbols"
+				vim.keymap.set("n", "<leader>ds", builtin.lsp_document_symbols, opts)
 				opts.desc = "[G]o to [T]ype Defintion of identifier"
 				vim.keymap.set("n", "gt", builtin.lsp_type_definitions, opts)
 				opts.desc = "[G]o to [I]mplementation of function"
