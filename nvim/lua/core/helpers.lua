@@ -47,3 +47,9 @@ vim.filetype.add({
 		[".*%.component%.html"] = "htmlangular",
 	},
 })
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	group = vim.api.nvim_create_augroup("TrailingWhitespace", { clear = true }),
+	pattern = "*",
+	command = [[%s/\s\+$//e]],
+})
