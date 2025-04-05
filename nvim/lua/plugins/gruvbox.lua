@@ -50,6 +50,12 @@ return {
 				TelescopePreviewTitle = { bg = palette.dark0, fg = palette.dark0 },
 				TelescopeResultsTitle = { bg = palette.dark0, fg = palette.dark0 },
 				TelescopeMatching = { fg = palette.bright_aqua, bold = true },
+
+				HarpoonNumberActive = { link = "CursorLineNr" },
+				HarpoonActive = { link = "CursorLineNr" },
+				HarpoonNumberInactive = { bg = nil },
+				HarpoonInactive = { bg = nil },
+				TabLineFill = { link = "Normal" },
 			},
 			transparent_mode = true,
 		})
