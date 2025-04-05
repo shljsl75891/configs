@@ -17,6 +17,17 @@ return {
 			yaml = { "prettierd" },
 			markdown = { "prettierd" },
 			lua = { "stylua" },
+			sql = { "sql_formatter" },
+		},
+		formatters = {
+			sql_formatter = {
+				args = {
+					"-l",
+					"plsql",
+					"-c",
+					os.getenv("HOME") .. "/personal/configs/.sql-formatter.json",
+				},
+			},
 		},
 		format_on_save = function(bufnr)
 			local TIMEOUT = 500

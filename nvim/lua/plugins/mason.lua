@@ -25,6 +25,7 @@ return {
 						-- Formatters
 						"prettierd",
 						"stylua",
+						"sql-formatter",
 					},
 				},
 			},
