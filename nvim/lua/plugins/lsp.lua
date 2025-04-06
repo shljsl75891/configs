@@ -14,18 +14,13 @@ return {
 	config = function()
 		local builtin = require("telescope.builtin")
 
-		-- border = "single", "rounded", "shadow", "double", "none", "solid"
-		vim.lsp.handlers["textDocument/hover"] =
-			vim.lsp.with(vim.lsp.handlers.hover, { border = "solid" })
-		vim.lsp.handlers["textDocument/signatureHelp"] =
-			vim.lsp.with(vim.lsp.handlers.signature_help, { border = "solid" })
-
 		vim.diagnostic.config({
 			virtual_text = true,
 			update_in_insert = false,
 			float = {
 				focusable = true,
 				style = "minimal",
+				-- border = "single", "rounded", "shadow", "double", "none", "solid"
 				border = "solid",
 				source = true,
 				header = "",
@@ -41,7 +36,9 @@ return {
 				local opts = { buffer = ev.buf, noremap = true, silent = true }
 				-- Lsp APIs
 				opts.desc = "Get Information of variable/function"
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "K", function()
+					vim.lsp.buf.hover({ border = "solid" })
+				end, opts)
 				opts.desc = "[G]o to [D]efintion of identifier"
 				vim.keymap.set("n", "gd", builtin.lsp_definitions, opts)
 				opts.desc = "Find [D]ocument [S]ymbols"
@@ -53,7 +50,9 @@ return {
 				opts.desc = "[G]o to All [R]eferences of identifier"
 				vim.keymap.set("n", "<leader>rr", builtin.lsp_references, opts)
 				opts.desc = "LSP Signature [H]elp"
-				vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+				vim.keymap.set("i", "<C-h>", function()
+					vim.lsp.buf.signature_help({ border = "solid" })
+				end, opts)
 				opts.desc = "[R]e[N]ame Symbol"
 				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 				opts.desc = "List suggested [C]ode [A]ctions"
@@ -62,9 +61,13 @@ return {
 				opts.desc = "Get information about [D][I]agnostics"
 				vim.keymap.set("n", "<leader>di", vim.diagnostic.open_float, opts)
 				opts.desc = "Go to next [D]iagnostics in the current file"
-				vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+				vim.keymap.set("n", "[d", function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end, opts)
 				opts.desc = "Go to previous [D]iagnostics in the current file"
-				vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+				vim.keymap.set("n", "]d", function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end, opts)
 			end,
 		})
 	end,
