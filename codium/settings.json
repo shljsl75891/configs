@@ -21,12 +21,14 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "betterGitLineBlame.maxSummaryLength": 80,
+  "betterGitLineBlame.showStatusBarItem": true,
   "breadcrumbs.enabled": false,
   "debug.console.fontFamily": "TX02 Nerd Font",
   "debug.console.fontSize": 11,
+  "editor.autoClosingBrackets": "never",
   // editor settings
   "editor.autoClosingQuotes": "never",
-  "editor.autoClosingBrackets": "never",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
@@ -37,8 +39,6 @@
   "editor.fontSize": 13,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
-  "betterGitLineBlame.showStatusBarItem": true,
-  "betterGitLineBlame.maxSummaryLength": 80,
   "editor.guides.highlightActiveBracketPair": false,
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
@@ -70,11 +70,14 @@
   "explorer.compactFolders": false,
   "explorer.excludeGitIgnore": false,
   // imporve vim extension performance
-  "extensions.experimental.affinity": { "vscodevim.vim": 1 },
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
+  "telemetry.feedback.enabled": false,
   "telemetry.telemetryLevel": "off",
   // terminal settings
   "terminal.integrated.cursorBlinking": true,
@@ -93,23 +96,25 @@
     // vim keys
     "<C-a>": true,
     "<C-h>": true,
+    "<C-i>": true,
     "<C-o>": true,
     "<C-r>": true,
     "<C-u>": true,
     "<C-v>": true,
     "<C-w>": true,
-    "<C-x>": true,
-    "<C-i>": true
+    "<C-x>": true
   },
   "vim.highlightedyank.color": "#FE8019",
-  "vim.highlightedyank.textColor": "#282828",
   "vim.highlightedyank.duration": 60,
-  "vim.searchMatchColor": "#FE8019",
-  "vim.searchMatchTextColor": "#282828",
   "vim.highlightedyank.enable": true,
+  "vim.highlightedyank.textColor": "#282828",
   // vim keybindings for insert mode
   "vim.insertModeKeyBindings": [
-    { "before": ["<C-h>"], "commands": ["editor.action.triggerParameterHints"] }
+    {
+      "before": ["<C-h>"],
+      "commands": ["editor.action.triggerParameterHints"],
+      "silent": true
+    }
   ],
   "vim.leader": " ",
   // vim keybindings for normal mode
@@ -136,8 +141,14 @@
       "silent": true
     },
     // vertical movements
-    { "after": ["<C-u>", "z", "z"], "before": ["<C-u>"] },
-    { "after": ["<C-d>", "z", "z"], "before": ["<C-d>"] },
+    {
+      "after": ["<C-u>", "z", "z"],
+      "before": ["<C-u>"]
+    },
+    {
+      "after": ["<C-d>", "z", "z"],
+      "before": ["<C-d>"]
+    },
     // lsp actions
     {
       "before": ["K"],
@@ -189,18 +200,20 @@
   "vim.normalModeKeyBindingsNonRecursive": [
     // use vscode undo & redo
     {
-      "before": ["u"],
       "after": [],
-      "commands": [{ "command": "undo", "args": [] }],
+      "before": ["u"],
+      "commands": [{ "args": [], "command": "undo" }],
       "silent": true
     },
     {
-      "before": ["<C-r>"],
       "after": [],
-      "commands": [{ "command": "redo", "args": [] }],
+      "before": ["<C-r>"],
+      "commands": [{ "args": [], "command": "redo" }],
       "silent": true
     }
   ],
+  "vim.searchMatchColor": "#FE8019",
+  "vim.searchMatchTextColor": "#282828",
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
   // vim keybindings for visual mode
@@ -236,18 +249,19 @@
   // window settings
   "window.commandCenter": false,
   "window.customTitleBarVisibility": "never",
-  "window.dialogStyle": "custom",
+  "window.dialogStyle": "native",
   "window.menuBarVisibility": "toggle",
+  "window.titleBarStyle": "native",
   "workbench.activityBar.location": "hidden",
+  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.showIcons": false,
-  "workbench.iconTheme": "gruvbox-material-icon-theme",
+  "workbench.iconTheme": null,
   "workbench.layoutControl.enabled": false,
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.statusBar.visible": true,
-  "workbench.tree.renderIndentGuides": "none",
-  "workbench.colorTheme": "Gruvbox Dark Hard"
+  "workbench.tree.renderIndentGuides": "none"
 }
