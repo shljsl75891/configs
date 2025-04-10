@@ -102,8 +102,7 @@ local terminal = "alacritty"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
-local mercury = "mercury-browser"
-local thorium = "thorium-browser"
+local browser = "brave-browser"
 
 awful.util.terminal = terminal
 awful.util.tagnames =
@@ -401,21 +400,17 @@ local globalkeys = mytable.join(
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "b", function()
-		awful.spawn(thorium .. " --profile-directory='Profile 1'")
+		awful.spawn(browser .. " --profile-directory='Profile 1'")
 	end, {
-		description = "launch thorium browser with work profile",
+		description = "launch brave browser with work profile",
 		group = "launcher",
 	}),
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn(thorium .. " --profile-directory='Profile 5'")
+		awful.spawn(browser .. " --profile-directory='Default'")
 	end, {
-		description = "launch thorium browser with personal profile",
+		description = "launch brave browser with personal profile",
 		group = "launcher",
 	}),
-	awful.key({ modkey, "Control" }, "b", function()
-		awful.spawn(mercury)
-	end, { description = "launch mercury browser", group = "launcher" }),
-
 	awful.key({ modkey, "Shift" }, "n", function()
 		local c = awful.client.restore()
 		-- Focus restored client
@@ -735,10 +730,6 @@ awful.rules.rules = {
 	{ rule = { class = "Codium" }, properties = { screen = 1, tag = "󰨞 " } },
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
-	{
-		rule = { class = "mercury-default" },
-		properties = { screen = 1, tag = " " },
-	},
 }
 
 -- }}}
