@@ -26,7 +26,7 @@ return {
 			},
 		}
 
-		local shift_nums = { "!", "@", "#", "$" }
+		local shift_nums = { "<C-j>", "<C-k>", "<C-h>", "<C-l>" }
 		for i, key in ipairs(shift_nums) do
 			table.insert(mappings, {
 				key,
