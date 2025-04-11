@@ -3,7 +3,7 @@ return {
 	keys = {
 		{ "<leader>ut", vim.cmd.UndotreeToggle, desc = "[U]ndo Tree [T]oggle" },
 	},
-	config = function()
+	init = function()
 		vim.g.undotree_SetFocusWhenToggle = 1
 	end,
 }
