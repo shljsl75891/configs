@@ -1,21 +1,19 @@
 return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
-	lazy = false,
 	keys = function()
-		local harpoon = require("harpoon")
 		local mappings = {
 			{
 				"<leader>a",
 				function()
-					harpoon:list():add()
+					require("harpoon"):list():add()
 				end,
 				desc = "[A]dd current file to Harpoon list",
 			},
 			{
 				"<leader>m",
 				function()
-					harpoon.ui:toggle_quick_menu(harpoon:list(), {
+					require("harpoon").ui:toggle_quick_menu(require("harpoon"):list(), {
 						title = "",
 						border = "solid",
 						title_pos = "center",
@@ -31,7 +29,7 @@ return {
 			table.insert(mappings, {
 				key,
 				function()
-					harpoon:list():select(i)
+					require("harpoon"):list():select(i)
 				end,
 				desc = "Jump to Harpoon file " .. i,
 			})
