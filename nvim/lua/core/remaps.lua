@@ -95,3 +95,7 @@ vim.keymap.set(
 	":lua<CR>",
 	{ desc = "E[X]ecute visually selected lua" }
 )
+
+-- Tab Navigation
+vim.keymap.set("n", "<S-l>", vim.cmd.tabnext)
+vim.keymap.set("n", "<S-h>", vim.cmd.tabprev)
