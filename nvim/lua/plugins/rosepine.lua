@@ -2,12 +2,11 @@ return {
 	"rose-pine/neovim",
 	name = "rose-pine",
 	lazy = false,
-	enabled = false,
-	-- priority = 1000,
+	priority = 1000,
 	config = function()
 		require("rose-pine").setup({
-			variant = "main", -- auto, main, moon, or dawn
-			dark_variant = "main", -- main, moon, or dawn
+			variant = "main",
+			dark_variant = "main",
 			dim_inactive_windows = false,
 			extend_background_behind_borders = false,
 			styles = {
@@ -16,16 +15,29 @@ return {
 				transparency = true,
 			},
 			highlight_groups = {
+				["@function"] = { bold = true },
+				["@function.method"] = { bold = true },
 				Comment = { italic = true },
-				LspSignatureActiveParameter = {
-					bg = nil,
-					fg = "love",
+				Visual = { bg = "highlight_med", inherit = false },
+				-- Lsp Highlights
+				LspReferenceText = {
+					bg = "highlight_med",
 					bold = true,
+					underline = true,
 				},
+				LspSignatureActiveParameter = { bg = "muted", fg = "love", bold = true },
+				-- Completion Menu
+				Pmenu = { fg = "NONE", bg = "overlay" },
+				PmenuSel = { bg = "leaf", fg = "base", bold = true },
+				CmpItemAbbrMatch = { fg = "leaf" },
+				CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },
+				-- Status line highlights
 				StatusLine = { fg = "text", bg = "muted", blend = 25 },
 				StatusLineNC = { fg = "muted", bg = "muted", blend = 25 },
-				NormalFloat = { bg = "surface" },
+				-- Floating windows highlights
+				NormalFloat = { bg = "highlight_med", blend = 40 },
 				FloatBorder = { link = "NormalFloat" },
+				-- Telescope borderless highlights
 				TelescopeBorder = { fg = "overlay", bg = "overlay" },
 				TelescopeNormal = { fg = "subtle", bg = "overlay" },
 				TelescopeSelection = { fg = "text", bg = "highlight_med" },
@@ -38,7 +50,6 @@ return {
 				TelescopePromptBorder = { fg = "surface", bg = "surface" },
 			},
 		})
-
 		vim.cmd.colorscheme("rose-pine")
 	end,
 }

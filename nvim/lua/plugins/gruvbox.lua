@@ -1,5 +1,6 @@
 return {
 	"ellisonleao/gruvbox.nvim",
+	enabled = false,
 	priority = 1000,
 	config = function()
 		local theme = require("gruvbox")

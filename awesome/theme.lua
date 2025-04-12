@@ -39,7 +39,7 @@ local palettes = {
 }
 
 local os = os
-local active_palette = palettes["gruvbox"]
+local active_palette = palettes["rose-pine"]
 
 local theme = {
 	fg_normal = active_palette.fg_normal,

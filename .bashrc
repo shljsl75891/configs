@@ -134,13 +134,15 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --layout="default" --info="right"'
 
 # Gruvbox for FZF
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	--color=fg:#EBDBB2,bg:-1,hl:#8EC07C
-	--color=fg+:#FBF1C7,bg+:#282828,hl+:#8EC07C
-	--color=border:#665C54,header:#83A598,gutter:-1
-	--color=spinner:#FE8019,info:#FABD2F
-	--color=pointer:#62693e,marker:#D79921,prompt:#427B58
-  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
-  --layout="default" --info="right"'
+# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+# 	--color=fg:#EBDBB2,bg:-1,hl:#8EC07C
+# 	--color=fg+:#FBF1C7,bg+:#282828,hl+:#8EC07C
+# 	--color=border:#665C54,header:#83A598,gutter:-1
+# 	--color=spinner:#FE8019,info:#FABD2F
+# 	--color=pointer:#62693e,marker:#D79921,prompt:#427B58
+#   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
+#   --layout="default" --info="right"'
 
 . "$HOME/.cargo/env"
+
+export STARSHIP_CONFIG=$HOME/.config/starship/rosepine.toml

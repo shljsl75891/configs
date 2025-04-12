@@ -48,7 +48,7 @@ local localOptions = {
 	autoread = true,
 	autowrite = true,
 	-- items in completion menu
-	pumheight = 12,
+	pumheight = 25,
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line

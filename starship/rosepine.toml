@@ -1,29 +1,16 @@
 format = """
 $directory\
-[](fg:color_red bg:color_yellow)\
+[](fg:color_love bg:color_gold)\
 $git_branch\
-[](fg:color_yellow bg:color_orange)\
+[](fg:color_gold bg:color_rose)\
 $git_state\
 $git_status\
-[](fg:color_orange)\
+[](fg:color_rose)\
 $character"""
 
 add_newline = false
 command_timeout = 2000
-palette = 'gruvbox_dark'
-
-[palettes.gruvbox_dark]
-color_fg0 = '#FBF1C7'
-color_bg1 = '#3C3836'
-color_bg3 = '#665C54'
-color_blue = '#458588'
-color_aqua = '#689D6A'
-color_green = '#98971A'
-color_orange = '#D65D0E'
-color_purple = '#B16286'
-color_red = '#722529'
-color_yellow = '#D79921'
-
+palette = 'rose_pine'
 
 [palettes.rose_pine]
 color_base = "#191724"
@@ -42,13 +29,12 @@ color_highlightlow = "#21202E"
 color_highlightmed = "#403D52"
 color_highlighthigh = "#524F67 "
 
-
 [cmd_duration]
-style = 'fg:color_overlay bg:color_yellow'
+style = 'fg:color_overlay bg:color_gold'
 format = '[ $duration ]($style)'
 
 [directory]
-style = "fg:color_fg0 bg:color_red"
+style = "fg:color_surface bg:color_love"
 format = "[ $path ]($style)"
 truncation_length = 1
 truncation_symbol = '…/'
@@ -59,13 +45,13 @@ error_symbol = ''
 
 [git_branch]
 symbol = ""
-style = "bg:color_yellow"
-format = '[[ $symbol $branch ](fg:color_bg1 bg:color_yellow)]($style)'
+style = "bg:color_gold"
+format = '[[ $symbol $branch ](fg:color_overlay bg:color_gold)]($style)'
 
 [git_state]
-style = "fg:color_bg1 bg:color_orange"
+style = "fg:color_surface bg:color_rose"
 format ='[ $state( $progress_current/$progress_total) ]($style)'
 
 [git_status]
-style = "bg:color_orange"
-format = '[[ ($all_status$ahead_behind )](fg:color_bg1 bg:color_orange)]($style)'
+style = "bg:color_rose"
+format = '[[ ($all_status$ahead_behind )](fg:color_surface bg:color_rose)]($style)'
