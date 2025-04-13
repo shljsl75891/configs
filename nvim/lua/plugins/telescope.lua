@@ -74,10 +74,8 @@ return {
 					vertical = { width = 0.6, preview_width = 0.5 },
 				},
 				mappings = {
-					n = {
-						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-					},
 					i = {
+						["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 						["<C-j>"] = actions.cycle_history_next,
 						["<C-k>"] = actions.cycle_history_prev,
 					},
