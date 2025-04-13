@@ -25,7 +25,11 @@ return {
 					bold = true,
 					underline = true,
 				},
-				LspSignatureActiveParameter = { bg = "muted", fg = "love", bold = true },
+				LspSignatureActiveParameter = {
+					bg = "highlight_med",
+					fg = "love",
+					bold = true,
+				},
 				-- Completion Menu
 				Pmenu = { fg = "NONE", bg = "overlay" },
 				PmenuSel = { bg = "leaf", fg = "base", bold = true },
