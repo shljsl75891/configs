@@ -20,7 +20,7 @@ return {
 				Comment = { italic = true },
 				Visual = { bg = "highlight_med", inherit = false },
 				-- Lsp Highlights
-				LspReferenceText = {
+				LspReferenceTarget = {
 					bg = "highlight_med",
 					bold = true,
 					underline = true,

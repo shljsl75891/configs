@@ -17,7 +17,11 @@ return {
 			},
 			contrast = "hard",
 			overrides = {
-				LspReferenceText = { bg = palette.dark2, bold = true, underline = true },
+				LspReferenceTarget = {
+					bg = palette.dark2,
+					bold = true,
+					underline = true,
+				},
 				LspSignatureActiveParameter = {
 					bg = palette.dark3,
 					fg = palette.bright_yellow,
