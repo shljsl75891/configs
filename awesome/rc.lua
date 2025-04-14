@@ -577,6 +577,15 @@ local clientkeys = mytable.join(
 	end, { description = "move to master", group = "client" }),
 	awful.key({ modkey }, "t", function(c)
 		c.ontop = not c.ontop
+		if c.ontop then
+			c.border_color = beautiful.bg_urgent
+		else
+			if client.focus == c then
+				c.border_color = beautiful.border_focus
+			else
+				c.border_color = beautiful.border_normal
+			end
+		end
 	end, { description = "toggle always on top", group = "client" }),
 	awful.key({ modkey }, "n", function(c)
 		-- The client currently has the input focus, so it cannot be
@@ -808,10 +817,14 @@ end)
 end) ]]
 
 client.connect_signal("focus", function(c)
-	c.border_color = beautiful.border_focus
+	if not c.ontop then
+		c.border_color = beautiful.border_focus
+	end
 end)
 client.connect_signal("unfocus", function(c)
-	c.border_color = beautiful.border_normal
+	if not c.ontop then
+		c.border_color = beautiful.border_normal
+	end
 end)
 
 -- switch to parent after closing child window
