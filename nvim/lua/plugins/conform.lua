@@ -30,6 +30,9 @@ return {
 			},
 		},
 		format_on_save = function(bufnr)
+			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+				return
+			end
 			local TIMEOUT = 500
 			local bufname = vim.api.nvim_buf_get_name(bufnr)
 			if bufname:match("/node_modules/") then
