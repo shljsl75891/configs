@@ -157,7 +157,7 @@ function theme.at_screen_connect(s)
 		}),
 		battery = require("awesome-wm-widgets.battery-widget.battery")({
 			show_current_level = true,
-			timeout = 2,
+			timeout = 25,
 			path_to_icons = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
 			font = theme.font,
 		}),
