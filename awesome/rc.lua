@@ -739,6 +739,7 @@ awful.rules.rules = {
 	{ rule = { class = "Codium" }, properties = { screen = 1, tag = "󰨞 " } },
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
 }
 
 -- }}}
