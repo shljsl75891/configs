@@ -164,11 +164,12 @@ function theme.at_screen_connect(s)
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
 			type = "icon_and_text",
 			percentage = true,
-			timeout = 100,
+			timeout = 4294967.295,
 			path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
 			program = "xbacklight",
 			base = 5,
 			step = 10,
+			rmb_set_max = true,
 		}),
 		todo = require("awesome-wm-widgets.todo-widget.todo")(),
 	}
