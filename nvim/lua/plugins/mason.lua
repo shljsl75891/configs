@@ -42,9 +42,7 @@ return {
 			)
 
 			local default_setup = function(server)
-				require("lspconfig")[server].setup({
-					capabilities = capabilities,
-				})
+				require("lspconfig")[server].setup({ capabilities = capabilities })
 			end
 
 			require("mason-lspconfig").setup({
