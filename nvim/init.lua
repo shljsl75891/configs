@@ -1,4 +1,4 @@
 require("core.options")
-require("core.helpers")
-require("core.remaps")
+require("core.utils")
+require("core.keymaps")
 require("core.lazy")
