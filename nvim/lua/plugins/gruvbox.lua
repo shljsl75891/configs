@@ -3,6 +3,6 @@ return {
 	enabled = false,
 	priority = 1000,
 	config = function()
-		require("config.gruvbox")
+		require("configs.gruvbox")
 	end,
 }

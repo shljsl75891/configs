@@ -3,6 +3,6 @@ return {
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
 	config = function()
-		require("config.conform")
+		require("configs.conform")
 	end,
 }

@@ -33,7 +33,7 @@ return {
 			"b0o/schemastore.nvim",
 		},
 		config = function()
-			require("config.mason")
+			require("configs.mason")
 		end,
 	},
 }

@@ -7,8 +7,7 @@ require("treesitter-context").setup({
 	multiline_threshold = 1,
 })
 
-local configs = require("nvim-treesitter.configs")
-configs.setup({
+require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"c",
 		"lua",
