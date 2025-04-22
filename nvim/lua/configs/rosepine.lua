@@ -13,6 +13,7 @@ require("rose-pine").setup({
 		["@function.method"] = { bold = true },
 		Comment = { italic = true },
 		Visual = { bg = "highlight_med", inherit = false },
+		CursorLineNr = { fg = "love" },
 		-- Lsp Highlights
 		LspReferenceTarget = {
 			bg = "highlight_med",
