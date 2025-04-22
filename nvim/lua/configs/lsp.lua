@@ -1,5 +1,3 @@
-local builtin = require("telescope.builtin")
-
 vim.diagnostic.config({
 	virtual_text = true,
 	update_in_insert = false,
@@ -19,6 +17,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP actions",
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(ev)
+		local builtin = require("telescope.builtin")
 		local opts = { buffer = ev.buf, noremap = true, silent = true }
 		-- Lsp APIs
 		opts.desc = "Get Information of variable/function"
