@@ -104,10 +104,10 @@
     "<C-w>": true,
     "<C-x>": true
   },
-  "vim.highlightedyank.color": "#FE8019",
+  "vim.highlightedyank.color": "#F6C177",
   "vim.highlightedyank.duration": 60,
   "vim.highlightedyank.enable": true,
-  "vim.highlightedyank.textColor": "#282828",
+  "vim.highlightedyank.textColor": "#191724",
   // vim keybindings for insert mode
   "vim.insertModeKeyBindings": [
     {
@@ -212,8 +212,8 @@
       "silent": true
     }
   ],
-  "vim.searchMatchColor": "#FE8019",
-  "vim.searchMatchTextColor": "#282828",
+  "vim.searchMatchColor": "#F6C177",
+  "vim.searchMatchTextColor": "#191724",
   "vim.useCtrlKeys": false,
   "vim.useSystemClipboard": false,
   // vim keybindings for visual mode
