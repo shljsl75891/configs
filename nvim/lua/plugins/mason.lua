@@ -1,7 +1,7 @@
 return {
 	{
 		"williamboman/mason.nvim",
-		opts = {},
+		config = true,
 		cmd = { "Mason" },
 	},
 	{
