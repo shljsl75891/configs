@@ -1,14 +1,14 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		config = true,
 		cmd = { "Mason" },
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 			{
 				"WhoIsSethDaniel/mason-tool-installer.nvim",
 				opts = {
