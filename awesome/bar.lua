@@ -152,7 +152,7 @@ function theme.at_screen_connect(s)
 			with_icon = true,
 			width = 60,
 			margins = 7,
-			shape = "rounded_bar",
+			shape = gears.shape.rounded_bar,
 			bg_color = "#1F2335",
 			mute_color = theme.bg_urgent,
 		}),
