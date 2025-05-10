@@ -388,7 +388,7 @@ local globalkeys = mytable.join(
 		)
 	end, { description = "capture partial screenshot", group = "launcher" }),
 	awful.key({ modkey }, "e", function()
-		awful.spawn("thunar")
+		awful.spawn("pcmanfm")
 	end, { description = "open a explorer", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.spawn.with_shell("slock")
