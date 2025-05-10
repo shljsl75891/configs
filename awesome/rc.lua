@@ -371,12 +371,6 @@ local globalkeys = mytable.join(
 		awesome.restart,
 		{ description = "reload awesome", group = "awesome" }
 	),
-	awful.key(
-		{ modkey, "Shift" },
-		"q",
-		awesome.quit,
-		{ description = "quit awesome", group = "awesome" }
-	),
 	awful.key({}, "Print", function()
 		awful.spawn.with_shell(
 			"maim -sDo | xclip -selection clipboard -t image/png"
@@ -385,9 +379,6 @@ local globalkeys = mytable.join(
 	awful.key({ modkey }, "e", function()
 		awful.spawn("pcmanfm")
 	end, { description = "open a explorer", group = "launcher" }),
-	awful.key({ modkey, "Shift" }, "l", function()
-		awful.spawn.with_shell("slock")
-	end, { description = "locks the screen", group = "screen" }),
 	awful.key({ modkey, "Shift" }, "o", function()
 		awful.spawn.with_shell("obsidian")
 	end, {
@@ -843,11 +834,4 @@ tag.connect_signal("property::selected", backham)
 -- }}}
 
 -- AutoStart script
-awful.spawn.with_shell(
-	"xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Tapping Enabled' 1"
-)
-awful.spawn.with_shell(
-	"xinput set-prop 'DELL0A36:00 0488:101A Touchpad' 'libinput Natural Scrolling Enabled' 1"
-)
-
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")

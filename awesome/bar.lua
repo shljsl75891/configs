@@ -173,6 +173,11 @@ function theme.at_screen_connect(s)
 			rmb_set_max = true,
 		}),
 		todo = require("awesome-wm-widgets.todo-widget.todo")(),
+		logout = require("awesome-wm-widgets.logout-menu-widget.logout-menu")({
+			onlock = function()
+				awful.spawn.with_shell("slock")
+			end,
+		}),
 	}
 
 	local function create_powerline_widget(widget, bg_color, margin_x, margin_y)
@@ -217,6 +222,8 @@ function theme.at_screen_connect(s)
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
 			arrow(theme.powerline_spr2, theme.powerline_spr1),
 			create_powerline_widget(widgets.todo, theme.powerline_spr1),
+			arrow(theme.powerline_spr1, theme.powerline_spr2),
+			create_powerline_widget(widgets.logout, theme.powerline_spr2),
 		},
 	})
 end
