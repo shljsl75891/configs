@@ -7,28 +7,30 @@
 - Awesome WM configured from scratch
 - VSCode with VIM Extension configured
 
-# Dependencies
+## Fix Screen Tearing
 
-```console
-zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv
+- [Reference](https://christitus.com/fix-screen-tearing-linux/) - [Chris Titus Video](https://www.youtube.com/watch?v=rVBq6d3c1gM)
+
+##### Keep `vsync` on
+
+In `picom.conf`
+
+```bash
+vsync = true;
 ```
 
-![image](https://github.com/user-attachments/assets/bfc1f97d-aa1f-4695-8941-744d6be04ecd)
+#### Intel / AMD X11 Config
 
-![image](https://github.com/user-attachments/assets/1ac6b7e3-2152-46a3-96c5-89b1f0852eba)
-
-![image](https://github.com/user-attachments/assets/f18b83e5-8614-4cd3-a042-6fd57d5f9fc2)
-
-# How to change cursor theme
-
-1. In `.icons/default/index.theme`
+File to Edit/Add: /etc/X11/xorg.conf.d/20-intel.conf or 20-amd.conf
 
 ```
-# This file is written by LXAppearance. Do not edit.
-[Icon Theme]
-Name=Default
-Comment=Default Cursor Theme
-Inherits=BreezeX-RosePineDawn-Linux
+Section "Device"
+    Identifier  "Intel Graphics" / "AMD Graphics"
+    Driver      "intel" / "amdgpu"
+    Option      "DRI"  "3"
+    Option      "Backlight"  "intel_backlight"
+    Option      "TearFree" "true"
+EndSection
 ```
 
-2. And do change `gtk-cursor-theme-name` attribute in `~/.gtkrc-2.0` and `~/.config/gtk-3.0/settings.ini`
+Note: There are extra options that can help like: Option "AccelMethod" "uxa" or Option "TripleBuffer" "true"
