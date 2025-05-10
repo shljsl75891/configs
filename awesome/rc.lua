@@ -17,7 +17,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local lain = require("lain")
 --local menubar       = require("menubar")
 local freedesktop = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup")
@@ -155,11 +154,7 @@ awful.util.tasklist_buttons = mytable.join(
 )
 
 beautiful.init(
-	string.format(
-		"%s/.config/awesome/config.lua",
-		os.getenv("HOME"),
-		chosen_theme
-	)
+	string.format("%s/.config/awesome/bar.lua", os.getenv("HOME"), chosen_theme)
 )
 
 -- }}}

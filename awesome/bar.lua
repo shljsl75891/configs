@@ -140,7 +140,7 @@ function theme.at_screen_connect(s)
 	-- widgets
 	local widgets = {
 		cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")({
-			width = 25,
+			width = 40,
 			step_width = 2,
 			step_spacing = 0,
 			color = theme.fg_normal,
@@ -196,10 +196,10 @@ function theme.at_screen_connect(s)
 		{
 			layout = wibox.layout.fixed.horizontal,
 			arrow(theme.bg_normal, theme.powerline_spr1),
-			create_powerline_widget(net.widget, theme.powerline_spr1),
+			-- create_powerline_widget(net.widget, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
 			create_powerline_widget(
-				wibox.widget.textbox("󰍛 "),
+				wibox.widget.textbox(" "),
 				theme.powerline_spr2
 			),
 			create_powerline_widget(mem.widget, theme.powerline_spr2),
