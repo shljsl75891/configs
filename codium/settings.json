@@ -253,7 +253,7 @@
   "window.menuBarVisibility": "toggle",
   "window.titleBarStyle": "native",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorTheme": "NeoRose-VimPine",
+  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.showIcons": false,

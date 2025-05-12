@@ -159,14 +159,14 @@ function theme.at_screen_connect(s)
 		battery = require("awesome-wm-widgets.battery-widget.battery")({
 			show_current_level = true,
 			timeout = 25,
-			path_to_icons = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/",
+			path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 			font = theme.font,
 		}),
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
 			type = "icon_and_text",
 			percentage = true,
 			timeout = 4294967.295,
-			path_to_icon = "/home/sahil.jassal/.icons/Rose-Pine/status/symbolic/display-brightness-medium-symbolic.svg",
+			path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
 			program = "xbacklight",
 			base = 5,
 			step = 10,
