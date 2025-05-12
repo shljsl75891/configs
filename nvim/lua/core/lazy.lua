@@ -13,7 +13,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
-	install = { colorscheme = { "rose-pine" } },
+	install = { colorscheme = { "gruvbox" } },
 	checker = { enabled = true, notify = false },
 	change_detection = { notify = false },
 	performance = {
