@@ -58,3 +58,9 @@ x-scheme-handler/unknown=brave-browser.desktop
 x-scheme-handler/webcal=brave-browser.desktop
 x-scheme-handler/postman=Postman.desktop
 ```
+
+## ScreenShots
+
+![](/assets/2025-05-14-06-57-57.png)
+
+![](/assets/2025-05-14-06-58-17.png)
