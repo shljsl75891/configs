@@ -162,6 +162,11 @@ function theme.at_screen_connect(s)
 			path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
 			font = theme.font,
 		}),
+		spotify = require("awesome-wm-widgets.spotify-widget.spotify")({
+			font = theme.font,
+			dim_when_paused = true,
+			dim_opacity = 0.5,
+		}),
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
 			type = "icon_and_text",
 			percentage = true,
@@ -202,6 +207,7 @@ function theme.at_screen_connect(s)
 			layout = wibox.layout.fixed.horizontal,
 			arrow(theme.bg_normal, theme.powerline_spr1),
 			-- create_powerline_widget(net.widget, theme.powerline_spr1),
+			create_powerline_widget(widgets.spotify, theme.powerline_spr1),
 			arrow(theme.powerline_spr1, theme.powerline_spr2),
 			create_powerline_widget(
 				wibox.widget.textbox(" "),
