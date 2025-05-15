@@ -1,5 +1,9 @@
 # My Dotfiles
 
+```
+git clone --recurse-submodules https://github.com/shljsl75891/configs.git
+```
+
 ### Tools which I use to enhance my development workflow
 
 - Linux (Debian Based for stability)
