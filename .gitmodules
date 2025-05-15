@@ -10,3 +10,6 @@
 [submodule "awesome/lain"]
 	path = awesome/lain
 	url = https://github.com/lcpz/lain.git
+[submodule "awesome/fa6258f3ff7b17747ee3"]
+	path = awesome/fa6258f3ff7b17747ee3
+	url = https://gist.github.com/fa6258f3ff7b17747ee3.git

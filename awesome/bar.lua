@@ -137,6 +137,7 @@ function theme.at_screen_connect(s)
 	local spr = wibox.widget.textbox(" ")
 	local arrow = separators.arrow_left
 	local systray = wibox.widget.systray()
+	local icon_base_path = os.getenv("HOME") .. "/.icons/Gruvbox-Dark"
 	-- widgets
 	local widgets = {
 		cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")({
@@ -159,19 +160,22 @@ function theme.at_screen_connect(s)
 		battery = require("awesome-wm-widgets.battery-widget.battery")({
 			show_current_level = true,
 			timeout = 25,
-			path_to_icons = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/",
+			path_to_icons = icon_base_path .. "/status/symbolic/",
 			font = theme.font,
 		}),
 		spotify = require("awesome-wm-widgets.spotify-widget.spotify")({
 			font = theme.font,
 			dim_when_paused = true,
 			dim_opacity = 0.5,
+			sp_bin = os.getenv("HOME")
+				.. "/personal/configs/awesome/fa6258f3ff7b17747ee3/sp",
 		}),
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
 			type = "icon_and_text",
 			percentage = true,
 			timeout = 4294967.295,
-			path_to_icon = "/home/sahil.jassal/.icons/Gruvbox-Dark/status/symbolic/display-brightness-medium-symbolic.svg",
+			path_to_icon = icon_base_path
+				.. "/status/symbolic/display-brightness-medium-symbolic.svg",
 			program = "xbacklight",
 			base = 5,
 			step = 10,
