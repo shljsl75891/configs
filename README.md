@@ -7,7 +7,7 @@ git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 # Dependencies
 
 ```console
-zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv
+zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv cmake
 ```
 
 ### Tools which I use to enhance my development workflow
