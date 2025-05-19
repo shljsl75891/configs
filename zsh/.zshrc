@@ -5,6 +5,8 @@ autoload -U colors && colors
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.zsh_history
+export EDITOR=nvim
+export SUDO_EDITOR=nvim
 
 # Basic auto/tab complete:
 autoload -U compinit
