@@ -14,6 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
 	install = { colorscheme = { "gruvbox" } },
+	defaults = { cond = not vim.g.vscode },
 	checker = { enabled = true, notify = false },
 	change_detection = { notify = false },
 	performance = {
