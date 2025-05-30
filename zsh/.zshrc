@@ -27,6 +27,7 @@ alias btdisconnect="bluetoothctl disconnect 8E:95:F1:F5:5B:D2 && bluetoothctl po
 
 # Prompt
 eval "$(starship init zsh)"
+export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
 
 # Increase JS Heap memory
 export NODE_OPTIONS=--max-old-space-size=8096
@@ -75,7 +76,13 @@ bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "^Usessionizer\n"
 
+## Simple bare minimal terminal
+
+# Force emacs mode to avoid vi mode
+bindkey -e
+
+# Unbind most key bindings (Esc, Ctrl, Alt, etc.)
+bindkey -r '\eh'
+bindkey -rM emacs '\e'
 
 . "$HOME/.cargo/env"
-
-export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
