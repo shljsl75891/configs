@@ -80,3 +80,8 @@ opts.desc = "Next tab"
 vim.keymap.set("n", "<S-l>", vim.cmd.tabnext, opts)
 opts.desc = "Previous tab"
 vim.keymap.set("n", "<S-h>", vim.cmd.tabprev, opts)
+
+-- Disable annoying F1 binding
+opts.desc = nil
+vim.keymap.set("n", "<F1>", ":echo<CR>", opts)
+vim.keymap.set("i", "<F1>", "<C-o>:echo<CR>", opts)
