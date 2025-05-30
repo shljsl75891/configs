@@ -69,6 +69,9 @@ source $HOME/personal/configs/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-hig
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_HIGHLIGHT_STYLES[comment]="fg=white,bold"
 
+# Force emacs mode to avoid vi mode
+bindkey -e
+
 # arrow keys
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
@@ -76,13 +79,5 @@ bindkey '^H' backward-kill-word
 bindkey '5~' kill-word
 bindkey -s ^bf "^Usessionizer\n"
 
-## Simple bare minimal terminal
-
-# Force emacs mode to avoid vi mode
-bindkey -e
-
-# Unbind most key bindings (Esc, Ctrl, Alt, etc.)
-bindkey -r '\eh'
-bindkey -rM emacs '\e'
 
 . "$HOME/.cargo/env"
