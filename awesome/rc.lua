@@ -698,6 +698,7 @@ awful.rules.rules = {
 				"Wpa_gui",
 				"veromix",
 				"xtightvncviewer",
+				"Codium",
 			},
 
 			-- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -711,7 +712,7 @@ awful.rules.rules = {
 				-- "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
 			},
 		},
-		properties = { floating = true },
+		properties = { floating = true, placement = awful.placement.centered },
 	},
 
 	-- Add titlebars to normal clients and dialogs
@@ -722,7 +723,10 @@ awful.rules.rules = {
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
-	{ rule = { class = "Codium" }, properties = { screen = 1, tag = "󰨞 " } },
+	{
+		rule = { class = "Codium" },
+		properties = { screen = 1, tag = "󰨞 " },
+	},
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
 	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
