@@ -76,6 +76,7 @@
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
+  "extensions.ignoreRecommendations": true,
   "git.openRepositoryInParentFolders": "always",
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -94,11 +95,11 @@
   // window settings
   "window.commandCenter": false,
   "window.customTitleBarVisibility": "never",
+  "window.density.editorTabHeight": "compact",
   "window.dialogStyle": "native",
   "window.menuBarVisibility": "toggle",
   "window.titleBarStyle": "native",
   "workbench.activityBar.location": "hidden",
-  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
   "workbench.editor.showIcons": true,
@@ -108,5 +109,8 @@
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.statusBar.visible": true,
-  "workbench.tree.renderIndentGuides": "none"
+  "workbench.tips.enabled": false,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.colorTheme": "Gruvbox Dark Hard"
 }
