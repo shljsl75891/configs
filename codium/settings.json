@@ -94,6 +94,7 @@
   // window settings
   "window.commandCenter": false,
   "window.customTitleBarVisibility": "never",
+  "window.density.editorTabHeight": "compact",
   "window.dialogStyle": "native",
   "window.menuBarVisibility": "toggle",
   "window.titleBarStyle": "native",
@@ -108,5 +109,7 @@
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
   "workbench.statusBar.visible": true,
+  "workbench.tips.enabled": false,
+  "workbench.editor.tabSizing": "shrink",
   "workbench.tree.renderIndentGuides": "none"
 }
