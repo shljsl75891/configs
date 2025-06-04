@@ -1,4 +1,5 @@
 local gears = require("gears")
+local naughty = require("naughty")
 local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
@@ -138,6 +139,7 @@ function theme.at_screen_connect(s)
 	local arrow = separators.arrow_left
 	local systray = wibox.widget.systray()
 	local icon_base_path = os.getenv("HOME") .. "/.icons/Gruvbox-Dark"
+
 	-- widgets
 	local widgets = {
 		cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")({
@@ -185,6 +187,14 @@ function theme.at_screen_connect(s)
 		logout = require("awesome-wm-widgets.logout-menu-widget.logout-menu")({
 			onlock = function()
 				awful.spawn.with_shell("slock")
+			end,
+			onpoweroff = function()
+				naughty.notify({
+					title = "Punch Out Reminder",
+					text = "Did you punch out?",
+					timeout = 10,
+					urgency = "critical",
+				})
 			end,
 		}),
 	}
