@@ -52,14 +52,19 @@ return {
 						"typescriptreact",
 					}, vim.bo[bufnr].filetype)
 				then
-					-- organize imports, and then format
-					vim.lsp.buf_request(0, "workspace/executeCommand", {
-						command = "_typescript.organizeImports",
-						arguments = { vim.api.nvim_buf_get_name(bufnr) },
-					}, function()
-						require("conform").format(opts)
-						vim.cmd("noautocmd update")
-					end)
+					local client = vim.lsp.get_clients({ name = "ts_ls" })[1]
+					if client then
+						local pos = vim.api.nvim_win_get_cursor(0)
+						client:exec_cmd({
+							title = "",
+							command = "_typescript.organizeImports",
+							arguments = { vim.api.nvim_buf_get_name(0) },
+						}, { bufnr = 0 }, function()
+							require("conform").format(opts)
+							vim.cmd("noautocmd update")
+							vim.api.nvim_win_set_cursor(0, pos)
+						end)
+					end
 				else
 					return opts
 				end
