@@ -6,17 +6,17 @@ return {
 		require("conform").setup({
 			-- Define your formatters
 			formatters_by_ft = {
-				javascript = { "prettierd" },
-				typescript = { "prettierd" },
-				javascriptreact = { "prettierd" },
-				typescriptreact = { "prettierd" },
-				css = { "prettierd" },
-				scss = { "prettierd" },
-				html = { "prettierd" },
-				htmlangular = { "prettierd" },
-				json = { "prettierd" },
-				yaml = { "prettierd" },
-				markdown = { "prettierd" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
+				css = { "prettier" },
+				scss = { "prettier" },
+				html = { "prettier" },
+				htmlangular = { "prettier" },
+				json = { "prettier" },
+				yaml = { "prettier" },
+				markdown = { "prettier" },
 				lua = { "stylua" },
 				sql = { "sql_formatter" },
 			},
@@ -34,11 +34,16 @@ return {
 				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 					return
 				end
-				local TIMEOUT = 500
+				local TIMEOUT = 2000
 				local bufname = vim.api.nvim_buf_get_name(bufnr)
 				if bufname:match("/node_modules/") then
 					return
 				end
+				local opts = {
+					quiet = true,
+					timeout_ms = TIMEOUT,
+					lsp_format = "fallback",
+				}
 				if
 					vim.tbl_contains({
 						"javascript",
@@ -47,17 +52,17 @@ return {
 						"typescriptreact",
 					}, vim.bo[bufnr].filetype)
 				then
-					-- organize imports synchronously before formatting
-					vim.lsp.buf_request_sync(0, "workspace/executeCommand", {
+					-- organize imports, and then format
+					vim.lsp.buf_request(0, "workspace/executeCommand", {
 						command = "_typescript.organizeImports",
 						arguments = { vim.api.nvim_buf_get_name(bufnr) },
-					}, TIMEOUT)
+					}, function()
+						require("conform").format(opts)
+						vim.cmd("noautocmd update")
+					end)
+				else
+					return opts
 				end
-				return {
-					quiet = true,
-					timeout_ms = TIMEOUT,
-					lsp_format = "fallback",
-				}
 			end,
 		})
 	end,

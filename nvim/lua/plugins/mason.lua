@@ -23,7 +23,7 @@ return {
 						"tailwindcss",
 						"cssls",
 						-- Formatters
-						"prettierd",
+						"prettier",
 						"stylua",
 						"sql-formatter",
 					},
