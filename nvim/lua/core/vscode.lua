@@ -62,3 +62,8 @@ opts.desc = "Next diagnostic"
 vim.keymap.set("n", "]d", function()
 	vscode.action("editor.action.marker.next")
 end, opts)
+
+opts.desc = "Close Other tabs"
+vim.keymap.set("n", "<leader>co", function()
+	vscode.action("workbench.action.closeOtherEditors")
+end, opts)
