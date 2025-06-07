@@ -50,7 +50,7 @@
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
   "editor.matchBrackets": "never",
-  "editor.minimap.autohide": true,
+  "editor.minimap.enabled": false,
   "editor.minimap.renderCharacters": false,
   "editor.occurrencesHighlight": "off",
   "editor.renderWhitespace": "none",
@@ -87,7 +87,7 @@
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.fontSize": 11,
-  "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.gpuAcceleration": "off",
   "terminal.integrated.lineHeight": 1,
   "typescript.updateImportsOnFileMove.enabled": "always",
   // turn off annoyances

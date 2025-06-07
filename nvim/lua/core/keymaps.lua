@@ -1,5 +1,9 @@
 local opts = { noremap = true, silent = true }
 
+-- Open NetRW plugin
+opts.desc = "Open NetRW plugin"
+vim.keymap.set("n", "-", vim.cmd.Ex)
+
 -- Keeps screen centered
 opts.desc = "Scroll down and center screen"
 vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
