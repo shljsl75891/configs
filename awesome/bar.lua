@@ -38,6 +38,7 @@ theme.cal = lain.widget.cal({
 	three = true,
 	week_start = 1, -- Sunday
 	notification_preset = {
+		position = "top_right",
 		font = "TX02 Nerd Font 9",
 		fg = theme.fg_normal,
 		bg = theme.bg_normal,
