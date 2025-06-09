@@ -196,6 +196,9 @@ function theme.at_screen_connect(s)
 					timeout = 10,
 					urgency = "critical",
 				})
+				awful.spawn.with_shell(
+					"mpv --no-resume-playback $HOME/personal/configs/mpv/sound.mp3"
+				)
 			end,
 		}),
 	}
