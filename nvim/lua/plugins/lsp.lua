@@ -2,6 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+		{ "mason-org/mason-lspconfig.nvim", opts = {} },
 		{
 			"j-hui/fidget.nvim",
 			opts = {
@@ -26,6 +27,7 @@ return {
 			},
 		})
 
+		vim.lsp.set_log_level("error")
 		-- Settings for LSP Attached buffer
 		vim.api.nvim_create_autocmd("LspAttach", {
 			desc = "LSP actions",
@@ -69,5 +71,11 @@ return {
 				end, opts)
 			end,
 		})
+
+		-- Enable all installed servers
+		local installed_servers = require("mason-lspconfig").get_installed_servers()
+		for _, server in ipairs(installed_servers) do
+			vim.lsp.enable(server)
+		end
 	end,
 }
