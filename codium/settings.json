@@ -46,9 +46,11 @@
   "editor.guides.highlightActiveIndentation": false,
   "editor.guides.indentation": false,
   "editor.hover.enabled": false,
+  "editor.lightbulb.enabled": "off",
   "editor.lineHeight": 1.2,
   "editor.lineNumbers": "relative",
   "editor.linkedEditing": true,
+  "editor.links": false,
   "editor.matchBrackets": "never",
   "editor.minimap.enabled": false,
   "editor.minimap.renderCharacters": false,
@@ -60,6 +62,8 @@
   "editor.scrollbar.verticalScrollbarSize": 0,
   "editor.selectionHighlight": false,
   "editor.tabSize": 2,
+  "editor.overviewRulerBorder": false,
+  "editor.hideCursorInOverviewRuler": true,
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       { "scope": ["comment"], "settings": { "fontStyle": "italic" } },
@@ -71,16 +75,21 @@
     ]
   }, // explorer settings
   "explorer.compactFolders": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.decorations.badges": false,
   "explorer.excludeGitIgnore": false,
   // imporve vim extension performance
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
   "extensions.ignoreRecommendations": true,
+  "files.trimTrailingWhitespace": true,
   "git.openRepositoryInParentFolders": "always",
+  "git.decorations.enabled": false,
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
+  "scm.diffDecorations": "none",
   "telemetry.feedback.enabled": false,
   "telemetry.telemetryLevel": "off",
   // terminal settings
@@ -102,15 +111,18 @@
   "workbench.activityBar.location": "hidden",
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
-  "workbench.editor.showIcons": true,
-  "workbench.iconTheme": "gruvbox-material-icons",
+  "workbench.editor.showIcons": false,
+  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.tabSizing": "shrink",
   "workbench.layoutControl.enabled": false,
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": true,
+  "workbench.statusBar.visible": false,
   "workbench.tips.enabled": false,
-  "workbench.editor.tabSizing": "shrink",
+  "workbench.tree.enableStickyScroll": true,
+  "workbench.tree.indent": 20,
+  "workbench.tree.stickyScrollMaxItemCount": 3,
   "workbench.tree.renderIndentGuides": "none",
   "workbench.colorTheme": "Gruvbox Dark Hard"
 }

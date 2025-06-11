@@ -6,16 +6,6 @@ vim.keymap.set("i", "<C-h>", function()
 	vscode.action("editor.action.triggerParameterHints")
 end, opts)
 
-opts.desc = "Previous editor tab"
-vim.keymap.set("n", "<S-h>", function()
-	vscode.action("workbench.action.previousEditor")
-end, opts)
-
-opts.desc = "Next editor tab"
-vim.keymap.set("n", "<S-l>", function()
-	vscode.action("workbench.action.nextEditor")
-end, opts)
-
 -- === LSP Actions ===
 opts.desc = "Go to type definition"
 vim.keymap.set("n", "gT", function()
@@ -61,9 +51,4 @@ end, opts)
 opts.desc = "Next diagnostic"
 vim.keymap.set("n", "]d", function()
 	vscode.action("editor.action.marker.next")
-end, opts)
-
-opts.desc = "Close Other tabs"
-vim.keymap.set("n", "<leader>co", function()
-	vscode.action("workbench.action.closeOtherEditors")
 end, opts)
