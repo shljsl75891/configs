@@ -235,6 +235,12 @@ end)
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
 	beautiful.at_screen_connect(s)
+	local layout = awful.layout.layouts[1]
+	if s.index == 1 then
+		awful.tag({ " ", " ", "󰨞 ", " " }, s, layout)
+	elseif s.index == 2 then
+		awful.tag({ " ", " ", "󰒱 ", " ", "󱖏 " }, s, layout)
+	end
 end)
 
 -- }}}
@@ -588,35 +594,78 @@ local clientkeys = mytable.join(
 for i = 1, 9 do
 	globalkeys = mytable.join(
 		globalkeys,
+
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9, function()
-			local screen = awful.screen.focused()
-			local tag = screen.tags[i]
+			local s, tag_index
+
+			if i <= 4 then
+				s = screen[1]
+				tag_index = i
+			else
+				s = screen[2]
+				tag_index = i - 4
+			end
+
+			local tag = s and s.tags[tag_index]
 			if tag then
+				awful.screen.focus(s)
 				tag:view_only()
 			end
 		end, { description = "view tag #" .. i, group = "tag" }),
+
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9, function()
-			local screen = awful.screen.focused()
-			local tag = screen.tags[i]
+			local s, tag_index
+
+			if i <= 4 then
+				s = screen[1]
+				tag_index = i
+			else
+				s = screen[2]
+				tag_index = i - 4
+			end
+
+			local tag = s and s.tags[tag_index]
 			if tag then
 				awful.tag.viewtoggle(tag)
 			end
 		end, { description = "toggle tag #" .. i, group = "tag" }),
-		-- Move client to tag.
+
+		-- Move focused client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9, function()
 			if client.focus then
-				local tag = client.focus.screen.tags[i]
+				local s, tag_index
+
+				if i <= 4 then
+					s = screen[1]
+					tag_index = i
+				else
+					s = screen[2]
+					tag_index = i - 4
+				end
+
+				local tag = s and s.tags[tag_index]
 				if tag then
 					client.focus:move_to_tag(tag)
 				end
 			end
 		end, { description = "move focused client to tag #" .. i, group = "tag" }),
+
 		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function()
 			if client.focus then
-				local tag = client.focus.screen.tags[i]
+				local s, tag_index
+
+				if i <= 4 then
+					s = screen[1]
+					tag_index = i
+				else
+					s = screen[2]
+					tag_index = i - 4
+				end
+
+				local tag = s and s.tags[tag_index]
 				if tag then
 					client.focus:toggle_tag(tag)
 				end
@@ -720,14 +769,14 @@ awful.rules.rules = {
 	},
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
-	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
+	{ rule = { class = "Slack" }, properties = { screen = 2, tag = "󰒱 " } },
 	{
 		rule = { class = "Codium" },
 		properties = { screen = 1, tag = "󰨞 " },
 	},
-	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
+	{ rule = { class = "obsidian" }, properties = { screen = 2, tag = " " } },
+	{ rule = { class = "pgadmin4" }, properties = { screen = 2, tag = " " } },
+	{ rule = { class = "Spotify" }, properties = { screen = 2, tag = "󱖏 " } },
 }
 
 -- }}}

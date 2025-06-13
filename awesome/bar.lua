@@ -82,7 +82,7 @@ local net = lain.widget.net({
 
 function theme.at_screen_connect(s)
 	-- Tags
-	awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
+	-- awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
