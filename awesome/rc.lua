@@ -331,25 +331,9 @@ local globalkeys = mytable.join(
 		end
 	end, { description = "cycle with previous/go back", group = "client" }),
 
-	-- Don't know what these bindings are for.....
-
-	-- awful.key({ modkey }, "space", function()
-	-- 	awful.layout.inc(1)
-	-- end, { description = "select next", group = "layout" }),
-	-- awful.key({ modkey, "Shift" }, "space", function()
-	-- 	awful.layout.inc(-1)
-	-- end, { description = "select previous", group = "layout" }),
-	--
-	-- Maybe for Multi-Monitor Setup
-	-- awful.key({ modkey }, "w", function(c)
-	-- 	c:move_to_screen()
-	-- end, { description = "move to screen", group = "client" }),
-	-- awful.key({ modkey, "Control" }, "j", function()
-	-- 	awful.screen.focus_relative(1)
-	-- end, { description = "focus the next screen", group = "screen" }),
-	-- awful.key({ modkey, "Control" }, "k", function()
-	-- 	awful.screen.focus_relative(-1)
-	-- end, { description = "focus the previous screen", group = "screen" }),
+	awful.key({ modkey }, "Tab", function()
+		awful.screen.focus_relative(-1)
+	end, { description = "toggle focus between screens", group = "screen" }),
 
 	-- Show/hide wibox
 	awful.key({ modkey }, "x", function()
