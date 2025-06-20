@@ -74,3 +74,23 @@ x-scheme-handler/postman=Postman.desktop
 ![](/assets/2025-05-14-06-57-57.png)
 
 ![](/assets/2025-05-14-06-58-17.png)
+
+## Multi monitor conf - `/etc/X11/xorg.conf.d/30-monitors.conf`
+
+```conf
+Section "Monitor"
+   Identifier "eDP1"
+   Option "PreferredMode" "1920x1080"
+   Option "TargetRefresh" "60"
+   Option "LeftOf" "HDMI1"
+   Option "Position" "0 0"
+EndSection
+
+Section "Monitor"
+   Identifier "HDMI1"
+   Option "PreferredMode" "1920x1080"
+   Option "TargetRefresh" "60"
+   Option "RightOf" "eDP1"
+   Option "Position" "1920 0"
+EndSection
+```

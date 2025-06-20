@@ -321,17 +321,6 @@ local globalkeys = mytable.join(
 		{ description = "jump to urgent client", group = "client" }
 	),
 	awful.key({ modkey }, "Tab", function()
-		if cycle_prev then
-			awful.client.focus.history.previous()
-		else
-			awful.client.focus.byidx(-1)
-		end
-		if client.focus then
-			client.focus:raise()
-		end
-	end, { description = "cycle with previous/go back", group = "client" }),
-
-	awful.key({ modkey }, "Tab", function()
 		awful.screen.focus_relative(-1)
 	end, { description = "toggle focus between screens", group = "screen" }),
 
@@ -706,13 +695,13 @@ awful.rules.rules = {
 	},
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
-	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰒱 " } },
+	{ rule = { class = "Slack" }, properties = { screen = 2, tag = "󰒱 " } },
 	{
 		rule = { class = "Codium" },
 		properties = { screen = 1, tag = "󰨞 " },
 	},
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "pgadmin4" }, properties = { screen = 1, tag = " " } },
+	{ rule = { class = "pgadmin4" }, properties = { screen = 2, tag = " " } },
 	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
 }
 
