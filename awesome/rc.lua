@@ -29,7 +29,7 @@ local brightness_widget =
 require("awful.hotkeys_popup.keys")
 
 local mytable = awful.util.table or gears.table -- 4.{0,1} compatibility
-
+local screen_count = screen.count()
 -- }}}
 
 -- {{{ Error handling
@@ -632,6 +632,7 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
+local target_screen = screen_count > 1 and 2 or 1
 
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -695,13 +696,19 @@ awful.rules.rules = {
 	},
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
-	{ rule = { class = "Slack" }, properties = { screen = 2, tag = "󰒱 " } },
+	{
+		rule = { class = "Slack" },
+		properties = { screen = target_screen, tag = "󰒱 " },
+	},
 	{
 		rule = { class = "Codium" },
 		properties = { screen = 1, tag = "󰨞 " },
 	},
 	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
-	{ rule = { class = "pgadmin4" }, properties = { screen = 2, tag = " " } },
+	{
+		rule = { class = "pgadmin4" },
+		properties = { screen = target_screen, tag = " " },
+	},
 	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
 }
 
