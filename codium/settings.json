@@ -27,6 +27,8 @@
   "betterGitLineBlame.maxSummaryLength": 80,
   "betterGitLineBlame.showStatusBarItem": true,
   "breadcrumbs.enabled": false,
+  "chat.editor.fontSize": 11,
+  "chat.editor.lineHeight": 1.15,
   "debug.console.fontFamily": "TX02 Nerd Font",
   "debug.console.fontSize": 11,
   "editor.autoClosingBrackets": "never",
