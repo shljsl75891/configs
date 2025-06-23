@@ -1,6 +1,16 @@
 local vscode = require("vscode")
 local opts = { noremap = true, silent = true }
 
+opts.desc = "Previous editor tab"
+vim.keymap.set("n", "<S-h>", function()
+	vscode.action("workbench.action.previousEditor")
+end, opts)
+
+opts.desc = "Next editor tab"
+vim.keymap.set("n", "<S-l>", function()
+	vscode.action("workbench.action.nextEditor")
+end, opts)
+
 opts.desc = "Trigger parameter hints"
 vim.keymap.set("i", "<C-h>", function()
 	vscode.action("editor.action.triggerParameterHints")
