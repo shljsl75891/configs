@@ -81,3 +81,7 @@ bindkey -s ^bf "^Usessionizer\n"
 
 
 . "$HOME/.cargo/env"
+
+## Git MAC :(
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(fnm env --use-on-cd --shell zsh)"
