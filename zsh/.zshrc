@@ -84,4 +84,5 @@ bindkey -s ^bf "^Usessionizer\n"
 
 ## Git MAC :(
 eval "$(/opt/homebrew/bin/brew shellenv)"
-eval "$(fnm env --use-on-cd --shell zsh)"
+eval "$(fnm env --shell zsh)"
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
