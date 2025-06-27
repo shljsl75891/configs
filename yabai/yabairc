@@ -13,7 +13,7 @@ yabai -m config window_gap 5
 yabai -m config window_border on
 
 # mouse autofocus on focused window
-yabai -m config mouse_follows_focus off
+yabai -m config mouse_follows_focus on
 
 # Moving or Resizing windows
 yabai -m config mouse_modifier alt
