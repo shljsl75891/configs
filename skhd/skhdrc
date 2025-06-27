@@ -1,0 +1,20 @@
+# Change focus between windows in same workspace
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - h : yabai -m window --focus west
+alt - l : yabai -m window --focus east
+
+# Change focus between displays
+alt - s: yabai -m display --focus west
+alt - g: yabai -m display --focus east
+
+# Close currently focused window
+alt - q : yabai -m window --close
+
+# Move window to different display
+shift + alt - s : yabai -m window --display west; yabai -m display --focus west;
+shift + alt - g : yabai -m window --display east; yabai -m display --focus east;
+
+# Toggles some properties mode for a window
+alt - o : yabai -m window --toggle float
+alt - m : yabai -m window --toggle zoom-parent
