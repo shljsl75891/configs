@@ -33,7 +33,7 @@ export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
 export NODE_OPTIONS=--max-old-space-size=8096
 
 # Chrome for Karma Testing
-export CHROME_BIN=~/chrome-testing/chrome
+export CHROME_BIN=chromium
 
 # Rose Pine in FZF
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
