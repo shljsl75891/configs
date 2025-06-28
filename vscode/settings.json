@@ -92,6 +92,7 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "search.searchOnType": false,
   "scm.diffDecorations": "none",
+  "security.workspace.trust.untrustedFiles": "open",
   "telemetry.feedback.enabled": false,
   "telemetry.telemetryLevel": "off",
   // terminal settings
