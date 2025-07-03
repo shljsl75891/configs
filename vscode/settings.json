@@ -64,9 +64,16 @@
   "explorer.confirmDragAndDrop": false,
   "explorer.decorations.badges": false,
   "explorer.excludeGitIgnore": false,
-  // imporve vim extension performance
+  // improve performance
   "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
   "extensions.ignoreRecommendations": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  },
   "files.trimTrailingWhitespace": true,
   "git.openRepositoryInParentFolders": "always",
   "git.decorations.enabled": false,
