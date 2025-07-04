@@ -3,7 +3,7 @@
     "context": "(Editor && vim_mode == normal) || Terminal",
     "bindings": {
       "ctrl-b": "project_panel::ToggleFocus",
-      "shift-h": "pane::ActivatePrevItem",
+      "shift-h": "pane::ActivatePreviousItem",
       "shift-l": "pane::ActivateNextItem",
       "shift-escape": null
     }

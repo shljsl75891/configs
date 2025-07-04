@@ -1,6 +1,6 @@
 {
   "features": {
-    "inline_completion_provider": "none"
+    "edit_prediction_provider": "none"
   },
   "languages": {
     "JavaScript": {
@@ -29,7 +29,7 @@
     }
   },
   "ui_font_size": 14,
-  "ui_font_family": "NotoSans Nerd Font",
+  "ui_font_family": ".SystemUIFont",
   "use_autoclose": false,
   "use_auto_surround": false,
   "toolbar": {
