@@ -79,6 +79,14 @@
   "git.decorations.enabled": false,
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "roo-cline.allowedCommands": [
+    "npm test",
+    "npm install",
+    "tsc",
+    "git log",
+    "git diff",
+    "git show"
+  ],
   "search.searchOnType": false,
   "scm.diffDecorations": "none",
   "security.workspace.trust.untrustedFiles": "open",
@@ -110,7 +118,7 @@
   "workbench.settings.editor": "json",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": false,
+  "workbench.statusBar.visible": true,
   "workbench.tips.enabled": false,
   "workbench.tree.enableStickyScroll": true,
   "workbench.tree.indent": 20,
