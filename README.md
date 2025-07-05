@@ -94,3 +94,11 @@ Section "Monitor"
    Option "Position" "1920 0"
 EndSection
 ```
+
+## MAC Useful Commands
+
+- Command to make yourself `Administrator` in MacOS
+
+```sh
+sudo dseditgroup -o edit -a $USER -t user admin
+```
