@@ -102,3 +102,9 @@ EndSection
 ```sh
 sudo dseditgroup -o edit -a $USER -t user admin
 ```
+
+- Enable Quitting MAC finder
+
+```sh
+defaults write com.apple.finder QuitMenuItem -bool true; killall Finder
+```
