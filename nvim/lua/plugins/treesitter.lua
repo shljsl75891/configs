@@ -28,6 +28,7 @@ return {
 				"json",
 				"tmux",
 				"gitcommit",
+				"git_config",
 				"angular",
 				"diff",
 				"html",
