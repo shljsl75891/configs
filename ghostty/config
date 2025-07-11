@@ -5,8 +5,10 @@ font-size = 13
 
 cursor-style = block
 cursor-style-blink = false
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,no-sudo,title
 
 background-opacity = 0.9
 background-blur = true
 
+macos-titlebar-style = hidden
+macos-option-as-alt = true
