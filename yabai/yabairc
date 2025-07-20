@@ -1,4 +1,3 @@
-
 # bsp / stack / float
 yabai -m config layout bsp;
 
@@ -12,8 +11,8 @@ yabai -m config right_padding 5;
 yabai -m config window_gap 5;
 yabai -m config window_border on;
 
-# mouse autofocus on focused window
-yabai -m config mouse_follows_focus on;
+# mouse autofocus on focused window - need to check this on dual monitor setup
+# yabai -m config mouse_follows_focus on;
 
 # Moving or Resizing windows
 yabai -m config mouse_modifier alt;
@@ -23,4 +22,5 @@ yabai -m config mouse_action2 resize;
 # Disable tiling window management for following apps
 yabai -m rule --add app="^System Settings$" manage=off;
 yabai -m rule --add app="^Calculator$" manage=off;
+yabai -m rule --add app="^Finder$" manage=off;
 yabai -m rule --add app="^Activity Monitor$" manage=off;
