@@ -61,12 +61,6 @@ vim.keymap.set("n", "<M-_>", ":vertical resize -4<CR>", opts)
 opts.desc = "Resize vertical window +4"
 vim.keymap.set("n", "<M-+>", ":vertical resize +4<CR>", opts)
 
--- Horizontal scrolling
-opts.desc = "Scroll left"
-vim.keymap.set("n", "<C-Left>", "15zh", opts)
-opts.desc = "Scroll right"
-vim.keymap.set("n", "<C-Right>", "15zl", opts)
-
 -- Executing Lua
 opts.desc = "Execute current buffer"
 vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", opts)
