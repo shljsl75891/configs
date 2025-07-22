@@ -18,7 +18,7 @@ return {
 					"tailwindcss",
 					"cssls",
 					-- Formatters
-					"prettier",
+					"prettierd",
 					"stylua",
 					"sql-formatter",
 				},
