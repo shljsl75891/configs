@@ -22,5 +22,4 @@ yabai -m config mouse_action2 resize;
 # Disable tiling window management for following apps
 yabai -m rule --add app="^System Settings$" manage=off;
 yabai -m rule --add app="^Calculator$" manage=off;
-yabai -m rule --add app="^Finder$" manage=off;
 yabai -m rule --add app="^Activity Monitor$" manage=off;
