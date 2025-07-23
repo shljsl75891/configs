@@ -121,5 +121,9 @@
     "key": "ctrl+y",
     "command": "-vscode-neovim.ctrl-y",
     "when": "editorTextFocus && neovim.ctrlKeysNormal.y && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+  },
+  {
+    "key": "cmd+q",
+    "command": "-workbench.action.quit"
   }
 ]
