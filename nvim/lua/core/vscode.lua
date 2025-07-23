@@ -16,6 +16,11 @@ vim.keymap.set("i", "<C-h>", function()
 	vscode.action("editor.action.triggerParameterHints")
 end, opts)
 
+opts.desc = "Close other editors"
+vim.keymap.set("n", "<leader>co", function()
+	vscode.action("workbench.action.closeOtherEditors")
+end, opts)
+
 -- === LSP Actions ===
 opts.desc = "Go to type definition"
 vim.keymap.set("n", "gT", function()
