@@ -4,30 +4,22 @@ return {
 	keys = {
 		{
 			"<leader>ff",
-			function()
-				require("telescope.builtin").find_files()
-			end,
+			require("telescope.builtin").find_files,
 			desc = "[F]ind Project [F]iles",
 		},
 		{
 			"<leader>fb",
-			function()
-				require("telescope.builtin").buffers()
-			end,
-			desc = "[F]ind [B]uffers",
+			require("telescope.builtin").builtin,
+			desc = "[F]ind Telescope [B]uiltins",
 		},
 		{
 			"<leader>lg",
-			function()
-				require("telescope.builtin").live_grep()
-			end,
+			require("telescope.builtin").live_grep,
 			desc = "[L]ive [G]rep Project-wide",
 		},
 		{
 			"<leader>ht",
-			function()
-				require("telescope.builtin").help_tags()
-			end,
+			require("telescope.builtin").help_tags,
 			desc = "Find [H]elp [T]ags",
 		},
 		{
