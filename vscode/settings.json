@@ -124,5 +124,6 @@
   "workbench.tree.indent": 20,
   "workbench.tree.stickyScrollMaxItemCount": 3,
   "workbench.tree.renderIndentGuides": "none",
-  "workbench.colorTheme": "Gruvbox Dark Hard"
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "roo-cline.deniedCommands": []
 }
