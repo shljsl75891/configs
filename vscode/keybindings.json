@@ -11,6 +11,46 @@
     "key": "ctrl+b",
     "when": "editorTextFocus"
   },
+  {
+    "command": "explorer.newFile",
+    "key": "n",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "n",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "shift+n",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "deleteFile",
+    "key": "d",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "renameFile",
+    "key": "r",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "filesExplorer.cut",
+    "key": "x",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "filesExplorer.copy",
+    "key": "c",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "filesExplorer.paste",
+    "key": "p",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
   // Terminal
   {
     "command": "workbench.action.terminal.focusNext",
@@ -76,32 +116,6 @@
   // disable annoying keybinding
   { "key": "ctrl+q", "command": "-workbench.action.quit" },
   { "key": "ctrl+q", "command": "-workbench.action.closeWindow" },
-  { "key": "ctrl+j", "command": "-workbench.action.togglePanel" },
-  {
-    "key": "ctrl+u",
-    "command": "runCommands",
-    "args": {
-      "commands": [
-        { "command": "vscode-neovim.send", "args": "<C-u>" },
-        { "command": "editorScroll", "args": { "to": "up", "by": "halfPage" } }
-      ]
-    },
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+d",
-    "command": "runCommands",
-    "args": {
-      "commands": [
-        { "command": "vscode-neovim.send", "args": "<C-d>" },
-        {
-          "command": "editorScroll",
-          "args": { "to": "down", "by": "halfPage" }
-        }
-      ]
-    },
-    "when": "editorTextFocus"
-  },
   {
     "key": "ctrl+y",
     "command": "editor.action.inlineSuggest.commit",
@@ -111,19 +125,5 @@
     "key": "tab",
     "command": "-editor.action.inlineSuggest.commit",
     "when": "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+y",
-    "command": "-vscode-neovim.send",
-    "when": "editorTextFocus && neovim.ctrlKeysInsert.y && neovim.init && neovim.mode == 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
-  },
-  {
-    "key": "ctrl+y",
-    "command": "-vscode-neovim.ctrl-y",
-    "when": "editorTextFocus && neovim.ctrlKeysNormal.y && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
-  },
-  {
-    "key": "cmd+q",
-    "command": "-workbench.action.quit"
   }
 ]
