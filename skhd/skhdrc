@@ -23,4 +23,5 @@ alt - m : yabai -m window --toggle zoom-parent;
 alt - return : open -a Ghostty
 alt - b : open -na "Brave Browser" --args --profile-directory="Default"
 alt + shift - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
+cmd + ctrl - b : open -a "Mullvad Browser"
 alt - e : open -a "Finder"
