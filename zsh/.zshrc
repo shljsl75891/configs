@@ -30,7 +30,7 @@ eval "$(starship init zsh)"
 export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
 
 # Increase JS Heap memory
-export NODE_OPTIONS=--max-old-space-size=8096
+export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=8096"
 
 # Chrome for Karma Testing
 export CHROME_BIN='/Applications/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
