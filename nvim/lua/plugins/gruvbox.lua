@@ -60,6 +60,7 @@ return {
 				HarpoonNumberInactive = { bg = nil },
 				HarpoonInactive = { bg = nil },
 				TabLineFill = { link = "Normal" },
+				MiniNotifyNormal = { fg = palette.light2, italic = true },
 			},
 			transparent_mode = true,
 		})
