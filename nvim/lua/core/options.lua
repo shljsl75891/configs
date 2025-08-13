@@ -57,6 +57,8 @@ local localOptions = {
 	laststatus = 3,
 	-- top bar showing file name on each window
 	winbar = "%=%m %t%=",
+	-- border = "single", "rounded", "shadow", "double", "none", "solid"
+	winborder = "solid",
 }
 
 for k, v in pairs(localOptions) do

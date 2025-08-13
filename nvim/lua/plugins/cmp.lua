@@ -1,6 +1,5 @@
 return {
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
 	dependencies = {
 		-- Sources
 		"hrsh7th/cmp-buffer",
@@ -22,7 +21,7 @@ return {
 					winhighlight = "Normal:Pmenu,CursorLine:PmenuSel",
 				}),
 				documentation = cmp.config.window.bordered({
-					border = "solid",
+					border = vim.o.winborder,
 					winhighlight = "Normal:NormalFloat",
 				}),
 			},

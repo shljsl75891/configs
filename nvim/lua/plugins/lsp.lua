@@ -26,8 +26,6 @@ return {
 			float = {
 				focusable = true,
 				style = "minimal",
-				-- border = "single", "rounded", "shadow", "double", "none", "solid"
-				border = "solid",
 				source = true,
 				header = "",
 				prefix = "",
