@@ -36,8 +36,6 @@ return {
 
 		-- Enable all installed servers
 		local installed_servers = require("mason-lspconfig").get_installed_servers()
-		for _, server in ipairs(installed_servers) do
-			vim.lsp.enable(server)
-		end
+		vim.lsp.enable(installed_servers)
 	end,
 }
