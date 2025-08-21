@@ -4,17 +4,10 @@ return {
 	dependencies = {
 		{ "mason-org/mason-lspconfig.nvim", opts = {} },
 		{
-			"echasnovski/mini.notify",
-			version = false,
+			"j-hui/fidget.nvim",
 			opts = {
-				window = {
-					config = {
-						anchor = "SE",
-						border = "none",
-						col = vim.o.columns,
-						row = vim.o.lines - vim.o.cmdheight - 2,
-					},
-					winblend = 0,
+				notification = {
+					window = { normal_hl = "Comment", winblend = 0, align = "bottom" },
 				},
 			},
 		},
