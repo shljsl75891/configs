@@ -40,6 +40,13 @@ return {
 			desc = "[F]ind [S]pecific [F]ile using its name",
 		},
 		{
+			"<leader>fif",
+			function()
+				require("telescope.builtin").find_files({ no_ignore = true })
+			end,
+			desc = "[F]ind [I]gnored [F]iles",
+		},
+		{
 			"<leader>fss",
 			function()
 				local search_string = vim.fn.input("Grep string > ")

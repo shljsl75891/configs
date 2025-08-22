@@ -2,6 +2,15 @@ return {
 	"rcarriga/nvim-dap-ui",
 	dependencies = {
 		"https://codeberg.org/mfussenegger/nvim-dap.git",
+		{
+			"theHamsta/nvim-dap-virtual-text",
+			opts = {
+				enabled = true,
+				highlight_changed_variables = true,
+				show_stop_reason = true,
+				virt_text_pos = "inline",
+			},
+		},
 		"nvim-neotest/nvim-nio",
 	},
 	keys = {
@@ -27,21 +36,21 @@ return {
 			desc = "Run/Continue",
 		},
 		{
-			"<F2>",
+			"<F1>",
 			function()
 				require("dap").step_over()
 			end,
 			desc = "Step Over",
 		},
 		{
-			"<F3>",
+			"<F2>",
 			function()
 				require("dap").step_into()
 			end,
 			desc = "Step Out",
 		},
 		{
-			"<F4>",
+			"<F3>",
 			function()
 				require("dap").step_out()
 			end,
@@ -53,13 +62,6 @@ return {
 				require("dapui").eval(nil, { enter = true })
 			end,
 			desc = "Evaluate Expression",
-		},
-		{
-			"<F1>",
-			function()
-				require("dap").terminate()
-			end,
-			desc = "Terminate",
 		},
 	},
 	config = function()
@@ -94,6 +96,7 @@ return {
 				},
 			},
 		}
+
 		-- Debugger configuration (How debugger should connect with debugee)
 		dap.configurations.javascript = {
 			{
