@@ -21,6 +21,8 @@ return {
 					"prettierd",
 					"stylua",
 					"sql-formatter",
+					-- Debug adapters
+					"js-debug-adapter",
 				},
 			},
 		},

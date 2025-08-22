@@ -56,6 +56,7 @@ return {
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
 		},
+		"nvim-telescope/telescope-ui-select.nvim",
 	},
 	config = function()
 		local actions = require("telescope.actions")
@@ -84,10 +85,18 @@ return {
 				lsp_definitions = { fname_width = 100 },
 				lsp_references = { fname_width = 100 },
 			},
-			extensions = {},
+			extensions = {
+				["ui-select"] = {
+					require("telescope.themes").get_dropdown({
+						previwer = false,
+						winblend = 0,
+					}),
+				},
+			},
 		})
 
 		-- Load fzf-native extensions for capabilites like exact, suffix, prefix matching
 		require("telescope").load_extension("fzf")
+		require("telescope").load_extension("ui-select")
 	end,
 }
