@@ -47,6 +47,7 @@
   "editor.scrollbar.vertical": "hidden",
   "editor.scrollbar.verticalScrollbarSize": 0,
   "editor.selectionHighlight": false,
+  "editor.suggest.showIcons": false,
   "editor.tabSize": 2,
   "editor.overviewRulerBorder": false,
   "editor.hideCursorInOverviewRuler": true,
