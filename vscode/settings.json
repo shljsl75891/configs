@@ -23,7 +23,7 @@
   "editor.codeLens": false,
   "editor.cursorStyle": "block",
   "editor.fontFamily": "TX02 Nerd Font",
-  "editor.fontLigatures": false,
+  "editor.fontLigatures": true,
   "editor.fontSize": 13,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": false,
