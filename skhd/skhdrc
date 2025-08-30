@@ -20,7 +20,7 @@ alt - o : yabai -m window --toggle float;
 alt - m : yabai -m window --toggle zoom-parent;
 
 # Launch programs
-alt - return : open -a Ghostty
+alt - return : open -a Alacritty
 alt - b : open -na "Brave Browser" --args --profile-directory="Default"
 alt + shift - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
 cmd + ctrl - b : open -a "Mullvad Browser"
