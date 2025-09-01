@@ -18,7 +18,8 @@ history = 100000
 
 [window]
 dynamic_padding = true
-opacity = 0.90
+blur = true
+opacity = 0.85
 decorations = "Buttonless"
 option_as_alt = "Both"
 
