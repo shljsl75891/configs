@@ -57,6 +57,13 @@ return {
 			desc = "Step Into",
 		},
 		{
+			"<F9>",
+			function()
+				require("dap").terminate()
+			end,
+			desc = "Terminate",
+		},
+		{
 			"<leader>?",
 			function()
 				require("dapui").eval(nil, { enter = true })
@@ -113,22 +120,24 @@ return {
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
 			},
-		}
-		dap.configurations.typescript = {
 			{
 				type = "pwa-node",
 				request = "launch",
-				name = "Launch file",
-				program = "${file}",
+				name = "Launch using npm",
 				cwd = "${workspaceFolder}",
+				runtimeExecutable = "npm",
+				runtimeArgs = { "run-script", "start" },
 			},
 			{
 				type = "pwa-node",
-				request = "attach",
-				name = "Attach to process",
-				processId = require("dap.utils").pick_process,
+				request = "launch",
+				name = "Launch using npm in dev mode",
 				cwd = "${workspaceFolder}",
+				runtimeExecutable = "npm",
+				runtimeArgs = { "run-script", "dev" },
 			},
 		}
+
+		dap.configurations.typescript = dap.configurations.javascript
 	end,
 }
