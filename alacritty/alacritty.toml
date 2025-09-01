@@ -20,6 +20,7 @@ history = 100000
 dynamic_padding = true
 opacity = 0.90
 decorations = "Buttonless"
+option_as_alt = "Both"
 
 [[keyboard.bindings]]
 key = "Q"
