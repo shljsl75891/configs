@@ -89,3 +89,4 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
 # Update homebrew every 5 days
 export HOMEBREW_AUTO_UPDATE_SECS=$((60 * 60 * 24 * 7))
+export PATH=$PATH:$HOME/.local/opt/go/bin
