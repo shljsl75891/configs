@@ -4,22 +4,30 @@ return {
 	keys = {
 		{
 			"<leader>ff",
-			require("telescope.builtin").find_files,
+			function()
+				require("telescope.builtin").find_files()
+			end,
 			desc = "[F]ind Project [F]iles",
 		},
 		{
 			"<leader>fb",
-			require("telescope.builtin").builtin,
+			function()
+				require("telescope.builtin").builtin()
+			end,
 			desc = "[F]ind Telescope [B]uiltins",
 		},
 		{
 			"<leader>lg",
-			require("telescope.builtin").live_grep,
+			function()
+				require("telescope.builtin").live_grep()
+			end,
 			desc = "[L]ive [G]rep Project-wide",
 		},
 		{
 			"<leader>ht",
-			require("telescope.builtin").help_tags,
+			function()
+				require("telescope.builtin").help_tags()
+			end,
 			desc = "Find [H]elp [T]ags",
 		},
 		{
@@ -59,10 +67,7 @@ return {
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		{
-			"nvim-telescope/telescope-fzf-native.nvim",
-			build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
-		},
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-telescope/telescope-ui-select.nvim",
 	},
 	config = function()
