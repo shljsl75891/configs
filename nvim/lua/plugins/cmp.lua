@@ -1,5 +1,6 @@
 return {
 	"hrsh7th/nvim-cmp",
+	event = "InsertEnter",
 	dependencies = {
 		-- Sources
 		"hrsh7th/cmp-buffer",
@@ -47,8 +48,8 @@ return {
 		})
 		cmp.setup.filetype({ "sql" }, {
 			sources = {
-				{ name = "buffer" },
 				{ name = "vim-dadbod-completion" },
+				{ name = "buffer" },
 			},
 		})
 	end,
