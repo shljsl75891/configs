@@ -1,5 +1,5 @@
 return {
-	"rcarriga/nvim-dap-ui",
+	"igorlfs/nvim-dap-view",
 	dependencies = {
 		"https://codeberg.org/mfussenegger/nvim-dap.git",
 		{
@@ -11,7 +11,6 @@ return {
 				virt_text_pos = "inline",
 			},
 		},
-		"nvim-neotest/nvim-nio",
 	},
 	keys = {
 		{
@@ -64,30 +63,67 @@ return {
 			desc = "Terminate",
 		},
 		{
+			"F",
+			function()
+				require("dap.ui.widgets").hover()
+			end,
+			desc = "Terminate",
+		},
+		{
+			"<leader>dv",
+			function()
+				require("dap-view").toggle()
+			end,
+			desc = "Toggle [D]ap [V]iew",
+		},
+		{
 			"<leader>?",
 			function()
-				require("dapui").eval(nil, { enter = true })
+				require("dap-view").add_expr()
 			end,
-			desc = "Evaluate Expression",
+			desc = "Add Expression to Watches",
 		},
 	},
 	config = function()
-		require("dapui").setup()
+		require("dap-view").setup({
+			winbar = {
+				sections = {
+					"scopes",
+					"breakpoints",
+					"watches",
+					"threads",
+					"sessions",
+				},
+				default_section = "scopes",
+				controls = {
+					enabled = true,
+					position = "right",
+					buttons = {
+						"play",
+						"step_over",
+						"step_into",
+						"step_out",
+						"step_back",
+						"run_last",
+						"terminate",
+						"disconnect",
+					},
+				},
+			},
+			windows = {
+				height = 0.25,
+				position = "below",
+				terminal = {
+					width = 0.5,
+					position = "right",
+					start_hidden = false,
+				},
+			},
+			auto_toggle = true,
+		})
 
 		-- automatically opesn and close dapui when debugging
-		local dap, dapui = require("dap"), require("dapui")
-		dap.listeners.before.attach.dapui_config = function()
-			dapui.open()
-		end
-		dap.listeners.before.launch.dapui_config = function()
-			dapui.open()
-		end
-		dap.listeners.before.event_terminated.dapui_config = function()
-			dapui.close()
-		end
-		dap.listeners.before.event_exited.dapui_config = function()
-			dapui.close()
-		end
+		local dap = require("dap")
 
 		-- Adapter configuration (How DAP client should start the debugger)
 		dap.adapters["pwa-node"] = {
@@ -112,6 +148,7 @@ return {
 				name = "Launch file",
 				program = "${file}",
 				cwd = "${workspaceFolder}",
+				console = "integratedTerminal",
 			},
 			{
 				type = "pwa-node",
@@ -119,6 +156,7 @@ return {
 				name = "Attach to process",
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
+				console = "integratedTerminal",
 			},
 			{
 				type = "pwa-node",
@@ -127,6 +165,7 @@ return {
 				cwd = "${workspaceFolder}",
 				runtimeExecutable = "npm",
 				runtimeArgs = { "run-script", "start" },
+				console = "integratedTerminal",
 			},
 			{
 				type = "pwa-node",
@@ -135,6 +174,7 @@ return {
 				cwd = "${workspaceFolder}",
 				runtimeExecutable = "npm",
 				runtimeArgs = { "run-script", "dev" },
+				console = "integratedTerminal",
 			},
 		}
 
