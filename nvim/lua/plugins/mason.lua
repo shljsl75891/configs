@@ -17,6 +17,7 @@ return {
 					"lua_ls",
 					"tailwindcss",
 					"cssls",
+					"dockerfile-language-server",
 					-- Formatters
 					"prettierd",
 					"stylua",
