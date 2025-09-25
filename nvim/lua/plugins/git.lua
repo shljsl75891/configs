@@ -14,4 +14,7 @@ return {
 			desc = "Show [G]it [B]lame for each line of current file",
 		},
 	},
+	init = function()
+		vim.g.fugitive_git_executable = "HUSKY=0 git"
+	end,
 }
