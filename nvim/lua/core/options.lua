@@ -52,11 +52,7 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = not vim.g.vscode and "%f%=[%L lines]%=%y" or nil,
-	-- global status line for windows
-	laststatus = 3,
-	-- top bar showing file name on each window
-	winbar = "%=%m %t%=",
+	statusline = "%f %m%=%{FugitiveStatusline()}%=%y",
 	-- border = "single", "rounded", "shadow", "double", "none", "solid"
 	winborder = "solid",
 }
