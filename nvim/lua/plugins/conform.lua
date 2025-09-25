@@ -16,17 +16,7 @@ return {
 			yaml = { "prettierd" },
 			markdown = { "prettierd" },
 			lua = { "stylua" },
-			sql = { "sql_formatter" },
-		},
-		formatters = {
-			sql_formatter = {
-				args = {
-					"-l",
-					"plsql",
-					"-c",
-					os.getenv("HOME") .. "/personal/configs/.sql-formatter.json",
-				},
-			},
+			sql = { "pg_format" },
 		},
 	},
 }

@@ -21,7 +21,7 @@ return {
 					-- Formatters
 					"prettierd",
 					"stylua",
-					"sql-formatter",
+					"pgformatter",
 					-- Debug adapters
 					"js-debug-adapter",
 				},
