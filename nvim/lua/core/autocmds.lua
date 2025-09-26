@@ -15,12 +15,6 @@ vim.filetype.add({
 	},
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	group = vim.api.nvim_create_augroup("TrailingWhitespace", { clear = true }),
-	pattern = "*",
-	command = [[%s/\s\+$//e]],
-})
-
 vim.api.nvim_create_user_command("FormatDisable", function(args)
 	if args.bang then
 		-- FormatDisable! will disable formatting just for this buffer
