@@ -1,17 +1,6 @@
 return {
 	"igorlfs/nvim-dap-view",
-	dependencies = {
-		"https://codeberg.org/mfussenegger/nvim-dap.git",
-		{
-			"theHamsta/nvim-dap-virtual-text",
-			opts = {
-				enabled = true,
-				highlight_changed_variables = true,
-				show_stop_reason = true,
-				virt_text_pos = "inline",
-			},
-		},
-	},
+	dependencies = { "https://codeberg.org/mfussenegger/nvim-dap.git" },
 	keys = {
 		{
 			"<leader>tb",
@@ -89,8 +78,9 @@ return {
 			winbar = {
 				sections = {
 					"scopes",
-					"breakpoints",
+					"repl",
 					"watches",
+					"breakpoints",
 					"threads",
 					"sessions",
 				},
