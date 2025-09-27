@@ -5,7 +5,6 @@
   "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[lua]": { "editor.defaultFormatter": "JohnnyMorganz.stylua" },
   "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "betterGitLineBlame.maxSummaryLength": 80,
@@ -82,12 +81,12 @@
   "html.autoClosingTags": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "roo-cline.allowedCommands": [
-    "npm test",
-    "npm install",
-    "tsc",
     "git log",
     "git diff",
-    "git show"
+    "git show",
+    "npm test",
+    "npm install",
+    "tsc"
   ],
   "search.searchOnType": false,
   "scm.diffDecorations": "none",
@@ -260,7 +259,6 @@
   "window.customTitleBarVisibility": "never",
   "window.density.editorTabHeight": "compact",
   "window.dialogStyle": "native",
-  "window.menuBarVisibility": "toggle",
   "window.titleBarStyle": "native",
   "workbench.activityBar.location": "hidden",
   "workbench.editor.enablePreview": false,
