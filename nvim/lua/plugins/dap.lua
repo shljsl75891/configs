@@ -63,7 +63,7 @@ return {
 			desc = "Terminate",
 		},
 		{
-			"<leader>h",
+			"<leader>k",
 			function()
 				require("dap.ui.widgets").hover()
 			end,
