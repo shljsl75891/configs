@@ -64,9 +64,20 @@ return {
 			end,
 			desc = "[F]ind [S]pecific [S]tring",
 		},
+
+		{
+			"<leader>/",
+			function()
+				require("telescope.builtin").current_buffer_fuzzy_find(
+					require("telescope.themes").get_dropdown({ previewer = false })
+				)
+			end,
+			{ desc = "[/] Fuzzily search in current buffer" },
+		},
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+		"nvim-treesitter/nvim-treesitter",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-telescope/telescope-ui-select.nvim",
 	},
@@ -76,7 +87,6 @@ return {
 		-- Global config
 		require("telescope").setup({
 			defaults = {
-				-- could be `horizontal` or `vertical
 				layout_strategy = "horizontal",
 				layout_config = {
 					horizontal = { width = 0.85, preview_width = 0.45 },
@@ -99,10 +109,7 @@ return {
 			},
 			extensions = {
 				["ui-select"] = {
-					require("telescope.themes").get_dropdown({
-						previwer = false,
-						winblend = 0,
-					}),
+					require("telescope.themes").get_cursor({ previwer = false }),
 				},
 			},
 		})
