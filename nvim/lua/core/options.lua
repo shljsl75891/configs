@@ -52,9 +52,13 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%f %m%=%{FugitiveStatusline()}%=%y",
+	statusline = "%f%=(%b, 0x%B)%=%{fugitive#Head()} %y",
 	-- border = "single", "rounded", "shadow", "double", "none", "solid"
 	winborder = "solid",
+	-- global single status line
+	laststatus = 3,
+	-- information above wach window
+	winbar = "%r%=%t %m%=",
 }
 
 for k, v in pairs(localOptions) do
