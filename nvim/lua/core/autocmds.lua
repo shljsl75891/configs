@@ -116,7 +116,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 				return
 			end
 			require("conform").format(conform_opts)
-			vim.cmd("silent noautocmd write")
+			if vim.bo.buftype == "" then
+				vim.cmd("silent noautocmd write")
+			end
 		end)
 	end,
 })
