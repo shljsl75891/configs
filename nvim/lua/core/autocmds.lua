@@ -1,7 +1,7 @@
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		vim.highlight.on_yank({ timeout = 60 })
+		vim.hl.on_yank({ timeout = 80 })
 	end,
 	group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
 	pattern = "*",
@@ -80,6 +80,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 			quiet = true,
 			lsp_format = "fallback",
 			timeout_ms = timeout,
+			stop_after_first = true,
 		}
 
 		if vim.g.disable_autoformat or vim.b[ev.buf].disable_autoformat then
