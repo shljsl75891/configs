@@ -20,7 +20,7 @@ return {
 			float = {
 				focusable = true,
 				style = "minimal",
-				source = true,
+				source = false,
 				header = "",
 				prefix = "",
 			},
