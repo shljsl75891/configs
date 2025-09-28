@@ -52,13 +52,13 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%f%=(%b, 0x%B)%=%{fugitive#Head()} %y",
+	statusline = "%#MasonHeader# %{fugitive#Head()} %## %f%=(%b, 0x%B)%=%y",
 	-- border = "single", "rounded", "shadow", "double", "none", "solid"
 	winborder = "solid",
 	-- global single status line
 	laststatus = 3,
 	-- information above wach window
-	winbar = "%r%=%t %m%=",
+	winbar = "%#GruvboxYellowBold# %t %m %##%=%#Error#%r",
 }
 
 for k, v in pairs(localOptions) do
