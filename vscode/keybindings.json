@@ -47,6 +47,11 @@
     "when": "filesExplorerFocus && !inputFocus"
   },
   {
+    "command": "list.find",
+    "key": "/",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
     "command": "filesExplorer.paste",
     "key": "p",
     "when": "filesExplorerFocus && !inputFocus"
