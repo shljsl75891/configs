@@ -93,14 +93,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		end
 
 		local client = vim.lsp.get_clients({ name = "ts_ls", bufnr = ev.buf })[1]
-		local ts_filetypes = {
-			javascript = true,
-			javascriptreact = true,
-			typescript = true,
-			typescriptreact = true,
-		}
 
-		if not ts_filetypes[vim.bo[ev.buf].filetype] or not client then
+		if not client then
 			require("conform").format(conform_opts)
 			return
 		end
