@@ -74,12 +74,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	group = vim.api.nvim_create_augroup("FormatConfig", { clear = true }),
 	callback = function(ev)
-		local timeout = 4000
 		local conform_opts = {
 			bufnr = ev.buf,
 			quiet = true,
 			lsp_format = "fallback",
-			timeout_ms = timeout,
+			timeout_ms = 2000,
 			stop_after_first = true,
 		}
 
@@ -99,21 +98,16 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 			return
 		end
 
-		client:request("workspace/executeCommand", {
+		local request_result = client:request_sync("workspace/executeCommand", {
 			command = "_typescript.organizeImports",
 			arguments = { vim.api.nvim_buf_get_name(ev.buf) },
-		}, function(err)
-			if err then
-				require("fidget").notify(
-					"Organize imports failed: " .. err.message,
-					vim.log.levels.ERROR
-				)
-				return
-			end
-			require("conform").format(conform_opts)
-			if vim.bo.buftype == "" then
-				vim.cmd("silent noautocmd write")
-			end
-		end)
+		})
+
+		if request_result and request_result.err then
+			require("fidget").notify(request_result.err.message, vim.log.levels.ERROR)
+			return
+		end
+
+		require("conform").format(conform_opts)
 	end,
 })
