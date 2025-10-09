@@ -27,7 +27,7 @@ alias btdisconnect="bluetoothctl disconnect 8E:95:F1:F5:5B:D2 && bluetoothctl po
 
 # Prompt
 eval "$(starship init zsh)"
-export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
+export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
 
 # Increase JS Heap memory
 export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=8096"

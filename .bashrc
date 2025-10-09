@@ -148,4 +148,4 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 
 . "$HOME/.cargo/env"
 
-export STARSHIP_CONFIG=$HOME/.config/starship/gruvbox.toml
+export STARSHIP_CONFIG=$HOME/.config/starship.toml

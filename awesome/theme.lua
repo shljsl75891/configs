@@ -5,21 +5,6 @@ local dpi = require("beautiful.xresources").apply_dpi
 -- Color Palettes
 -- Define color palettes
 local palettes = {
-	["rose-pine"] = {
-		fg_normal = "#E0DEF4",
-		fg_focus = "#32302F",
-		fg_urgent = "#E0DEF4",
-		bg_normal = "#1D2021",
-		bg_focus = "#31748F",
-		bg_urgent = "#EB6F92",
-		border_normal = "#1A1B26",
-		border_focus = "#F6C177",
-		border_marked = "#CC9393",
-		powerline_spr1 = "#31748F",
-		powerline_spr2 = "#403D52",
-		tasklist_fg_focus = "#EB6F92",
-		tasklist_fg_normal = "#EBBCBA",
-	},
 	["gruvbox"] = {
 		fg_normal = "#FBF1C7",
 		fg_focus = "#32302F",
