@@ -14,7 +14,7 @@ return {
 			"<leader>ic",
 			":CodeBridgeTmux<CR>",
 			mode = { "n", "v" },
-			desc = "[I]nterative [C]ontext (current file)",
+			desc = "[I]nterative [C]chat with context",
 		},
 		{
 			"<leader>ip",
