@@ -1,6 +1,9 @@
 return {
 	"igorlfs/nvim-dap-view",
-	dependencies = { "https://codeberg.org/mfussenegger/nvim-dap.git" },
+	dependencies = {
+		"https://codeberg.org/mfussenegger/nvim-dap.git",
+		"nvim-telescope/telescope-ui-select.nvim",
+	},
 	keys = {
 		{
 			"<leader>tb",

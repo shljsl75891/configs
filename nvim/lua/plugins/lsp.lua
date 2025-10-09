@@ -3,6 +3,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		{ "mason-org/mason-lspconfig.nvim", opts = {} },
+		"nvim-telescope/telescope-ui-select.nvim",
 		{
 			"j-hui/fidget.nvim",
 			opts = {
