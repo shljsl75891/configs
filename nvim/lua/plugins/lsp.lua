@@ -10,6 +10,7 @@ return {
 				progress = { display = { done_ttl = 1, done_icon = "✔" } },
 				notification = {
 					window = { normal_hl = "Comment", winblend = 0, align = "bottom" },
+					override_vim_notify = true,
 				},
 			},
 		},

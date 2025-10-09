@@ -104,7 +104,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		})
 
 		if request_result and request_result.err then
-			require("fidget").notify(request_result.err.message, vim.log.levels.ERROR)
+			vim.notify(request_result.err.message, vim.log.levels.ERROR)
 			return
 		end
 
