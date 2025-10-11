@@ -12,9 +12,16 @@ return {
 		{
 			"<leader>fb",
 			function()
+				require("telescope.builtin").buffers()
+			end,
+			desc = "[F]ind Telescope [B]uffers",
+		},
+		{
+			"<leader>fm",
+			function()
 				require("telescope.builtin").builtin()
 			end,
-			desc = "[F]ind Telescope [B]uiltins",
+			desc = "[F]ind Telescope [M]ore Builtins",
 		},
 		{
 			"<leader>lg",
