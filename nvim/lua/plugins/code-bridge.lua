@@ -35,7 +35,7 @@ return {
 		-- Chat interface
 		{
 			"<leader>tq",
-			"<cmd>CodeBridgeQuery<CR>",
+			":CodeBridgeQuery<CR>",
 			mode = { "n", "v" },
 			desc = "[T]emporary [Q]uery (with selection or current file)",
 		},
