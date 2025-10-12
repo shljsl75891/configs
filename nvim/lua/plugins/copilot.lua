@@ -3,17 +3,7 @@ return {
 	cmd = "Copilot",
 	event = "InsertEnter",
 	opts = {
-		filetypes = {
-			yaml = false,
-			markdown = true,
-			help = false,
-			gitcommit = false,
-			gitrebase = false,
-			hgcommit = false,
-			svn = false,
-			cvs = false,
-			["."] = false,
-		},
+		filetypes = { ["*"] = true },
 		suggestion = {
 			enabled = true,
 			auto_trigger = true,
