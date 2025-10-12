@@ -116,7 +116,7 @@ return {
 			},
 			extensions = {
 				["ui-select"] = {
-					require("telescope.themes").get_cursor({ previwer = false }),
+					require("telescope.themes").get_cursor({ previewer = false }),
 				},
 			},
 		})
