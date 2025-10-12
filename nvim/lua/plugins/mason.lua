@@ -33,6 +33,7 @@ return {
 	config = function()
 		local schemastore = require("schemastore")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 		local servers = {
 			emmet_language_server = {

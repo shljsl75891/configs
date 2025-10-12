@@ -2,18 +2,12 @@ return {
 	"hrsh7th/nvim-cmp",
 	event = "InsertEnter",
 	dependencies = {
-		-- Sources
 		"hrsh7th/cmp-buffer",
 		"https://codeberg.org/FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
-		-- Snippet Engine
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
 		local cmp = require("cmp")
-		local luasnip = require("luasnip")
-
 		cmp.setup({
 			completion = { completeopt = "menu,menuone,noinsert" },
 			window = {
@@ -25,11 +19,6 @@ return {
 					border = vim.o.winborder,
 					winhighlight = "Normal:NormalFloat",
 				}),
-			},
-			snippet = {
-				expand = function(args)
-					luasnip.lsp_expand(args.body)
-				end,
 			},
 			mapping = {
 				-- Custom bindings
@@ -43,7 +32,6 @@ return {
 				{ name = "nvim_lsp" },
 				{ name = "async_path" },
 				{ name = "buffer" },
-				{ name = "luasnip" },
 			}),
 		})
 		cmp.setup.filetype({ "sql" }, {
