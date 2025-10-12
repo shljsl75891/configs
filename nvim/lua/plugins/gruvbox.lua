@@ -62,6 +62,8 @@ return {
 				HarpoonInactive = { bg = nil },
 				TabLineFill = { link = "Normal" },
 				MiniNotifyNormal = { fg = palette.light2, italic = true },
+				MiniCursorword = { bg = palette.dark2, underline = false },
+				MiniCursorwordCurrent = { link = "MiniCursorword" },
 			},
 			transparent_mode = true,
 		})

@@ -1,5 +1,11 @@
 return {
 	{
+		"nvim-mini/mini.cursorword",
+		event = { "BufReadPost", "BufNewFile" },
+		version = false,
+		opts = { delay = 800 },
+	},
+	{
 		"nvim-mini/mini.notify",
 		version = false,
 		event = "VeryLazy",
