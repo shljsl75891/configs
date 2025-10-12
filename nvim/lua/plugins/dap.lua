@@ -2,7 +2,16 @@ return {
 	"igorlfs/nvim-dap-view",
 	dependencies = {
 		"https://codeberg.org/mfussenegger/nvim-dap.git",
-		"nvim-telescope/telescope-ui-select.nvim",
+		{
+			"theHamsta/nvim-dap-virtual-text",
+			opts = {
+				enabled = true,
+				commented = false,
+				enabled_commands = false,
+				highlight_changed_variables = false,
+				clear_on_continue = true,
+			},
+		},
 	},
 	keys = {
 		{
