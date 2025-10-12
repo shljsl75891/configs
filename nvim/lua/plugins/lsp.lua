@@ -4,16 +4,6 @@ return {
 	dependencies = {
 		{ "mason-org/mason-lspconfig.nvim", opts = {} },
 		"nvim-telescope/telescope-ui-select.nvim",
-		{
-			"j-hui/fidget.nvim",
-			opts = {
-				progress = { display = { done_ttl = 1, done_icon = "✔" } },
-				notification = {
-					window = { normal_hl = "Comment", winblend = 0, align = "bottom" },
-					override_vim_notify = true,
-				},
-			},
-		},
 	},
 	config = function()
 		vim.diagnostic.config({
