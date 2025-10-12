@@ -5,6 +5,7 @@ return {
 		"hrsh7th/cmp-buffer",
 		"https://codeberg.org/FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
+		"nvim-mini/mini.icons",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -19,6 +20,14 @@ return {
 					border = vim.o.winborder,
 					winhighlight = "Normal:NormalFloat",
 				}),
+			},
+			formatting = {
+				format = function(_, vim_item)
+					local icon, hl = require("mini.icons").get("lsp", vim_item.kind)
+					vim_item.kind = icon .. " " .. vim_item.kind
+					vim_item.kind_hl_group = hl
+					return vim_item
+				end,
 			},
 			mapping = {
 				-- Custom bindings
