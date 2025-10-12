@@ -1,8 +1,8 @@
 local opts = { noremap = true, silent = true }
 
 -- Open NetRW plugin
-opts.desc = "Open NetRW plugin"
-vim.keymap.set("n", "-", vim.cmd.Ex)
+opts.desc = "Open Oil plugin"
+vim.keymap.set("n", "-", vim.cmd.Oil)
 
 -- Keeps screen centered
 opts.desc = "Scroll down and center screen"
