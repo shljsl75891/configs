@@ -1,6 +1,13 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	cmd = { "Telescope" },
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"nvim-treesitter/nvim-treesitter",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		"nvim-telescope/telescope-ui-select.nvim",
+		"nvim-telescope/telescope-node-modules.nvim",
+	},
 	keys = {
 		{
 			"<leader>ff",
@@ -17,11 +24,18 @@ return {
 			desc = "[F]ind Telescope [B]uffers",
 		},
 		{
-			"<leader>fm",
+			"<leader>fn",
+			function()
+				require("telescope._extensions.node_modules_builtin").list()
+			end,
+			{ desc = "[/] Fuzzily search in current buffer" },
+		},
+		{
+			"<leader>fB",
 			function()
 				require("telescope.builtin").builtin()
 			end,
-			desc = "[F]ind Telescope [M]ore Builtins",
+			desc = "[F]ind Telescope [B]uiltins",
 		},
 		{
 			"<leader>lg",
@@ -55,13 +69,6 @@ return {
 			desc = "[F]ind [S]pecific [F]ile using its name",
 		},
 		{
-			"<leader>fif",
-			function()
-				require("telescope.builtin").find_files({ no_ignore = true })
-			end,
-			desc = "[F]ind [I]gnored [F]iles",
-		},
-		{
 			"<leader>fss",
 			function()
 				local search_string = vim.fn.input("Grep string > ")
@@ -71,7 +78,6 @@ return {
 			end,
 			desc = "[F]ind [S]pecific [S]tring",
 		},
-
 		{
 			"<leader>/",
 			function()
@@ -81,12 +87,6 @@ return {
 			end,
 			{ desc = "[/] Fuzzily search in current buffer" },
 		},
-	},
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-treesitter/nvim-treesitter",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-		"nvim-telescope/telescope-ui-select.nvim",
 	},
 	config = function()
 		local actions = require("telescope.actions")
@@ -124,5 +124,6 @@ return {
 		-- Load fzf-native extensions for capabilites like exact, suffix, prefix matching
 		require("telescope").load_extension("fzf")
 		require("telescope").load_extension("ui-select")
+		require("telescope").load_extension("node_modules")
 	end,
 }
