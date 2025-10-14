@@ -5,7 +5,7 @@ return {
 		{
 			"<leader>te",
 			function()
-				vim.cmd("CloakToggle")
+				vim.cmd("CloakPreviewLine")
 			end,
 			desc = "[T]oggle [E]nv Cloak",
 		},
