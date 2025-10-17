@@ -126,16 +126,6 @@ if [ -d "$FNM_PATH" ]; then
 fi
 
 
-# Rose Pine in FZF
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	--color=fg:#908CAA,bg:-1,hl:#EBBCBA
-	--color=fg+:#E0DEF4,bg+:#26233A,hl+:#EBBCBA
-	--color=border:#403D52,header:#31748F,gutter:-1
-	--color=spinner:#F6C177,info:#9CCFD8
-	--color=pointer:#C4A7E7,marker:#EB6F92,prompt:#908CAA
-  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
-  --layout="default" --info="right"'
-
 # Gruvbox for FZF
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 	--color=fg:#EBDBB2,bg:-1,hl:#8EC07C
