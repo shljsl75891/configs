@@ -1,18 +1,15 @@
 return {
 	"samir-roy/code-bridge.nvim",
-	cmd = {
-		"CodeBridgeTmux",
-		"CodeBridgeTmuxInteractive",
-		"CodeBridgeTmuxDiff",
-		"CodeBridgeTmuxDiffStaged",
-		"CodeBridgeQuery",
-		"CodeBridgeChat",
-		"CodeBridgeWipe",
-	},
 	keys = {
 		{
 			"<leader>ic",
 			":CodeBridgeTmux<CR>",
+			mode = { "n", "v" },
+			desc = "[I]nterative [C]chat with context",
+		},
+		{
+			"<leader>ir",
+			":CodeBridgeResumePrompt<CR>",
 			mode = { "n", "v" },
 			desc = "[I]nterative [C]chat with context",
 		},
