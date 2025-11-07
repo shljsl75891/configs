@@ -50,7 +50,11 @@ return {
 					"htmlangular",
 				},
 			},
-			angularls = { filetypes = { "typescript", "htmlangular" } },
+			angularls = {
+				root = vim.fn.stdpath("data")
+					.. "/mason/packages/angular-language-server",
+				filetypes = { "typescript", "htmlangular" },
+			},
 			jsonls = {
 				filetypes = { "json", "jsonc" },
 				settings = {
@@ -61,7 +65,6 @@ return {
 				},
 			},
 		}
-
 		-- Apply config with capabilities
 		for server, config in pairs(servers) do
 			config.capabilities = capabilities
