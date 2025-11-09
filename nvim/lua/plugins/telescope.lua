@@ -12,7 +12,12 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("telescope.builtin").find_files()
+				vim.fn.system("git rev-parse --is-inside-work-tree")
+				if vim.v.shell_error == 0 then
+					require("telescope.builtin").git_files()
+				else
+					require("telescope.builtin").find_files()
+				end
 			end,
 			desc = "[F]ind Project [F]iles",
 		},
@@ -28,7 +33,7 @@ return {
 			function()
 				require("telescope._extensions.node_modules_builtin").list()
 			end,
-			{ desc = "[/] Fuzzily search in current buffer" },
+			desc = "[F]ind [N]ode Modules",
 		},
 		{
 			"<leader>fB",
@@ -91,12 +96,44 @@ return {
 	config = function()
 		local actions = require("telescope.actions")
 
-		-- Global config
 		require("telescope").setup({
 			defaults = {
+				preview = {
+					filesize_limit = 10,
+					highlight_limit = 0.5,
+					timeout = 250,
+					treesitter = true,
+					check_mime_type = true,
+				},
+				vimgrep_arguments = {
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--smart-case",
+					"--trim",
+				},
+				file_ignore_patterns = {
+					"node_modules",
+					"%.git/",
+					"dist",
+					"%.angular",
+					"%.lock",
+				},
+				path_display = { "truncate" },
+				hl_result_eol = true,
+				wrap_results = false,
+				dynamic_preview_title = false,
+				sorting_strategy = "ascending",
 				layout_strategy = "horizontal",
 				layout_config = {
-					horizontal = { width = 0.85, preview_width = 0.45 },
+					horizontal = {
+						width = 0.85,
+						preview_width = 0.45,
+						prompt_position = "top",
+					},
 					vertical = { width = 0.6, preview_width = 0.5 },
 				},
 				mappings = {
@@ -108,20 +145,22 @@ return {
 				},
 			},
 			pickers = {
-				find_files = {
-					find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
-				},
 				lsp_definitions = { fname_width = 100 },
 				lsp_references = { fname_width = 100 },
 			},
 			extensions = {
+				fzf = {
+					fuzzy = true,
+					override_generic_sorter = true,
+					override_file_sorter = true,
+					case_mode = "smart_case",
+				},
 				["ui-select"] = {
 					require("telescope.themes").get_cursor({ previewer = false }),
 				},
 			},
 		})
 
-		-- Load fzf-native extensions for capabilites like exact, suffix, prefix matching
 		require("telescope").load_extension("fzf")
 		require("telescope").load_extension("ui-select")
 		require("telescope").load_extension("node_modules")
