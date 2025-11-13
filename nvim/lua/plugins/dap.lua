@@ -6,10 +6,21 @@ return {
 			"theHamsta/nvim-dap-virtual-text",
 			opts = {
 				enabled = true,
-				commented = false,
+				commented = true,
 				enabled_commands = false,
 				highlight_changed_variables = false,
+				highlight_new_as_changed = false,
+				show_stop_reason = true,
 				clear_on_continue = true,
+				only_first_definition = true,
+				all_references = false,
+				display_callback = function(variable)
+					local value = variable.value
+					if #value > 100 then
+						return value:sub(1, 75) .. "..."
+					end
+					return value
+				end,
 			},
 		},
 	},
@@ -26,7 +37,7 @@ return {
 			function()
 				require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 			end,
-			desc = "[T]oggle [B]reakpoint with condition",
+			desc = "[T]oggle conditional [B]reakpoint",
 		},
 		{
 			"<F5>",
@@ -47,14 +58,14 @@ return {
 			function()
 				require("dap").step_into()
 			end,
-			desc = "Step Out",
+			desc = "Step Into",
 		},
 		{
 			"<F3>",
 			function()
 				require("dap").step_out()
 			end,
-			desc = "Step Into",
+			desc = "Step Out",
 		},
 		{
 			"<F9>",
@@ -68,7 +79,7 @@ return {
 			function()
 				require("dap.ui.widgets").hover()
 			end,
-			desc = "Terminate",
+			desc = "Hover variable",
 		},
 		{
 			"<leader>dv",
@@ -124,10 +135,8 @@ return {
 			auto_toggle = true,
 		})
 
-		-- automatically opesn and close dapui when debugging
 		local dap = require("dap")
 
-		-- Adapter configuration (How DAP client should start the debugger)
 		dap.adapters["pwa-node"] = {
 			type = "server",
 			host = "localhost",
@@ -140,10 +149,13 @@ return {
 					"${port}",
 				},
 			},
+			options = {
+				max_retries = 3,
+				disconnect_timeout_sec = 5,
+			},
 		}
 
-		-- Debugger configuration (How debugger should connect with debugee)
-		dap.configurations.javascript = {
+		local node_configs = {
 			{
 				type = "pwa-node",
 				request = "launch",
@@ -151,6 +163,8 @@ return {
 				program = "${file}",
 				cwd = "${workspaceFolder}",
 				console = "integratedTerminal",
+				sourceMaps = true,
+				skipFiles = { "<node_internals>/**" },
 			},
 			{
 				type = "pwa-node",
@@ -159,6 +173,7 @@ return {
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
 				console = "integratedTerminal",
+				skipFiles = { "<node_internals>/**" },
 			},
 			{
 				type = "pwa-node",
@@ -168,6 +183,7 @@ return {
 				runtimeExecutable = "npm",
 				runtimeArgs = { "run-script", "start" },
 				console = "integratedTerminal",
+				skipFiles = { "<node_internals>/**" },
 			},
 			{
 				type = "pwa-node",
@@ -177,9 +193,13 @@ return {
 				runtimeExecutable = "npm",
 				runtimeArgs = { "run-script", "dev" },
 				console = "integratedTerminal",
+				skipFiles = { "<node_internals>/**" },
 			},
 		}
 
-		dap.configurations.typescript = dap.configurations.javascript
+		dap.configurations.javascript = node_configs
+		dap.configurations.typescript = node_configs
+		dap.configurations.javascriptreact = node_configs
+		dap.configurations.typescriptreact = node_configs
 	end,
 }
