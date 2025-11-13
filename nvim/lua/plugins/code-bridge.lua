@@ -46,10 +46,9 @@ return {
 	opts = {
 		tmux = {
 			target_mode = "window_name",
-			window_name = "claude",
-			process_name = "claude",
+			window_name = "agent",
 			switch_to_target = true,
-			find_node_process = true,
+			find_node_process = false,
 		},
 		interactive = { use_telescope = false },
 	},
