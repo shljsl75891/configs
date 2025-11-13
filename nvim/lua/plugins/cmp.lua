@@ -9,8 +9,27 @@ return {
 	},
 	config = function()
 		local cmp = require("cmp")
+
+		local icon_cache = {}
+		local function get_icon(kind)
+			if not icon_cache[kind] then
+				local icon, hl = require("mini.icons").get("lsp", kind)
+				icon_cache[kind] = { icon = icon, hl = hl }
+			end
+			return icon_cache[kind].icon, icon_cache[kind].hl
+		end
+
 		cmp.setup({
-			completion = { completeopt = "menu,menuone,noinsert" },
+			completion = {
+				completeopt = "menu,menuone,noinsert",
+				keyword_length = 1,
+			},
+			performance = {
+				debounce = 150,
+				throttle = 60,
+				fetching_timeout = 500,
+				max_view_entries = 50,
+			},
 			window = {
 				completion = cmp.config.window.bordered({
 					border = "none",
@@ -23,7 +42,7 @@ return {
 			},
 			formatting = {
 				format = function(_, vim_item)
-					local icon, hl = require("mini.icons").get("lsp", vim_item.kind)
+					local icon, hl = get_icon(vim_item.kind)
 					vim_item.kind = icon .. " " .. vim_item.kind
 					vim_item.kind_hl_group = hl
 					return vim_item
@@ -38,15 +57,39 @@ return {
 				["<CR>"] = cmp.mapping.confirm({ select = true }),
 			},
 			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "async_path" },
-				{ name = "buffer" },
+				{
+					name = "nvim_lsp",
+					priority = 1000,
+					max_item_count = 30,
+					keyword_length = 1,
+				},
+				{
+					name = "async_path",
+					priority = 300,
+					keyword_length = 2,
+					max_item_count = 10,
+				},
+				{
+					name = "buffer",
+					priority = 100,
+					keyword_length = 3,
+					max_item_count = 10,
+					option = {
+						get_bufnrs = function()
+							local bufs = {}
+							for _, win in ipairs(vim.api.nvim_list_wins()) do
+								bufs[vim.api.nvim_win_get_buf(win)] = true
+							end
+							return vim.tbl_keys(bufs)
+						end,
+					},
+				},
 			}),
 		})
 		cmp.setup.filetype({ "sql" }, {
 			sources = {
-				{ name = "vim-dadbod-completion" },
-				{ name = "buffer" },
+				{ name = "vim-dadbod-completion", priority = 1000 },
+				{ name = "buffer", priority = 100, keyword_length = 3 },
 			},
 		})
 	end,
