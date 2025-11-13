@@ -31,20 +31,19 @@ return {
 		"b0o/schemastore.nvim",
 	},
 	config = function()
-		local schemastore = require("schemastore")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		capabilities.textDocument.completion.completionItem.resolveSupport = {
+			properties = { "documentation", "detail" },
+		}
 
 		local servers = {
 			emmet_language_server = {
 				filetypes = {
 					"css",
-					"eruby",
 					"html",
-					"htmldjango",
 					"javascriptreact",
-					"less",
-					"pug",
-					"sass",
 					"scss",
 					"typescriptreact",
 					"htmlangular",
@@ -55,11 +54,40 @@ return {
 					.. "/mason/packages/angular-language-server",
 				filetypes = { "typescript", "htmlangular" },
 			},
+			ts_ls = {
+				init_options = {
+					preferences = {
+						includeInlayParameterNameHints = "none",
+						includeInlayFunctionParameterTypeHints = false,
+					},
+				},
+				settings = {
+					typescript = {
+						inlayHints = { enabled = false },
+						suggest = {
+							completeFunctionCalls = false, -- faster completions
+						},
+					},
+					javascript = {
+						inlayHints = { enabled = false },
+						suggest = {
+							completeFunctionCalls = false,
+						},
+					},
+				},
+			},
+			eslint = {
+				settings = {
+					run = "onSave",
+					nodePath = "",
+					workingDirectory = { mode = "location" },
+				},
+			},
 			jsonls = {
 				filetypes = { "json", "jsonc" },
 				settings = {
 					json = {
-						schemas = schemastore.json.schemas(),
+						schemas = require("schemastore").json.schemas(),
 						validate = { enable = true },
 					},
 				},

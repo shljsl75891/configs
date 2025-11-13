@@ -36,6 +36,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local builtin = require("telescope.builtin")
 		local opts = { buffer = ev.buf, noremap = true, silent = true }
+
+		local client = vim.lsp.get_clients({ bufnr = ev.buf })[1]
+
+		if client then
+			client.server_capabilities.semanticTokensProvider = nil
+			client.server_capabilities.documentFormattingProvider = false
+		end
 		-- Lsp APIs
 		opts.desc = "Get Information of variable/function"
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
