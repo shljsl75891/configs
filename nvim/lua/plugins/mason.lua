@@ -50,7 +50,7 @@ return {
 				},
 			},
 			angularls = {
-				root = vim.fn.stdpath("data")
+				root_dir = vim.fn.stdpath("data")
 					.. "/mason/packages/angular-language-server",
 				filetypes = { "typescript", "htmlangular" },
 			},
