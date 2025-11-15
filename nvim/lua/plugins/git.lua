@@ -3,11 +3,6 @@ return {
 	lazy = false,
 	cmd = { "G", "Git" },
 	keys = {
-		{
-			"<leader>gvd",
-			"<cmd>Gvdiffsplit<CR>",
-			desc = "Open current file in [G]it split [D]iff view",
-		},
 		{ "<leader>gs", "<cmd>vertical G<CR>", desc = "Show [G]it [S]tatus" },
 		{
 			"<leader>gb",
