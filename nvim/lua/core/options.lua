@@ -52,7 +52,7 @@ local localOptions = {
 	-- disable vi compatibilty
 	compatible = false,
 	-- show filetype in default status line
-	statusline = "%#MasonHeader# %{fugitive#Head()} %## %f%=(%b, 0x%B)%=%y",
+	statusline = "%#MasonHeader#%{FugitiveStatusline()}%## %f%=(%b, 0x%B)%=%y",
 	-- border = "single", "rounded", "shadow", "double", "none", "solid"
 	winborder = "solid",
 	-- global single status line
