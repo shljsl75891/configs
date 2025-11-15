@@ -5,6 +5,18 @@ return {
 	keys = {
 		{ "<leader>gs", "<cmd>vertical G<CR>", desc = "Show [G]it [S]tatus" },
 		{
+			mode = { "n", "v" },
+			"gh",
+			":diffget //2<CR>",
+			desc = "[G]et left hunk",
+		},
+		{
+			mode = { "n", "v" },
+			"gl",
+			":diffget //3<CR>",
+			desc = "[G]et right hunk",
+		},
+		{
 			"<leader>gb",
 			"<cmd>G blame<CR>",
 			desc = "Show [G]it [B]lame for each line of current file",
