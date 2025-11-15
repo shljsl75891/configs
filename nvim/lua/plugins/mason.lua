@@ -39,20 +39,16 @@ return {
 		}
 
 		local servers = {
-			emmet_language_server = {
-				filetypes = {
-					"css",
-					"html",
-					"javascriptreact",
-					"scss",
-					"typescriptreact",
-					"htmlangular",
-				},
-			},
 			angularls = {
-				root_dir = vim.fn.stdpath("data")
-					.. "/mason/packages/angular-language-server",
-				filetypes = { "typescript", "htmlangular" },
+				root_dir = function(bufnr, on_dir)
+					local project_root = vim.fs.root(bufnr, { "angular.json" })
+					if not project_root then
+						return
+					end
+					on_dir(
+						vim.fn.stdpath("data") .. "/mason/packages/angular-language-server"
+					)
+				end,
 			},
 			ts_ls = {
 				init_options = {
@@ -65,7 +61,7 @@ return {
 					typescript = {
 						inlayHints = { enabled = false },
 						suggest = {
-							completeFunctionCalls = false, -- faster completions
+							completeFunctionCalls = false,
 						},
 					},
 					javascript = {
