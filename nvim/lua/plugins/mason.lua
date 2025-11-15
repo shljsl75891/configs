@@ -52,6 +52,8 @@ return {
 			},
 			ts_ls = {
 				init_options = {
+					maxTsServerMemory = 1024,
+					disableAutomaticTypeAcquisition = true,
 					preferences = {
 						includeInlayParameterNameHints = "none",
 						includeInlayFunctionParameterTypeHints = false,

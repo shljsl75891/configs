@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client then
 			client.server_capabilities.semanticTokensProvider = nil
 			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
 		end
 		-- Lsp APIs
 		opts.desc = "Get Information of variable/function"
