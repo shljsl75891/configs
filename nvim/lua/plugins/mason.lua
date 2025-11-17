@@ -39,17 +39,6 @@ return {
 		}
 
 		local servers = {
-			angularls = {
-				root_dir = function(bufnr, on_dir)
-					local project_root = vim.fs.root(bufnr, { "angular.json" })
-					if not project_root then
-						return
-					end
-					on_dir(
-						vim.fn.stdpath("data") .. "/mason/packages/angular-language-server"
-					)
-				end,
-			},
 			ts_ls = {
 				init_options = {
 					maxTsServerMemory = 1024,
