@@ -44,17 +44,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			client.server_capabilities.documentFormattingProvider = false
 			client.server_capabilities.documentRangeFormattingProvider = false
 		end
+
 		-- Lsp APIs
 		opts.desc = "Get Information of variable/function"
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		opts.desc = "[G]o to [D]efintion of identifier"
-		vim.keymap.set("n", "gd", builtin.lsp_definitions, opts)
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 		opts.desc = "Find [D]ocument [S]ymbols"
 		vim.keymap.set("n", "<leader>ds", builtin.lsp_document_symbols, opts)
 		opts.desc = "[G]o to [T]ype Defintion of identifier"
-		vim.keymap.set("n", "gt", builtin.lsp_type_definitions, opts)
+		vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
 		opts.desc = "[G]o to [I]mplementation of function"
-		vim.keymap.set("n", "gI", builtin.lsp_implementations, opts)
+		vim.keymap.set("n", "gI", vim.lsp.buf.implementation, opts)
 		opts.desc = "[G]o to All [R]eferences of identifier"
 		vim.keymap.set("n", "<leader>rr", builtin.lsp_references, opts)
 		opts.desc = "LSP Signature [H]elp"
