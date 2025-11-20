@@ -22,6 +22,32 @@ return {
 			desc = "[F]ind Project [F]iles",
 		},
 		{
+			"<leader>cf",
+			function()
+				local buffer_dir = require("telescope.utils").buffer_dir()
+				vim.fn.system(
+					"git -C "
+						.. vim.fn.shellescape(buffer_dir)
+						.. " rev-parse --is-inside-work-tree"
+				)
+				if vim.v.shell_error == 0 then
+					local git_root = vim.fn
+						.system(
+							"git -C "
+								.. vim.fn.shellescape(buffer_dir)
+								.. " rev-parse --show-toplevel"
+						)
+						:gsub("\n", "")
+					require("telescope.builtin").git_files({ cwd = git_root })
+				else
+					require("telescope.builtin").find_files({
+						cwd = buffer_dir,
+					})
+				end
+			end,
+			desc = "[F]ind [C]urrent Buffer Git [F]iles",
+		},
+		{
 			"<leader>fb",
 			function()
 				require("telescope.builtin").buffers()
