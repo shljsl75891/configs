@@ -11,7 +11,7 @@ return {
 			"<leader>ir",
 			":CodeBridgeResumePrompt<CR>",
 			mode = { "n", "v" },
-			desc = "[I]nterative [C]chat with context",
+			desc = "[I]nterative [R]esume chat",
 		},
 		{
 			"<leader>ip",
@@ -29,18 +29,16 @@ return {
 			"<cmd>CodeBridgeTmuxDiffStaged<CR>",
 			desc = "[G]it [D]iff staged to claude",
 		},
-		-- Chat interface
+		-- Diagnostics
 		{
-			"<leader>tq",
-			":CodeBridgeQuery<CR>",
-			mode = { "n", "v" },
-			desc = "[T]emporary [Q]uery (with selection or current file)",
+			"<leader>cd",
+			":CodeBridgeTmuxDiagnosticsErrors<CR>",
+			desc = "Send [C]urrent Buffer [D]iagnostics Errors",
 		},
-		{ "<leader>tc", "<cmd>CodeBridgeChat<CR>", desc = "[T]emporary [C]hat" },
 		{
-			"<leader>cc",
-			"<cmd>CodeBridgeWipe<CR>",
-			desc = "[C]lear [C]hat",
+			"<leader>ad",
+			":CodeBridgeTmuxDiagnosticsErrors<CR>",
+			desc = "Send [A]ll [D]iagnostics Errors",
 		},
 	},
 	opts = {
