@@ -87,3 +87,6 @@ alias kill-zscaler="find /Library/LaunchAgents -name '*zscaler*' -exec launchctl
 
 # opencode
 export PATH=/Users/sahil.jassal/.opencode/bin:$PATH
+
+# neovim as manpager
+export MANPAGER="nvim +Man!"

@@ -142,3 +142,6 @@ export STARSHIP_CONFIG=$HOME/.config/starship.toml
 
 # opencode
 export PATH=/Users/sahil.jassal/.opencode/bin:$PATH
+
+# neovim as manpager
+export MANPAGER="nvim +Man!"
