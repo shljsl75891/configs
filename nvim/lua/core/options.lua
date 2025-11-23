@@ -6,7 +6,13 @@ local globalOptions = {
 	netrw_banner = 0,
 	netrw_browse_split = 0,
 	netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu",
+	-- Store statusline right side format for reuse
+	statusline_right = "%#MiniStatuslineModeCommand# %{FugitiveStatusline()} %#StatusLine# %y ",
 }
+
+for k, v in pairs(globalOptions) do
+	vim.g[k] = v
+end
 
 local localOptions = {
 	-- Block cursor always
@@ -14,7 +20,7 @@ local localOptions = {
 	-- Enable relativenumber line
 	number = true,
 	relativenumber = true,
-	numberwidth = 2,
+	numberwidth = 4,
 	-- Better searching highlights
 	hlsearch = false,
 	incsearch = true,
@@ -51,20 +57,16 @@ local localOptions = {
 	pumheight = 25,
 	-- disable vi compatibilty
 	compatible = false,
-	-- show filetype in default status line
-	statusline = "%#MasonHeader#%{FugitiveStatusline()}%## %f%=(%b, 0x%B)%=%y",
 	-- border = "single", "rounded", "shadow", "double", "none", "solid"
 	winborder = "solid",
 	-- global single status line
 	laststatus = 3,
-	-- information above wach window
-	winbar = "%#GruvboxYellowBold# %t %m %##%=%#Error#%r",
+	-- default statusline (overridden when Harpoon loads)
+	statusline = "%=" .. vim.g.statusline_right,
+	-- winbar shows file info
+	winbar = "%#GruvboxYellowBold# %f %m%r",
 }
 
 for k, v in pairs(localOptions) do
 	vim.opt[k] = v
-end
-
-for k, v in pairs(globalOptions) do
-	vim.g[k] = v
 end
