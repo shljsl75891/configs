@@ -9,12 +9,12 @@
       },
     },
   },
-  "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+  "model": "github-copilot/claude-sonnet-4.5",
   "small_model": "github-copilot/gpt-5-mini",
   "mcp": {
     "Ref": {
       "type": "local",
-      "command": ["npx", "ref-tools-mcp@latest"],
+      "command": ["bunx", "ref-tools-mcp@latest"],
       "enabled": true,
       "environment": {
         "REF_API_KEY": "{env:REF_API_KEY}",
