@@ -24,10 +24,9 @@ return {
 			},
 		}
 
-		local shift_nums = { "<C-j>", "<C-k>", "<C-h>", "<C-l>" }
-		for i, key in ipairs(shift_nums) do
+		for i = 1, 9 do
 			table.insert(mappings, {
-				key,
+				"" .. i,
 				function()
 					require("harpoon"):list():select(i)
 				end,
