@@ -26,7 +26,7 @@ return {
 
 		for i = 1, 9 do
 			table.insert(mappings, {
-				"" .. i,
+				"<leader>" .. i,
 				function()
 					require("harpoon"):list():select(i)
 				end,
