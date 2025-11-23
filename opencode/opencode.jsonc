@@ -2,13 +2,23 @@
   "$schema": "https://opencode.ai/config.json",
   "theme": "gruvbox",
   "autoupdate": true,
-   "provider": {
+  "provider": {
     "amazon-bedrock": {
       "options": {
-        "region": "us-east-2"
-      }
-    }
+        "region": "us-east-2",
+      },
+    },
   },
   "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-  "small_model": "github-copilot/gpt-5-mini"
+  "small_model": "github-copilot/gpt-5-mini",
+  "mcp": {
+    "Ref": {
+      "type": "local",
+      "command": ["npx", "ref-tools-mcp@latest"],
+      "enabled": true,
+      "environment": {
+        "REF_API_KEY": "{env:REF_API_KEY}",
+      },
+    },
+  },
 }
