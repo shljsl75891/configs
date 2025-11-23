@@ -36,18 +36,6 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], opts)
 opts.desc = "Exit terminal mode"
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 
--- Quickfix Navigation
-opts.desc = "Previous quickfix item"
-vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz", opts)
-opts.desc = "Next quickfix item"
-vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz", opts)
-
--- Location List Navigation
-opts.desc = "Previous location list item"
-vim.keymap.set("n", "<C-Up>", "<cmd>lprev<CR>zz", opts)
-opts.desc = "Next location list item"
-vim.keymap.set("n", "<C-Down>", "<cmd>lnext<CR>zz", opts)
-
 -- Resize windows
 opts.desc = "Resize horizontal window -2"
 vim.keymap.set("n", "<M-->", ":resize -2<CR>", opts)
