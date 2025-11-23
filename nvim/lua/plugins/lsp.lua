@@ -1,11 +1,94 @@
 return {
-	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
+	"mason-org/mason.nvim",
+	event = "VeryLazy",
+	opts = {},
 	dependencies = {
-		{ "mason-org/mason-lspconfig.nvim", opts = {} },
-		"nvim-telescope/telescope-ui-select.nvim",
+		"mason-org/mason-lspconfig.nvim",
+		{
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			opts = {
+				ensure_installed = {
+					-- Language Servers
+					"angularls",
+					"emmet_language_server",
+					"eslint-lsp",
+					"jsonls",
+					"ts_ls",
+					"lua_ls",
+					"tailwindcss",
+					"cssls",
+					"dockerfile-language-server",
+					-- Formatters
+					"prettierd",
+					"stylua",
+					"pgformatter",
+					-- Debug adapters
+					"js-debug-adapter",
+				},
+			},
+		},
+		"hrsh7th/cmp-nvim-lsp",
+		"b0o/schemastore.nvim",
+		"neovim/nvim-lspconfig",
 	},
-	config = function()
+	config = function(_, opts)
+		print(vim.inspect(opts))
+		require("mason").setup(opts)
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		capabilities.textDocument.completion.completionItem.resolveSupport = {
+			properties = { "documentation", "detail" },
+		}
+
+		local servers = {
+			ts_ls = {
+				init_options = {
+					maxTsServerMemory = 1024,
+					disableAutomaticTypeAcquisition = true,
+					preferences = {
+						includeInlayParameterNameHints = "none",
+						includeInlayFunctionParameterTypeHints = false,
+					},
+				},
+				settings = {
+					typescript = {
+						inlayHints = { enabled = false },
+						suggest = {
+							completeFunctionCalls = false,
+						},
+					},
+					javascript = {
+						inlayHints = { enabled = false },
+						suggest = {
+							completeFunctionCalls = false,
+						},
+					},
+				},
+			},
+			eslint = {
+				settings = {
+					run = "onSave",
+					nodePath = "",
+					workingDirectory = { mode = "location" },
+				},
+			},
+			jsonls = {
+				filetypes = { "json", "jsonc" },
+				settings = {
+					json = {
+						schemas = require("schemastore").json.schemas(),
+						validate = { enable = true },
+					},
+				},
+			},
+		}
+		-- Apply config with capabilities
+		for server, config in pairs(servers) do
+			config.capabilities = capabilities
+			vim.lsp.config(server, config)
+		end
+
 		vim.diagnostic.config({
 			virtual_text = true,
 			update_in_insert = false,
