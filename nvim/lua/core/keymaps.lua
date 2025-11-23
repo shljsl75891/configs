@@ -36,15 +36,6 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], opts)
 opts.desc = "Exit terminal mode"
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 
--- Quick find and replace
-opts.desc = "Replace all occurrences of word under cursor"
-vim.keymap.set(
-	"n",
-	"<leader>s",
-	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-	opts
-)
-
 -- Quickfix Navigation
 opts.desc = "Previous quickfix item"
 vim.keymap.set("n", "<C-Up>", "<cmd>cprev<CR>zz", opts)
