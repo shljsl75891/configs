@@ -6,7 +6,7 @@ return {
 			"theHamsta/nvim-dap-virtual-text",
 			opts = {
 				enabled = true,
-				commented = true,
+				commented = false,
 				enabled_commands = false,
 				highlight_changed_variables = false,
 				highlight_new_as_changed = false,
