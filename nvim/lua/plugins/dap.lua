@@ -44,7 +44,7 @@ return {
 				},
 			},
 			controls = {
-				enabled = false,
+				enabled = true,
 				position = "right",
 				buttons = {
 					"play",
@@ -59,8 +59,8 @@ return {
 			},
 		},
 		windows = {
-			height = 0.25,
-			position = "right",
+			height = 0.3,
+			position = "below",
 			terminal = {
 				width = 0.5,
 				position = "right",
