@@ -189,7 +189,10 @@ return {
 					case_mode = "smart_case",
 				},
 				["ui-select"] = {
-					require("telescope.themes").get_cursor({ previewer = false }),
+					require("telescope.themes").get_cursor({
+						previewer = false,
+						layout_config = { height = 15 },
+					}),
 				},
 			},
 		})
