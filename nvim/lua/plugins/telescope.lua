@@ -162,7 +162,9 @@ return {
 		{
 			"<leader>np",
 			function()
-				require("telescope.builtin").find_files({ cwd = "~/.local/share/nvim" })
+				require("telescope.builtin").find_files({
+					cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
+				})
 			end,
 			desc = "Find [N]eovim [P]lugins",
 		},
