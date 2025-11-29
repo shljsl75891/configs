@@ -51,6 +51,8 @@ return {
 				["<C-e>"] = cmp.mapping.abort(),
 				["<C-Space>"] = cmp.mapping.complete(),
 				["<CR>"] = cmp.mapping.confirm({ select = true }),
+				["<C-u>"] = cmp.mapping.scroll_docs(-5),
+				["<C-d>"] = cmp.mapping.scroll_docs(5),
 			},
 			sources = cmp.config.sources({
 				{
@@ -68,7 +70,7 @@ return {
 				{
 					name = "buffer",
 					priority = 100,
-					keyword_length = 1,
+					keyword_length = 3,
 					max_item_count = 10,
 					option = {
 						get_bufnrs = function()
