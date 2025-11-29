@@ -11,15 +11,6 @@ return {
 	config = function()
 		local cmp = require("cmp")
 
-		local icon_cache = {}
-		local function get_icon(kind)
-			if not icon_cache[kind] then
-				local icon, hl = require("mini.icons").get("lsp", kind)
-				icon_cache[kind] = { icon = icon, hl = hl }
-			end
-			return icon_cache[kind].icon, icon_cache[kind].hl
-		end
-
 		cmp.setup({
 			enabled = function()
 				return vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt"
@@ -47,7 +38,7 @@ return {
 			},
 			formatting = {
 				format = function(_, vim_item)
-					local icon, hl = get_icon(vim_item.kind)
+					local icon, hl = require("mini.icons").get("lsp", vim_item.kind)
 					vim_item.kind = icon .. " " .. vim_item.kind
 					vim_item.kind_hl_group = hl
 					return vim_item
@@ -77,7 +68,7 @@ return {
 				{
 					name = "buffer",
 					priority = 100,
-					keyword_length = 3,
+					keyword_length = 1,
 					max_item_count = 10,
 					option = {
 						get_bufnrs = function()
