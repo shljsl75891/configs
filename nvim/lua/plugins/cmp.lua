@@ -87,7 +87,7 @@ return {
 		cmp.setup.filetype({ "sql" }, {
 			sources = {
 				{ name = "vim-dadbod-completion", priority = 1000 },
-				{ name = "buffer", priority = 100, keyword_length = 3 },
+				{ name = "buffer", priority = 100, keyword_length = 1 },
 			},
 		})
 		cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
