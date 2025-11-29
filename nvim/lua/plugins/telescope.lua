@@ -127,7 +127,7 @@ return {
 				preview = {
 					filesize_limit = 10,
 					highlight_limit = 0.5,
-					timeout = 250,
+					timeout = 150,
 					treesitter = true,
 					check_mime_type = true,
 				},
@@ -162,18 +162,25 @@ return {
 					},
 					vertical = { width = 0.6, preview_width = 0.5 },
 				},
-			mappings = {
-				i = {
-					["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-					["<C-l>"] = actions.smart_send_to_loclist + actions.open_loclist,
-					["<C-j>"] = actions.cycle_history_next,
-					["<C-k>"] = actions.cycle_history_prev,
+				mappings = {
+					i = {
+						["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+						["<C-l>"] = actions.smart_send_to_loclist + actions.open_loclist,
+						["<C-j>"] = actions.cycle_history_next,
+						["<C-k>"] = actions.cycle_history_prev,
+					},
 				},
-			},
 			},
 			pickers = {
 				lsp_definitions = { fname_width = 100 },
 				lsp_references = { fname_width = 100 },
+				buffers = {
+					sort_mru = true,
+					ignore_current_buffer = true,
+					mappings = {
+						i = { ["<C-d>"] = actions.delete_buffer },
+					},
+				},
 			},
 			extensions = {
 				fzf = {
