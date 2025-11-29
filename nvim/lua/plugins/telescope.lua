@@ -152,13 +152,14 @@ return {
 				wrap_results = false,
 				dynamic_preview_title = false,
 				sorting_strategy = "ascending",
-				layout_strategy = "horizontal",
+				layout_strategy = "bottom_pane",
 				layout_config = {
 					horizontal = {
 						width = 0.85,
 						preview_width = 0.45,
 						prompt_position = "top",
 					},
+					bottom_pane = { height = 30 },
 					vertical = { width = 0.6, preview_width = 0.5 },
 				},
 				mappings = {
