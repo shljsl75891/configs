@@ -109,7 +109,7 @@ return {
 				},
 				default_section = "scopes",
 				controls = {
-					enabled = true,
+					enabled = false,
 					position = "right",
 					buttons = {
 						"play",
