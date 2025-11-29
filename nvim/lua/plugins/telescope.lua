@@ -124,7 +124,7 @@ return {
 		require("telescope").setup({
 			defaults = {
 				preview = {
-					filesize_limit = 10,
+					filesize_limit = 2,
 					highlight_limit = 0.5,
 					timeout = 150,
 					treesitter = true,
