@@ -42,26 +42,33 @@ return {
 		{
 			"<F5>",
 			function()
-				require("dap").continue()
+				require("dap").continue({ new = true })
 			end,
 			desc = "Run/Continue",
 		},
 		{
 			"<F1>",
 			function()
+				require("dap").continue()
+			end,
+			desc = "Run/Continue",
+		},
+		{
+			"<F2>",
+			function()
 				require("dap").step_over()
 			end,
 			desc = "Step Over",
 		},
 		{
-			"<F2>",
+			"<F3>",
 			function()
 				require("dap").step_into()
 			end,
 			desc = "Step Into",
 		},
 		{
-			"<F3>",
+			"<F4>",
 			function()
 				require("dap").step_out()
 			end,
