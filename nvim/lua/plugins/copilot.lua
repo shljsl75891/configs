@@ -4,6 +4,9 @@ return {
 	event = "InsertEnter",
 	opts = {
 		filetypes = { ["*"] = true },
+		should_attach = function(_, bufname)
+			return not string.match(bufname, "env")
+		end,
 		suggestion = {
 			enabled = true,
 			auto_trigger = true,
