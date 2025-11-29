@@ -6,6 +6,7 @@ return {
 		"https://codeberg.org/FelipeLema/cmp-async-path",
 		"hrsh7th/cmp-nvim-lsp",
 		"nvim-mini/mini.icons",
+		"rcarriga/cmp-dap",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -20,6 +21,10 @@ return {
 		end
 
 		cmp.setup({
+			enabled = function()
+				return vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt"
+					or require("cmp_dap").is_dap_buffer()
+			end,
 			completion = {
 				completeopt = "menu,menuone,noinsert",
 				keyword_length = 1,
@@ -90,6 +95,11 @@ return {
 			sources = {
 				{ name = "vim-dadbod-completion", priority = 1000 },
 				{ name = "buffer", priority = 100, keyword_length = 3 },
+			},
+		})
+		cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+			sources = {
+				{ name = "dap" },
 			},
 		})
 	end,
