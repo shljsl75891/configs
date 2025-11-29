@@ -24,6 +24,51 @@ return {
 			},
 		},
 	},
+	opts = {
+		winbar = {
+			sections = {
+				"scopes",
+				"console",
+				"repl",
+				"watches",
+				"breakpoints",
+				"threads",
+				"sessions",
+			},
+			default_section = "console",
+			base_sections = {
+				sessions = {
+					keymap = "D",
+					label = "DAP Sessions [D]",
+					short_label = " [D]",
+				},
+			},
+			controls = {
+				enabled = false,
+				position = "right",
+				buttons = {
+					"play",
+					"step_over",
+					"step_into",
+					"step_out",
+					"step_back",
+					"run_last",
+					"terminate",
+					"disconnect",
+				},
+			},
+		},
+		windows = {
+			height = 0.25,
+			position = "right",
+			terminal = {
+				width = 0.5,
+				position = "right",
+				start_hidden = false,
+			},
+		},
+		auto_toggle = true,
+	},
 	keys = {
 		{
 			"<leader>tb",
@@ -103,47 +148,9 @@ return {
 			desc = "Add Expression to Watches",
 		},
 	},
-	config = function()
-		require("dap-view").setup({
-			winbar = {
-				sections = {
-					"scopes",
-					"repl",
-					"watches",
-					"breakpoints",
-					"threads",
-					"sessions",
-				},
-				default_section = "scopes",
-				controls = {
-					enabled = false,
-					position = "right",
-					buttons = {
-						"play",
-						"step_over",
-						"step_into",
-						"step_out",
-						"step_back",
-						"run_last",
-						"terminate",
-						"disconnect",
-					},
-				},
-			},
-			windows = {
-				height = 0.25,
-				position = "below",
-				terminal = {
-					width = 0.5,
-					position = "right",
-					start_hidden = false,
-				},
-			},
-			auto_toggle = true,
-		})
-
+	config = function(_, opts)
+		require("dap-view").setup(opts)
 		local dap = require("dap")
-
 		dap.adapters["pwa-node"] = {
 			type = "server",
 			host = "localhost",
