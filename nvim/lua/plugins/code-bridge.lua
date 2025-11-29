@@ -1,5 +1,14 @@
 return {
 	"samir-roy/code-bridge.nvim",
+	opts = {
+		tmux = {
+			target_mode = "window_name",
+			window_name = "claude",
+			switch_to_target = true,
+			find_node_process = false,
+		},
+		interactive = { use_telescope = false },
+	},
 	keys = {
 		{
 			"<leader>ic",
@@ -40,14 +49,5 @@ return {
 			":CodeBridgeTmuxDiagnosticsErrors<CR>",
 			desc = "Send [A]ll [D]iagnostics Errors",
 		},
-	},
-	opts = {
-		tmux = {
-			target_mode = "window_name",
-			window_name = "claude",
-			switch_to_target = true,
-			find_node_process = false,
-		},
-		interactive = { use_telescope = false },
 	},
 }

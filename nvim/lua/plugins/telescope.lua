@@ -7,6 +7,84 @@ return {
 		"nvim-telescope/telescope-ui-select.nvim",
 		"nvim-telescope/telescope-node-modules.nvim",
 	},
+	opts = {
+		defaults = {
+			preview = {
+				filesize_limit = 10,
+				highlight_limit = 0.5,
+				timeout = 150,
+				treesitter = true,
+				check_mime_type = true,
+			},
+			vimgrep_arguments = {
+				"rg",
+				"--color=never",
+				"--no-heading",
+				"--with-filename",
+				"--line-number",
+				"--column",
+				"--smart-case",
+				"--trim",
+			},
+			file_ignore_patterns = {
+				"node_modules",
+				"%.git/",
+				"dist",
+				"%.angular",
+				"%.lock",
+			},
+			path_display = { "truncate" },
+			hl_result_eol = true,
+			wrap_results = false,
+			dynamic_preview_title = false,
+			sorting_strategy = "ascending",
+			layout_strategy = "bottom_pane",
+			layout_config = {
+				horizontal = {
+					width = 0.85,
+					preview_width = 0.45,
+					prompt_position = "top",
+				},
+				bottom_pane = { height = 30 },
+				vertical = { width = 0.6, preview_width = 0.5 },
+			},
+			mappings = {
+				i = {
+					["<C-q>"] = require("telescope.actions").smart_send_to_qflist
+						+ require("telescope.actions").open_qflist,
+					["<C-l>"] = require("telescope.actions").smart_send_to_loclist
+						+ require("telescope.actions").open_loclist,
+					["<C-j>"] = require("telescope.actions").cycle_history_next,
+					["<C-k>"] = require("telescope.actions").cycle_history_prev,
+				},
+			},
+		},
+		pickers = {
+			lsp_definitions = { fname_width = 100 },
+			lsp_references = { fname_width = 100 },
+			buffers = {
+				sort_mru = true,
+				ignore_current_buffer = true,
+				mappings = {
+					i = { ["<C-d>"] = require("telescope.actions").delete_buffer },
+				},
+			},
+		},
+		extensions = {
+			fzf = {
+				fuzzy = true,
+				override_generic_sorter = true,
+				override_file_sorter = true,
+				case_mode = "smart_case",
+			},
+			["ui-select"] = {
+				require("telescope.themes").get_cursor({
+					previewer = false,
+					layout_config = { height = 15 },
+				}),
+			},
+		},
+	},
 	keys = {
 		{
 			"<leader>ff",
@@ -118,86 +196,8 @@ return {
 			{ desc = "[/] Fuzzily search in current buffer" },
 		},
 	},
-	config = function()
-		local actions = require("telescope.actions")
-
-		require("telescope").setup({
-			defaults = {
-				preview = {
-					filesize_limit = 10,
-					highlight_limit = 0.5,
-					timeout = 150,
-					treesitter = true,
-					check_mime_type = true,
-				},
-				vimgrep_arguments = {
-					"rg",
-					"--color=never",
-					"--no-heading",
-					"--with-filename",
-					"--line-number",
-					"--column",
-					"--smart-case",
-					"--trim",
-				},
-				file_ignore_patterns = {
-					"node_modules",
-					"%.git/",
-					"dist",
-					"%.angular",
-					"%.lock",
-				},
-				path_display = { "truncate" },
-				hl_result_eol = true,
-				wrap_results = false,
-				dynamic_preview_title = false,
-				sorting_strategy = "ascending",
-				layout_strategy = "bottom_pane",
-				layout_config = {
-					horizontal = {
-						width = 0.85,
-						preview_width = 0.45,
-						prompt_position = "top",
-					},
-					bottom_pane = { height = 30 },
-					vertical = { width = 0.6, preview_width = 0.5 },
-				},
-				mappings = {
-					i = {
-						["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-						["<C-l>"] = actions.smart_send_to_loclist + actions.open_loclist,
-						["<C-j>"] = actions.cycle_history_next,
-						["<C-k>"] = actions.cycle_history_prev,
-					},
-				},
-			},
-			pickers = {
-				lsp_definitions = { fname_width = 100 },
-				lsp_references = { fname_width = 100 },
-				buffers = {
-					sort_mru = true,
-					ignore_current_buffer = true,
-					mappings = {
-						i = { ["<C-d>"] = actions.delete_buffer },
-					},
-				},
-			},
-			extensions = {
-				fzf = {
-					fuzzy = true,
-					override_generic_sorter = true,
-					override_file_sorter = true,
-					case_mode = "smart_case",
-				},
-				["ui-select"] = {
-					require("telescope.themes").get_cursor({
-						previewer = false,
-						layout_config = { height = 15 },
-					}),
-				},
-			},
-		})
-
+	config = function(_, opts)
+		require("telescope").setup(opts)
 		require("telescope").load_extension("fzf")
 		require("telescope").load_extension("ui-select")
 		require("telescope").load_extension("node_modules")
