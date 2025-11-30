@@ -48,15 +48,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		opts.desc = "Get Information of variable/function"
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		opts.desc = "[G]o to [D]efintion of identifier"
-		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "gd", function()
+			require("mini.extra").pickers.lsp({ scope = "definition" })
+		end, opts)
 		opts.desc = "Find [D]ocument [S]ymbols"
-		vim.keymap.set("n", "<leader>ds", vim.lsp.buf.document_symbol, opts)
+		vim.keymap.set("n", "<leader>ds", function()
+			require("mini.extra").pickers.lsp({ scope = "document_symbol" })
+		end, opts)
 		opts.desc = "[G]o to [T]ype Defintion of identifier"
-		vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "gt", function()
+			require("mini.extra").pickers.lsp({ scope = "type_definition" })
+		end, opts)
 		opts.desc = "[G]o to [I]mplementation of function"
-		vim.keymap.set("n", "gI", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "gI", function()
+			require("mini.extra").pickers.lsp({ scope = "implementation" })
+		end, opts)
 		opts.desc = "[G]o to All [R]eferences of identifier"
-		vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
+		vim.keymap.set("n", "<leader>rr", function()
+			require("mini.extra").pickers.lsp({ scope = "references" })
+		end, opts)
 		opts.desc = "LSP Signature [H]elp"
 		vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 		opts.desc = "[R]e[N]ame Symbol"
