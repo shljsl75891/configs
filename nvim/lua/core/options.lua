@@ -22,7 +22,7 @@ local localOptions = {
 	relativenumber = true,
 	numberwidth = 4,
 	-- Better searching highlights
-	hlsearch = false,
+	hlsearch = true,
 	incsearch = true,
 	ignorecase = true,
 	smartcase = true,

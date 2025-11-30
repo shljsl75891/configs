@@ -4,6 +4,9 @@ local opts = { noremap = true, silent = true }
 opts.desc = "Open Oil plugin"
 vim.keymap.set("n", "-", vim.cmd.Oil)
 
+opts.desc = "Clear search highlighting"
+vim.keymap.set("n", "<Esc>", vim.cmd.nohlsearch, opts)
+
 -- Keeps screen centered
 opts.desc = "Scroll down and center screen"
 vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
