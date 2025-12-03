@@ -44,11 +44,18 @@ return {
 			use_cache = true,
 		},
 		window = {
-			config = {
-				height = 25,
-				width = 150,
-				border = vim.o.winborder,
-			},
+			config = function()
+				local height = math.floor(0.5 * vim.o.lines)
+				local width = math.floor(0.6 * vim.o.columns)
+				return {
+					anchor = "NW",
+					height = height,
+					width = width,
+					row = math.floor(0.5 * (vim.o.lines - height)),
+					col = math.floor(0.5 * (vim.o.columns - width)),
+					border = vim.o.winborder,
+				}
+			end,
 			prompt_caret = "█",
 			prompt_prefix = "",
 		},
