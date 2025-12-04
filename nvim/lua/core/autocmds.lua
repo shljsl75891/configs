@@ -38,6 +38,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		local client = vim.lsp.get_clients({ bufnr = ev.buf })[1]
 
+		--- Jumps directly for single LSP result, shows picker for multiple
+		--- @param options vim.lsp.LocationOpts.OnList
+		--- @param picker_scope string Scope to pass to mini.extra picker
+		local function lsp_goto_or_pick(options, picker_scope)
+			if #options.items == 1 then
+				vim.lsp.util.show_document(
+					options.items[1].user_data,
+					client.offset_encoding
+				)
+			else
+				require("mini.extra").pickers.lsp({ scope = picker_scope })
+			end
+		end
+
 		if client then
 			client.server_capabilities.semanticTokensProvider = nil
 			client.server_capabilities.documentFormattingProvider = false
@@ -49,7 +63,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		opts.desc = "[G]o to [D]efintion of identifier"
 		vim.keymap.set("n", "gd", function()
-			require("mini.extra").pickers.lsp({ scope = "definition" })
+			vim.lsp.buf.definition({
+				on_list = function(options)
+					lsp_goto_or_pick(options, "definition")
+				end,
+			})
 		end, opts)
 		opts.desc = "Find [D]ocument [S]ymbols"
 		vim.keymap.set("n", "<leader>ds", function()
@@ -57,15 +75,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, opts)
 		opts.desc = "[G]o to [T]ype Defintion of identifier"
 		vim.keymap.set("n", "gt", function()
-			require("mini.extra").pickers.lsp({ scope = "type_definition" })
+			vim.lsp.buf.type_definition({
+				on_list = function(options)
+					lsp_goto_or_pick(options, "type_definition")
+				end,
+			})
 		end, opts)
 		opts.desc = "[G]o to [I]mplementation of function"
 		vim.keymap.set("n", "gI", function()
-			require("mini.extra").pickers.lsp({ scope = "implementation" })
+			vim.lsp.buf.implementation({
+				on_list = function(options)
+					lsp_goto_or_pick(options, "implementation")
+				end,
+			})
 		end, opts)
 		opts.desc = "[G]o to All [R]eferences of identifier"
 		vim.keymap.set("n", "<leader>rr", function()
-			require("mini.extra").pickers.lsp({ scope = "references" })
+			vim.lsp.buf.references(nil, {
+				on_list = function(options)
+					lsp_goto_or_pick(options, "references")
+				end,
+			})
 		end, opts)
 		opts.desc = "LSP Signature [H]elp"
 		vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
