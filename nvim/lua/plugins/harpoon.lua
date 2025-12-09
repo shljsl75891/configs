@@ -82,7 +82,14 @@ return {
 			LIST_CHANGE = update_statusline,
 			NAVIGATE = update_statusline,
 		})
-
+		vim.api.nvim_create_autocmd("BufEnter", {
+			group = vim.api.nvim_create_augroup(
+				"HarpoonStatusline",
+				{ clear = true }
+			),
+			callback = update_statusline,
+			desc = "Update Harpoon statusline on buffer change",
+		})
 		harpoon:extend(extensions.builtins.highlight_current_file())
 
 		harpoon:setup({
