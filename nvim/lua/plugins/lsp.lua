@@ -71,10 +71,9 @@ return {
 				},
 			},
 			eslint = {
+				useFlatConfig = false,
 				settings = {
-					run = "onSave",
-					nodePath = "",
-					workingDirectory = { mode = "location" },
+					useFlatConfig = false,
 				},
 			},
 			jsonls = {
