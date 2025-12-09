@@ -46,13 +46,14 @@ return {
 		local function build_statusline()
 			local list = harpoon:list()
 			local tabs = {}
-			local current_file = vim.fn.expand("%:t")
+			local current_path = vim.fn.expand("%:p")
 
 			for i = 1, list:length() do
 				local item = list:get(i)
 				if item then
 					local filename = vim.fn.fnamemodify(item.value, ":t")
-					local is_active = (filename == current_file)
+					local full_path = vim.fn.fnamemodify(item.value, ":p")
+					local is_active = (full_path == current_path)
 					local hl = is_active and "%#MiniStatuslineModeOther#"
 						or "%#StatusLine#"
 					table.insert(
