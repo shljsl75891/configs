@@ -20,6 +20,7 @@ return {
 				completeopt = "menu,menuone,noinsert",
 				keyword_length = 1,
 			},
+			view = { entries = "native" },
 			performance = {
 				debounce = 150,
 				throttle = 60,
