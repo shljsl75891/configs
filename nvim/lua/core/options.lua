@@ -65,6 +65,11 @@ local localOptions = {
 	statusline = "%=" .. vim.g.statusline_right,
 	-- winbar shows file info
 	winbar = "%#GruvboxYellowBold# %f %m%r",
+	-- treesitter folding
+	foldmethod = "expr",
+	foldcolumn = "auto",
+	foldexpr = "v:lua.vim.treesitter.foldexpr()",
+	foldlevelstart = 99,
 }
 
 for k, v in pairs(localOptions) do
