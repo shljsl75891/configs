@@ -48,7 +48,7 @@ return {
 		local servers = {
 			ts_ls = {
 				init_options = {
-					maxTsServerMemory = 1024,
+					maxTsServerMemory = 2560,
 					disableAutomaticTypeAcquisition = true,
 					preferences = {
 						includeInlayParameterNameHints = "none",
