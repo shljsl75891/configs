@@ -47,6 +47,7 @@ return {
 
 		local servers = {
 			ts_ls = {
+				flags = { debounce_text_changes = 150 },
 				init_options = {
 					maxTsServerMemory = 2560,
 					disableAutomaticTypeAcquisition = true,
