@@ -55,7 +55,7 @@ return {
 				MiniPickNormal = { link = "Pmenu" },
 				MiniPickHeader = { link = "Title" },
 				MiniPickMatchCurrent = { link = "Visual" },
-				MiniPickMatchMarked = { bg = palette.neutral_purple },
+				MiniPickMatchMarked = { bg = palette.dark_green_soft },
 				MiniPickMatchRanges = { link = "FloatTitle" },
 				MiniPickPreviewLine = { link = "CursorLine" },
 				MiniPickPreviewRegion = { link = "PmenuThumb" },
