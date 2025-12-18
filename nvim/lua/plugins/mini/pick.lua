@@ -79,6 +79,13 @@ return {
 			desc = "Mini Pick find [I]gnored [F]iles",
 		},
 		{
+			"<leader>fb",
+			function()
+				require("mini.pick").builtin.buffers({ include_current = false })
+			end,
+			desc = "Mini Pick [F]ind [I]gnored [F]iles",
+		},
+		{
 			"<leader>np",
 			function()
 				require("mini.pick").builtin.files({}, {
