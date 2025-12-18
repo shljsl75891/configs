@@ -1,8 +1,12 @@
 local opts = { noremap = true, silent = true }
 
 -- Open NetRW plugin
-opts.desc = "Open Oil plugin"
-vim.keymap.set("n", "-", vim.cmd.Oil)
+opts.desc = "Open NetRW plugin"
+vim.keymap.set("n", "-", function()
+	local file_name = vim.fn.expand("%:t")
+	vim.cmd.Ex()
+	vim.fn.search(file_name)
+end)
 
 opts.desc = "Clear search highlighting"
 vim.keymap.set("n", "<Esc>", vim.cmd.nohlsearch, opts)
