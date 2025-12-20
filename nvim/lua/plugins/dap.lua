@@ -2,6 +2,7 @@ return {
 	"igorlfs/nvim-dap-view",
 	dependencies = {
 		"https://codeberg.org/mfussenegger/nvim-dap.git",
+		"nvim-mini/mini.pick",
 		{
 			"theHamsta/nvim-dap-virtual-text",
 			opts = {
