@@ -2,7 +2,7 @@ return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
 	dependencies = { "nvim-lua/plenary.nvim" },
-	event = { "BufReadPre", "BufNewFile" },
+	event = "VeryLazy",
 	keys = function()
 		local mappings = {
 			{
