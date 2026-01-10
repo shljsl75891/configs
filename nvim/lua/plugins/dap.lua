@@ -60,11 +60,11 @@ return {
 			},
 		},
 		windows = {
-			height = 0.3,
-			position = "below",
+			size = 0.4,
+			position = "right",
 			terminal = {
-				width = 0.5,
-				position = "right",
+				size = 0.4,
+				position = "below",
 				start_hidden = false,
 			},
 		},
