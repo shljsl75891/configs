@@ -2,13 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "theme": "gruvbox",
   "autoupdate": true,
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-2",
-      },
-    },
-  },
   "tui": {
     "scroll_acceleration": {
       "enabled": true,
@@ -21,7 +14,7 @@
     "Ref": {
       "type": "local",
       "command": ["bunx", "ref-tools-mcp@latest"],
-      "enabled": true,
+      "enabled": false,
       "environment": {
         "REF_API_KEY": "{env:REF_API_KEY}",
       },
