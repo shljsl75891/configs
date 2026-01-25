@@ -29,19 +29,18 @@ return {
 		winbar = {
 			sections = {
 				"scopes",
-				"console",
 				"repl",
 				"watches",
 				"breakpoints",
 				"threads",
 				"sessions",
 			},
-			default_section = "console",
+			default_section = "scopes",
+			show_keymap_hints = false,
 			base_sections = {
 				sessions = {
 					keymap = "D",
-					label = "DAP Sessions [D]",
-					short_label = " [D]",
+					label = "DAP Sessions",
 				},
 			},
 			controls = {
@@ -65,10 +64,9 @@ return {
 			terminal = {
 				size = 0.4,
 				position = "below",
-				start_hidden = false,
 			},
 		},
-		auto_toggle = true,
+		auto_toggle = "keep_terminal",
 	},
 	keys = {
 		{
