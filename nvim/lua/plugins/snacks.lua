@@ -1,6 +1,28 @@
 return {
 	"folke/snacks.nvim",
 	event = "VimEnter",
+	opts = {
+		bigfile = { enabled = true },
+		image = { enabled = true },
+		rename = { enabled = true },
+		picker = {
+			layout = { preset = "ivy" },
+			win = {
+				input = {
+					keys = {
+						["<C-q>"] = { "qflist", mode = { "i", "n" } },
+						["<C-x>"] = { "bufdelete", mode = { "i", "n" } },
+						["<C-l>"] = { "loclist", mode = { "i", "n" } },
+						["<C-j>"] = { "history_forward", mode = { "i", "n" } },
+						["<C-k>"] = { "history_back", mode = { "i", "n" } },
+						["<C-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
+						["<C-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
+					},
+				},
+			},
+			formatters = { file = { filename_first = true, truncate = "left" } },
+		},
+	},
 	keys = {
 		{
 			"<leader>ff",
@@ -75,25 +97,6 @@ return {
 				require("snacks").picker.lines({ layout = { preset = "select" } })
 			end,
 			desc = "[/] Fuzzily search in current buffer",
-		},
-	},
-	opts = {
-		bigfile = { enabled = true },
-		picker = {
-			layout = { preset = "ivy" },
-			win = {
-				input = {
-					keys = {
-						["<C-q>"] = { "qflist", mode = { "i", "n" } },
-						["<C-l>"] = { "loclist", mode = { "i", "n" } },
-						["<C-j>"] = { "history_forward", mode = { "i", "n" } },
-						["<C-k>"] = { "history_back", mode = { "i", "n" } },
-						["<C-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
-						["<C-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
-					},
-				},
-			},
-			formatters = { file = { filename_first = true, truncate = "left" } },
 		},
 	},
 }
