@@ -3,7 +3,7 @@ return {
 	cmd = "Copilot",
 	event = "InsertEnter",
 	opts = {
-		filetypes = { ["*"] = true, help = false },
+		filetypes = { ["*"] = true, help = false, ["snacks_picker_input"] = false },
 		should_attach = function(_, bufname)
 			return not string.match(bufname, "env")
 		end,
