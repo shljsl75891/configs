@@ -2,6 +2,7 @@ return {
 	"tpope/vim-fugitive",
 	lazy = false,
 	cmd = { "G", "Git" },
+	dependencies = "tpope/vim-rhubarb",
 	keys = {
 		{ "<leader>gs", "<cmd>vertical G<CR>", desc = "Show [G]it [S]tatus" },
 		{
