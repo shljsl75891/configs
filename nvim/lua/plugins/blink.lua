@@ -2,10 +2,7 @@ return {
 	"saghen/blink.cmp",
 	version = "1.*",
 	event = "InsertEnter",
-	dependencies = {
-		"nvim-mini/mini.icons",
-		"mayromr/blink-cmp-dap",
-	},
+	dependencies = { "nvim-mini/mini.icons", "mayromr/blink-cmp-dap" },
 	opts = {
 		enabled = function()
 			return vim.bo.buftype ~= "prompt" or vim.bo.filetype == "dap-repl"
@@ -74,6 +71,7 @@ return {
 				},
 			},
 		},
+		appearance = { nerd_font_variant = "normal" },
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 			per_filetype = {

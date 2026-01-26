@@ -7,9 +7,11 @@ return {
 		rename = { enabled = true },
 		picker = {
 			layout = { preset = "ivy" },
+			matcher = { frecency = true, cwd_bonus = true, sort_empty = true },
 			win = {
 				input = {
 					keys = {
+						["<ESC>"] = { "close", mode = { "i", "n" } },
 						["<C-q>"] = { "qflist", mode = { "i", "n" } },
 						["<C-x>"] = { "bufdelete", mode = { "i", "n" } },
 						["<C-l>"] = { "loclist", mode = { "i", "n" } },
