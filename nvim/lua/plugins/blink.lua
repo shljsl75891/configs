@@ -17,7 +17,7 @@ return {
 			["<C-u>"] = { "scroll_documentation_up", "fallback" },
 			["<C-d>"] = { "scroll_documentation_down", "fallback" },
 		},
-		signature = { enabled = true },
+		signature = { enabled = false },
 		completion = {
 			trigger = {
 				show_on_keyword = true,
