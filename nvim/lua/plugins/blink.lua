@@ -82,15 +82,8 @@ return {
 			},
 			providers = {
 				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-				buffer = {
-					opts = {
-						get_bufnrs = function()
-							return vim.tbl_filter(function(bufnr)
-								return vim.bo[bufnr].buftype == ""
-							end, vim.api.nvim_list_bufs())
-						end,
-					},
-				},
+				-- If buffer source should be available even if `lsp` source is active
+				-- lsp = { fallbacks = {"buffer"} },
 			},
 		},
 		fuzzy = { implementation = "prefer_rust_with_warning" },
