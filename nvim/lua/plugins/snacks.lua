@@ -6,7 +6,31 @@ return {
 		image = { enabled = true },
 		rename = { enabled = true },
 		picker = {
-			layout = { preset = "ivy" },
+			prompt = " ",
+			layout = {
+				preset = "ivy",
+				layout = {
+					box = "vertical",
+					backdrop = false,
+					row = -1,
+					width = 0,
+					height = 0.4,
+					border = vim.o.winborder,
+					title = " {title} {live} {flags}",
+					title_pos = "center",
+					{ win = "input", height = 1, border = "none" },
+					{
+						box = "horizontal",
+						{ win = "list", border = "top" },
+						{
+							win = "preview",
+							title = "{preview}",
+							width = 0.5,
+							border = "top",
+						},
+					},
+				},
+			},
 			matcher = { frecency = true, cwd_bonus = true, sort_empty = true },
 			win = {
 				input = {
@@ -43,14 +67,14 @@ return {
 			function()
 				require("snacks").picker.buffers()
 			end,
-			desc = "[F]ind Telescope [B]uffers",
+			desc = "[F]ind Snacks [B]uffers",
 		},
 		{
 			"<leader>fm",
 			function()
 				require("snacks").picker.pickers()
 			end,
-			desc = "[F]ind Telescope [B]uiltins",
+			desc = "[F]ind Snacks [B]uiltins",
 		},
 		{
 			"<leader>lg",
