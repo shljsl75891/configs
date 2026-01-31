@@ -71,6 +71,54 @@ return {
 				SnacksPickerListBorder = { bg = palette.dark0, fg = palette.dark0 },
 				SnacksPickerTitle = { bg = palette.dark0, fg = palette.dark0 },
 				SnacksPickerMatch = { fg = palette.bright_aqua, bold = true },
+				-- MiniStatusline mode highlights (bright background, dark foreground)
+				MiniStatuslineModeNormal = {
+					bg = palette.bright_blue,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				MiniStatuslineModeInsert = {
+					bg = palette.bright_green,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				MiniStatuslineModeVisual = {
+					bg = palette.bright_orange,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				MiniStatuslineModeReplace = {
+					bg = palette.bright_red,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				MiniStatuslineModeCommand = {
+					bg = palette.bright_yellow,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				MiniStatuslineModeOther = {
+					bg = palette.bright_purple,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				-- MiniStatusline other highlights
+				-- Git branch with bright background, dark foreground
+				MiniStatuslineDevinfo = {
+					bg = palette.bright_yellow,
+					fg = palette.dark0_hard,
+					bold = true,
+				},
+				-- Filetype: no background, just colored text
+				MiniStatuslineFileinfo = { bg = "NONE", fg = palette.light4 },
+				MiniStatuslineInactive = { bg = "NONE", fg = palette.dark4 },
+				-- Harpoon-specific highlights (no background)
+				HarpoonStatuslineActive = {
+					bg = "NONE",
+					fg = palette.bright_purple,
+					bold = true,
+				},
+				HarpoonStatuslineInactive = { bg = "NONE", fg = palette.light2 },
 			},
 			transparent_mode = true,
 		})

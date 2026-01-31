@@ -6,8 +6,6 @@ local globalOptions = {
 	netrw_banner = 0,
 	netrw_browse_split = 0,
 	netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu",
-	-- Store statusline right side format for reuse
-	statusline_right = "%#MiniStatuslineModeCommand# %{FugitiveStatusline()} %#StatusLine# %y ",
 }
 
 for k, v in pairs(globalOptions) do
@@ -61,8 +59,6 @@ local localOptions = {
 	winborder = "solid",
 	-- global single status line
 	laststatus = 3,
-	-- default statusline (overridden when Harpoon loads)
-	statusline = "%=" .. vim.g.statusline_right,
 	-- winbar shows file info
 	winbar = "%#GruvboxYellowBold# %f %m%r",
 	-- treesitter folding
@@ -70,6 +66,8 @@ local localOptions = {
 	foldcolumn = "auto",
 	foldexpr = "v:lua.vim.treesitter.foldexpr()",
 	foldlevelstart = 99,
+	-- mode is shown in statusline already
+	showmode = false,
 }
 
 for k, v in pairs(localOptions) do
