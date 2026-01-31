@@ -110,7 +110,7 @@ return {
 					bold = true,
 				},
 				-- Filetype: no background, just colored text
-				MiniStatuslineFileinfo = { bg = "NONE", fg = palette.light4 },
+				MiniStatuslineFileinfo = { bg = "NONE", fg = palette.light2 },
 				MiniStatuslineInactive = { bg = "NONE", fg = palette.dark4 },
 				-- Harpoon-specific highlights (no background)
 				HarpoonStatuslineActive = {
