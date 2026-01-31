@@ -7,30 +7,52 @@ return {
 		rename = { enabled = true },
 		picker = {
 			prompt = " ",
-			layout = {
-				preset = "ivy",
-				layout = {
-					box = "vertical",
-					backdrop = false,
-					row = -1,
-					width = 0,
-					height = 0.4,
-					border = vim.o.winborder,
-					title = " {title} {live} {flags}",
-					title_pos = "center",
-					{ win = "input", height = 1, border = "none" },
-					{
-						box = "horizontal",
-						{ win = "list", border = "top" },
+			layouts = {
+				select = {
+					layout = {
+						backdrop = false,
+						width = 0.5,
+						min_width = 80,
+						max_width = 100,
+						height = 0.4,
+						min_height = 2,
+						box = "vertical",
+						border = "bottom",
+						title = "",
+						{ win = "input", height = 1, border = vim.o.winborder },
+						{ win = "list", border = "none" },
 						{
 							win = "preview",
 							title = "{preview}",
-							width = 0.5,
-							border = "top",
+							height = 0.4,
+							border = "none",
+						},
+					},
+				},
+				ivy = {
+					layout = {
+						box = "vertical",
+						backdrop = false,
+						row = -1,
+						width = 0,
+						height = 0.45,
+						border = "bottom",
+						title = "{live} {flags}",
+						{ win = "input", height = 1, border = vim.o.winborder },
+						{
+							box = "horizontal",
+							{ win = "list", border = "none" },
+							{
+								win = "preview",
+								title = "{preview}",
+								width = 0.5,
+								border = "none",
+							},
 						},
 					},
 				},
 			},
+			layout = { preset = "ivy" },
 			matcher = { frecency = true, cwd_bonus = true, sort_empty = true },
 			win = {
 				input = {
@@ -120,7 +142,9 @@ return {
 		{
 			"<leader>/",
 			function()
-				require("snacks").picker.lines({ layout = { preset = "select" } })
+				require("snacks").picker.lines({
+					layout = { preset = "select" },
+				})
 			end,
 			desc = "[/] Fuzzily search in current buffer",
 		},

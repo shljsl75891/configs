@@ -57,7 +57,10 @@ return {
 					bg = palette.dark0_hard,
 					fg = palette.light2,
 				},
-				SnacksPickerInputBorder = { bg = palette.dark0, fg = palette.dark0 },
+				SnacksPickerInputBorder = {
+					bg = palette.dark0_hard,
+					fg = palette.dark0_hard,
+				},
 				SnacksPickerInputTitle = { bg = palette.dark0, fg = palette.dark0 },
 				SnacksPickerPreview = { bg = palette.dark0, fg = palette.light4 },
 				SnacksPickerPreviewNormal = { bg = palette.dark0, fg = palette.light4 },
