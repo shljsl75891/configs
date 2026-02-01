@@ -7,6 +7,14 @@ return {
 		rename = { enabled = true },
 		picker = {
 			prompt = " ",
+			on_change = function(picker, item)
+				if item and item.file then
+					vim.schedule(function()
+						picker.preview.title = item.file
+						picker:update_titles()
+					end)
+				end
+			end,
 			layouts = {
 				select = {
 					layout = {
@@ -45,8 +53,9 @@ return {
 							{
 								win = "preview",
 								title = "{preview}",
-								width = 0.5,
-								border = "none",
+								width = 0.6,
+								border = "top",
+								title_pos = "left",
 							},
 						},
 					},

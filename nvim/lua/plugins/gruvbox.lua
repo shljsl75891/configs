@@ -65,7 +65,11 @@ return {
 				SnacksPickerPreview = { bg = palette.dark0, fg = palette.light4 },
 				SnacksPickerPreviewNormal = { bg = palette.dark0, fg = palette.light4 },
 				SnacksPickerPreviewBorder = { bg = palette.dark0, fg = palette.dark0 },
-				SnacksPickerPreviewTitle = { bg = palette.dark0, fg = palette.dark0 },
+				SnacksPickerPreviewTitle = {
+					bg = palette.dark0,
+					fg = palette.neutral_yellow,
+					bold = true,
+				},
 				SnacksPickerList = { bg = palette.dark0, fg = palette.light2 },
 				SnacksPickerListNormal = { bg = palette.dark0, fg = palette.light2 },
 				SnacksPickerListBorder = { bg = palette.dark0, fg = palette.dark0 },
