@@ -7,7 +7,7 @@ cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor,no-sudo,title
 
-background-opacity = 0.9
+background-opacity = 0.8
 background-blur = true
 
 macos-titlebar-style = hidden
