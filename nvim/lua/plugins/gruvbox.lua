@@ -109,7 +109,7 @@ return {
 				-- MiniStatusline other highlights
 				-- Git branch with bright background, dark foreground
 				MiniStatuslineDevinfo = {
-					bg = palette.bright_yellow,
+					bg = palette.bright_purple,
 					fg = palette.dark0_hard,
 					bold = true,
 				},
