@@ -12,30 +12,27 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup(
-	{
-		{ import = "plugins" },
-		{ "prichrd/netrw.nvim", event = "VimEnter", opts = {} },
-	},
-	{
-		defaults = { lazy = true },
-		install = { colorscheme = { "gruvbox" } },
-		checker = { enabled = true, notify = false },
-		change_detection = { notify = false },
-		performance = {
-			rtp = {
-				-- disable some rtp plugins
-				disabled_plugins = {
-					"gzip",
-					-- "matchit",
-					-- "matchparen",
-					-- "netrwPlugin",
-					"tarPlugin",
-					"tohtml",
-					"tutor",
-					"zipPlugin",
-				},
+require("lazy").setup({
+	{ import = "plugins" },
+	{ "prichrd/netrw.nvim", event = "VimEnter", opts = {} },
+}, {
+	defaults = { lazy = true },
+	install = { colorscheme = { "gruvbox" } },
+	checker = { enabled = true, notify = false },
+	change_detection = { notify = false },
+	performance = {
+		rtp = {
+			-- disable some rtp plugins
+			disabled_plugins = {
+				"gzip",
+				-- "matchit",
+				-- "matchparen",
+				-- "netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
 			},
 		},
-	}
-)
+	},
+})
