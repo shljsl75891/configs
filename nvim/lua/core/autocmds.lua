@@ -40,7 +40,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local client = vim.lsp.get_clients({ bufnr = ev.buf })[1]
 
 		if client then
-			client.server_capabilities.semanticTokensProvider = nil
 			client.server_capabilities.documentFormattingProvider = false
 			client.server_capabilities.documentRangeFormattingProvider = false
 		end

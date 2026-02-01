@@ -38,6 +38,7 @@ return {
 				didChangeWatchedFiles = { dynamicRegistration = false },
 			},
 			textDocument = {
+				semanticTokens = vim.NIL,
 				completion = {
 					completionItem = {
 						snippetSupport = true,
