@@ -29,13 +29,14 @@ return {
 		winbar = {
 			sections = {
 				"scopes",
-				"repl",
+				"console",
 				"watches",
+				"repl",
 				"breakpoints",
 				"threads",
 				"sessions",
 			},
-			default_section = "scopes",
+			default_section = "console",
 			show_keymap_hints = false,
 			base_sections = {
 				sessions = {
@@ -66,7 +67,7 @@ return {
 				position = "below",
 			},
 		},
-		auto_toggle = "keep_terminal",
+		auto_toggle = true,
 	},
 	keys = {
 		{

@@ -82,6 +82,7 @@ return {
 			},
 			providers = {
 				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+				dap = { name = "DAP", module = "blink-cmp-dap" },
 				-- If buffer source should be available even if `lsp` source is active
 				-- lsp = { fallbacks = {"buffer"} },
 			},
