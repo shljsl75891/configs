@@ -1,6 +1,7 @@
 return {
 	"folke/snacks.nvim",
-	event = "VimEnter",
+	lazy = false,
+	priority = 1000,
 	opts = {
 		bigfile = { enabled = true, notify = false },
 		image = { enabled = true },
