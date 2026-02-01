@@ -38,6 +38,7 @@ return {
 				"xml",
 				"jsonc",
 				"sql",
+				"regex",
 				"bash",
 			},
 			auto_install = true,
