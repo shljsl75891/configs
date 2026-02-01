@@ -5,6 +5,7 @@ return {
 		bigfile = { enabled = true, notify = false },
 		image = { enabled = true },
 		rename = { enabled = true },
+		quickfile = { enabled = true },
 		indent = {
 			indent = { enabled = false },
 			scope = { enabled = true, char = "", hl = "SnacksIndentScope" },
