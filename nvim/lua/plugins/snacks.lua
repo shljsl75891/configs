@@ -77,7 +77,10 @@ return {
 					},
 				},
 			},
-			formatters = { file = { filename_first = true, truncate = "left" } },
+			formatters = {
+				file = { filename_first = true, truncate = "left" },
+				selected = { show_always = true, unselected = false },
+			},
 		},
 	},
 	keys = {
