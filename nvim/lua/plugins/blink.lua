@@ -83,6 +83,7 @@ return {
 			providers = {
 				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 				dap = { name = "DAP", module = "blink-cmp-dap" },
+				path = { opts = { show_hidden_files_by_default = true } },
 				-- If buffer source should be available even if `lsp` source is active
 				-- lsp = { fallbacks = {"buffer"} },
 			},
