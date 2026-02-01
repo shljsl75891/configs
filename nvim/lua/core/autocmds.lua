@@ -68,8 +68,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>rr", function()
 			snacks.picker.lsp_references()
 		end, opts)
-		opts.desc = "LSP Signature [H]elp"
-		vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 		opts.desc = "[R]e[N]ame Symbol"
 		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 		opts.desc = "List suggested [C]ode [A]ctions"
