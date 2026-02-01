@@ -123,6 +123,7 @@ return {
 					bold = true,
 				},
 				HarpoonStatuslineInactive = { bg = "NONE", fg = palette.light2 },
+				SnacksIndentScope = { fg = palette.faded_yellow },
 			},
 			transparent_mode = true,
 		})

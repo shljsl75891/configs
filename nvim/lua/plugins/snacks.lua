@@ -2,9 +2,14 @@ return {
 	"folke/snacks.nvim",
 	event = "VimEnter",
 	opts = {
-		bigfile = { enabled = true },
+		bigfile = { enabled = true, notify = false },
 		image = { enabled = true },
 		rename = { enabled = true },
+		indent = {
+			indent = { enabled = false },
+			scope = { enabled = true, char = "", hl = "SnacksIndentScope" },
+			animate = { enabled = false },
+		},
 		picker = {
 			prompt = " ",
 			on_change = function(picker, item)
