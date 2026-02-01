@@ -1,6 +1,6 @@
 return {
 	"tpope/vim-fugitive",
-	lazy = false,
+	event = "VeryLazy",
 	cmd = { "G", "Git" },
 	dependencies = "tpope/vim-rhubarb",
 	keys = {

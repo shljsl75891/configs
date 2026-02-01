@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.statusline",
-	lazy = false,
 	version = "*",
+	event = "VeryLazy",
 	dependencies = { "ThePrimeagen/harpoon" },
 	config = function()
 		local statusline = require("mini.statusline")
