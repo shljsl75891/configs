@@ -74,6 +74,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Diagnostics APIs
 		opts.desc = "Get information about [D][I]agnostics"
 		vim.keymap.set("n", "<leader>di", vim.diagnostic.open_float, opts)
+		opts.desc = "Show LSP signature help"
+		vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 		opts.desc = "Go to next [D]iagnostics in the current file"
 		vim.keymap.set("n", "[d", function()
 			vim.diagnostic.jump({ count = -1, float = true })

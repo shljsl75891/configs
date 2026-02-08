@@ -16,9 +16,8 @@ return {
 			["<CR>"] = { "accept", "fallback" },
 			["<C-u>"] = { "scroll_documentation_up", "fallback" },
 			["<C-d>"] = { "scroll_documentation_down", "fallback" },
-			["<C-h>"] = { "show_signature", "hide_signature", "fallback" },
 		},
-		signature = { enabled = true, window = { show_documentation = false } },
+		signature = { enabled = false, window = { show_documentation = false } },
 		completion = {
 			accept = { auto_brackets = { enabled = false } },
 			trigger = {
