@@ -2,6 +2,7 @@ return {
 	"kristijanhusak/vim-dadbod-ui",
 	dependencies = {
 		"tpope/vim-dadbod",
+		"tpope/vim-dotenv",
 		{
 			"kristijanhusak/vim-dadbod-completion",
 			ft = { "sql", "mysql", "plsql" },

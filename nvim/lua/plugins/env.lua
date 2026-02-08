@@ -1,6 +1,6 @@
 return {
 	"tpope/vim-dotenv",
-	lazy = false,
+	ft = { "sh" },
 	dependencies = {
 		{
 			"laytan/cloak.nvim",

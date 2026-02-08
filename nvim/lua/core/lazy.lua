@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{ import = "plugins" },
-	{ "prichrd/netrw.nvim", event = "VimEnter", opts = {} },
+	{ "prichrd/netrw.nvim", event = "VeryLazy", opts = {} },
 }, {
 	defaults = { lazy = true },
 	install = { colorscheme = { "gruvbox" } },
