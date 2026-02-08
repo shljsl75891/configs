@@ -1,7 +1,7 @@
 return {
 	"folke/snacks.nvim",
 	lazy = false,
-	priority = 1000,
+	priority = 800,
 	opts = {
 		bigfile = { enabled = true, notify = false },
 		image = { enabled = true },
@@ -9,7 +9,7 @@ return {
 		quickfile = { enabled = true },
 		indent = {
 			indent = { enabled = false },
-			scope = { enabled = true, char = "", hl = "SnacksIndentScope" },
+			scope = { enabled = true, char = "┊", hl = "SnacksIndentScope" },
 			animate = { enabled = false },
 		},
 		picker = {
