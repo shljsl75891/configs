@@ -1,7 +1,7 @@
 ---
 description: Use this agent when the user needs comprehensive research, information gathering, or analysis that requires synthesizing information from multiple sources. Always use this agent for deep web research tasks.
 mode: subagent
-model: github-copilot/claude-opus-4.5
+model: opencode/kimi-k2.5-free
 temperature: 1.0
 tools:
   write: false

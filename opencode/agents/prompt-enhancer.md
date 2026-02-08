@@ -1,7 +1,7 @@
 ---
 description: Use this agent when designing, refining, or optimizing prompts for LLMs and AI systems. Always use this prompt when asked to create or improve prompts for any purpose.
 mode: subagent
-model: github-copilot/claude-sonnet-4.5
+model: opencode/minimax-m2.1-free
 temperature: 0.4
 tools:
   write: false
