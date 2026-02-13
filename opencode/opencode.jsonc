@@ -7,8 +7,8 @@
       "enabled": true,
     },
   },
-  "model": "zai-coding-plan/glm-4.7",
-  "small_model": "zai-coding-plan/glm-4.5-air",
+  "model": "zai-coding-plan/glm-5",
+  "small_model": "github-copilot/gpt-5-mini",
   "permission": "allow",
   "mcp": {
     "Ref": {
