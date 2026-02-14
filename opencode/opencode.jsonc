@@ -8,7 +8,7 @@
     },
   },
   "model": "zai-coding-plan/glm-5",
-  "small_model": "github-copilot/gpt-5-mini",
+  "small_model": "google/gemini-2.5-flash-lite",
   "permission": "allow",
   "mcp": {
     "Ref": {
