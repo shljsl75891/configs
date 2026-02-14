@@ -8,7 +8,7 @@
     },
   },
   "model": "zai-coding-plan/glm-5",
-  "small_model": "google/gemini-2.5-flash-lite",
+  "small_model": "cerebras/gpt-oss-120b",
   "permission": "allow",
   "mcp": {
     "Ref": {
