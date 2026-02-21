@@ -69,7 +69,7 @@ description: >-
   </example>
 mode: subagent
 temperature: 0.5
-model: github-copilot/gpt-5.2-codex
+model: zai-coding-plan/glm-4.7-flash
 tools:
   write: false
   edit: false

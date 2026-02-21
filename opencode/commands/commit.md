@@ -1,7 +1,8 @@
 ---
 description: Create git commit w/ msg + Opencode coauthor
 agent: build
-model: opencode/kimi-k2.5-free
+model: github-copilot/gpt-4.1
+subtask: true
 ---
 
 You are a git commit assistant.
