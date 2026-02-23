@@ -41,7 +41,7 @@ return {
 			if mode ~= "" then
 				table.insert(
 					parts,
-					string.format("%%#%s# %s %%#StatusLine#", mode_hl, mode)
+					string.format("%%#%s# %s %%#StatusLine#", mode_hl, mode:upper())
 				)
 			end
 
@@ -58,7 +58,10 @@ return {
 			if branch ~= "" then
 				table.insert(
 					parts,
-					string.format("%%#MiniStatuslineDevinfo# %s %%#StatusLine#", branch)
+					string.format(
+						"%%#MiniStatuslineDevinfo#  %s %%#StatusLine#",
+						branch
+					)
 				)
 			end
 
