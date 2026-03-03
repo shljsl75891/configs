@@ -3,13 +3,17 @@ return {
 	event = "VeryLazy",
 	opts = {
 		lazy_load = true,
-		user_default_options = {
-			names = false,
-			RGB = false,
-			RGBA = false,
-			RRGGBB = true,
-			RRGGBBAA = false,
-			AARRGGBB = false,
+		options = {
+			parsers = {
+				names = { enable = false },
+				hex = {
+					rgb = false,
+					rgba = false,
+					rrggbb = true,
+					rrggbbaa = false,
+					aarrggbb = false,
+				},
+			},
 		},
 	},
 }
