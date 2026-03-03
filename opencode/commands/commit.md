@@ -18,5 +18,6 @@ Task:
 Notes:
 
 - Pick the most accurate <type> (feat, fix, chore, docs, refactor, test, ci, perf, build, style, revert).
+- Additional instruction by user: $ARGUMENTS
 - The commit message should according to staged changes only.
 - Keep the message concise and action-oriented.
