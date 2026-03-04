@@ -13,7 +13,7 @@ Task:
 2. If it exists, follow it to format the commit message.
 3. If it does not exist, use the format: <type>: <message>.
 4. Always include a Co-authored-by line for opencode in the commit message.
-5. Return the final commit message, then run: git commit --no-verify -m "<message>" -m "Co-authored-by: opencode <opencode@anomaly.co>".
+5. Return the final commit message, then run: git commit --no-verify -m "<message>" -m "Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>".
 
 Notes:
 
