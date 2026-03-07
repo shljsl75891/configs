@@ -19,6 +19,7 @@ return {
 					"tailwindcss",
 					"cssls",
 					"dockerfile-language-server",
+					"gopls",
 					-- Formatters
 					"prettierd",
 					"stylua",
