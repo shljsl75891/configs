@@ -37,13 +37,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local opts = { buffer = ev.buf, noremap = true, silent = true }
 		local snacks = require("snacks")
 
-		local client = vim.lsp.get_clients({ bufnr = ev.buf })[1]
-
-		if client then
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
-		end
-
 		-- Lsp APIs
 		opts.desc = "Get Information of variable/function"
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
