@@ -46,12 +46,12 @@ return {
 		-- Diagnostics
 		{
 			"<leader>cd",
-			":CodeBridgeTmuxDiagnosticsErrors<CR>",
+			":CodeBridgeTmuxDiagnostics<CR>",
 			desc = "Send [C]urrent Buffer [D]iagnostics Errors",
 			silent = true,
 		},
 		{
-			"<leader>ad",
+			"<leader>ce",
 			":CodeBridgeTmuxDiagnosticsErrors<CR>",
 			desc = "Send [A]ll [D]iagnostics Errors",
 			silent = true,
