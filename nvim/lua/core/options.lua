@@ -68,6 +68,8 @@ local localOptions = {
 	foldlevelstart = 99,
 	-- mode is shown in statusline already
 	showmode = false,
+	-- treesitter indentation
+	indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()",
 }
 
 for k, v in pairs(localOptions) do
