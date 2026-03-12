@@ -85,8 +85,16 @@ return {
 				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 				dap = { name = "DAP", module = "blink-cmp-dap" },
 				path = { opts = { show_hidden_files_by_default = true } },
-				-- If buffer source should be available even if `lsp` source is active
-				-- lsp = { fallbacks = {"buffer"} },
+				lsp = {
+					-- If buffer source should be available even if `lsp` source is active
+					-- fallbacks = { "buffer" },
+					transform_items = function(_, items)
+						for _, item in ipairs(items) do
+							item.additionalTextEdits = nil
+						end
+						return items
+					end,
+				},
 			},
 		},
 		fuzzy = { implementation = "prefer_rust_with_warning" },
