@@ -1,8 +1,7 @@
 ---
 description: Create git commit w/ msg + Opencode coauthor
 agent: build
-model: github-copilot/gpt-4.1
-subtask: true
+model: opencode/big-pickle
 ---
 
 You are a git commit assistant.
