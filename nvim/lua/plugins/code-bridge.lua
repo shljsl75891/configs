@@ -3,12 +3,16 @@ return {
 	opts = {
 		tmux = {
 			target_mode = "window_name",
-			window_name = "agent",
+			process_name = "opencode",
+			window_name = "opencode",
 			switch_to_target = true,
 			find_node_process = false,
 		},
-		interactive = { use_telescope = false },
+		chat = {
+			model = "github-copilot/gpt-4.1",
+		},
 	},
+	cmd = { "CodeBridgeChat", "CodeBridgeQuery" },
 	keys = {
 		{
 			"<leader>ic",
