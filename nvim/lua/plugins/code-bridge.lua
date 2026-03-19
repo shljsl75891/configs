@@ -12,7 +12,6 @@ return {
 			model = "github-copilot/gpt-4.1",
 		},
 	},
-	cmd = { "CodeBridgeChat", "CodeBridgeQuery" },
 	keys = {
 		{
 			"<leader>ic",
@@ -59,6 +58,42 @@ return {
 			":CodeBridgeTmuxDiagnosticsErrors<CR>",
 			desc = "Send [A]ll [D]iagnostics Errors",
 			silent = true,
+		},
+		-- Chat buffer interaction
+		{
+			"<leader>tc",
+			":CodeBridgeChat<CR>",
+			mode = { "n" },
+			silent = true,
+			desc = "[T]emporary [C]chat",
+		},
+		{
+			"<leader>tq",
+			":CodeBridgeQuery<CR>",
+			mode = { "n", "v" },
+			silent = true,
+			desc = "[T]emporary [Q]uery with context",
+		},
+		{
+			"<leader>ht",
+			":CodeBridgeHide<CR>",
+			mode = { "n" },
+			silent = true,
+			desc = "[H]ide [T]emporary Chat Buffer",
+		},
+		{
+			"<leader>st",
+			":CodeBridgeShow<CR>",
+			mode = { "n" },
+			silent = true,
+			desc = "[S]how [T]emporary Chat Buffer",
+		},
+		{
+			"<leader>cq",
+			":CodeBridgeCancelQuery<CR>",
+			mode = { "n" },
+			silent = true,
+			desc = "[C]ancel [Q]uery",
 		},
 	},
 }
