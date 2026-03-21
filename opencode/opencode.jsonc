@@ -4,6 +4,49 @@
   "model": "zai-coding-plan/glm-5",
   "small_model": "opencode/mimo-v2-flash-free",
   "permission": "allow",
+  "provider": {
+    "ollama": {
+      "models": {
+        "glm-5:cloud": {
+          "_launch": true,
+          "limit": {
+            "context": 202752,
+            "output": 131072,
+          },
+          "name": "glm-5:cloud",
+        },
+        "kimi-k2.5:cloud": {
+          "_launch": true,
+          "limit": {
+            "context": 262144,
+            "output": 262144,
+          },
+          "name": "kimi-k2.5:cloud",
+        },
+        "minimax-m2.5:cloud": {
+          "_launch": true,
+          "limit": {
+            "context": 204800,
+            "output": 128000,
+          },
+          "name": "minimax-m2.5:cloud",
+        },
+        "qwen3.5:cloud": {
+          "_launch": true,
+          "limit": {
+            "context": 262144,
+            "output": 32768,
+          },
+          "name": "qwen3.5:cloud",
+        },
+      },
+      "name": "Ollama",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1",
+      },
+    },
+  },
   "mcp": {
     "Ref": {
       "type": "local",
