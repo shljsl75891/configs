@@ -9,7 +9,7 @@ return {
 			find_node_process = false,
 		},
 		chat = {
-			model = "github-copilot/gpt-4.1",
+			model = "ollama/kimi-k2.5:cloud",
 		},
 	},
 	keys = {
