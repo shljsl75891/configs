@@ -2,7 +2,7 @@
 description: Transform raw or unclear requirements into concise, optimized prompts. Specializes in reducing hallucination and maximizing prompt clarity.
 mode: subagent
 temperature: 0.5
-model: zai-coding-plan/glm-4.7-flash
+model: zai-coding-plan/glm-5-turbo
 tools:
   write: false
   edit: false
