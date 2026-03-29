@@ -167,5 +167,14 @@ return {
 			end,
 			desc = "[/] Fuzzily search in current buffer",
 		},
+		{
+			"<leader>sg",
+			function()
+				require("snacks").picker.spelling({
+					layout = { preset = "select" },
+				})
+			end,
+			desc = "[S]pell [G]uggestions",
+		},
 	},
 }
