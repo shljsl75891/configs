@@ -1,5 +1,5 @@
 ---
-description: Two-phase TDD specialist. Phase 1 (called during planning): discovers edge cases and produces test spec. Phase 2 (called after implementation): writes actual tests and verifies. Uses Kimi K2.5 for broad coverage, escalates to Sonnet for complex scenarios.
+description: Two-phase TDD specialist. Phase 1 (called during planning) discovers edge cases and produces test spec. Phase 2 (called after implementation) writes actual tests and verifies.
 mode: subagent
 model: ollama/kimi-k2.5:cloud
 temperature: 0.3
