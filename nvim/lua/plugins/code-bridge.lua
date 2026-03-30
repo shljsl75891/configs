@@ -9,7 +9,7 @@ return {
 			find_node_process = false,
 		},
 		chat = {
-			model = "ollama/kimi-k2.5:cloud",
+			model = "zai-coding-plan/glm-5-turbo",
 		},
 	},
 	keys = {
