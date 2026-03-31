@@ -4,11 +4,7 @@
   "model": "zai-coding-plan/glm-5.1",
   "small_model": "openrouter/openai/gpt-oss-20b",
   "permission": "allow",
-  "agent": {
-    "explore": {
-      "model": "zai-coding-plan/glm-5",
-    },
-  },
+  "agent": { "explore": { "model": "zai-coding-plan/glm-5.1" } },
   "provider": {
     "ollama": {
       "models": {
