@@ -113,7 +113,7 @@ return {
 			},
 		})
 
-		vim.lsp.set_log_level("error")
+		vim.lsp.log.set_level("error")
 
 		-- Enable all installed servers
 		local installed_servers = require("mason-lspconfig").get_installed_servers()
