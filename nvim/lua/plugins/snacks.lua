@@ -153,7 +153,7 @@ return {
 			function()
 				local search_string = vim.fn.input("Grep string > ")
 				if search_string ~= "" then
-					require("snacks").picker.grep_word({ search = search_string })
+					require("snacks").picker.grep({ search = search_string })
 				end
 			end,
 			desc = "[F]ind [S]pecific [S]tring",
