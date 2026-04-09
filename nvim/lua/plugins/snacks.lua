@@ -14,8 +14,9 @@ return {
 		},
 		picker = {
 			prompt = " ",
+			show_delay = 0,
 			on_change = function(picker, item)
-				if item and item.file then
+				if item and item.file and picker.preview.title ~= item.file then
 					vim.schedule(function()
 						picker.preview.title = item.file
 						picker:update_titles()
@@ -69,7 +70,7 @@ return {
 				},
 			},
 			layout = { preset = "ivy" },
-			matcher = { frecency = true, cwd_bonus = true, sort_empty = true },
+			matcher = { frecency = true, cwd_bonus = true },
 			win = {
 				input = {
 					keys = {
@@ -94,8 +95,8 @@ return {
 		{
 			"<leader>ff",
 			function()
-				vim.fn.system("git rev-parse --is-inside-work-tree")
-				if vim.v.shell_error == 0 then
+				local git_dir = vim.fn.finddir(".git", vim.fn.getcwd() .. ";")
+				if git_dir ~= "" then
 					require("snacks").picker.git_files()
 				else
 					require("snacks").picker.files()
