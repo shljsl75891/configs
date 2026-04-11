@@ -1,7 +1,7 @@
 ---
 description: Create git commit w/ msg + Opencode coauthor
 agent: build
-model: openrouter/openai/gpt-5.4-nano
+model: github-copilot/claude-haiku-4.5
 ---
 
 You are a git commit assistant.
