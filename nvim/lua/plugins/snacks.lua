@@ -14,7 +14,6 @@ return {
 		},
 		picker = {
 			prompt = " ",
-			show_delay = 0,
 			on_change = function(picker, item)
 				if item and item.file and picker.preview.title ~= item.file then
 					vim.schedule(function()
