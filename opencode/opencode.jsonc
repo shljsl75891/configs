@@ -4,7 +4,7 @@
   "model": "zai-coding-plan/glm-5.1",
   "small_model": "openrouter/openai/gpt-oss-20b",
   "permission": "allow",
-  "agent": { "explore": { "model": "zai-coding-plan/glm-5.1" } },
+  "agent": { "explore": { "model": "opencode-go/kimi-k2.5" } },
   "provider": {
     "ollama": {
       "models": {
@@ -40,6 +40,7 @@
       },
     },
   },
+  "compaction": { "auto": false, "prune": true, "reserved": 8000 },
   "mcp": {
     "Ref": {
       "type": "local",
