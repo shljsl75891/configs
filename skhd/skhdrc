@@ -21,6 +21,6 @@ alt - m : yabai -m window --toggle zoom-parent;
 
 # Launch programs
 alt - return : open -a Ghostty
-alt - b : open -na "Thorium" --args --profile-directory="Profile 1"
-alt + shift - b : open -na "Thorium" --args --profile-directory="Default"
-alt - e : open -a "Finder"ktb9rac7DJE9jqt.myz
+alt + shift - b : open -na "Brave Browser" --args --profile-directory="Default"
+alt - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
+alt - e : open -a "Finder"
