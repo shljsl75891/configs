@@ -24,6 +24,8 @@ function Move_lines_up_visual()
 	end
 end
 
+vim.cmd.packadd("nvim.difftool")
+
 require("options")
 require("statusline")
 require("keymaps")
