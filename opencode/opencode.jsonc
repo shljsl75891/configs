@@ -2,9 +2,9 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "model": "zai-coding-plan/glm-5.1",
-  "small_model": "openrouter/openai/gpt-oss-20b",
+  "small_model": "openrouter/openai/gpt-oss-120b",
   "permission": "allow",
-  "agent": { "explore": { "model": "opencode-go/kimi-k2.5" } },
+  "agent": { "explore": { "model": "zai-coding-plan/glm-5-turbo" } },
   "provider": {
     "ollama": {
       "models": {
