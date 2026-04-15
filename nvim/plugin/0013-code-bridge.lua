@@ -3,8 +3,8 @@ vim.pack.add({ "https://github.com/samir-roy/code-bridge.nvim" })
 require("code-bridge").setup({
 	tmux = {
 		target_mode = "window_name",
-		process_name = "opencode",
-		window_name = "opencode",
+		process_name = "agent",
+		window_name = "agent",
 		switch_to_target = true,
 		find_node_process = false,
 	},
