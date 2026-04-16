@@ -1,12 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "model": "zai-coding-plan/glm-5.1",
+  "model": "zai-coding-plan/glm-4.7",
   "small_model": "openrouter/openai/gpt-oss-120b",
   "permission": "allow",
   "formatter": false,
   "lsp": false,
-  "agent": { "explore": { "model": "zai-coding-plan/glm-5-turbo" } },
+  "agent": { "explore": { "model": "zai-coding-plan/glm-4.7-flash" } },
   "provider": {
     "ollama": {
       "models": {

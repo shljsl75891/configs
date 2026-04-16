@@ -9,7 +9,7 @@ require("code-bridge").setup({
 		find_node_process = false,
 	},
 	chat = {
-		model = "zai-coding-plan/glm-5-turbo",
+		model = "zai-coding-plan/glm-4.7-flash",
 	},
 })
 
