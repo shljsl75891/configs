@@ -3,13 +3,13 @@ vim.pack.add({ "https://github.com/samir-roy/code-bridge.nvim" })
 require("code-bridge").setup({
 	tmux = {
 		target_mode = "window_name",
-		process_name = "agent",
-		window_name = "agent",
+		process_name = "opencode",
+		window_name = "opencode",
 		switch_to_target = true,
 		find_node_process = false,
 	},
 	chat = {
-		model = "zai-coding-plan/glm-4.7-flash",
+		model = "github-copilot/claude-haiku-4.5",
 	},
 })
 
