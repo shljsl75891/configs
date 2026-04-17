@@ -91,3 +91,6 @@ export PATH=/Users/sahil.jassal/.opencode/bin:$PATH
 
 # neovim as manpager
 export MANPAGER="nvim +Man!"
+
+# bun completions
+[ -s "/Users/sahil.jassal/.bun/_bun" ] && source "/Users/sahil.jassal/.bun/_bun"
