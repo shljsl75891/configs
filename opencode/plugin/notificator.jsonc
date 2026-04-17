@@ -1,0 +1,28 @@
+{
+  // Notificator Plugin Configuration
+  
+  // Enable/disable the entire plugin
+  "enabled": true,
+  
+  // Desktop notification settings
+  "showDesktopNotification": {
+    // Enable/disable desktop notifications
+    "enabled": true
+  },
+  
+  // Sound notification settings
+  "playSound": {
+    // Enable/disable sound notifications
+    "enabled": true,
+    
+    // Option 1: Explicit sound file
+    // Sound file to play: ding1.mp3, ding2.mp3, ..., ding6.mp3
+    // "file": "ding1.mp3",
+    
+    // Option 2: Auto-pick based on project (recommended)
+    // Uses a hash of project path + seed to pick a consistent sound per project.
+    // This way each project gets its own unique ding without manual config.
+    // The seed can be any value - change it to get a different sound assignment.
+    "fileSeed": 0
+  }
+}
