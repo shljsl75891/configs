@@ -6,7 +6,11 @@
   "permission": "allow",
   "formatter": false,
   "lsp": false,
-  "agent": { "explore": { "model": "opencode-go/glm-5.1" } },
+  "agent": {
+    "build": { "enable1mContext": true },
+    "plan": { "enable1mContext": true },
+    "explore": { "model": "opencode-go/glm-5.1" },
+  },
   "plugin": ["opencode-claude-auth@latest"],
   "provider": {
     "ollama": {
