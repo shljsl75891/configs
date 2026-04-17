@@ -7,6 +7,11 @@
   "formatter": false,
   "lsp": false,
   "agent": {
+    "compaction": {
+      "model": "github-copilot/gpt-5.3-codex",
+      "variant": "xhigh",
+      "temperature": 0.2,
+    },
     "build": { "enable1mContext": true },
     "plan": { "enable1mContext": true },
     "explore": { "model": "opencode-go/glm-5.1" },
