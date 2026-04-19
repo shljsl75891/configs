@@ -24,9 +24,14 @@ function Move_lines_up_visual()
 	end
 end
 
-vim.cmd.packadd("nvim.difftool")
 
-require("options")
-require("statusline")
-require("keymaps")
-require("autocmds")
+-- Options must load before lazy so leader is set when keys= specs are processed
+require("core.options")
+require("core.lazy")
+require("core.statusline")
+require("core.keymaps")
+require("core.autocmds")
+
+-- packadd after lazy so its lua/ dir is found when vim.loader rescans rtp
+vim.cmd.packadd("nvim.difftool")
+vim.cmd.packadd("nvim.undotree")

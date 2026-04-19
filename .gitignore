@@ -2,5 +2,4 @@
 .env
 mpv/watch_later/
 qt5ct.conf
-lazy-lock.json
 obsidian/workspace.json

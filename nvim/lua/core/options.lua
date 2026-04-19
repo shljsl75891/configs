@@ -50,5 +50,8 @@ vim.opt.pumheight = 25
 vim.opt.compatible = false
 -- border = "single", "rounded", "shadow", "double", "none", "solid"
 vim.opt.winborder = "solid"
--- treesitter indentation
-vim.opt.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+-- Folding (treesitter expr set when plugin loads; start fully open)
+vim.opt.foldmethod = "expr"
+vim.opt.foldcolumn = "auto"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevelstart = 99

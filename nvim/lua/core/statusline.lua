@@ -20,8 +20,10 @@ end
 
 -- global single status line
 vim.opt.laststatus = 3
-vim.opt.statusline = "%{%v:lua._G.mode_label()%}%=%#MiniStatuslineDevinfo# %{FugitiveStatusline()} %#StatusLine# %y"
+vim.opt.statusline =
+	"%{%v:lua._G.mode_label()%}%=%#MiniStatuslineDevinfo# %{FugitiveStatusline()} %#StatusLine# %y"
 -- winbar: path + modified + diagnostics + flags (all with same bg)
-vim.opt.winbar = "%#GruvboxYellowBold# %f %m %{%v:lua.vim.diagnostic.status()%} %r"
+vim.opt.winbar =
+	"%#GruvboxYellowBold# %f %m %{%v:lua.vim.diagnostic.status()%} %r"
 -- mode is shown in statusline already
 vim.opt.showmode = false

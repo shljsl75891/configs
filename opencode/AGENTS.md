@@ -21,4 +21,4 @@
 
 ## Plan End
 
-List unresolved questions at the end of each plan.
+Ask all unresolved questions at the end of each plan using `question` tool.

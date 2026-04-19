@@ -71,3 +71,7 @@ vim.keymap.set("n", "<S-h>", vim.cmd.tabprev, opts)
 opts.desc = nil
 vim.keymap.set("n", "<F1>", ":echo<CR>", opts)
 vim.keymap.set("i", "<F1>", "<C-o>:echo<CR>", opts)
+
+-- Undo tree toggle (local pack loaded in init.lua)
+opts.desc = "[U]ndo Tree [T]oggle"
+vim.keymap.set("n", "<leader>ut", vim.cmd.Undotree, opts)
