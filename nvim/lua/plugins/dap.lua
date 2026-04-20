@@ -149,6 +149,20 @@ return {
 				end
 			end
 
+			-- Focus Ghostty + correct tmux pane when debugger hits a breakpoint
+			dap.listeners.after.event_stopped["focus-ghostty"] = function()
+				vim.fn.jobstart({
+					"osascript",
+					"-e",
+					'tell application "Ghostty" to activate',
+				})
+				local pane = vim.env.TMUX_PANE
+				if pane then
+					vim.fn.jobstart({ "tmux", "select-pane", "-t", pane })
+					vim.fn.jobstart({ "tmux", "switch-client", "-t", pane })
+				end
+			end
+
 			dap.adapters["pwa-node"] = {
 				type = "server",
 				host = "localhost",
