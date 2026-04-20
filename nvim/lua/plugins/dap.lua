@@ -158,7 +158,17 @@ return {
 					max_retries = 3,
 					disconnect_timeout_sec = 5,
 				},
+				enrich_config = function(config, on_config)
+					local c = vim.deepcopy(config)
+					-- js-debug requires type="pwa-node"; remap "node" from launch.json
+					c.type = "pwa-node"
+					c.console = c.console or "integratedTerminal"
+					on_config(c)
+				end,
 			}
+
+			-- Alias "node" → pwa-node adapter so launch.json with type:"node" works
+			dap.adapters["node"] = dap.adapters["pwa-node"]
 
 			local node_configs = {
 				{
