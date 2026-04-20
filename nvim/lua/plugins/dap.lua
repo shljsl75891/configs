@@ -137,10 +137,17 @@ return {
 						position = "below",
 					},
 				},
-				auto_toggle = true,
+				auto_toggle = false,
 			})
 
 			local dap = require("dap")
+
+			-- Auto-open view on session start, but never auto-close on terminate/fail
+			for _, event in ipairs({ "launch", "attach" }) do
+				dap.listeners.before[event]["dap-view-open"] = function()
+					require("dap-view").open()
+				end
+			end
 
 			dap.adapters["pwa-node"] = {
 				type = "server",
