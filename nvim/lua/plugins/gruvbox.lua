@@ -126,6 +126,8 @@ return {
 				DiagnosticError = { fg = palette.bright_red, bold = true },
 				DiagnosticInfo = { fg = palette.bright_blue, bold = true },
 				DiagnosticHint = { fg = palette.bright_aqua, bold = true },
+				NvimDapViewVirtualText = { fg = palette.light3 },
+				NvimDapViewVirtualTextUpdated = { fg = palette.bright_yellow, bold = true },
 			},
 			transparent_mode = true,
 		})
