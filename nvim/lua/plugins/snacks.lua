@@ -152,9 +152,14 @@ return {
 			{
 				"<leader>fs",
 				function()
-					local search_string = vim.fn.input("Grep string > ")
-					if search_string ~= "" then
-						require("snacks").picker.grep({ search = search_string })
+					local input = vim.fn.input("Grep string [file_pattern] > ")
+					if input ~= "" then
+						local search, glob = input:match("^(.-) +(.+)$")
+						if search then
+							require("snacks").picker.grep({ search = search, glob = glob, live = false })
+						else
+							require("snacks").picker.grep({ search = input, live = false })
+						end
 					end
 				end,
 				desc = "[F]ind [S]pecific [S]tring",
