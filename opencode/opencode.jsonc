@@ -8,8 +8,7 @@
   "lsp": false,
   "agent": {
     "compaction": {
-      "model": "github-copilot/gpt-5.3-codex",
-      "variant": "xhigh",
+      "model": "zai-coding-plan/glm-5.1",
       "temperature": 0.2,
     },
     "build": { "enable1mContext": true },
