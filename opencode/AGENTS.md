@@ -15,6 +15,14 @@
 - Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
 - Use parallel subagents for small tasks and the main context for complex tasks.
 
+## Commits
+
+Always include a co-author trailer in every commit:
+
+```
+Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>
+```
+
 ## Plan End
 
 Remember to ask all unresolved questions at the end of each plan using the `question` tool.
