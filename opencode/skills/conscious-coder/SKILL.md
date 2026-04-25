@@ -28,6 +28,7 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 - Do not improve adjacent code, comments, or formatting
 - Do not refactor what is not broken; match existing style
 - Do not introduce breaking changes without explicit user approval
+- Do not use type casting, type assertions, or type-suppression keywords (e.g. `as`, `!`, `any`, `@ts-ignore`) without explicit user approval
 - If you notice unrelated dead code, mention it — do not delete it unless asked
 - Remove imports, variables, or functions made unused by your changes
 
