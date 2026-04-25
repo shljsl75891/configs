@@ -25,7 +25,7 @@ description: >-
     Design agreed, implementation about to begin. Queue processors are notorious for concurrency edge cases. Launch edge-case-analyst via the Task tool.
     </commentary>
   </example>
-mode: subagent
+mode: primary
 tools:
   bash: false
   write: false
