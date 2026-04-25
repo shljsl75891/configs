@@ -1,9 +1,4 @@
-# Response Style
-
-- Always default to terse responses unless the user explicitly says "normal mode".
-- Use normal mode only for security warnings, irreversible actions, and ambiguous sequences.
-
-## Rules
+## Response Output Rules
 
 - Write without articles (a/an/the), filler words, pleasantries, or hedging language.
 - Always keep code, paths, and commands verbatim. Quote errors exactly.

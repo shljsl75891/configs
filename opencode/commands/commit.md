@@ -19,7 +19,7 @@ Task:
 Notes:
 
 - Pick the most accurate <type> (feat, fix, chore, docs, refactor, test, ci, perf, build, style, revert).
-- Pick the most accurate <scope> (e.g. first parent directory name) based on the changes.
+- Pick the most accurate <scope> (e.g. top-level directory relative to repo root) based on the changes.
 - Additional instruction by user: $ARGUMENTS
 - The commit message should according to staged changes only.
 - Keep the message concise and action-oriented.
