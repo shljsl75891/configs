@@ -14,6 +14,9 @@ return {
 				animate = { enabled = false },
 			},
 			picker = {
+				sources = {
+					spelling = { layout = { preset = "select" } },
+				},
 				prompt = " ",
 				on_change = function(picker, item)
 					if item and item.file and picker.preview.title ~= item.file then
@@ -152,11 +155,15 @@ return {
 			{
 				"<leader>fs",
 				function()
-				local input = vim.fn.input("Grep string  [file_pattern] > ")
-				if input ~= "" then
-					local search, glob = input:match("^(.-)  (.+)$")
+					local input = vim.fn.input("Grep string  [file_pattern] > ")
+					if input ~= "" then
+						local search, glob = input:match("^(.-)  (.+)$")
 						if search then
-							require("snacks").picker.grep({ search = search, glob = glob, live = false })
+							require("snacks").picker.grep({
+								search = search,
+								glob = glob,
+								live = false,
+							})
 						else
 							require("snacks").picker.grep({ search = input, live = false })
 						end
@@ -172,6 +179,13 @@ return {
 					})
 				end,
 				desc = "[/] Fuzzily search in current buffer",
+			},
+			{
+				"]s",
+				function()
+					require("snacks").picker.spelling()
+				end,
+				desc = "Spelling suggestions",
 			},
 		},
 	},
