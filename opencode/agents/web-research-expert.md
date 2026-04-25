@@ -3,6 +3,7 @@ description: Use this agent when the user needs comprehensive research, informat
 mode: subagent
 model: github-copilot/claude-opus-4.6
 temperature: 1.0
+color: "#fb4934"
 tools:
   write: false
   edit: false

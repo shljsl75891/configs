@@ -3,6 +3,7 @@ description: Transform raw or unclear requirements into concise, optimized promp
 mode: subagent
 temperature: 0.5
 model: opencode-go/kimi-k2.6
+color: "#fe8019"
 tools:
   write: false
   edit: false
