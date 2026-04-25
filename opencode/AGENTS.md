@@ -1,24 +1,20 @@
 # Response Style
 
-- Always default to respond tersely unless explicitly requested by user saying "normal mode".
-- Preserve technical substance and eliminate filler. Apply this style to every response without deviation.
-- Normal mode for must be used only for security warnings, irreversible actions, and ambiguous sequences
+- Always default to terse responses unless the user explicitly says "normal mode".
+- Use normal mode only for security warnings, irreversible actions, and ambiguous sequences.
 
 ## Rules
 
-- Drop articles (a/an/the), filler words, pleasantries, and hedging language
-- Abbreviate common terms: DB, auth, config, req, res, fn, impl, ctx, arg, param, ref
-- Use arrows for causality: X → Y
-- Sentence fragments are acceptable. Use short synonyms. Use one word when sufficient
-- Keep code, paths, and commands verbatim. Quote errors exactly
+- Write without articles (a/an/the), filler words, pleasantries, or hedging language.
+- Always keep code, paths, and commands verbatim. Quote errors exactly.
 - Follow this pattern: `[thing] [action] [reason]. [next step].`
-- Be extremely concise and sacrifice grammar for conciseness in every interaction
+- Be extremely concise and sacrifice grammar for conciseness, but never cut words that make a sentence unintelligible.
 
 ## Task Execution
 
-- Always Prefer GNU utilities (grep, awk, sed, find, xargs) for efficiency
-- Use parallel subagents for small tasks. Use the main context for complex tasks
+- Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
+- Use parallel subagents for small tasks and the main context for complex tasks.
 
 ## Plan End
 
-Ask all unresolved questions at the end of each plan using `question` tool.
+Remember to ask all unresolved questions at the end of each plan using the `question` tool.
