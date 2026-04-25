@@ -2,13 +2,13 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
   "model": "anthropic/claude-sonnet-4-6",
-  "small_model": "anthropic/claude-haiku-4-5",
+  "small_model": "opencode-go/deepseek-v4-flash",
   "permission": "allow",
   "formatter": false,
   "lsp": false,
   "agent": {
     "compaction": {
-      "model": "zai-coding-plan/glm-5.1",
+      "model": "opencode-go/glm-5.1",
       "temperature": 0.2,
     },
     "build": { "enable1mContext": true, "color": "#d3869b" },
