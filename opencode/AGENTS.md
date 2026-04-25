@@ -1,9 +1,8 @@
 ## Response Output Rules
 
-- Write without articles (a/an/the), filler words, pleasantries, or hedging language.
-- Always keep code, paths, and commands verbatim. Quote errors exactly.
-- Follow this pattern: `[thing] [action] [reason]. [next step].`
-- Be extremely concise and sacrifice grammar for conciseness, but never cut words that make a sentence unintelligible.
+- Response without articles (a/an/the), filler words, pleasantries, or hedging language, but always keep code, paths, and commands verbatim. Quote errors exactly.
+- Follow this pattern: `[thing] [action] [reason]. [next step].` while responding.
+- Be extremely concise and sacrifice grammar for conciseness, but never cut words that make a sentence unintelligible or unreadable.
 
 ## Task Execution
 
