@@ -35,10 +35,6 @@ return {
 				CmpItemAbbrMatchFuzzy = { link = "CmpItemAbbrMatch" },
 				NormalFloat = { bg = palette.dark0_soft },
 				FloatBorder = { link = "NormalFloat" },
-				HarpoonNumberActive = { link = "CursorLineNr" },
-				HarpoonActive = { link = "CursorLineNr" },
-				HarpoonNumberInactive = { bg = nil },
-				HarpoonInactive = { bg = nil },
 				TabLineFill = { link = "Normal" },
 				MiniNotifyNormal = {
 					fg = palette.neutral_aqua,
@@ -118,13 +114,6 @@ return {
 				-- Filetype: no background, just colored text
 				MiniStatuslineFileinfo = { bg = "NONE", fg = palette.light2 },
 				MiniStatuslineInactive = { bg = "NONE", fg = palette.dark4 },
-				-- Harpoon-specific highlights (no background)
-				HarpoonStatuslineActive = {
-					bg = "NONE",
-					fg = palette.bright_purple,
-					bold = true,
-				},
-				HarpoonStatuslineInactive = { bg = "NONE", fg = palette.light2 },
 				SnacksIndentScope = { fg = palette.faded_yellow },
 				DiagnosticWarn = { fg = palette.bright_yellow, bold = true },
 				DiagnosticError = { fg = palette.bright_red, bold = true },
