@@ -40,7 +40,11 @@ return {
 				HarpoonNumberInactive = { bg = nil },
 				HarpoonInactive = { bg = nil },
 				TabLineFill = { link = "Normal" },
-				MiniNotifyNormal = { fg = palette.light2, italic = true },
+				MiniNotifyNormal = {
+					fg = palette.neutral_aqua,
+					bold = true,
+					italic = true,
+				},
 				MiniCursorword = { bg = palette.dark2, underline = false },
 				MiniCursorwordCurrent = { link = "MiniCursorword" },
 				SnacksPickerBorder = { bg = palette.dark0, fg = palette.dark0 },
@@ -127,7 +131,10 @@ return {
 				DiagnosticInfo = { fg = palette.bright_blue, bold = true },
 				DiagnosticHint = { fg = palette.bright_aqua, bold = true },
 				NvimDapViewVirtualText = { fg = palette.light3 },
-				NvimDapViewVirtualTextUpdated = { fg = palette.bright_yellow, bold = true },
+				NvimDapViewVirtualTextUpdated = {
+					fg = palette.bright_yellow,
+					bold = true,
+				},
 			},
 			transparent_mode = true,
 		})
