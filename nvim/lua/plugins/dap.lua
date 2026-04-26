@@ -137,20 +137,7 @@ return {
 							label = "DAP Sessions",
 						},
 					},
-					controls = {
-						enabled = true,
-						position = "right",
-						buttons = {
-							"play",
-							"step_over",
-							"step_into",
-							"step_out",
-							"step_back",
-							"run_last",
-							"terminate",
-							"disconnect",
-						},
-					},
+					controls = { enabled = false },
 				},
 				windows = {
 					size = 0.3,
