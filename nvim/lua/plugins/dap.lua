@@ -123,14 +123,13 @@ return {
 				winbar = {
 					sections = {
 						"scopes",
-						"console",
 						"watches",
 						"repl",
 						"breakpoints",
 						"threads",
 						"sessions",
 					},
-					default_section = "console",
+					default_section = "scopes",
 					show_keymap_hints = false,
 					base_sections = {
 						sessions = {
@@ -154,7 +153,7 @@ return {
 					},
 				},
 				windows = {
-					size = 0.4,
+					size = 0.3,
 					position = "right",
 					terminal = {
 						size = 0.4,
@@ -167,9 +166,16 @@ return {
 			local dap = require("dap")
 
 			-- Auto-open view on session start, but never auto-close on terminate/fail
+			-- Skip open() if terminal is already visible to prevent restart creating extra splits
 			for _, event in ipairs({ "launch", "attach" }) do
 				dap.listeners.before[event]["dap-view-open"] = function()
-					require("dap-view").open()
+					local wins = vim.api.nvim_tabpage_list_wins(0)
+					local has_term = vim.iter(wins):find(function(w)
+						return vim.w[w].dapview_win_term
+					end)
+					if not has_term then
+						require("dap-view").open()
+					end
 				end
 			end
 
