@@ -20,11 +20,10 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 - Only add comments when logic is non-obvious and cannot be made clear through naming
 - Prefer self-documenting code over explanatory comments
 - Remove comments made redundant by your changes
+- Comments should be extremely consice and self explanatory
 
 ## Surgical Changes
 
 - Please touch only what is needed. every changed line must trace to the user's request
 - Do not improve adjacent code, comments, or formatting, which would just increase the diff size and review time.
 - Do not bypass type system checks or suppress type errors by writting specific keywords without explicitly asking for it.
-
-Weak success criteria require constant clarification. Define done before you start.
