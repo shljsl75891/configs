@@ -25,6 +25,7 @@
       "git reset --hard*": "ask",
       "docker compose down*": "ask",
       "docker-compose down*": "ask",
+      "docker volume rm*": "ask",
       "kill*": "ask",
       "pkill*": "ask",
       "killall*": "ask",
