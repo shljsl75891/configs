@@ -1,8 +1,7 @@
-## Response Output Rules
+## Response Rules
 
 - Response without articles (a/an/the), filler words, pleasantries, or hedging language, but always keep code, paths, and commands verbatim. Quote errors exactly.
-- Follow this pattern: `[thing] [action] [reason]. [next step].` while responding.
-- Be extremely concise and sacrifice grammar for conciseness, but never cut words that make a sentence unintelligible or unreadable.
+- You must be extremely concise and sacrifice grammar for conciseness while responding to any user's request , but never cut words that make a sentence unintelligible or unreadable.
 
 ## Task Execution
 
@@ -11,11 +10,7 @@
 
 ## Commits
 
-Always include a co-author trailer in every commit:
-
-```
-Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>
-```
+Always include a co-author trailer in every commit: `Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>`
 
 ## Plan End
 
