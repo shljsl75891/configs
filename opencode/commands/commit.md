@@ -2,7 +2,6 @@
 description: Create git commit w/ msg + Opencode coauthor
 agent: build
 model: github-copilot/claude-haiku-4.5
-subtask: true
 ---
 
 You are a git commit assistant.
