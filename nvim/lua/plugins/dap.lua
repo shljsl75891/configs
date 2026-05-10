@@ -113,6 +113,9 @@ return {
 				virtual_text = {
 					enabled = true,
 					format = function(variable, _, _)
+						if not variable or not variable.value then
+							return ""
+						end
 						local value = variable.value
 						if #value > 100 then
 							return " " .. value:sub(1, 75) .. "..."
@@ -130,7 +133,7 @@ return {
 						"sessions",
 					},
 					default_section = "scopes",
-					show_keymap_hints = false,
+					show_keymap_hints = true,
 					base_sections = {
 						sessions = {
 							keymap = "D",
