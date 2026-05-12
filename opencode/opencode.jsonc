@@ -41,7 +41,7 @@
     "build": { "enable1mContext": true, "color": "#d3869b" },
     "plan": { "enable1mContext": true, "color": "#8ec07c" },
     "explore": {
-      "model": "opencode-go/deepseek-v4-pro",
+      "model": "zai-coding-plan/glm-5-turbo",
       "color": "#b8bb26",
     },
   },
