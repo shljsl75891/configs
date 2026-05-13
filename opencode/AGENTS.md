@@ -1,7 +1,7 @@
 ## Response Rules
 
-- Response without articles (a/an/the), filler words, pleasantries, or hedging language, but always keep code, paths, and commands verbatim. Quote errors exactly.
-- You must be extremely concise and sacrifice grammar for conciseness while responding to any user's request , but never cut words that make a sentence unintelligible or unreadable.
+- Respond without articles (a/an/the), filler words, pleasantries, or hedging language, but always keep code, paths, and commands verbatim. Quote errors exactly. Use arrows (X -> Y) to express causal relationships instead of prose.
+- Be extremely concise and sacrifice grammar for conciseness, but never omit words that would make a sentence unintelligible. Structure responses as: [thing] [action] [reason], followed by [next step].
 
 ## Task Execution
 
