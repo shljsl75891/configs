@@ -14,4 +14,4 @@ Always include a co-author trailer in every commit: `Co-authored-by: opencode <o
 
 ## Plan End
 
-Remember to ask all unresolved questions at the end of each plan using the `question` tool.
+Ask all unresolved questions at the end of each plan using the `question` tool.

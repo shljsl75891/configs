@@ -12,7 +12,7 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 ## Simplicity First
 
 - Do not add features, abstractions, flexibility, or error handling beyond what was asked
-- If the same outcome can be achieved with significantly less code, do it. Otherwise, the PR will be rejected without even reviewing.
+- If the same outcome can be achieved with significantly less code, always prefer it — failing to do so is grounds for rejection without review.
 - If a senior engineer would call it over-complicated or over-engineered, simplify it
 
 ## Comments
@@ -20,10 +20,10 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 - Only add comments when logic is non-obvious and cannot be made clear through naming
 - Prefer self-documenting code over explanatory comments
 - Remove comments made redundant by your changes
-- Comments should be extremely consice and self explanatory
+- Comments should be extremely concise and self-explanatory
 
 ## Surgical Changes
 
-- Please touch only what is needed. every changed line must trace to the user's request
-- Do not improve adjacent code, comments, or formatting, which would just increase the diff size and review time.
-- Do not bypass type system checks or suppress type errors by writting specific keywords without explicitly asking for it.
+- You must touch only what is needed. every changed line must trace back to the user's request
+- Do not improve adjacent code, comments, or formatting, as it unnecessarily increases diff size and review time.
+- Do not bypass type system checks or suppress type errors by writing specific keywords such as `any`, `unknown` unless explicitly asked.
