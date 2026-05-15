@@ -126,13 +126,14 @@ return {
 				winbar = {
 					sections = {
 						"scopes",
+						"console",
 						"watches",
 						"repl",
 						"breakpoints",
 						"threads",
 						"sessions",
 					},
-					default_section = "scopes",
+					default_section = "console",
 					show_keymap_hints = true,
 					base_sections = {
 						sessions = {
@@ -143,7 +144,7 @@ return {
 					controls = { enabled = false },
 				},
 				windows = {
-					size = 0.3,
+					size = 0.4,
 					position = "right",
 					terminal = {
 						size = 0.4,
