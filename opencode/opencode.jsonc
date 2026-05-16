@@ -2,7 +2,7 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "model": "anthropic/claude-sonnet-4-6",
-  "small_model": "openrouter/openai/gpt-oss-120b",
+  "small_model": "github-copilot/claude-haiku-4.5",
   "permission": {
     "external_directory": "allow",
     "read": {
@@ -42,8 +42,8 @@
       "model": "github-copilot/gpt-5.3-codex",
       "temperature": 0.2,
     },
-    "build": { "model": "anthropic/claude-sonnet-4-6", "color": "#d3869b" },
-    "plan": { "model": "anthropic/claude-opus-4-7", "color": "#8ec07c" },
+    "build": { "color": "#d3869b" },
+    "plan": { "color": "#8ec07c" },
     "explore": { "model": "zai-coding-plan/glm-4.7", "color": "#b8bb26" },
   },
   "plugin": ["opencode-claude-auth@latest"],

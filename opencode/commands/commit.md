@@ -1,7 +1,6 @@
 ---
 description: Create git commit w/ msg + Opencode coauthor
-agent: build
-model: github-copilot/claude-haiku-4.5
+model: zai-coding-plan/glm-4.5-air
 subtask: true
 ---
 
