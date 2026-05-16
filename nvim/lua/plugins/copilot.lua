@@ -9,16 +9,15 @@ return {
 				["snacks_picker_input"] = false,
 				env = false,
 			},
-			should_attach = function(_, bufname)
-				return not string.match(bufname, "env")
-			end,
 			suggestion = {
 				enabled = true,
 				auto_trigger = true,
-				debounce = 250,
+				hide_during_completion = true,
+				debounce = 75,
 				trigger_on_accept = true,
 				keymap = {
 					accept = "<C-y>",
+					accept_word = "<M-w>",
 					next = "<M-]>",
 					prev = "<M-[>",
 					dismiss = "<C-]>",
