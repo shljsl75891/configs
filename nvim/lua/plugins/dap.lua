@@ -112,6 +112,7 @@ return {
 			require("dap-view").setup({
 				virtual_text = {
 					enabled = true,
+					position = "inline",
 					format = function(variable, _, _)
 						if not variable or not variable.value then
 							return ""
@@ -128,6 +129,7 @@ return {
 						"scopes",
 						"console",
 						"watches",
+						"exceptions",
 						"repl",
 						"breakpoints",
 						"threads",
@@ -152,9 +154,14 @@ return {
 					},
 				},
 				auto_toggle = false,
+				follow_tab = true,
+				switchbuf = "usetab,uselast",
 			})
 
 			local dap = require("dap")
+
+			-- Prevent nvim-dap from hijacking dap-view windows when program stops
+			dap.defaults.fallback.switchbuf = "usevisible,usetab,newtab"
 
 			-- Auto-open view on session start, but never auto-close on terminate/fail
 			-- Skip open() if terminal is already visible to prevent restart creating extra splits
@@ -186,7 +193,7 @@ return {
 
 			dap.adapters["pwa-node"] = {
 				type = "server",
-				host = "localhost",
+				host = "127.0.0.1",
 				port = "${port}",
 				executable = {
 					command = "node",
