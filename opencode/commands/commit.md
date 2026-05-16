@@ -1,7 +1,7 @@
 ---
 description: Create git commit w/ msg + Opencode coauthor
 agent: build
-model: opencode/deepseek-v4-flash-free
+model: zai-coding-plan/glm-4.5-air
 subtask: true
 ---
 
