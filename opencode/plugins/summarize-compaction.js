@@ -1,5 +1,5 @@
 export const SummarizeCompactionPlugin = async ({ $, worktree }) => ({
-  "experimental.session.compacting": async (input, output) => {
+  "experimental.session.compacting": async (_input, output) => {
     try {
       const status = await $`git -C ${worktree} status --short`.text();
       if (status.trim())
@@ -9,33 +9,55 @@ export const SummarizeCompactionPlugin = async ({ $, worktree }) => ({
     } catch {}
 
     output.context.push(`
-Your task: Write a handoff prompt for the next agent. This is NOT a conversation summary — it is a precise, actionable prompt that tells the next agent exactly what to do next.
+Create a handoff prompt for the next agent. This is NOT a conversation summary — it must be precise, actionable instructions.
 
-The handoff prompt must begin with this block, copied exactly as-is:
----
-Before proceeding, run \`git status && git diff && git diff --cached\` to reconstruct intent from uncommitted changes.
-If the goal is unclear after reviewing the diff, invoke \`/grill-me\` to resolve ambiguity before acting.
----
+## COMPRESSION RULES
+- Remove: pleasantries, repeated attempts, and exploration that led nowhere (but note why it failed)
+- Preserve: exact commands that worked, configuration values, URLs, and error messages
+- Format: Use XML structure with Markdown content inside tags
+- Target length: Approximately 40% of the original context
+- When uncertain about whether to keep information: KEEP IT
 
-Then include ONLY the following sections, omitting any that are empty:
+## OUTPUT FORMAT
+\`\`\`xml
+<handoff>
+  <session_summary>
+  [describing what was accomplished, and what is the next phase or action to accomplished]
+  </session_summary>
 
-### Next Steps
-Prioritized, concrete actions the next agent must execute, in order.
+  <decisions>
+  - [Decision 1]: [Rationale for why this decision was made]
+  - [Decision 2]: [Rationale for why this decision was made] .. and so on
+  </decisions>
 
-### Required Context
-Reference pointers only — do not reproduce content that already exists elsewhere. Only include references you directly observed in the conversation. Do not infer or fabricate any identifiers:
-- JIRA ticket → ticket ID
-- Design doc / TDD → file path or URL
-- Relevant code → file:line
-- PR or commit → URL or SHA
+  <errors_and_blockers>
+  - [Error message]: [Status: resolved or open] [Resolution if applicable]
+  </errors_and_blockers>
 
-### Open Questions / Blockers
-Issues that would prevent or meaningfully ambiguate the next steps.
+  <code_changes>
+  - \`path/to/file:L123\` — [What changed and why it changed]
+  </code_changes>
 
-### Key Decisions
-Architectural or approach decisions already made that the next agent must not revisit or reverse.
+  <action_items>
+  - [ ] [Prioritized concrete next actions]
+  - [ ] [Next prioritized action]
+  - [ ] [Next phase of the plan being executed]
+  </action_items>
 
-Omit any information that does not directly serve the next steps.
+  <required_context>
+  [Reference pointers only: JIRA ticket ID, design doc URL]
+  </required_context>
+
+  <context_for_continuation>
+  [Any information the next session needs to know that doesn't fit in the sections above]
+  </context_for_continuation>
+
+  <must_follow>
+  Before proceeding, run \`git status && git diff && git diff --cached\` to reconstruct intent from uncommitted changes.
+  If the goal is unclear after reviewing the diff, invoke \`/grill-me\` skill to resolve ambiguity before acting.
+  </must_follow>
+</handoff>
+\`\`\`
 `);
   },
 });

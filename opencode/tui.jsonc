@@ -3,7 +3,5 @@
   "theme": "gruvbox",
   "keybinds": { "terminal_suspend": "none", "app_exit": "ctrl+c" },
   "attention": { "enabled": true, "sound": true, "volume": 0.8 },
-  "scroll_acceleration": {
-    "enabled": true,
-  },
+  "scroll_acceleration": { "enabled": true },
 }
