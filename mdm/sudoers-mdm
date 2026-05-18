@@ -1,0 +1,23 @@
+# MDM suppression — passwordless launchctl load/unload for known MDM plists only
+# Install: sudo cp sudoers-mdm /etc/sudoers.d/mdm-suppression && sudo chmod 440 /etc/sudoers.d/mdm-suppression
+# Validate: sudo visudo -c
+
+Cmnd_Alias ZSCALER_UNLOAD = \
+    /bin/launchctl unload /Library/LaunchDaemons/com.zscaler.service.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.zscaler.tunnel.plist
+
+Cmnd_Alias ZSCALER_LOAD = \
+    /bin/launchctl load /Library/LaunchDaemons/com.zscaler.service.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.zscaler.tunnel.plist
+
+Cmnd_Alias SF_UNLOAD = \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.service.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.jitadmin.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist
+
+Cmnd_Alias SF_LOAD = \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.service.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.jitadmin.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist
+
+sahil.jassal ALL=(root) NOPASSWD: ZSCALER_UNLOAD, ZSCALER_LOAD, SF_UNLOAD, SF_LOAD

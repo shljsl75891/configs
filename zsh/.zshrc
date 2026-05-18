@@ -82,9 +82,10 @@ export HOMEBREW_AUTO_UPDATE_SECS=$((60 * 60 * 24 * 7))
 export PATH="$PATH:$HOME/.local/opt/go/bin"
 export PATH=$PATH:$HOME/go/bin
 
-# Remove ZScaler enforcing :o
-alias start-zscaler="open -a /Applications/Zscaler/Zscaler.app --hide; sudo find /Library/LaunchDaemons -name '*zscaler*' -exec launchctl load {} \;"
-alias kill-zscaler="find /Library/LaunchAgents -name '*zscaler*' -exec launchctl unload {} \;;sudo find /Library/LaunchDaemons -name '*zscaler*' -exec launchctl unload {} \;"
+# MDM suppression (auto-killed at login via personal.kill-agents LaunchAgent)
+# See ~/personal/configs/mdm/README.md for setup
+alias start-zscaler="~/.local/bin/start-zscaler"
+alias start-scalefusion="~/.local/bin/start-scalefusion"
 
 # opencode
 export PATH=/Users/sahil.jassal/.opencode/bin:$PATH
