@@ -45,9 +45,6 @@ Produce the following Markdown document. Use the exact section headers shown. If
 |---|---|---|
 | [decision] | [options] | [why this, why others rejected] |
 
-## Failed Approaches
-- \`[approach]\` — [exact reason rejected]
-
 ## Errors & Blockers
 - \`[error message]\` — [Status: resolved/open] [Resolution if applicable]
 

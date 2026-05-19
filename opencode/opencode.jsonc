@@ -39,7 +39,7 @@
   "lsp": { "eslint": { "disabled": true }, "oxlint": { "disabled": true } },
   "agent": {
     "compaction": {
-      "model": "github-copilot/gpt-5.5",
+      "model": "github-copilot/claude-sonnet-4.6",
       "variant": "high",
       "temperature": 0.2,
     },
