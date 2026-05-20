@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Expert coding guidelines for writing clean, minimal, goal-driven code. Automatically activates when the user asks to write code, implement features, fix bugs, refactor, or work on any programming task.
+description: Expert coding guidelines for writing clean, minimal, goal-driven code. Automatically activates when starting the execution of a plan, or the user asks to write code, implement features, fix bugs, refactor etc..
 ---
 
 ## Think Before Coding
@@ -27,3 +27,4 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 - You must touch only what is needed. every changed line must trace back to the user's request
 - Do not improve adjacent code, comments, or formatting, as it unnecessarily increases diff size and review time.
 - Do not bypass type system checks or suppress type errors by writing specific keywords such as `any`, `unknown` unless explicitly asked.
+- Use dedicated types instead of abstract classes or interfaces for typing. Only define abstract classes or interfaces when one or more classes implement them.
