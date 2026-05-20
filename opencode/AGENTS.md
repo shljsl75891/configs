@@ -12,6 +12,14 @@
 
 Always include a co-author trailer in every commit: `Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>`
 
+## Z.AI MCP Concurrency
+
+**web-search-prime**, **web-reader**, and **zread** route through Z.AI MCP servers. Z.AI enforces one concurrent request per account (HTTP 429 / code 1302 on violation).
+
+- Never call these tools in parallel with each other
+- Serialize all Z.AI MCP calls sequentially
+- If 429 received, wait before retrying (do not loop immediately)
+
 ## Plan End
 
 Ask all unresolved questions at the end of each plan using the `question` tool.
