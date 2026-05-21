@@ -48,7 +48,7 @@
     "plan": { "color": "#8ec07c" },
     "explore": { "model": "zai-coding-plan/glm-4.7", "color": "#b8bb26" },
   },
-  "plugin": ["opencode-claude-auth@latest"],
+  "plugin": ["@ex-machina/opencode-anthropic-auth@1.8.1"],
   "compaction": { "auto": false, "prune": true, "reserved": 8000 },
   "mcp": {
     "Ref": {
@@ -83,7 +83,7 @@
     "chrome-devtools": {
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
-      "enabled": false
+      "enabled": false,
     },
   },
 }
