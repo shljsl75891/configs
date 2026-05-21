@@ -22,6 +22,7 @@
       "git branch -D*": "ask",
       "git stash*": "ask",
       "git clean*": "ask",
+      "git commit*": "ask",
       "git reset --hard*": "ask",
       "git push --force*": "deny",
       "git push --force-with-lease*": "deny",
