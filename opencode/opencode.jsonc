@@ -80,5 +80,10 @@
       "url": "https://api.z.ai/api/mcp/zread/mcp",
       "headers": { "Authorization": "Bearer {env:ZAI_API_KEY}" },
     },
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "enabled": false
+    },
   },
 }
