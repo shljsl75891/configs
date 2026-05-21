@@ -14,7 +14,7 @@ Always include a co-author trailer in every commit: `Co-authored-by: opencode <o
 
 ## Z.AI MCP Concurrency
 
-**web-search-prime**, **web-reader**, and **zread** route through Z.AI MCP servers. Z.AI enforces one concurrent request per account (HTTP 429 / code 1302 on violation).
+**web-search-prime_web_search_prime**, **web-reader_webReader**, and **zread_get_repo_structure**, **zread_read_file**, **zread_search_doc** route through Z.AI MCP servers. Z.AI enforces one concurrent request per account (HTTP 429 / code 1302 on violation).
 
 - Never call these tools in parallel with each other
 - Serialize all Z.AI MCP calls sequentially
