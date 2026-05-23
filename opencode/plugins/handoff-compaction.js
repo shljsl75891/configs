@@ -8,32 +8,30 @@ export const SummarizeCompactionPlugin = async ({ $, worktree }) => ({
       }
     } catch {}
 
-    output.prompt = `You are generating a handoff document for the next agent session. This is NOT a conversation summary — it must be precise, actionable instructions enabling seamless resumption with zero ambiguity for any coding agent to resume this session.
+    output.prompt = `Generate a handoff document — precise, actionable instructions enabling seamless session resumption with zero ambiguity. Not a conversation summary.
 ${gitStatus}
 ## COMPRESSION RULES
 
-**Preserve (optimize for correct resumption, not token minimization):**
-- Session intent — original user goal verbatim if short, paraphrased only if very long
-- Every decision made with rationale, INCLUDING rejected options and why they were rejected
-- All file paths modified, with line numbers where relevant (\`path/to/file:L123\`)
-- Failed approaches and the exact reason rejected — prevents repeat work
+**Preserve:**
+- Session intent (verbatim if short, paraphrased if very long)
+- Every decision with rationale, INCLUDING rejected options and why
+- All modified file paths with line numbers (\`path/to/file:L123\`)
+- Failed approaches + exact rejection reason (prevents repeat work)
 - Unresolved bugs, blockers, open questions
-- Architectural patterns and codebase conventions discovered during this session
+- Architectural patterns and conventions discovered
 - Concrete next steps in priority order
-- Exact commands, configuration values, URLs, and error messages that matter
 
 **Discard:**
-- Pleasantries, repeated attempts, and exploration that led nowhere (note only why it failed, not the trace)
-- Raw tool outputs (grep dumps, full file reads, ls listings) — replace with file-path references
-- Intermediate reasoning that led to a committed decision (keep the decision + rationale, not the deliberation)
-- Re-reads of the same file
-- Anything reproducible by running a command
+- Pleasantries, exploration traces that led nowhere
+- Raw tool outputs (grep dumps, full reads, ls listings) — use file-path references
+- Intermediate deliberation behind committed decisions
+- Re-reads of same file, reproducible commands
 
-**When uncertain whether to keep information: KEEP IT**
+**Uncertain? KEEP IT**
 
 ## OUTPUT FORMAT
 
-Produce the following Markdown document. Use the exact section headers shown. If a section has nothing to report, write \`None\` — never omit a section.
+Omit empty sections. Use exact headers shown.
 
 ---
 
@@ -48,24 +46,12 @@ Produce the following Markdown document. Use the exact section headers shown. If
 ## Errors & Blockers
 - \`[error message]\` — [Status: resolved/open] [Resolution if applicable]
 
-## Code Changes
-- \`path/to/file:L123\` — [what changed and why]
-
 ## File Anchors
 - \`path/to/file:L123\` — [purpose / relevance to current task]
 
 ## Action Items
 - [ ] [Concrete next action — specific command or file, never vague]
 - [ ] [Next prioritized action]
-
-## Required Context
-[Reference pointers only: ticket IDs, design doc URLs, env var names (never values)]
-
-## Patterns & Gotchas
-- [Discovered codebase pattern, convention, or non-obvious behavior the next agent must know]
-
-## Context for Continuation
-[Anything the next session needs that does not fit the sections above]
 
 ## Must Follow
 Before proceeding, run \`git status && git diff && git diff --cached\` to reconstruct intent from uncommitted changes.

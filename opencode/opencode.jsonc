@@ -47,8 +47,9 @@
     "build": { "color": "#d3869b" },
     "plan": { "color": "#8ec07c" },
     "explore": { "model": "zai-coding-plan/glm-4.7", "color": "#b8bb26" },
+    "general": { "model": "zai-coding-plan/glm-5.1", "color": "#b8bb26" },
   },
-  "plugin": ["@ex-machina/opencode-anthropic-auth@1.8.1"],
+  "plugin": ["@ex-machina/opencode-anthropic-auth"],
   "compaction": { "auto": false, "prune": true, "reserved": 8000 },
   "mcp": {
     "Ref": {
