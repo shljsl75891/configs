@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "main": {
+    "type": "opencode",
+    "provider": "anthropic"
+  },
+  "accounts": [],
+  "claudeCache": {
+    "enabled": true,
+    "mode": "hybrid"
+  },
+  "cacheKeep": {
+    "enabled": true,
+    "startHour": 6,
+    "endHour": 0
+  },
+  "relay": {
+    "enabled": true,
+    "url": "https://opencode-anthropic-relay.shljsl75891.workers.dev/",
+    "token": "0h3GtXnyinFUNmolPcJ6EAhnoW5QBDT1B4krrWPADXw",
+    "fallbackToDirect": true,
+    "transport": "http"
+  },
+  "refresh": {}
+}
