@@ -5,6 +5,7 @@ description: Expert coding guidelines for writing clean, minimal, goal-driven co
 
 ## Think Before Coding
 
+- You MUST follow: https://raw.githubusercontent.com/labs42io/clean-code-typescript/refs/heads/main/README.md guidelines for writing clean code in TypeScript
 - State assumptions explicitly. If uncertain, never hesitate to ask the user for clarification
 - If multiple interpretations exist, present all of them — do not pick one silently
 - If something is unclear, name what is confusing and ask
