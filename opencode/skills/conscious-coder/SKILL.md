@@ -1,11 +1,12 @@
 ---
 name: conscious-coder
-description: Expert coding guidelines for writing clean, minimal, goal-driven code. Automatically activates when starting the execution of a plan, or the user asks to write code, implement features, fix bugs, refactor etc..
+description: Expert coding guidelines for writing clean, minimal, goal-driven code. Use this when starting the execution of a plan, or the user asks to write code, implement features, fix bugs, refactor etc. any programming task.
 ---
+
+The first thing you must do first is read and follow `CLEAN_CODE_TYPESCRIPT.md` guidelines.
 
 ## Think Before Coding
 
-- You MUST follow: https://raw.githubusercontent.com/labs42io/clean-code-typescript/refs/heads/main/README.md guidelines for writing clean code in TypeScript
 - State assumptions explicitly. If uncertain, never hesitate to ask the user for clarification
 - If multiple interpretations exist, present all of them — do not pick one silently
 - If something is unclear, name what is confusing and ask
