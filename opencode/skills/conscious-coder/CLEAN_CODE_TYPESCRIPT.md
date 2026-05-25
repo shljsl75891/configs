@@ -36,8 +36,6 @@ function between<T>(value: T, left: T, right: T): boolean {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Use pronounceable variable names
 
 If you can’t pronounce it, you can’t discuss it without sounding like an idiot.
@@ -62,8 +60,6 @@ type Customer = {
 };
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Use the same vocabulary for the same type of variable
 
 **Bad:**
@@ -79,8 +75,6 @@ function getUserData(): User;
 ```ts
 function getUser(): User;
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Use searchable names
 
@@ -101,8 +95,6 @@ const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000; // 86400000
 
 setTimeout(restart, MILLISECONDS_PER_DAY);
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Use explanatory variables
 
@@ -126,8 +118,6 @@ for (const [id, user] of users) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Avoid Mental Mapping
 
 Explicit is better than implicit.  
@@ -148,8 +138,6 @@ const user = getUser();
 const subscription = getSubscription();
 const transaction = charge(user, subscription);
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Don't add unneeded context
 
@@ -183,8 +171,6 @@ function print(car: Car): void {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Use default arguments instead of short circuiting or conditionals
 
 Default arguments are often cleaner than short circuiting.
@@ -205,8 +191,6 @@ function loadPages(count: number = 10) {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Use enum to document the intent
 
@@ -258,8 +242,6 @@ class Projector {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Functions
 
@@ -342,8 +324,6 @@ createMenu({
 });
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Functions should do one thing
 
 This is by far the most important rule in software engineering. When functions do more than one thing, they are harder to compose, test, and reason about. When you can isolate a function to just one action, it can be refactored easily and your code will read much cleaner. If you take nothing else away from this guide other than this, you'll be ahead of many developers.
@@ -374,8 +354,6 @@ function isActiveClient(client: Client) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Function names should say what they do
 
 **Bad:**
@@ -401,8 +379,6 @@ function addMonthToDate(date: Date, month: number): Date {
 const date = new Date();
 addMonthToDate(date, 1);
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Functions should only be one level of abstraction
 
@@ -473,8 +449,6 @@ function parse(tokens: Token[]): SyntaxTree {
   return syntaxTree;
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Remove duplicate code
 
@@ -585,8 +559,6 @@ function showEmployeeList(employee: Employee[]) {
 
 You should be critical about code duplication. Sometimes there is a tradeoff between duplicated code and increased complexity by introducing unnecessary abstraction. When two implementations from two different modules look similar but live in different domains, duplication might be acceptable and preferred over extracting the common code. The extracted common code, in this case, introduces an indirect dependency between the two modules.
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Set default objects with Object.assign or destructuring
 
 **Bad:**
@@ -683,8 +655,6 @@ createMenu({ body: "Bar" });
 To avoid any side effects and unexpected behavior by passing in explicitly the `undefined` or `null` value, you can tell the TypeScript compiler to not allow it.
 See [`--strictNullChecks`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#--strictnullchecks) option in TypeScript.
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Don't use flags as function parameters
 
 Flags tell your user that this function does more than one thing.
@@ -713,8 +683,6 @@ function createFile(name: string) {
   fs.create(name);
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Avoid Side Effects (part 1)
 
@@ -756,8 +724,6 @@ const encodedName = toBase64(name);
 console.log(name);
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Avoid Side Effects (part 2)
 
 Browsers and Node.js process only JavaScript, therefore any TypeScript code has to be compiled before running or debugging. In JavaScript, some values are unchangeable (immutable) and some are changeable (mutable). Objects and arrays are two kinds of mutable values so it's important to handle them carefully when they're passed as parameters to a function. A JavaScript function can change an object's properties or alter the contents of an array which could easily cause bugs elsewhere.
@@ -790,8 +756,6 @@ function addItemToCart(cart: CartItem[], item: Item): CartItem[] {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Don't write to global functions
 
 Polluting globals is a bad practice in JavaScript because you could clash with another library and the user of your API would be none-the-wiser until they get an exception in production. Let's think about an example: what if you wanted to extend JavaScript's native Array method to have a `diff` method that could show the difference between two arrays? You could write your new function to the `Array.prototype`, but it could clash with another library that tried to do the same thing. What if that other library was just using `diff` to find the difference between the first and last elements of an array? This is why it would be much better to just use classes and simply extend the `Array` global.
@@ -823,8 +787,6 @@ class MyArray<T> extends Array<T> {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Favor functional programming over imperative programming
 
@@ -887,8 +849,6 @@ const totalOutput = contributions.reduce(
 );
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Encapsulate conditionals
 
 **Bad:**
@@ -910,8 +870,6 @@ if (canActivateService(subscription, account)) {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Avoid negative conditionals
 
@@ -938,8 +896,6 @@ if (!isEmailUsed(email)) {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Avoid conditionals
 
@@ -1004,8 +960,6 @@ class Cessna extends Airplane {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Avoid type checking
 
 TypeScript is a strict syntactical superset of JavaScript and adds optional static type checking to the language.
@@ -1034,8 +988,6 @@ function travelToTexas(vehicle: Vehicle) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Don't over-optimize
 
 Modern browsers do a lot of optimization under-the-hood at runtime. A lot of times, if you are optimizing then you are just wasting your time. There are good [resources](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers) for seeing where optimization is lacking. Target those in the meantime, until they are fixed if they can be.
@@ -1057,8 +1009,6 @@ for (let i = 0; i < list.length; i++) {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Remove dead code
 
@@ -1090,8 +1040,6 @@ function requestModule(url: string) {
 const req = requestModule;
 inventoryTracker("apples", req, "www.inventory-awesome.io");
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Use iterators and generators
 
@@ -1174,8 +1122,6 @@ itiriri(fibonacci())
   .forEach((fib) => console.log(fib));
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Objects and Data Structures
 
 ### Use getters and setters
@@ -1240,8 +1186,6 @@ const account = new BankAccount();
 account.balance = 100;
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Make objects have private/protected members
 
 TypeScript supports `public` _(default)_, `protected` and `private` accessors on class members.
@@ -1281,8 +1225,6 @@ class Circle {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Prefer immutability
 
@@ -1380,8 +1322,6 @@ const result = readonlyData(100);
 result.value = 200; // error
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### type vs. interface
 
 Use type when you might need a union or intersection. Use an interface when you want `extends` or `implements`. There is no strict rule, however, use the one that works for you.  
@@ -1436,8 +1376,6 @@ class Square implements Shape {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Classes
 
@@ -1513,8 +1451,6 @@ class Dashboard {
 // split the responsibilities by moving the remaining methods to other classes
 // ...
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### High cohesion and low coupling
 
@@ -1592,8 +1528,6 @@ class UserNotifier {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Prefer composition over inheritance
 
 As stated famously in [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns) by the Gang of Four, you should _prefer composition over inheritance_ where you can. There are lots of good reasons to use inheritance and lots of good reasons to use composition. The main point for this maxim is that if your mind instinctively goes for inheritance, try to think if composition could model your problem better. In some cases it can.
@@ -1661,8 +1595,6 @@ class EmployeeTaxData {
   // ...
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Use method chaining
 
@@ -1744,8 +1676,6 @@ const query = new QueryBuilder()
   .build();
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## SOLID
 
 ### Single Responsibility Principle (SRP)
@@ -1795,8 +1725,6 @@ class UserSettings {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Open/Closed Principle (OCP)
 
@@ -1886,8 +1814,6 @@ class HttpRequester {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Liskov Substitution Principle (LSP)
 
@@ -2001,8 +1927,6 @@ const shapes = [new Rectangle(4, 5), new Rectangle(4, 5), new Square(5)];
 renderLargeShapes(shapes);
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Interface Segregation Principle (ISP)
 
 ISP states that "Clients should not be forced to depend upon interfaces that they do not use.". This principle is very much related to the Single Responsibility Principle.
@@ -2081,8 +2005,6 @@ class EconomicPrinter implements Printer {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Dependency Inversion Principle (DIP)
 
@@ -2176,8 +2098,6 @@ const reader = new ReportReader(new JsonFormatter());
 const report = await reader.read("report.json");
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Testing
 
 Testing is more important than shipping. If you have no tests or an inadequate amount, then every time you ship code you won't be sure that you didn't break anything.
@@ -2194,8 +2114,6 @@ There's no excuse to not write tests. There are [plenty of good JS test framewor
 
 3. You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
 
-**[⬆ back to top](#table-of-contents)**
-
 ### F.I.R.S.T. rules
 
 Clean tests should follow the rules:
@@ -2209,8 +2127,6 @@ Clean tests should follow the rules:
 - **Self-Validating** a test should answer with either _Passed_ or _Failed_. You don't need to compare log files to answer if a test passed.
 
 - **Timely** unit tests should be written before the production code. If you write tests after the production code, you might find writing tests too hard.
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Single concept per test
 
@@ -2260,8 +2176,6 @@ describe("AwesomeDate", () => {
 });
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### The name of the test should reveal its intention
 
 When a test fails, its name is the first indication of what may have gone wrong.
@@ -2293,8 +2207,6 @@ describe("Calendar", () => {
   });
 });
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Concurrency
 
@@ -2375,8 +2287,6 @@ Promises supports a few helper methods that help make code more concise:
 
 `Promise.all` is especially useful when there is a need to run tasks in parallel. `Promise.race` makes it easier to implement things like timeouts for promises.
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Async/Await are even cleaner than Promises
 
 With `async`/`await` syntax you can write code that is far cleaner and more understandable than chained promises. Within a function prefixed with `async` keyword, you have a way to tell the JavaScript runtime to pause the execution of code on the `await` keyword (when used on a promise).
@@ -2427,8 +2337,6 @@ try {
   console.error(error);
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Error Handling
 
@@ -2495,8 +2403,6 @@ function calculateTotal(items: Item[]): Failable<number, "empty"> {
 
 For the detailed explanation of this idea refer to the [original post](https://medium.com/@dhruvrajvanshi/making-exceptions-type-safe-in-typescript-c4d200ee78e9).
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Don't ignore caught errors
 
 Doing nothing with a caught error doesn't give you the ability to ever fix or react to said error. Logging the error to the console (`console.log`) isn't much better as often it can get lost in a sea of things printed to the console. If you wrap any bit of code in a `try/catch` it means you think an error may occur there and therefore you should have a plan, or create a code path, for when it occurs.
@@ -2530,8 +2436,6 @@ try {
   logger.log(error);
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Don't ignore rejected promises
 
@@ -2571,8 +2475,6 @@ try {
   logger.log(error);
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Formatting
 
@@ -2642,8 +2544,6 @@ type Container = {
 Prefer using `PascalCase` for class, interface, type and namespace names.  
 Prefer using `camelCase` for variables, functions and class members.
 Prefer using capitalized `SNAKE_CASE` for constants.
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Function callers and callees should be close
 
@@ -2730,8 +2630,6 @@ const review = new PerformanceReview(employee);
 review.review();
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Organize imports
 
 With clean and easy to read import statements you can quickly see the dependencies of current code. Make sure you apply following good practices for `import` statements:
@@ -2779,8 +2677,6 @@ import { ApiCredentials, Adapters } from "./common/api/authorization";
 import { ConfigPlugin } from "./plugins/config/configPlugin";
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Use typescript aliases
 
 Create prettier imports by defining the paths and baseUrl properties in the compilerOptions section in the `tsconfig.json`
@@ -2813,8 +2709,6 @@ import { UserService } from "@services/UserService";
 ...
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Comments
 
 The use of a comments is an indication of failure to express without them. Code should be the only source of truth.
@@ -2843,8 +2737,6 @@ if (isSubscriptionActive) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ### Don't leave commented out code in your codebase
 
 Version control exists for a reason. Leave old code in your history.
@@ -2868,8 +2760,6 @@ type User = {
   email: string;
 };
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Don't have journal comments
 
@@ -2896,8 +2786,6 @@ function combine(a: number, b: number): number {
   return a + b;
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Avoid positional markers
 
@@ -2958,8 +2846,6 @@ class Client {
   }
 }
 ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ### TODO comments
 

@@ -14,7 +14,7 @@
 
 ## MCP Concurrency
 
-To avoid concurrency errors, never ever call any MCP tools in parallel.
+To avoid concurrency errors, never ever call any MCP tools in parallel, but always sequentially like queue.
 
 ## Plan End
 
