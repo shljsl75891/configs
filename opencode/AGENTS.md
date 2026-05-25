@@ -12,10 +12,6 @@
 - Use targeted searches and efficient piping to minimize output (only which is needed for task) preventing GIGO (Garbage In Garbage Out).
 - Use the main agent for complex orchestration, feature thinking, and any editing that requires human judgment. Delegate small exploration and editing tasks to subagents.
 
-## Commits
-
-Always include a co-author trailer in every commit: `Co-authored-by: opencode <opencode-agent[bot]@users.noreply.github.com>`
-
 ## MCP Concurrency
 
 To avoid concurrency errors, never ever call any MCP tools in parallel.
