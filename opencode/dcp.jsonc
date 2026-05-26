@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+  "compress": {
+    "nudgeFrequency": 5,
+    "nudgeForce": "soft",
+  },
+  "turnProtection": { "enabled": true, "turns": 4 },
+  "protectedFilePatterns": ["**/AGENTS.md"],
+}
