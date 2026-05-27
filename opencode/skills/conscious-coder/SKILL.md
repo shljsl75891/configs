@@ -1,9 +1,9 @@
 ---
 name: conscious-coder
-description: Expert coding guidelines for writing clean, minimal, goal-driven code. Use this when starting the execution of a plan, or the user asks to write code, implement features, fix bugs, refactor etc. any programming task.
+description: Expert coding guidelines with @CLEAN_CODE_TYPESCRIPT.md for writing clean, minimal, goal-driven code. Use this when starting the execution of a plan, or the user asks to write code, implement features, fix bugs, refactor etc. any programming task.
 ---
 
-The first thing you must do first is read and follow `CLEAN_CODE_TYPESCRIPT.md` guidelines.
+The first thing you must do first is read and follow [CLEAN_CODE_TYPESCRIPT.md](./CLEAN_CODE_TYPESCRIPT.md) guidelines.
 
 ## Think Before Coding
 

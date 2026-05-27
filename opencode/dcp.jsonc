@@ -1,9 +1,18 @@
 {
   "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
   "compress": {
-    "nudgeFrequency": 5,
-    "nudgeForce": "soft",
+    "maxContextLimit": "75%",
+    "minContextLimit": "30%",
+    "modelMaxLimits": {
+      "anthropic/claude-sonnet-4-6": "25%",
+      "anthropic/claude-opus-4-7": "35%",
+    },
+    "modelMinLimits": {
+      "anthropic/claude-sonnet-4-6": "12%",
+      "anthropic/claude-opus-4-7": "15%",
+    },
   },
+  "commands": { "enabled": false },
   "turnProtection": { "enabled": true, "turns": 4 },
   "protectedFilePatterns": ["**/AGENTS.md"],
 }
