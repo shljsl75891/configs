@@ -9,10 +9,6 @@
 - Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
 - Use targeted searches and efficient piping to minimize output (only which is needed for task) preventing GIGO (Garbage In Garbage Out).
 
-## MCP Concurrency
-
-To avoid concurrency errors, never ever call any MCP tools in parallel, but always sequentially like queue.
-
 ## Plan End
 
 Ask all unresolved questions at the end of each plan using the `question` tool.
