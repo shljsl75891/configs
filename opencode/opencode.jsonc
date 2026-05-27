@@ -45,6 +45,7 @@
       "type": "local",
       "command": ["npx", "ref-tools-mcp@latest"],
       "environment": { "REF_API_KEY": "{env:REF_API_KEY}" },
+      "enabled": false,
     },
     "zai-vision": {
       "type": "local",
@@ -59,16 +60,19 @@
       "type": "remote",
       "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
       "headers": { "Authorization": "Bearer {env:ZAI_API_KEY}" },
+      "enabled": false,
     },
     "web-reader": {
       "type": "remote",
       "url": "https://api.z.ai/api/mcp/web_reader/mcp",
       "headers": { "Authorization": "Bearer {env:ZAI_API_KEY}" },
+      "enabled": false,
     },
     "zread": {
       "type": "remote",
       "url": "https://api.z.ai/api/mcp/zread/mcp",
       "headers": { "Authorization": "Bearer {env:ZAI_API_KEY}" },
+      "enabled": false,
     },
     "chrome-devtools": {
       "type": "local",
