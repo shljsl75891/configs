@@ -21,6 +21,7 @@
       "git commit *": "ask",
       "git reset *": "ask",
       "git push *": "ask",
+      "git -C *": "deny",
       "docker compose down *": "ask",
       "docker volume rm *": "ask",
     },
