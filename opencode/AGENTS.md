@@ -7,7 +7,6 @@
 ## Task Execution
 
 - Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
-- Use targeted searches and efficient piping to minimize output (only which is needed for task) preventing GIGO (Garbage In Garbage Out).
 
 ## Plan End
 

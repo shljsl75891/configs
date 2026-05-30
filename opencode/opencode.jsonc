@@ -2,7 +2,7 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "model": "anthropic/claude-sonnet-4-6",
-  "small_model": "github-copilot/claude-haiku-4.5",
+  "small_model": "github-copilot/gpt-4.1",
   "permission": {
     "external_directory": "allow",
     "read": {
@@ -27,7 +27,7 @@
     },
   },
   "formatter": false,
-  "lsp": { "eslint": { "disabled": true }, "oxlint": { "disabled": true } },
+  "lsp": false,
   "agent": {
     "compaction": {
       "model": "github-copilot/gpt-5.2-codex",
