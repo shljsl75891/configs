@@ -39,7 +39,7 @@
     "explore": { "model": "opencode/big-pickle", "color": "#b8bb26" },
     "general": { "model": "zai-coding-plan/glm-5.1", "color": "#b8bb26" },
   },
-  "plugin": ["@tarquinen/opencode-dcp"],
+  "plugin": ["@sahiljassal/opencode-anthropic-auth", "@tarquinen/opencode-dcp"],
   "compaction": { "auto": false, "prune": true, "reserved": 8000 },
   "mcp": {
     "Ref": {
