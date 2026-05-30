@@ -55,3 +55,10 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldcolumn = "auto"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99
+-- global single status line
+vim.opt.showmode = false
+vim.opt.laststatus = 3
+vim.opt.statusline =
+	"%#MiniStatuslineDevinfo#  %{FugitiveStatusline()} %#StatusLine# %= %y"
+vim.opt.winbar =
+	"%#GruvboxYellowBold# %f %m %{%v:lua.vim.diagnostic.status()%} %r"

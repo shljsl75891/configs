@@ -24,11 +24,9 @@ function Move_lines_up_visual()
 	end
 end
 
-
 -- Options must load before lazy so leader is set when keys= specs are processed
 require("core.options")
 require("core.lazy")
-require("core.statusline")
 require("core.keymaps")
 require("core.autocmds")
 
