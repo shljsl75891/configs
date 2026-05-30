@@ -5,6 +5,12 @@
   "small_model": "github-copilot/gpt-4.1",
   "permission": {
     "external_directory": "allow",
+    "edit": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "ask",
+      "*.env.example": "ask",
+    },
     "read": {
       "*": "allow",
       "*.env": "deny",
@@ -31,7 +37,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "github-copilot/gpt-5.2-codex",
+      "model": "zai-coding-plan/glm-5.1",
       "variant": "high",
       "temperature": 0.2,
     },
