@@ -15,3 +15,4 @@ macos-option-as-alt = true
 
 keybind = super+q=unbind
 keybind = super+q=ignore
+keybind = shift+enter=text:\x1b\r
