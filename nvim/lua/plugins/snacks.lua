@@ -4,7 +4,7 @@ return {
 		lazy = false,
 		priority = 800,
 		opts = {
-			bigfile = { enabled = true, notify = false },
+			bigfile = { enabled = true, notify = false, size = 800 * 1024 },
 			image = { enabled = true },
 			rename = { enabled = true },
 			quickfile = { enabled = true },
