@@ -28,6 +28,7 @@
   },
   "formatter": false,
   "lsp": false,
+  "share": "disabled",
   "agent": {
     "compaction": {
       "model": "github-copilot/gpt-5.2-codex",
