@@ -28,7 +28,6 @@ export const FocusPane = async ({ $, client }) => {
         await $`tmux switch-client -t ${process.env.TMUX_PANE}`;
         if (event.type.includes("asked")) {
           await $`tmux send-keys -t ${process.env.TMUX_PANE} Up`;
-          await $`tmux send-keys -t ${process.env.TMUX_PANE} Down`;
         }
       }
     },
