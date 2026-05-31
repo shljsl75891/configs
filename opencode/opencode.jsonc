@@ -45,6 +45,7 @@
     "plan": { "color": "#8ec07c" },
     "explore": { "model": "opencode/big-pickle", "color": "#b8bb26" },
     "general": { "model": "zai-coding-plan/glm-5.1", "color": "#b8bb26" },
+    "scout": { "model": "github-copilot/gpt-5.2-codex", "color": "#d3869b" },
   },
   "plugin": ["@sahiljassal/opencode-anthropic-auth", "@tarquinen/opencode-dcp"],
   "compaction": { "auto": false, "prune": true, "reserved": 8000 },
