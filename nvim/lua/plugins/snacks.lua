@@ -108,6 +108,20 @@ return {
 				desc = "[F]ind Project [F]iles",
 			},
 			{
+				"<leader>fc",
+				function()
+					local dir = vim.fn.expand("%:p:h")
+					local git_dir = vim.fn.finddir(".git", dir .. ";")
+					if git_dir ~= "" then
+						local git_root = vim.fn.fnamemodify(git_dir, ":h")
+						require("snacks").picker.git_files({ cwd = git_root })
+					else
+						require("snacks").picker.files({ cwd = dir })
+					end
+				end,
+				desc = "[F]ind files in [C]urrent buffer git worktree or directory",
+			},
+			{
 				"<leader>fb",
 				function()
 					require("snacks").picker.buffers()
