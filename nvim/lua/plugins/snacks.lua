@@ -194,13 +194,6 @@ return {
 				end,
 				desc = "[/] Fuzzily search in current buffer",
 			},
-			{
-				"]s",
-				function()
-					require("snacks").picker.spelling()
-				end,
-				desc = "Spelling suggestions",
-			},
 		},
 	},
 }
