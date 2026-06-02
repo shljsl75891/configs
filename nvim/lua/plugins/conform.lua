@@ -3,25 +3,26 @@ return {
 		"stevearc/conform.nvim",
 		event = "BufWritePre",
 		cmd = { "ConformInfo", "FormatDisable", "FormatEnable" },
-		config = function()
-			require("conform").setup({
-				formatters_by_ft = {
-					javascript = { "prettierd" },
-					typescript = { "prettierd" },
-					javascriptreact = { "prettierd" },
-					typescriptreact = { "prettierd" },
-					css = { "prettierd" },
-					scss = { "prettierd" },
-					html = { "prettierd" },
-					htmlangular = { "prettierd" },
-					json = { "prettierd" },
-					jsonc = { "prettierd" },
-					yaml = { "prettierd" },
-					markdown = { "prettierd" },
-					lua = { "stylua" },
-					sql = { "pg_format" },
-				},
-			})
+		opts = {
+			formatters_by_ft = {
+				javascript = { "prettierd" },
+				typescript = { "prettierd" },
+				javascriptreact = { "prettierd" },
+				typescriptreact = { "prettierd" },
+				css = { "prettierd" },
+				scss = { "prettierd" },
+				html = { "prettierd" },
+				htmlangular = { "prettierd" },
+				json = { "prettierd" },
+				jsonc = { "prettierd" },
+				yaml = { "prettierd" },
+				markdown = { "prettierd" },
+				lua = { "stylua" },
+				sql = { "pg_format" },
+			},
+		},
+		config = function(_, opts)
+			require("conform").setup(opts)
 
 			vim.api.nvim_create_user_command("FormatDisable", function(args)
 				if args.bang then

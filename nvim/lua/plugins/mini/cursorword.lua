@@ -1,8 +1,9 @@
 return {
 	"nvim-mini/mini.cursorword",
 	event = "BufReadPost",
-	config = function()
-		require("mini.cursorword").setup({ delay = 800 })
+	opts = { delay = 800 },
+	config = function(_, opts)
+		require("mini.cursorword").setup(opts)
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = { "sh" },
 			callback = function()
