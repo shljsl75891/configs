@@ -5,6 +5,51 @@ return {
 			{ url = "https://codeberg.org/mfussenegger/nvim-dap.git" },
 		},
 		cmd = { "DapContinue", "DapToggleBreakpoint", "DapTerminate" },
+		opts = {
+			virtual_text = {
+				enabled = true,
+				position = "inline",
+				format = function(variable, _, _)
+					if not variable or not variable.value then
+						return ""
+					end
+					local value = variable.value
+					if #value > 100 then
+						return " " .. value:sub(1, 75) .. "..."
+					end
+					return " " .. value:gsub("%s+", " ")
+				end,
+			},
+			winbar = {
+				sections = {
+					"scopes",
+					"console",
+					"watches",
+					"repl",
+					"breakpoints",
+					"threads",
+					"exceptions",
+					"sessions",
+				},
+				default_section = "console",
+				show_keymap_hints = true,
+				base_sections = {
+					breakpoints = { label = "Break", keymap = "B" },
+					scopes = { label = "Context", keymap = "C" },
+					exceptions = { label = "Exception", keymap = "E" },
+					watches = { label = "Watch", keymap = "W" },
+					threads = { label = "Frame", keymap = "F" },
+					repl = { label = "REPL", keymap = "R" },
+					console = { label = "Term", keymap = "T" },
+					sessions = { label = "Session", keymap = "S" },
+				},
+				controls = { enabled = false },
+			},
+			windows = { size = 0.45, position = "right", terminal = { hide = true } },
+			auto_toggle = false,
+			follow_tab = true,
+			switchbuf = "usetab,uselast",
+		},
 		init = function()
 			vim.fn.sign_define(
 				"DapBreakpoint",
@@ -108,55 +153,8 @@ return {
 				desc = "Add Expression to Watches",
 			},
 		},
-		config = function()
-			require("dap-view").setup({
-				virtual_text = {
-					enabled = true,
-					position = "inline",
-					format = function(variable, _, _)
-						if not variable or not variable.value then
-							return ""
-						end
-						local value = variable.value
-						if #value > 100 then
-							return " " .. value:sub(1, 75) .. "..."
-						end
-						return " " .. value:gsub("%s+", " ")
-					end,
-				},
-				winbar = {
-					sections = {
-						"scopes",
-						"console",
-						"watches",
-						"exceptions",
-						"repl",
-						"breakpoints",
-						"threads",
-						"sessions",
-					},
-					default_section = "console",
-					show_keymap_hints = true,
-					base_sections = {
-						sessions = {
-							keymap = "D",
-							label = "DAP Sessions",
-						},
-					},
-					controls = { enabled = false },
-				},
-				windows = {
-					size = 0.4,
-					position = "right",
-					terminal = {
-						size = 0.4,
-						position = "below",
-					},
-				},
-				auto_toggle = false,
-				follow_tab = true,
-				switchbuf = "usetab,uselast",
-			})
+		config = function(_, opts)
+			require("dap-view").setup(opts)
 
 			local dap = require("dap")
 
