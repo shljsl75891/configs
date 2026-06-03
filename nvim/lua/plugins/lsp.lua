@@ -102,7 +102,7 @@ return {
 						completionItem = {
 							snippetSupport = true,
 							resolveSupport = {
-								properties = { "documentation", "detail" },
+								properties = { "documentation", "detail", "additionalTextEdits" },
 							},
 						},
 					},

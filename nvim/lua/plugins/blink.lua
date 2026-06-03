@@ -90,14 +90,6 @@ return {
 					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 					dap = { name = "DAP", module = "blink-cmp-dap" },
 					path = { opts = { show_hidden_files_by_default = true } },
-					lsp = {
-						transform_items = function(_, items)
-							for _, item in ipairs(items) do
-								item.additionalTextEdits = nil
-							end
-							return items
-						end,
-					},
 				},
 			},
 			fuzzy = {
