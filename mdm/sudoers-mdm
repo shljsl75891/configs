@@ -13,11 +13,17 @@ Cmnd_Alias ZSCALER_LOAD = \
 Cmnd_Alias SF_UNLOAD = \
     /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.service.plist, \
     /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.jitadmin.plist, \
-    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.mac.veltar.proxyserver.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.remotecast.kickstarter.plist, \
+    /bin/launchctl unload /Library/LaunchDaemons/com.promobitech.remotecast.service.plist
 
 Cmnd_Alias SF_LOAD = \
     /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.service.plist, \
     /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.jitadmin.plist, \
-    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.scalefusion.mac.secure-vpn-util.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.mac.veltar.proxyserver.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.remotecast.kickstarter.plist, \
+    /bin/launchctl load /Library/LaunchDaemons/com.promobitech.remotecast.service.plist
 
 sahil.jassal ALL=(root) NOPASSWD: ZSCALER_UNLOAD, ZSCALER_LOAD, SF_UNLOAD, SF_LOAD

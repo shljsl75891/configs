@@ -3,7 +3,7 @@
 # Manually: ~/.local/bin/kill-agents
 
 # Wait for MDM agents to finish loading post-login
-sleep 10
+sleep "${1:-15}"
 
 # --- Zscaler ---
 sudo launchctl unload /Library/LaunchDaemons/com.zscaler.service.plist 2>/dev/null
@@ -18,5 +18,16 @@ sudo launchctl unload /Library/LaunchDaemons/com.promobitech.scalefusion.mac.sec
 launchctl unload /Library/LaunchAgents/com.promobitech.scalefusion.mac.agent.plist 2>/dev/null
 pkill -f Scalefusion 2>/dev/null
 pkill -f SecureVPNUtil 2>/dev/null
+
+# --- Veltar (ScaleFusion network proxy) ---
+sudo launchctl unload /Library/LaunchDaemons/com.promobitech.mac.veltar.proxyserver.plist 2>/dev/null
+launchctl unload /Library/LaunchAgents/com.promobitech.mac.veltar.agent.plist 2>/dev/null
+pkill -f "Veltar" 2>/dev/null
+
+# --- RemoteCast / RemoteSupport ---
+sudo launchctl unload /Library/LaunchDaemons/com.promobitech.remotecast.kickstarter.plist 2>/dev/null
+sudo launchctl unload /Library/LaunchDaemons/com.promobitech.remotecast.service.plist 2>/dev/null
+launchctl unload /Library/LaunchAgents/com.promobitech.remotecast.notification.plist 2>/dev/null
+pkill -f "RemoteSupport" 2>/dev/null
 
 exit 0
