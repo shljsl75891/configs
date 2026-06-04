@@ -154,8 +154,6 @@ return {
 			},
 		},
 		config = function(_, opts)
-			require("dap-view").setup(opts)
-
 			local dap = require("dap")
 
 			-- Prevent nvim-dap from hijacking dap-view windows when program stops
@@ -263,6 +261,8 @@ return {
 			dap.configurations.typescript = node_configs
 			dap.configurations.javascriptreact = node_configs
 			dap.configurations.typescriptreact = node_configs
+
+			require("dap-view").setup(opts)
 		end,
 	},
 }
