@@ -35,13 +35,13 @@ return {
 				show_keymap_hints = true,
 				base_sections = {
 					breakpoints = { label = "Break", keymap = "B" },
-					scopes = { label = "Context", keymap = "C" },
+					scopes = { label = "Scope", keymap = "S" },
 					exceptions = { label = "Exception", keymap = "E" },
 					watches = { label = "Watch", keymap = "W" },
-					threads = { label = "Frame", keymap = "F" },
+					threads = { label = "Threads", keymap = "T" },
 					repl = { label = "REPL", keymap = "R" },
-					console = { label = "Term", keymap = "T" },
-					sessions = { label = "Session", keymap = "S" },
+					console = { label = "Console", keymap = "C" },
+					sessions = { label = "All Sessions", keymap = "A" },
 				},
 				controls = { enabled = false },
 			},
@@ -49,6 +49,7 @@ return {
 			auto_toggle = false,
 			follow_tab = true,
 			switchbuf = "usetab,uselast",
+			hover = { border = vim.o.winborder },
 		},
 		init = function()
 			vim.fn.sign_define(
@@ -134,8 +135,9 @@ return {
 			{
 				"<leader>k",
 				function()
-					require("dap.ui.widgets").hover()
+					require("dap-view").hover()
 				end,
+				mode = { "n", "v" },
 				desc = "Hover variable",
 			},
 			{

@@ -52,7 +52,7 @@ vim.opt.compatible = false
 vim.opt.winborder = "solid"
 -- Folding (treesitter expr set when plugin loads; start fully open)
 vim.opt.foldmethod = "expr"
-vim.opt.foldcolumn = "auto"
+vim.opt.foldcolumn = "0"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99
 -- global single status line
