@@ -4,6 +4,12 @@ alt - k : yabai -m window --focus north;
 alt - h : yabai -m window --focus west;
 alt - l : yabai -m window --focus east;
 
+# Swap window with neighbor windows 
+shift + alt - j : yabai -m window --swap south;
+shift + alt - k : yabai -m window --swap north;
+shift + alt - h : yabai -m window --swap west;
+shift + alt - l : yabai -m window --swap east;
+
 # Change focus between displays using , and .
 alt - 0x2B: yabai -m display --focus west;
 alt - 0x2F: yabai -m display --focus east;
@@ -17,10 +23,24 @@ shift + alt - 0x2F: yabai -m window --display east; yabai -m display --focus eas
 
 # Toggles some properties mode for a window
 alt - o : yabai -m window --toggle float;
-alt - m : yabai -m window --toggle zoom-parent;
+alt - m : yabai -m window --toggle zoom-fullscreen;
 
 # Launch programs
 alt - return : open -a Ghostty
 alt + shift - b : open -na "Brave Browser" --args --profile-directory="Default"
 alt - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
 alt - e : open -a "Finder"
+
+# show a window in each workspace
+alt - t : yabai -m window --toggle sticky
+
+# Move window to space (no follow)
+shift + alt - 1 : yabai -m window --space 1
+shift + alt - 2 : yabai -m window --space 2
+shift + alt - 3 : yabai -m window --space 3
+shift + alt - 4 : yabai -m window --space 4
+shift + alt - 5 : yabai -m window --space 5
+shift + alt - 6 : yabai -m window --space 6
+shift + alt - 7 : yabai -m window --space 7
+shift + alt - 8 : yabai -m window --space 8
+shift + alt - 9 : yabai -m window --space 9

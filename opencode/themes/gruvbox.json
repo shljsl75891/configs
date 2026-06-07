@@ -40,7 +40,7 @@
     "info": "darkYellowBright",
     "text": "darkFg1",
     "textMuted": "darkGray",
-    "background": "transparent",
+    "background": "darkBg0",
     "backgroundPanel": "darkBg1",
     "backgroundElement": "darkBg2",
     "border": "darkBg3",
