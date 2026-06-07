@@ -95,6 +95,10 @@ Section "Monitor"
 EndSection
 ```
 
+## Active Window Borders (macOS)
+
+Uses [borders](https://github.com/FelixKratz/JankyBorders) — standalone tool for window borders, since yabai v5+ removed built-in border support.
+
 ## MAC Useful Commands
 
 - Command to make yourself `Administrator` in MacOS
@@ -107,4 +111,10 @@ sudo dseditgroup -o edit -a $USER -t user admin
 
 ```sh
 defaults write com.apple.finder QuitMenuItem -bool true; killall Finder
+```
+
+- Auto hide the menu bar
+
+```sh
+defaults write NSGlobalDomain _HIHideMenuBar -bool true
 ```

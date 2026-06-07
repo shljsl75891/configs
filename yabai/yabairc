@@ -12,7 +12,6 @@ yabai -m config bottom_padding 5;
 yabai -m config left_padding 5;
 yabai -m config right_padding 5;
 yabai -m config window_gap 5;
-yabai -m config window_border on;
 
 # mouse autofocus on focused window - need to check this on dual monitor setup
 # yabai -m config mouse_follows_focus on;
@@ -41,3 +40,5 @@ yabai -m config window_shadow off
 yabai -m config window_opacity on
 yabai -m config active_window_opacity 0.9
 yabai -m config normal_window_opacity 0.9
+
+borders active_color=0xff8ec07c inactive_color=0xff665c54 width=3.0 &
