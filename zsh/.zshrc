@@ -24,6 +24,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias btconnect="bluetoothctl power on && bluetoothctl connect 8E:95:F1:F5:5B:D2"
 alias btdisconnect="bluetoothctl disconnect 8E:95:F1:F5:5B:D2 && bluetoothctl power off"
+alias ngrok="TERM=xterm-256color ngrok"
 
 # Prompt
 eval "$(starship init zsh)"
