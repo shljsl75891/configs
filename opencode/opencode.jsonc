@@ -37,7 +37,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "github-copilot/gpt-5.3-codex",
+      "model": "zai-coding-plan/glm-5-turbo",
       "variant": "high",
       "temperature": 0.4,
     },
