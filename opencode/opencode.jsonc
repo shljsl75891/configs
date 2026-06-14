@@ -44,7 +44,7 @@
     "build": { "color": "#d3869b" },
     "plan": { "color": "#8ec07c" },
     "explore": { "model": "opencode/big-pickle", "color": "#b8bb26" },
-    "general": { "model": "zai-coding-plan/glm-5.1", "color": "#b8bb26" },
+    "general": { "model": "zai-coding-plan/glm-5.2", "color": "#b8bb26" },
     "scout": { "model": "zai-coding-plan/glm-5-turbo", "color": "#d3869b" },
   },
   "plugin": ["@sahiljassal/opencode-anthropic-auth", "@tarquinen/opencode-dcp"],

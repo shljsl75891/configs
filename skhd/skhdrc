@@ -27,8 +27,8 @@ alt - m : yabai -m window --toggle zoom-fullscreen;
 
 # Launch programs
 alt - return : open -a Ghostty
-alt + shift - b : open -na "Brave Browser" --args --profile-directory="Default"
-alt - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
+alt - b : open -na "Brave Browser" --args --profile-directory="Default"
+alt + shift - b : open -na "Brave Browser" --args --profile-directory="Profile 1"
 alt - e : open -a "Finder"
 
 # show a window in each workspace
