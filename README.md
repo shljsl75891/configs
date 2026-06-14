@@ -101,6 +101,13 @@ Uses [borders](https://github.com/FelixKratz/JankyBorders) — standalone tool f
 
 ## MAC Useful Commands
 
+- Install psql client (required for [vim-dadbod](https://github.com/tpope/vim-dadbod)) if running through docker.
+
+```sh
+brew install libpq
+brew link --force libpq
+```
+
 - Command to make yourself `Administrator` in MacOS
 
 ```sh
