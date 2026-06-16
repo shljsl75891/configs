@@ -18,7 +18,7 @@ default-timeout=10000
 ignore-timeout=0
 
 # Icons
-icon-path=/usr/share/icons/Adwaita
+icon-path=/home/sahil.jassal/.icons/Gruvbox-Dark:/usr/share/icons/Adwaita
 max-icon-size=32
 
 # Markup
