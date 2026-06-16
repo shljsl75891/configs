@@ -1,0 +1,38 @@
+# mako config — replaces naughty notifications
+# https://github.com/emersion/mako
+# Palette: gruvbox-dark (theme.lua)
+
+font=NotoSans Nerd Font 10
+background-color=#1D2021
+text-color=#FBF1C7
+border-color=#722529
+border-size=1
+border-radius=0
+padding=8
+margin=4,4,4,4
+width=300
+max-visible=5
+layer=overlay
+anchor=top-right
+default-timeout=10000
+ignore-timeout=0
+
+# Icons
+icon-path=/usr/share/icons/Adwaita
+max-icon-size=32
+
+# Markup
+markup=1
+actions=1
+format=<b>%s</b>\n%b
+
+[urgency=low]
+border-color=#49503B
+
+[urgency=normal]
+border-color=#722529
+
+[urgency=critical]
+background-color=#722529
+border-color=#B8BB26
+default-timeout=0

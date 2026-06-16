@@ -1,0 +1,170 @@
+/* Waybar style — gruvbox-dark palette (theme.lua)
+ *
+ * Colors:
+ *   bg_normal      = #1D2021   bar background
+ *   fg_normal      = #FBF1C7   primary text
+ *   fg_focus       = #32302F   text on focus bg
+ *   bg_focus       = #62693E   ws active background
+ *   bg_urgent      = #722529   ws urgent / spr1
+ *   border_focus   = #B8BB26   active border / accent
+ *   powerline_spr1 = #722529   odd modules
+ *   powerline_spr2 = #49503B   even modules
+ *   tasklist_fg_n  = #5A633A   muted text
+ */
+
+* {
+    font-family: "NotoSans Nerd Font", "Noto Sans", sans-serif;
+    font-size: 12px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background-color: #1D2021;
+    color: #FBF1C7;
+    opacity: 0.92;
+}
+
+/* ── Workspaces ──────────────────────────────────────────────────────────── */
+
+#workspaces {
+    background: #1D2021;
+    padding: 0 4px;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    background: transparent;
+    color: #FBF1C7;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s ease;
+}
+
+#workspaces button:hover {
+    background: #32302F;
+    color: #FBF1C7;
+    border-bottom: 2px solid #49503B;
+}
+
+#workspaces button.active {
+    background: #62693E;
+    color: #FBF1C7;
+    border-bottom: 2px solid #B8BB26;
+}
+
+#workspaces button.urgent {
+    background: #722529;
+    color: #FBF1C7;
+    animation: blink 0.6s linear infinite;
+}
+
+/* ── Window title ─────────────────────────────────────────────────────────── */
+
+#window {
+    color: #B8BB26;
+    background: #1D2021;
+    padding: 0 10px;
+}
+
+/* ── Right-side modules (alternating spr1 / spr2) ────────────────────────── */
+
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#bluetooth,
+#battery,
+#backlight,
+#tray,
+#clock,
+#custom-power {
+    padding: 0 10px;
+    color: #FBF1C7;
+}
+
+/* Odd segments → powerline_spr1 (#722529) */
+#cpu,
+#network,
+#bluetooth,
+#backlight,
+#clock {
+    background-color: #722529;
+}
+
+/* Even segments → powerline_spr2 (#49503B) */
+#memory,
+#pulseaudio,
+#battery,
+#tray,
+#custom-power {
+    background-color: #49503B;
+}
+
+/* Battery states */
+#battery.warning {
+    background-color: #8F3F71;
+    color: #FBF1C7;
+}
+
+#battery.critical {
+    background-color: #722529;
+    color: #FBF1C7;
+    animation: blink 0.5s linear infinite;
+}
+
+/* Pulseaudio muted */
+#pulseaudio.muted {
+    color: #5A633A;
+}
+
+/* Bluetooth states */
+#bluetooth.connected {
+    color: #B8BB26;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: #5A633A;
+}
+
+/* Tray — no border, transparent bg */
+#tray {
+    background-color: #49503B;
+}
+
+#tray > .needs-attention {
+    background-color: #722529;
+}
+
+/* Power button */
+#custom-power {
+    color: #FBF1C7;
+    padding: 0 14px;
+}
+
+/* Clock */
+#clock {
+    padding: 0 14px;
+}
+
+/* ── Blink animation ──────────────────────────────────────────────────────── */
+
+@keyframes blink {
+    to { color: #722529; }
+}
+
+/* ── Tooltip ──────────────────────────────────────────────────────────────── */
+
+tooltip {
+    background: #1D2021;
+    border: 1px solid #722529;
+    border-radius: 0;
+    color: #FBF1C7;
+}
+
+tooltip label {
+    color: #FBF1C7;
+}

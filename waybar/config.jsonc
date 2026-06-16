@@ -1,0 +1,116 @@
+// Waybar config — migrated from awesome/bar.lua
+// Palette: gruvbox-dark (theme.lua)
+// https://github.com/Alexays/Waybar/wiki
+{
+  "layer": "top",
+  "position": "top",
+  "height": 22,
+  "spacing": 0,
+  "exclusive": true,
+
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": [],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "pulseaudio",
+    "battery",
+    "backlight",
+    "tray",
+    "clock",
+    "custom/power",
+  ],
+
+  // ── Left ──────────────────────────────────────────────────────────────────
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "󰙨",
+      "5": "󰆼",
+      "6": "󰈹",
+      "7": "",
+      "8": "",
+      "9": "",
+    },
+    "persistent-workspaces": {
+      "*": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    },
+    "on-scroll-up": "hyprctl dispatch workspace -1",
+    "on-scroll-down": "hyprctl dispatch workspace +1",
+  },
+
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 60,
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) — Brave": "$1",
+      "(.*) - Brave": "$1",
+    },
+  },
+
+  // ── Right ─────────────────────────────────────────────────────────────────
+
+  "cpu": {
+    "interval": 5,
+    "format": "󰻠  {usage}%",
+    "tooltip": false,
+  },
+
+  "memory": {
+    "interval": 10,
+    "format": "󰍛  {used:0.1f}GB",
+    "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB used",
+  },
+
+  "pulseaudio": {
+    "format": "  {volume}%",
+    "format-muted": " muted",
+    "format-icons": {
+      "default": ["", "", ""],
+    },
+    "on-click": "pavucontrol",
+    "tooltip": false,
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15,
+    },
+    "format": "  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
+    "format-plugged": "󰂄  {capacity}%",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip-format": "{timeTo}\n{power:.1f}W",
+  },
+
+  "backlight": {
+    "format": "󰃟  {percent}%",
+    "format-icons": ["", "", ""],
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-",
+    "tooltip": false,
+  },
+
+  "tray": {
+    "spacing": 5,
+    "icon-size": 14,
+  },
+
+  "clock": {
+    "format": "{:%a %b %d, %I:%M %p}",
+    "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+  },
+
+  // Power menu — replaces logout-menu-widget (with mpv punch-out reminder)
+  "custom/power": {
+    "format": "⏻",
+    "on-click": "~/.config/hypr/scripts/powermenu.sh",
+    "tooltip": false,
+  },
+}
