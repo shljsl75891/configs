@@ -23,9 +23,8 @@
 }
 
 window#waybar {
-    background-color: #1D2021;
+    background-color: rgba(29, 32, 33, 0.85);
     color: #FBF1C7;
-    opacity: 0.92;
 }
 
 /* ── Workspaces ──────────────────────────────────────────────────────────── */
