@@ -88,6 +88,7 @@ window#waybar {
 #cpu,
 #network,
 #bluetooth,
+#pulseaudio,
 #backlight,
 #clock {
     background-color: #722529;
@@ -95,7 +96,6 @@ window#waybar {
 
 /* Even segments → powerline_spr2 (#49503B) */
 #memory,
-#pulseaudio,
 #battery,
 #tray,
 #custom-power {
