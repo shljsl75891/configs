@@ -71,7 +71,7 @@ bindkey '5~' kill-word
 bindkey -s ^bf "^Usessionizer\n"
 
 ## MAC OS :(
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --shell zsh)"
 
 # Update homebrew every 5 days
@@ -85,13 +85,13 @@ alias start-zscaler="~/.local/bin/start-zscaler"
 alias start-scalefusion="~/.local/bin/start-scalefusion"
 
 # opencode
-export PATH=/Users/sahil.jassal/.opencode/bin:$PATH
+export PATH=/home/sahil.jassal/.opencode/bin:$PATH
 
 # neovim as manpager
 export MANPAGER="nvim +Man!"
 
 # bun completions
-[ -s "/Users/sahil.jassal/.bun/_bun" ] && source "/Users/sahil.jassal/.bun/_bun"
+[ -s "/home/sahil.jassal/.bun/_bun" ] && source "/home/sahil.jassal/.bun/_bun"
 
 # Blocks CLI
 export PATH="$HOME/.blocks/bin:$PATH"

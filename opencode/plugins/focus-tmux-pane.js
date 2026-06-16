@@ -22,7 +22,6 @@ export const FocusPane = async ({ $, client }) => {
         if (!isPrimaryAgent) return;
       }
 
-      await $`osascript -e 'tell application "Ghostty" to activate'`;
       if (process.env.TMUX_PANE) {
         await $`tmux select-pane -t ${process.env.TMUX_PANE}`;
         await $`tmux switch-client -t ${process.env.TMUX_PANE}`;
