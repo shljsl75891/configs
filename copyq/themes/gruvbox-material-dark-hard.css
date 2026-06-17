@@ -1,0 +1,97 @@
+/* Gruvbox Material Dark Hard — CopyQ Qt stylesheet */
+
+QScrollBar:vertical {
+    background: #1d2021;
+    width: 10px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background: #504945;
+    border-radius: 4px;
+    min-height: 20px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #665c54;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0;
+    background: none;
+    border: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background: #1d2021;
+    height: 10px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background: #504945;
+    border-radius: 4px;
+    min-width: 20px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #665c54;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0;
+    background: none;
+    border: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+QToolBar {
+    background: #1d2021;
+    border: none;
+}
+QToolButton {
+    background: #1d2021;
+    color: #7c6f64;
+    border: none;
+    padding: 4px;
+}
+QToolButton:hover {
+    background: #32302f;
+    color: #d4be98;
+}
+QToolButton:pressed {
+    background: #504945;
+    color: #d4be98;
+}
+
+QMainWindow {
+    background: #1d2021;
+}
+
+QMenuBar {
+    background: #1d2021;
+    color: #7c6f64;
+    font-size: 10pt;
+}
+QMenuBar::item {
+    padding: 4px 8px;
+    background: #1d2021;
+    color: #7c6f64;
+}
+QMenuBar::item:selected {
+    background: #3c3836;
+    color: #d4be98;
+}
+
+QMenu {
+    background: #1d2021;
+    color: #d4be98;
+    border: 1px solid #504945;
+    font-size: 10pt;
+}
+QMenu::item {
+    padding: 4px 20px;
+}
+QMenu::item:selected {
+    background: #3c3836;
+    color: #d4be98;
+}

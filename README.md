@@ -15,9 +15,10 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 ### Hyprland (Wayland — Ubuntu 26.04+)
 
 ```console
-sudo apt install hyprland waybar wofi grim slurp wl-clipboard swaybg \
-  hyprlock mako-notifier brightnessctl pamixer playerctl cliphist pcmanfm \
-  network-manager-gnome blueman xdg-desktop-portal-hyprland ghostty
+sudo apt install hyprland waybar rofi grim slurp wl-clipboard swaybg \
+  hyprlock mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
+  network-manager-gnome blueman xdg-desktop-portal-hyprland ghostty \
+  qt5ct azote
 ```
 
 ### Tools which I use to enhance my development workflow
@@ -43,12 +44,15 @@ ln -sf ~/personal/configs/hypr       ~/.config/hypr
 # Waybar
 ln -sf ~/personal/configs/waybar     ~/.config/waybar
 
-# Wofi (launcher)
-ln -sf ~/personal/configs/wofi       ~/.config/wofi
+# Rofi (launcher)
+ln -sf ~/personal/configs/rofi       ~/.config/rofi
 
 # Mako (notifications)
 mkdir -p ~/.config/mako
 ln -sf ~/personal/configs/mako/config ~/.config/mako/config
+
+# Qt5 theme (dark theme for Qt apps e.g. CopyQ)
+ln -sf ~/personal/configs/qt5ct      ~/.config/qt5ct
 
 # GTK fonts (3 + 4)
 mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
@@ -77,10 +81,11 @@ Run `hyprctl monitors` to confirm output names.
 | Key | Action |
 |---|---|
 | `Super+Return` | ghostty terminal |
-| `Super+r` | wofi launcher |
-| `Super+e` | pcmanfm |
+| `Super+r` | rofi app launcher |
+| `Super+e` | pcmanfm file manager |
 | `Super+b` / `Super+Shift+b` | brave (work / personal) |
 | `Super+Shift+o` | obsidian |
+| `Super+p` | CopyQ clipboard history |
 | `Print` | screenshot → clipboard |
 | `Super+h/j/k/l` | focus left/down/up/right |
 | `Super+Shift+j/k` | swap window next/prev |
@@ -112,10 +117,9 @@ Run `hyprctl monitors` to confirm output names.
 
 - **No true minimize**: `Super+n` moves to `special:min` workspace; `Super+Shift+n` restores.
 - **No multi-tag toggle** (`Super+Ctrl+#` / `Super+Ctrl+Shift+#`): not supported in Hyprland.
-- **Lua widgets not portable**: waybar native modules used (cpu/mem/net/audio/battery/backlight/bluetooth/clock/tray + power menu).
+- **Lua widgets not portable**: waybar native modules used (cpu/mem/net/audio/battery/backlight/clock/tray + power menu).
 - **picom not needed**: Hyprland is its own compositor.
 - **xinput touchpad**: replaced by `input {}` block in hyprland.conf.
-- **Powerline arrows**: approximated in waybar CSS with Unicode characters; not pixel-perfect.
 
 ## Fix Screen Tearing
 
@@ -174,54 +178,3 @@ x-scheme-handler/postman=Postman.desktop
 ![](/assets/2025-05-14-06-57-57.png)
 
 ![](/assets/2025-05-14-06-58-17.png)
-
-## Multi monitor conf - `/etc/X11/xorg.conf.d/30-monitors.conf`
-
-```conf
-Section "Monitor"
-   Identifier "eDP1"
-   Option "PreferredMode" "1920x1080"
-   Option "TargetRefresh" "60"
-   Option "LeftOf" "HDMI1"
-   Option "Position" "0 0"
-EndSection
-
-Section "Monitor"
-   Identifier "HDMI1"
-   Option "PreferredMode" "1920x1080"
-   Option "TargetRefresh" "60"
-   Option "RightOf" "eDP1"
-   Option "Position" "1920 0"
-EndSection
-```
-
-## Active Window Borders (macOS)
-
-Uses [borders](https://github.com/FelixKratz/JankyBorders) — standalone tool for window borders, since yabai v5+ removed built-in border support.
-
-## MAC Useful Commands
-
-- Install psql client (required for [vim-dadbod](https://github.com/tpope/vim-dadbod)) if running through docker.
-
-```sh
-brew install libpq
-brew link --force libpq
-```
-
-- Command to make yourself `Administrator` in MacOS
-
-```sh
-sudo dseditgroup -o edit -a $USER -t user admin
-```
-
-- Enable Quitting MAC finder
-
-```sh
-defaults write com.apple.finder QuitMenuItem -bool true; killall Finder
-```
-
-- Auto hide the menu bar
-
-```sh
-defaults write NSGlobalDomain _HIHideMenuBar -bool true
-```

@@ -84,6 +84,9 @@ export PATH=$PATH:$HOME/go/bin
 alias start-zscaler="~/.local/bin/start-zscaler"
 alias start-scalefusion="~/.local/bin/start-scalefusion"
 
+# Rust / cargo
+. "$HOME/.cargo/env"
+
 # opencode
 export PATH=/home/sahil.jassal/.opencode/bin:$PATH
 
@@ -95,3 +98,6 @@ export MANPAGER="nvim +Man!"
 
 # Blocks CLI
 export PATH="$HOME/.blocks/bin:$PATH"
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
