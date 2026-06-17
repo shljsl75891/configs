@@ -1,169 +1,187 @@
-/* Waybar style — gruvbox-dark palette (theme.lua)
+/* Waybar style — V7 island layout, gruvbox-dark palette
  *
- * Colors:
- *   bg_normal      = #1D2021   bar background
- *   fg_normal      = #FBF1C7   primary text
- *   fg_focus       = #32302F   text on focus bg
- *   bg_focus       = #62693E   ws active background
- *   bg_urgent      = #722529   ws urgent / spr1
- *   border_focus   = #B8BB26   active border / accent
- *   powerline_spr1 = #722529   odd modules
- *   powerline_spr2 = #49503B   even modules
- *   tasklist_fg_n  = #5A633A   muted text
+ *  bg  = #1D2021   module background
+ *  fg  = #FBF1C7   primary text
  */
 
 * {
-    font-family: "NotoSans Nerd Font", "Noto Sans", sans-serif;
-    font-size: 12px;
-    min-height: 0;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
+  font-family: "NotoSans Nerd Font", "Noto Sans", sans-serif;
+  font-size: 12px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
 }
 
+/* ── Bar ──────────────────────────────────────────────────────────────────── */
+
 window#waybar {
-    background-color: rgba(29, 32, 33, 0.85);
-    color: #FBF1C7;
+  background: transparent;
+  color: #FBF1C7;
+}
+
+window#waybar.empty #window {
+  background: transparent;
+  color: transparent;
+  padding: 0;
+  margin: 0;
 }
 
 /* ── Workspaces ──────────────────────────────────────────────────────────── */
 
 #workspaces {
-    background: #1D2021;
-    padding: 0 4px;
+  background: #928374;
+  border-radius: 4px;
+  padding: 0;
+  margin: 4px 2px;
+  opacity: 0.8;
 }
+
 
 #workspaces button {
-    padding: 0 6px;
-    background: transparent;
-    color: #FBF1C7;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s ease;
-}
-
-#workspaces button:hover {
-    background: #32302F;
-    color: #FBF1C7;
-    border-bottom: 2px solid #49503B;
+  padding: 0 7px;
+  color: #1D2021;
+  background: transparent;
+  border-radius: 0;
+  transition: all 0.2s ease;
 }
 
 #workspaces button.active {
-    background: #62693E;
-    color: #FBF1C7;
-    border-bottom: 2px solid #B8BB26;
+  background: #1D2021;
+  color: #FBF1C7;
 }
+
 
 #workspaces button.urgent {
-    background: #722529;
-    color: #FBF1C7;
-    animation: blink 0.6s linear infinite;
+  background: #722529;
+  color: #FBF1C7;
 }
 
-/* ── Window title ─────────────────────────────────────────────────────────── */
-
-#window {
-    color: #B8BB26;
-    background: #1D2021;
-    padding: 0 10px;
+#workspaces button:first-child {
+  border-radius: 4px 0 0 4px;
 }
 
-/* ── Right-side modules (alternating spr1 / spr2) ────────────────────────── */
+#workspaces button:last-child {
+  border-radius: 0 4px 4px 0;
+}
 
-#cpu,
-#memory,
-#network,
-#pulseaudio,
-#bluetooth,
-#battery,
-#backlight,
-#tray,
+#workspaces button:hover {
+  background: #1D2021;
+  color: #FBF1C7;
+  transition: all 0.2s ease;
+}
+
+/* ── All right-side pills + clock (shared layout) ────────────────────────── */
+
 #clock,
-#custom-power {
-    padding: 0 10px;
-    color: #FBF1C7;
-}
-
-/* Odd segments → powerline_spr1 (#722529) */
 #cpu,
-#network,
-#bluetooth,
-#pulseaudio,
-#backlight,
-#clock {
-    background-color: #722529;
-}
-
-/* Even segments → powerline_spr2 (#49503B) */
 #memory,
+#pulseaudio,
 #battery,
+#backlight,
 #tray,
+#mpris,
 #custom-power {
-    background-color: #49503B;
+  color: #1D2021;
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin: 4px 2px;
+  opacity: 0.8;
 }
 
-/* Battery states */
+/* ── Per-module colors (Gruvbox Material Dark Hard) ──────────────────────── */
+
+#cpu        { background: #ea6962; } /* red    */
+#memory     { background: #e78a4e; } /* orange */
+#backlight  { background: #d8a657; } /* yellow */
+#pulseaudio { background: #a9b665; } /* green  */
+#battery    { background: #89b482; } /* aqua   */
+#tray       { background: #1D2021; color: #FBF1C7; }
+#custom-power { background: #d3869b; } /* purple */
+#mpris      { background: #7daea3; } /* blue   */
+#clock      { background: #89b482; }
+
+/* ── Clock (center) ───────────────────────────────────────────────────────── */
+
+#clock {
+  padding: 3px 10px;
+  margin: 4px 0;
+}
+
+/* ── Hover ────────────────────────────────────────────────────────────────── */
+
+#cpu:hover,
+#memory:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#battery:hover,
+#custom-power:hover,
+#clock:hover {
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* ── Battery states ───────────────────────────────────────────────────────── */
+
 #battery.warning {
-    background-color: #8F3F71;
-    color: #FBF1C7;
+  background: #8f3f71;
+  color: #FBF1C7;
 }
 
 #battery.critical {
-    background-color: #722529;
-    color: #FBF1C7;
-    animation: blink 0.5s linear infinite;
+  background: #722529;
+  color: #FBF1C7;
+  animation: blink 0.5s linear infinite;
 }
 
-/* Pulseaudio muted */
+/* ── Pulseaudio muted ─────────────────────────────────────────────────────── */
+
 #pulseaudio.muted {
-    color: #5A633A;
+  color: rgba(251, 241, 199, 0.4);
 }
 
-/* Bluetooth states */
-#bluetooth.connected {
-    color: #B8BB26;
-}
+/* ── Tray ─────────────────────────────────────────────────────────────────── */
 
-#bluetooth.disabled,
-#bluetooth.off {
-    color: #5A633A;
-}
-
-/* Tray — no border, transparent bg */
 #tray {
-    background-color: #49503B;
+  padding: 5px 8px;
 }
 
 #tray > .needs-attention {
-    background-color: #722529;
+  background: #722529;
 }
 
-/* Power button */
+/* ── Power button ─────────────────────────────────────────────────────────── */
+
 #custom-power {
-    color: #FBF1C7;
-    padding: 0 14px;
+  padding: 5px 14px;
 }
 
-/* Clock */
-#clock {
-    padding: 0 14px;
+#custom-power:hover {
+  background: #722529;
+  transition: all 0.3s ease;
+}
+
+/* ── mpris ────────────────────────────────────────────────────────────────── */
+
+#mpris {
+  padding: 5px 12px;
 }
 
 /* ── Blink animation ──────────────────────────────────────────────────────── */
 
 @keyframes blink {
-    to { color: #722529; }
+  to { color: #722529; }
 }
 
 /* ── Tooltip ──────────────────────────────────────────────────────────────── */
 
 tooltip {
-    background: #1D2021;
-    border: 1px solid #722529;
-    border-radius: 0;
-    color: #FBF1C7;
+  background: #1D2021;
+  border-radius: 4px;
+  color: #FBF1C7;
 }
 
 tooltip label {
-    color: #FBF1C7;
+  color: #FBF1C7;
 }
