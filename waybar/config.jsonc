@@ -46,7 +46,7 @@
   // ── Center ────────────────────────────────────────────────────────────────
 
   "clock": {
-    "format": "{:%d %B %Y  %I:%M:%S %p}",
+    "format": "{:%a %d %B %Y  %I:%M:%S %p}",
     "format-alt": "{:%I:%M %p}",
     "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
     "interval": 1,
