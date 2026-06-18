@@ -34,7 +34,7 @@ export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
 export NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=8096"
 
 # Chrome for Karma Testing
-export CHROME_BIN='/Applications/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
+export CHROME_BIN='/opt/google/chrome/chrome'
 
 # Gruvbox for FZF
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
