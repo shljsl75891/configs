@@ -18,7 +18,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 sudo apt install hyprland waybar rofi grim slurp wl-clipboard swaybg \
   hyprlock mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
   network-manager-gnome blueman xdg-desktop-portal-hyprland ghostty \
-  qt5ct azote
+  qt5ct azote xsettingsd
 ```
 
 ### Tools which I use to enhance my development workflow
@@ -63,6 +63,9 @@ ln -sf ~/personal/configs/gtk-4.0/settings.ini ~/.config/gtk-4.0/settings.ini
 mkdir -p ~/.config/fontconfig
 ln -sf ~/personal/configs/fontconfig/fonts.conf ~/.config/fontconfig/fonts.conf
 fc-cache -f
+
+# xsettingsd (legacy GTK/XWayland font/theme propagation)
+ln -sf ~/personal/configs/fontconfig/xsettingsd.conf ~/.config/xsettingsd/xsettingsd.conf
 ```
 
 ### Multi-monitor (Wayland)

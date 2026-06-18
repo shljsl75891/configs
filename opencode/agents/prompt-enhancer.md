@@ -2,7 +2,7 @@
 description: Transform raw or unclear requirements into concise, optimized prompts. Specializes in reducing hallucination and maximizing prompt clarity.
 mode: subagent
 temperature: 1.0
-model: github-copilot/claude-sonnet-4.5
+model: opencode-go/kimi-k2.6
 color: "#fe8019"
 tools:
   write: false
