@@ -18,7 +18,7 @@
 
 window#waybar {
   background: transparent;
-  color: #FBF1C7;
+  color: #fbf1c7;
 }
 
 window#waybar.empty #window {
@@ -38,24 +38,22 @@ window#waybar.empty #window {
   opacity: 0.8;
 }
 
-
 #workspaces button {
   padding: 0 7px;
-  color: #1D2021;
+  color: #1d2021;
   background: transparent;
   border-radius: 0;
   transition: all 0.2s ease;
 }
 
 #workspaces button.active {
-  background: #1D2021;
-  color: #FBF1C7;
+  background: #1d2021;
+  color: #fbf1c7;
 }
-
 
 #workspaces button.urgent {
   background: #722529;
-  color: #FBF1C7;
+  color: #fbf1c7;
 }
 
 #workspaces button:first-child {
@@ -67,8 +65,8 @@ window#waybar.empty #window {
 }
 
 #workspaces button:hover {
-  background: #1D2021;
-  color: #FBF1C7;
+  background: #1d2021;
+  color: #fbf1c7;
   transition: all 0.2s ease;
 }
 
@@ -76,7 +74,7 @@ window#waybar.empty #window {
 
 #clock,
 #mpris {
-  color: #1D2021;
+  color: #1d2021;
   border-radius: 4px;
   padding: 4px 8px;
   margin: 6px 2px 0;
@@ -92,7 +90,7 @@ window#waybar.empty #window {
 #battery,
 #tray,
 #custom-power {
-  color: #1D2021;
+  color: #1d2021;
   border-radius: 0;
   padding: 4px 3px;
   margin: 6px 0 0;
@@ -101,15 +99,36 @@ window#waybar.empty #window {
 
 /* ── Per-module colors (Gruvbox Material Dark Hard) ──────────────────────── */
 
-#cpu        { background: #ea6962; } /* red    */
-#memory     { background: #e78a4e; } /* orange */
-#backlight  { background: #d8a657; } /* yellow */
-#pulseaudio { background: #a9b665; } /* green  */
-#battery    { background: #89b482; } /* aqua   */
-#tray       { background: #1D2021; color: #FBF1C7; }
-#custom-power { background: #d3869b; border-radius: 0 4px 4px 0; margin-right: 10px; } /* purple */
-#mpris      { background: #7daea3; } /* blue   */
-#clock      { background: #89b482; }
+#cpu {
+  background: #ea6962;
+} /* red    */
+#memory {
+  background: #e78a4e;
+} /* orange */
+#backlight {
+  background: #d8a657;
+} /* yellow */
+#pulseaudio {
+  background: #a9b665;
+} /* green  */
+#battery {
+  background: #89b482;
+} /* aqua   */
+#tray {
+  background: #1d2021;
+  color: #fbf1c7;
+}
+#custom-power {
+  background: #d3869b;
+  border-radius: 0 4px 4px 0;
+  margin-right: 10px;
+} /* purple */
+#mpris {
+  background: #7daea3;
+} /* blue   */
+#clock {
+  background: #89b482;
+}
 
 /* ── Arrows between right-side modules ───────────────────────────────────── */
 /* color = left-module bg (triangle fill), background = right-module bg      */
@@ -129,20 +148,41 @@ window#waybar.empty #window {
 }
 
 /* ◀ rule: color = RIGHT module bg (triangle fill), background = LEFT side  */
-#custom-arr0 { color: #ea6962; background: transparent; border-radius: 4px 0 0 4px; } /* entry → red   */
-#custom-arr1 { color: #e78a4e; background: #ea6962; } /* red    → orange  */
-#custom-arr2 { color: #d8a657; background: #e78a4e; } /* orange → yellow  */
-#custom-arr3 { color: #a9b665; background: #d8a657; } /* yellow → green   */
-#custom-arr4 { color: #89b482; background: #a9b665; } /* green  → aqua    */
-#custom-arr5 { color: #1D2021; background: #89b482; } /* aqua   → dark    */
-#custom-arr6 { color: #d3869b; background: #1D2021; } /* dark   → purple  */
+#custom-arr0 {
+  color: #ea6962;
+  background: transparent;
+  border-radius: 4px 0 0 4px;
+} /* entry → red   */
+#custom-arr1 {
+  color: #e78a4e;
+  background: #ea6962;
+} /* red    → orange  */
+#custom-arr2 {
+  color: #d8a657;
+  background: #e78a4e;
+} /* orange → yellow  */
+#custom-arr3 {
+  color: #a9b665;
+  background: #d8a657;
+} /* yellow → green   */
+#custom-arr4 {
+  color: #89b482;
+  background: #a9b665;
+} /* green  → aqua    */
+#custom-arr5 {
+  color: #1d2021;
+  background: #89b482;
+} /* aqua   → dark    */
+#custom-arr6 {
+  color: #d3869b;
+  background: #1d2021;
+} /* dark   → purple  */
 
 /* ── Clock (center) ───────────────────────────────────────────────────────── */
 
 #clock {
   padding: 4px 10px;
   margin: 6px 0 0;
-  font-weight: bold;
 }
 
 /* ── Hover ────────────────────────────────────────────────────────────────── */
@@ -162,12 +202,12 @@ window#waybar.empty #window {
 
 #battery.warning {
   background: #8f3f71;
-  color: #FBF1C7;
+  color: #fbf1c7;
 }
 
 #battery.critical {
   background: #722529;
-  color: #FBF1C7;
+  color: #fbf1c7;
   animation: blink 0.5s linear infinite;
 }
 
@@ -207,17 +247,19 @@ window#waybar.empty #window {
 /* ── Blink animation ──────────────────────────────────────────────────────── */
 
 @keyframes blink {
-  to { color: #722529; }
+  to {
+    color: #722529;
+  }
 }
 
 /* ── Tooltip ──────────────────────────────────────────────────────────────── */
 
 tooltip {
-  background: #1D2021;
+  background: #1d2021;
   border-radius: 4px;
-  color: #FBF1C7;
+  color: #fbf1c7;
 }
 
 tooltip label {
-  color: #FBF1C7;
+  color: #fbf1c7;
 }
