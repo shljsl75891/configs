@@ -81,40 +81,40 @@ Run `hyprctl monitors` to confirm output names.
 
 ### Keybinding cheat-sheet
 
-| Key | Action |
-|---|---|
-| `Super+Return` | ghostty terminal |
-| `Super+r` | rofi app launcher |
-| `Super+e` | nautilus file manager |
-| `Super+b` / `Super+Shift+b` | brave (work / personal) |
-| `Super+Shift+o` | obsidian |
-| `Super+p` | CopyQ clipboard history |
-| `Print` | screenshot → clipboard |
-| `Super+h/j/k/l` | focus left/down/up/right |
-| `Super+Shift+j/k` | swap window next/prev |
-| `Super+Shift+Return` | swap with master |
-| `Super+=` / `Super+-` | add/remove master |
-| `Super+Ctrl+=` / `Super+Ctrl+-` | cycle layout orientation |
-| `Super+Tab` | focus next monitor |
-| `Super+u` | jump to urgent window |
-| `Super+f` | fullscreen |
-| `Super+m` | maximize |
-| `Super+q` | close window |
-| `Super+o` | toggle floating |
-| `Super+t` | pin (always visible) |
-| `Super+n` | minimize → special workspace |
-| `Super+Shift+n` | restore minimized |
-| `Super+arrows` | resize window |
-| `Alt+arrows` | move floating window |
-| `Super+x` | toggle waybar |
-| `Super+BackSpace` | dismiss all notifications |
-| `Super+Ctrl+r` | reload hyprland config |
-| `Super+1..9` | switch workspace |
-| `Super+Shift+1..9` | move window to workspace |
-| `XF86MonBrightness*` | brightness ±5% |
-| `XF86Audio*` | volume / mute (wpctl) |
-| `Super+LMB drag` | move window |
-| `Super+RMB drag` | resize window |
+| Key                             | Action                       |
+| ------------------------------- | ---------------------------- |
+| `Super+Return`                  | ghostty terminal             |
+| `Super+r`                       | rofi app launcher            |
+| `Super+e`                       | nautilus file manager        |
+| `Super+b` / `Super+Shift+b`     | brave (work / personal)      |
+| `Super+Shift+o`                 | obsidian                     |
+| `Super+p`                       | CopyQ clipboard history      |
+| `Print`                         | screenshot → clipboard       |
+| `Super+h/j/k/l`                 | focus left/down/up/right     |
+| `Super+Shift+j/k`               | swap window next/prev        |
+| `Super+Shift+Return`            | swap with master             |
+| `Super+=` / `Super+-`           | add/remove master            |
+| `Super+Ctrl+=` / `Super+Ctrl+-` | cycle layout orientation     |
+| `Super+Tab`                     | focus next monitor           |
+| `Super+u`                       | jump to urgent window        |
+| `Super+f`                       | fullscreen                   |
+| `Super+m`                       | maximize                     |
+| `Super+q`                       | close window                 |
+| `Super+o`                       | toggle floating              |
+| `Super+t`                       | pin (always visible)         |
+| `Super+n`                       | minimize → special workspace |
+| `Super+Shift+n`                 | restore minimized            |
+| `Super+arrows`                  | resize window                |
+| `Alt+arrows`                    | move floating window         |
+| `Super+x`                       | toggle waybar                |
+| `Super+BackSpace`               | dismiss all notifications    |
+| `Super+Ctrl+r`                  | reload hyprland config       |
+| `Super+1..9`                    | switch workspace             |
+| `Super+Shift+1..9`              | move window to workspace     |
+| `XF86MonBrightness*`            | brightness ±5%               |
+| `XF86Audio*`                    | volume / mute (wpctl)        |
+| `Super+LMB drag`                | move window                  |
+| `Super+RMB drag`                | resize window                |
 
 ### Caveats vs Awesome WM
 
@@ -178,6 +178,16 @@ x-scheme-handler/postman=Postman.desktop
 
 ## ScreenShots
 
+#### Awesome WM
+
 ![](/assets/2025-05-14-06-57-57.png)
 
 ![](/assets/2025-05-14-06-58-17.png)
+
+#### Hyprland
+
+![](/assets/2026-06-20-13-40-12.png)
+
+![](/assets/2026-06-20-13-39-58.png)
+
+![](/assets/2026-06-20-13-40-27.png)
