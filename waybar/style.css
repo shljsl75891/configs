@@ -88,8 +88,7 @@ window#waybar.empty #window {
 #backlight,
 #pulseaudio,
 #battery,
-#tray,
-#custom-power {
+#tray {
   color: #1d2021;
   border-radius: 0;
   padding: 4px 3px;
@@ -118,11 +117,6 @@ window#waybar.empty #window {
   background: #1d2021;
   color: #fbf1c7;
 }
-#custom-power {
-  background: #d3869b;
-  border-radius: 0 4px 4px 0;
-  margin-right: 8px;
-} /* purple */
 #mpris {
   background: #7daea3;
 } /* blue   */
@@ -220,16 +214,12 @@ window#waybar.empty #window {
 
 #tray {
   padding: 4px 3px;
+  border-radius: 0 4px 4px 0;
+  margin-right: 8px;
 }
 
 #tray > .needs-attention {
   background: #722529;
-}
-
-/* ── Power button ─────────────────────────────────────────────────────────── */
-
-#custom-power {
-  padding: 4px 10px 4px 6px;
 }
 
 /* ── mpris ────────────────────────────────────────────────────────────────── */

@@ -22,8 +22,6 @@
     "battery",
     "custom/arr5",
     "tray",
-    "custom/arr6",
-    "custom/power",
   ],
 
   // ── Left ──────────────────────────────────────────────────────────────────
@@ -132,15 +130,9 @@
     "tooltip-format": "{timeTo}\n{power:.1f}W",
   },
 
-  "custom/power": {
-    "format": "⏻",
-    "on-click": "~/.config/hypr/scripts/powermenu.sh",
-    "tooltip": false,
-  },
-
   // ── Arrows (Nerd Font U+E0B0 ▶) ───────────────────────────────────────────
   // cpu(red) → memory(orange) → backlight(yellow) → pulseaudio(green)
-  // → battery(aqua) → tray(dark) → power(purple)
+  // → battery(aqua) → tray(dark)
 
   "custom/arr0": { "format": "\uE0B2", "tooltip": false },
   "custom/arr1": { "format": "\uE0B2", "tooltip": false },
@@ -148,5 +140,4 @@
   "custom/arr3": { "format": "\uE0B2", "tooltip": false },
   "custom/arr4": { "format": "\uE0B2", "tooltip": false },
   "custom/arr5": { "format": "\uE0B2", "tooltip": false },
-  "custom/arr6": { "format": "\uE0B2", "tooltip": false },
 }
