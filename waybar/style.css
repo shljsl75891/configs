@@ -34,7 +34,7 @@ window#waybar.empty #window {
   background: #928374;
   border-radius: 4px;
   padding: 0;
-  margin: 4px 2px;
+  margin: 6px 2px 0 10px;
   opacity: 0.8;
 }
 
@@ -72,22 +72,31 @@ window#waybar.empty #window {
   transition: all 0.2s ease;
 }
 
-/* ── All right-side pills + clock (shared layout) ────────────────────────── */
+/* ── Clock (shared layout) ───────────────────────────────────────────────── */
 
 #clock,
-#cpu,
-#memory,
-#pulseaudio,
-#battery,
-#backlight,
-#tray,
-#mpris,
-#custom-power {
+#mpris {
   color: #1D2021;
   border-radius: 4px;
-  padding: 3px 8px;
-  margin: 4px 2px;
+  padding: 4px 8px;
+  margin: 6px 2px 0;
   opacity: 0.8;
+}
+
+/* ── Right-side modules — continuous connected strip ─────────────────────── */
+
+#cpu,
+#memory,
+#backlight,
+#pulseaudio,
+#battery,
+#tray,
+#custom-power {
+  color: #1D2021;
+  border-radius: 0;
+  padding: 4px 3px;
+  margin: 6px 0 0;
+  opacity: 0.9;
 }
 
 /* ── Per-module colors (Gruvbox Material Dark Hard) ──────────────────────── */
@@ -98,15 +107,42 @@ window#waybar.empty #window {
 #pulseaudio { background: #a9b665; } /* green  */
 #battery    { background: #89b482; } /* aqua   */
 #tray       { background: #1D2021; color: #FBF1C7; }
-#custom-power { background: #d3869b; } /* purple */
+#custom-power { background: #d3869b; border-radius: 0 4px 4px 0; margin-right: 10px; } /* purple */
 #mpris      { background: #7daea3; } /* blue   */
 #clock      { background: #89b482; }
+
+/* ── Arrows between right-side modules ───────────────────────────────────── */
+/* color = left-module bg (triangle fill), background = right-module bg      */
+
+#custom-arr0,
+#custom-arr1,
+#custom-arr2,
+#custom-arr3,
+#custom-arr4,
+#custom-arr5,
+#custom-arr6 {
+  font-size: 20px;
+  padding: 0;
+  margin: 6px 0 0;
+  border-radius: 0;
+  opacity: 0.9;
+}
+
+/* ◀ rule: color = RIGHT module bg (triangle fill), background = LEFT side  */
+#custom-arr0 { color: #ea6962; background: transparent; border-radius: 4px 0 0 4px; } /* entry → red   */
+#custom-arr1 { color: #e78a4e; background: #ea6962; } /* red    → orange  */
+#custom-arr2 { color: #d8a657; background: #e78a4e; } /* orange → yellow  */
+#custom-arr3 { color: #a9b665; background: #d8a657; } /* yellow → green   */
+#custom-arr4 { color: #89b482; background: #a9b665; } /* green  → aqua    */
+#custom-arr5 { color: #1D2021; background: #89b482; } /* aqua   → dark    */
+#custom-arr6 { color: #d3869b; background: #1D2021; } /* dark   → purple  */
 
 /* ── Clock (center) ───────────────────────────────────────────────────────── */
 
 #clock {
-  padding: 3px 10px;
-  margin: 4px 0;
+  padding: 4px 10px;
+  margin: 6px 0 0;
+  font-weight: bold;
 }
 
 /* ── Hover ────────────────────────────────────────────────────────────────── */
@@ -144,7 +180,7 @@ window#waybar.empty #window {
 /* ── Tray ─────────────────────────────────────────────────────────────────── */
 
 #tray {
-  padding: 5px 8px;
+  padding: 4px 3px;
 }
 
 #tray > .needs-attention {
@@ -154,7 +190,7 @@ window#waybar.empty #window {
 /* ── Power button ─────────────────────────────────────────────────────────── */
 
 #custom-power {
-  padding: 5px 14px;
+  padding: 4px 6px;
 }
 
 #custom-power:hover {
@@ -165,7 +201,7 @@ window#waybar.empty #window {
 /* ── mpris ────────────────────────────────────────────────────────────────── */
 
 #mpris {
-  padding: 5px 12px;
+  padding: 4px 12px;
 }
 
 /* ── Blink animation ──────────────────────────────────────────────────────── */

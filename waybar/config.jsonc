@@ -4,19 +4,25 @@
   "reload_style_on_change": true,
   "layer": "top",
   "position": "top",
-  "height": 26,
   "spacing": 0,
   "exclusive": true,
 
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
+    "custom/arr0",
     "cpu",
+    "custom/arr1",
     "memory",
+    "custom/arr2",
     "backlight",
+    "custom/arr3",
     "pulseaudio",
+    "custom/arr4",
     "battery",
+    "custom/arr5",
     "tray",
+    "custom/arr6",
     "custom/power",
   ],
 
@@ -131,4 +137,16 @@
     "on-click": "~/.config/hypr/scripts/powermenu.sh",
     "tooltip": false,
   },
+
+  // ── Arrows (Nerd Font U+E0B0 ▶) ───────────────────────────────────────────
+  // cpu(red) → memory(orange) → backlight(yellow) → pulseaudio(green)
+  // → battery(aqua) → tray(dark) → power(purple)
+
+  "custom/arr0": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr1": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr2": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr3": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr4": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr5": { "format": "\uE0B2", "tooltip": false },
+  "custom/arr6": { "format": "\uE0B2", "tooltip": false },
 }
