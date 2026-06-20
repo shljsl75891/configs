@@ -24,100 +24,31 @@ description: Comprehensive guidelines for writing clean, minimal, well-tested co
 - Do not suppress type errors with `any` or `unknown` unless explicitly asked
 - Use dedicated types; only define abstract classes or interfaces when one or more classes implement them
 
-# Code Quality for TypeScript
+## Testing
 
-## Naming & Variables
+Test Driven Development is the default workflow. Follow it unless the user explicitly opts out.
 
-- Use meaningful, descriptive names — reader should know what it is without context
-- Same vocabulary for the same concept: `getUser()` not `getUserInfo/getUserData`
-- Use named constants, not magic numbers: `MILLISECONDS_PER_DAY` not `86400000`
-- Avoid mental mapping — explicit over implicit (`user` not `u`)
-- No redundant context: `Car.make` not `Car.carMake`
-- Use default params instead of short-circuit conditionals: `count = 10` not `count || 10`
-- Use enums for sets of related values
+#### Workflow
 
-## Functions
+1. **Plan**: list behaviors to test; confirm with user, get approval
+2. **Tracer bullet**: one test → minimal impl; proves end-to-end path
+3. **Loop**: repeat one test → one impl; never anticipate future tests
+4. **Refactor**: after GREEN only (see Design > Refactor Candidates); run tests after each step
 
-- ≤2 params ideally; use an options object for >2
-- Do one thing only — if you can describe it with "and", split it
-- Name by what they do: `addMonthToDate` not `addToDate`
-- No flag params — split into two functions instead
-- No side effects — return results, don't mutate inputs:
-
-```ts
-// good
-function addItemToCart(cart: CartItem[], item: Item): CartItem[] {
-  return [...cart, { item, date: Date.now() }];
-}
-```
-
-- Favor `map/filter/reduce` over imperative loops
-- Encapsulate conditionals into named predicate functions
-- Prefer positive conditionals: `isEmailUsed` not `isEmailNotUsed`
-- Use polymorphism over switch/if-chains when each case has distinct behavior
-- Remove dead code — version control preserves history
-
-## Types & Classes
-
-- `type` for unions/intersections; `interface` when using `extends`/`implements`
-- Prefer `readonly` and immutability:
-
-```ts
-interface Config {
-  readonly host: string;
-  readonly port: string;
-}
-```
-
-- Use `private readonly` in constructor params
-- Small classes with single responsibility — one reason to change
-- High cohesion, low coupling — split classes with unrelated method groups
-- Prefer composition over inheritance
-- **SOLID in brief:**
-  - **Single Responsibility**: one reason to change; extract unrelated concerns
-  - **Open/Closed**: extend via new classes, not by modifying existing ones
-  - **Liskov Substitution**: subtypes must be substitutable without breaking behavior
-  - **Interface Segregation**: split large interfaces; don't force unused methods on clients
-  - **Dependency Inversion**: depend on abstractions; inject dependencies rather than instantiating them
-
-## Async & Errors
-
-- Prefer `async/await` over callbacks or chained `.then()`
-- Use `Promise.all` for parallel tasks; `Promise.race` for timeouts
-- Always `throw new Error()`, never strings — preserves stack trace
-- Never swallow caught errors — handle or log with context
-- Never ignore rejected promises — use `.catch()` or `try/catch`
-
-## Formatting & Comments
-
-- `PascalCase`: classes, interfaces, types, enums
-- `camelCase`: variables, functions, class members
-- `SCREAMING_SNAKE_CASE`: module-level constants
-- Place caller above callee — read top-to-bottom
-- Import order: polyfills → Node builtins → external → internal → parent → sibling
-- Use `import type` for type-only imports
-- Use TS path aliases to avoid deep relative imports
-- Only comment when logic is non-obvious and cannot be made clear through naming
-- Never leave commented-out code — delete it
-- No journal/changelog comments — use `git log`
-- Use `// TODO:` for planned improvements only
-
-# Testing
-
-## Good vs Bad Tests
+#### Good vs Bad Tests
 
 Test behavior through public interfaces, not implementation details:
 
 ```ts
-// GOOD
-test("user can checkout with valid cart", async () => {
+// GOOD - tests public interface, uses it and should
+it("should check user can checkout with valid cart", async () => {
   const cart = createCart();
   cart.add(product);
   const result = await checkout(cart, paymentMethod);
   expect(result.status).toBe("confirmed");
 });
 
-// BAD — coupled to internals
+// BAD — coupled to internals and not using it and should
 test("checkout calls paymentService.process", async () => {
   const mockPayment = jest.mock(paymentService);
   await checkout(cart, payment);
@@ -125,39 +56,29 @@ test("checkout calls paymentService.process", async () => {
 });
 ```
 
-A good test:
-
-- Verifies behavior callers care about
-- Uses public API only
-- Survives internal refactors
-- Describes WHAT, not HOW
-
 Red flags: mocking internal collaborators, testing private methods, verifying via DB queries instead of the interface.
 
-## When to Mock
+#### Testability
 
-Mock at **system boundaries only**: external APIs, databases (prefer test DB), time/randomness, file system.
+Mock at **system boundaries only**: external APIs, databases (prefer test DB), time/randomness, file system. Never mock your own classes/modules or anything you control.
 
-**Never mock**: your own classes/modules, internal collaborators, anything you control.
-
-## Design for Testability
-
-Accept dependencies, don't create them:
+Accept dependencies, don't create them. Return results, don't produce side effects. Prefer SDK-style interfaces — specific functions per operation, not generic fetchers — so each is independently mockable.
 
 ```ts
-// testable
-function processPayment(order, paymentClient) {
-  return paymentClient.charge(order.total);
-}
+// GOOD: each function independently mockable, one return shape per mock
+const api = {
+  getUser: (id) => fetch(`/users/${id}`),
+  getOrders: (userId) => fetch(`/users/${userId}/orders`),
+  createOrder: (data) => fetch("/orders", { method: "POST", body: data }),
+};
+
+// BAD: mocking requires conditional logic inside the mock
+const api = {
+  fetch: (endpoint, options) => fetch(endpoint, options),
+};
 ```
 
-Return results, don't produce side effects. Prefer SDK-style interfaces — specific functions per operation, not generic fetchers — so each is independently mockable.
-
-Small surface area: fewer methods = fewer tests, fewer params = simpler setup.
-
-# Design
-
-## Deep Modules
+#### Deep Modules
 
 **Deep module = small interface + lots of implementation.** Hide complexity inside; expose minimal surface.
 
@@ -167,7 +88,7 @@ Avoid shallow modules that just pass through. When designing interfaces ask:
 - Can I simplify the parameters?
 - Can I hide more complexity inside?
 
-## Refactor Candidates
+#### Refactor Candidates
 
 After each cycle, look for:
 
@@ -178,21 +99,20 @@ After each cycle, look for:
 - **Primitive obsession** → introduce value objects
 - **Existing code** the new code reveals as problematic
 
-# Test Driven Development
+#### Anti-Pattern: Horizontal Slices
 
-Always suggest this workflow to the user and ask if they want to follow it.
+**Never write all tests first, then all implementation.**
 
-If the user agrees, follow red-green-refactor:
+```
+WRONG (horizontal):
+  RED:   test1, test2, test3, test4, test5
+  GREEN: impl1, impl2, impl3, impl4, impl5
 
-- **RED**: write one failing test for next behavior
-- **GREEN**: write minimal code to pass it
-- **REFACTOR**: clean up, then repeat
+RIGHT (vertical):
+  RED→GREEN: test1→impl1
+  RED→GREEN: test2→impl2
+  RED→GREEN: test3→impl3
+  ...
+```
 
-Never write all tests first then all code — one test → one implementation → repeat.
-
-Per-cycle checklist:
-
-- [ ] Test describes behavior, not implementation
-- [ ] Test uses public interface only
-- [ ] Test would survive internal refactor
-- [ ] Code is minimal for this test
+Bulk tests guess at behavior before you understand the implementation — they test _shape_, not behavior.
