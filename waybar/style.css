@@ -34,7 +34,7 @@ window#waybar.empty #window {
   background: #928374;
   border-radius: 4px;
   padding: 0;
-  margin: 6px 2px 0 10px;
+  margin: 6px 2px 0 8px;
   opacity: 0.8;
 }
 
@@ -121,7 +121,7 @@ window#waybar.empty #window {
 #custom-power {
   background: #d3869b;
   border-radius: 0 4px 4px 0;
-  margin-right: 10px;
+  margin-right: 8px;
 } /* purple */
 #mpris {
   background: #7daea3;
