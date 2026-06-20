@@ -17,7 +17,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 ```console
 sudo apt install hyprland waybar rofi grim slurp wl-clipboard swaybg \
   hyprlock mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
-  network-manager-gnome blueman xdg-desktop-portal-hyprland ghostty \
+  network-manager-gnome blueman xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ghostty \
   qt5ct azote xsettingsd
 ```
 
