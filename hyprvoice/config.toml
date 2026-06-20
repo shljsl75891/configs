@@ -1,0 +1,30 @@
+# hyprvoice — voice-powered typing for Wayland/Hyprland
+# Docs: https://github.com/leonardotrapani/hyprvoice/blob/main/docs/config.md
+# API key is read from GROQ_API_KEY env var (set in ~/.config/environment.d/api-keys.conf)
+
+[transcription]
+  provider = "groq-transcription"
+  model    = "whisper-large-v3-turbo"   # faster variant; swap to "whisper-large-v3" for max accuracy
+  language = "en"
+
+[llm]
+  enabled = false   # enable later via `hyprvoice configure` for grammar/punctuation cleanup
+
+[recording]
+  sample_rate         = 16000   # recommended for speech
+  channels            = 1       # mono
+  format              = "s16"
+  buffer_size         = 8192    # internal buffer in bytes
+  channel_buffer_size = 30      # audio frame buffer
+  timeout             = "5m"    # auto-stop safety net
+
+[injection]
+  # wtype gives direct text injection; clipboard is the safe fallback
+  # Install wtype with: sudo apt install wtype
+  backends          = ["wtype", "clipboard"]
+  wtype_timeout     = "5s"
+  clipboard_timeout = "3s"
+
+[notifications]
+  enabled = true
+  type    = "desktop"   # uses notify-send (mako)

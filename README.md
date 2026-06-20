@@ -15,7 +15,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 ### Hyprland (Wayland — Ubuntu 26.04+)
 
 ```console
-sudo apt install hyprland waybar rofi grim slurp wl-clipboard swaybg \
+sudo apt install hyprland waybar rofi grim slurp wl-clipboard wtype swaybg \
   hyprlock mako-notifier brightnessctl pamixer playerctl copyq nautilus \
   network-manager-gnome blueman xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ghostty \
   qt5ct azote xsettingsd
@@ -66,6 +66,9 @@ fc-cache -f
 
 # xsettingsd (legacy GTK/XWayland font/theme propagation)
 ln -sf ~/personal/configs/fontconfig/xsettingsd.conf ~/.config/xsettingsd/xsettingsd.conf
+
+# hyprvoice (voice-to-text dictation)
+ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
 ```
 
 ### Multi-monitor (Wayland)
@@ -106,6 +109,8 @@ Run `hyprctl monitors` to confirm output names.
 | `Super+Shift+n`                 | restore minimized            |
 | `Super+arrows`                  | resize window                |
 | `Alt+arrows`                    | move floating window         |
+| `Super+d`                       | start / stop voice dictation |
+| `Super+Shift+d`                 | cancel / discard dictation   |
 | `Super+x`                       | toggle waybar                |
 | `Super+BackSpace`               | dismiss all notifications    |
 | `Super+Ctrl+r`                  | reload hyprland config       |
@@ -115,6 +120,66 @@ Run `hyprctl monitors` to confirm output names.
 | `XF86Audio*`                    | volume / mute (wpctl)        |
 | `Super+LMB drag`                | move window                  |
 | `Super+RMB drag`                | resize window                |
+
+### Voice Dictation (hyprvoice)
+
+Voice-to-text via [hyprvoice](https://github.com/leonardotrapani/hyprvoice) + Groq cloud (whisper-large-v3-turbo, ~200ms latency).
+
+**One-time setup on a fresh machine:**
+
+```bash
+# 1. Install binary
+wget -O ~/.local/bin/hyprvoice \
+  https://github.com/leonardotrapani/hyprvoice/releases/download/v1.0.2/hyprvoice-linux-x86_64
+chmod +x ~/.local/bin/hyprvoice
+
+# 2. Install systemd user service
+mkdir -p ~/.config/systemd/user
+cat > ~/.config/systemd/user/hyprvoice.service << 'EOF'
+[Unit]
+Description=hyprvoice voice-to-text daemon
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/hyprvoice serve
+Restart=on-failure
+RestartSec=3
+PassEnvironment=WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR XDG_SESSION_TYPE DISPLAY
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
+EOF
+
+# 3. Set Groq API key (get free key at console.groq.com)
+#    Add to ~/.zshenv:
+#      export GROQ_API_KEY=gsk_...
+#    Then inject into the service:
+mkdir -p ~/.config/systemd/user/hyprvoice.service.d
+cat > ~/.config/systemd/user/hyprvoice.service.d/env.conf << 'EOF'
+[Service]
+Environment=GROQ_API_KEY=<your-key-here>
+EOF
+
+# 4. Enable and start
+systemctl --user daemon-reload
+systemctl --user enable --now hyprvoice
+```
+
+**Symlink config** (already covered in Symlink configs section above):
+```bash
+ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
+```
+
+**Usage:**
+- `Super+d` — start recording (speak)
+- `Super+d` again — stop and transcribe → text injected at cursor
+- `Super+Shift+d` — cancel/discard
+
+> Note: uses `bindr` (fires on key release) so SUPER is fully released before text injection — prevents modifier interference with Hyprland keybinds.
 
 ### Caveats vs Awesome WM
 
