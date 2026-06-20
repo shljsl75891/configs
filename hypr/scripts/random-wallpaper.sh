@@ -19,4 +19,4 @@ fi
 # Kill any existing swaybg instance before spawning a new one
 pkill -x swaybg 2>/dev/null; sleep 0.1
 
-swaybg -i "$WALL" -m fill &
+swaybg -i "$WALL" -m stretch &
