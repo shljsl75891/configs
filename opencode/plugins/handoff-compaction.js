@@ -38,6 +38,9 @@ Omit empty sections. Use exact headers shown.
 ## Session Summary
 [2-4 sentences: what was accomplished, where work stopped, what the next phase is]
 
+## Skills Used
+- [skill-name] — [why invoked / what it contributed]
+
 ## Decisions Made
 | Decision | Options Considered | Rationale |
 |---|---|---|
