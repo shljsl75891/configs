@@ -1,0 +1,48 @@
+# Gruvbox Dark — morhetz palette (https://github.com/morhetz/gruvbox)
+# Requires truecolor terminal (COLORTERM=truecolor)
+
+user: "#ebdbb2"   # fg1
+group: "#d5c4a1"  # fg2
+
+permission:
+  read: "#b8bb26"    # bright_green
+  write: "#fabd2f"   # bright_yellow
+  exec: "#fb4934"    # bright_red
+  exec-sticky: "#d3869b"  # bright_purple
+  no-access: "#928374"    # neutral_gray
+  octal: "#fe8019"        # bright_orange
+  acl: "#689d6a"          # dark_aqua
+  context: "#8ec07c"      # bright_aqua
+
+date:
+  hour-old: "#b8bb26"  # bright_green
+  day-old: "#fabd2f"   # bright_yellow
+  older: "#689d6a"     # dark_aqua
+
+size:
+  none: "#928374"    # neutral_gray
+  small: "#b8bb26"   # bright_green
+  medium: "#fabd2f"  # bright_yellow
+  large: "#fe8019"   # bright_orange
+
+inode:
+  valid: "#8f3f71"   # dark_purple
+  invalid: "#928374" # neutral_gray
+
+links:
+  valid: "#8f3f71"   # dark_purple
+  invalid: "#928374" # neutral_gray
+
+tree-edge: "#928374"  # neutral_gray
+
+git-status:
+  default: "#928374"       # neutral_gray
+  unmodified: "#928374"    # neutral_gray
+  ignored: "#665c54"       # bg3 (dim)
+  new-in-index: "#b8bb26"  # bright_green
+  new-in-workdir: "#b8bb26"# bright_green
+  typechange: "#fabd2f"    # bright_yellow
+  deleted: "#fb4934"       # bright_red
+  renamed: "#8ec07c"       # bright_aqua
+  modified: "#fabd2f"      # bright_yellow
+  conflicted: "#fb4934"    # bright_red

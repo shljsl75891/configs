@@ -46,6 +46,9 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="󱞩 "
   --layout="default" --info="right"'
 
+# Gruvbox LS_COLORS (for lsd file/dir colors) — requires vivid: cargo install vivid
+command -v vivid &>/dev/null && export LS_COLORS="$(vivid generate gruvbox-dark)"
+
 # Node Version Manager
 FNM_PATH="/home/sahil.jassal/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
