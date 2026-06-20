@@ -16,7 +16,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 
 ```console
 sudo apt install hyprland waybar rofi grim slurp wl-clipboard swaybg \
-  hyprlock mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
+  hyprlock mako-notifier brightnessctl pamixer playerctl copyq nautilus \
   network-manager-gnome blueman xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ghostty \
   qt5ct azote xsettingsd
 ```
@@ -85,7 +85,7 @@ Run `hyprctl monitors` to confirm output names.
 |---|---|
 | `Super+Return` | ghostty terminal |
 | `Super+r` | rofi app launcher |
-| `Super+e` | pcmanfm file manager |
+| `Super+e` | nautilus file manager |
 | `Super+b` / `Super+Shift+b` | brave (work / personal) |
 | `Super+Shift+o` | obsidian |
 | `Super+p` | CopyQ clipboard history |
@@ -161,7 +161,7 @@ The current content in this file
 ```dosini
 [Added Associations]
 text/plain=nvim.desktop;
-inode/directory=pcmanfm.desktop;
+inode/directory=org.gnome.Nautilus.desktop;
 application/json=nvim.desktop;
 application/vnd.appimage=gnome-disk-image-writer.desktop;
 image/svg+xml=nvim.desktop;
