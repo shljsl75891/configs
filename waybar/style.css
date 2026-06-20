@@ -94,7 +94,7 @@ window#waybar.empty #window {
   border-radius: 0;
   padding: 4px 3px;
   margin: 6px 0 0;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 /* ── Per-module colors (Gruvbox Material Dark Hard) ──────────────────────── */
@@ -144,7 +144,7 @@ window#waybar.empty #window {
   padding: 0;
   margin: 6px 0 0;
   border-radius: 0;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 /* ◀ rule: color = RIGHT module bg (triangle fill), background = LEFT side  */
@@ -192,7 +192,6 @@ window#waybar.empty #window {
 #pulseaudio:hover,
 #backlight:hover,
 #battery:hover,
-#custom-power:hover,
 #clock:hover {
   opacity: 1;
   transition: all 0.3s ease;
@@ -230,12 +229,7 @@ window#waybar.empty #window {
 /* ── Power button ─────────────────────────────────────────────────────────── */
 
 #custom-power {
-  padding: 4px 6px;
-}
-
-#custom-power:hover {
-  background: #722529;
-  transition: all 0.3s ease;
+  padding: 4px 10px 4px 6px;
 }
 
 /* ── mpris ────────────────────────────────────────────────────────────────── */
