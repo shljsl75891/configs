@@ -90,6 +90,10 @@ alias start-scalefusion="~/.local/bin/start-scalefusion"
 # Rust / cargo
 . "$HOME/.cargo/env"
 
+# go 
+export PATH=$PATH:/usr/local/go/bin
+export GOBIN=${GOBIN:-$(go env GOPATH)/bin}
+
 # opencode
 export PATH=/home/sahil.jassal/.opencode/bin:$PATH
 
@@ -99,8 +103,6 @@ export MANPAGER="nvim +Man!"
 # bun completions
 [ -s "/home/sahil.jassal/.bun/_bun" ] && source "/home/sahil.jassal/.bun/_bun"
 
-# Blocks CLI
-export PATH="$HOME/.blocks/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
