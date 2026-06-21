@@ -54,8 +54,8 @@ style  = "bg:color_orange"
 format = '[[ ($all_status$ahead_behind )](fg:color_bg1 bg:color_orange)]($style)'
 
 [character]
-success_symbol = " "
-error_symbol   = " "
+success_symbol = ""
+error_symbol   = ""
 
 [package]
 disabled = true
