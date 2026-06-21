@@ -1,57 +1,61 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = "$directory$git_branch $git_state$git_status$cmd_duration$character"
+format = """
+$directory\
+[](fg:color_red bg:color_yellow)\
+$git_branch\
+[](fg:color_yellow bg:color_orange)\
+$git_state\
+$git_status\
+[](fg:color_orange bg:color_yellow)\
+$cmd_duration\
+[](fg:color_yellow)\
+$character"""
 
-palette = 'gruvbox'
 add_newline = false
 command_timeout = 2000
+palette = 'gruvbox_dark'
 
-[palettes.gruvbox]
-aqua   = '#689D6A'
-yellow = '#D79921'
-blue   = '#458588'
-orange = '#D65D0E'
-red    = '#722529'
-purple = '#B16286'
-green  = '#98971A'
-fg0    = '#FBF1C7'
-bg1    = '#3C3836'
-bg3    = '#665C54'
+[palettes.gruvbox_dark]
+color_fg0    = '#D4BE98'
+color_bg1    = '#1d2021'
+color_bg3    = '#504945'
+color_blue   = '#7daea3'
+color_aqua   = '#89B482'
+color_green  = '#A9B665'
+color_orange = '#E78A4E'
+color_purple = '#D3869B'
+color_red    = '#EA6962'
+color_yellow = '#D8A657'
 
 [cmd_duration]
-min_time = 1000
+style  = 'fg:color_bg1 bg:color_yellow'
+format = '[ $duration ]($style)'
 show_milliseconds = false
+min_time = 1000
 
 [directory]
-style = "bold fg:aqua"
+style            = "fg:color_bg1 bg:color_red"
+format           = "[ $path ]($style)"
 truncation_length = 1
 truncation_symbol = '…/'
 
 [git_branch]
-style = "bold fg:green"
-symbol = ' '
-format = '[$symbol$branch]($style)'
+symbol = ""
+style  = "bg:color_yellow"
+format = '[[ $symbol $branch ](fg:color_bg1 bg:color_yellow)]($style)'
 
 [git_state]
-style = "bold fg:aqua"
+style  = "fg:color_bg1 bg:color_orange"
+format = '[ $state( $progress_current/$progress_total) ]($style)'
 
 [git_status]
-style = "fg:aqua "
-conflicted = '='
-up_to_date = ''
-untracked = '?${count}'
-stashed = '\$${count}'
-modified = '!${count}'
-staged = '+${count}'
-renamed = '»'
-deleted = '✘'
-ahead = '⇡${count}'
-diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-behind = '⇣${count}'
+style  = "bg:color_orange"
+format = '[[ ($all_status$ahead_behind )](fg:color_bg1 bg:color_orange)]($style)'
 
 [character]
-success_symbol = '[❯](bold purple)'
-error_symbol = '[❯](bold red)'
+success_symbol = " "
+error_symbol   = " "
 
 [package]
 disabled = true

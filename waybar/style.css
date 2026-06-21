@@ -1,7 +1,7 @@
 /* Waybar style — V7 island layout, gruvbox-dark palette
  *
  *  bg  = #1D2021   module background
- *  fg  = #FBF1C7   primary text
+ *  fg  = #d4be98   primary text
  */
 
 * {
@@ -18,7 +18,7 @@
 
 window#waybar {
   background: transparent;
-  color: #fbf1c7;
+  color: #d4be98;
 }
 
 window#waybar.empty #window {
@@ -48,12 +48,12 @@ window#waybar.empty #window {
 
 #workspaces button.active {
   background: #1d2021;
-  color: #fbf1c7;
+  color: #d4be98;
 }
 
 #workspaces button.urgent {
-  background: #722529;
-  color: #fbf1c7;
+  background: #ea6962;
+  color: #d4be98;
 }
 
 #workspaces button:first-child {
@@ -66,7 +66,7 @@ window#waybar.empty #window {
 
 #workspaces button:hover {
   background: #1d2021;
-  color: #fbf1c7;
+  color: #d4be98;
   transition: all 0.2s ease;
 }
 
@@ -115,7 +115,7 @@ window#waybar.empty #window {
 } /* aqua   */
 #tray {
   background: #1d2021;
-  color: #fbf1c7;
+  color: #d4be98;
 }
 #mpris {
   background: #7daea3;
@@ -194,13 +194,13 @@ window#waybar.empty #window {
 /* ── Battery states ───────────────────────────────────────────────────────── */
 
 #battery.warning {
-  background: #8f3f71;
-  color: #fbf1c7;
+  background: #d3869b;
+  color: #d4be98;
 }
 
 #battery.critical {
-  background: #722529;
-  color: #fbf1c7;
+  background: #ea6962;
+  color: #d4be98;
   animation: blink 0.5s linear infinite;
 }
 
@@ -219,7 +219,7 @@ window#waybar.empty #window {
 }
 
 #tray > .needs-attention {
-  background: #722529;
+  background: #ea6962;
 }
 
 /* ── mpris ────────────────────────────────────────────────────────────────── */
@@ -232,7 +232,7 @@ window#waybar.empty #window {
 
 @keyframes blink {
   to {
-    color: #722529;
+    color: #ea6962;
   }
 }
 
@@ -241,9 +241,9 @@ window#waybar.empty #window {
 tooltip {
   background: #1d2021;
   border-radius: 4px;
-  color: #fbf1c7;
+  color: #d4be98;
 }
 
 tooltip label {
-  color: #fbf1c7;
+  color: #d4be98;
 }
