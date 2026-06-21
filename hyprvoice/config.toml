@@ -36,7 +36,7 @@
 [injection]
   backends = ["wtype"]
   ydotool_timeout = "3s"
-  wtype_timeout = "5s"
+  wtype_timeout = "30s"
   clipboard_timeout = "3s"
 
 # Desktop Notification Configuration
