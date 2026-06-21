@@ -19,3 +19,5 @@ keybind = shift+enter=text:\x1b\r
 
 clipboard-read = allow
 clipboard-write = allow
+
+confirm-close-surface = false
