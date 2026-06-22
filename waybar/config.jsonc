@@ -124,9 +124,9 @@
       "critical": 15,
     },
     "format": "󰂀  {capacity}%",
-    "format-charging": "󰂄  {capacity}%",
-    "format-plugged": "󰂄  {capacity}%",
-    "format-icons": ["󰂀", "󰂀", "󰂀", "󰂀", "󰂀"],
+    "format-charging": "󰂉  {capacity}%",
+    "format-plugged": "󰂉  {capacity}%",
+    "format-icons": ["󰂉", "󰂉", "󰂀", "󰂀", "󰂀"],
     "tooltip-format": "{timeTo}\n{power:.1f}W",
   },
 
