@@ -82,7 +82,7 @@ return {
 				find_node_process = false,
 			},
 			chat = {
-				model = "github-copilot/claude-haiku-4.5",
+				model = "anthropic/claude-haiku-4-5",
 			},
 		},
 	},
