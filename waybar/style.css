@@ -199,15 +199,15 @@ window#waybar.empty #window {
 }
 
 #battery.critical {
-  background: #ea6962;
-  color: #d4be98;
+  background: #89b482;
+  color: #1d2021;
   animation: blink 0.5s linear infinite;
 }
 
 /* ── Pulseaudio muted ─────────────────────────────────────────────────────── */
 
 #pulseaudio.muted {
-  color: rgba(251, 241, 199, 0.4);
+  color: #1d2021;
 }
 
 /* ── Tray ─────────────────────────────────────────────────────────────────── */
