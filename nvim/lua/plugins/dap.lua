@@ -175,9 +175,7 @@ return {
 				end
 			end
 
-			-- Correct tmux pane when debugger hits a breakpoint
 			dap.listeners.after.event_stopped["focus-tmux-pane"] = function()
-				vim.fn.jobstart({ "hyprctl", "dispatch", "workspace", "2" })
 				local pane = vim.env.TMUX_PANE
 				if pane then
 					vim.fn.jobstart({ "tmux", "select-pane", "-t", pane })

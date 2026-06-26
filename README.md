@@ -12,44 +12,43 @@ git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv cmake
 ```
 
-### Hyprland (Wayland — Ubuntu 26.04+)
+### Sway (Wayland — Ubuntu 26.04+)
 
 ```console
-sudo apt install hyprland waybar rofi grim slurp wl-clipboard wtype swaybg \
-  hyprlock mako-notifier brightnessctl pamixer playerctl copyq nautilus \
-  network-manager-gnome blueman xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ghostty \
-  qt5ct azote xsettingsd
+sudo apt install sway waybar grim slurp wl-clipboard wtype swaybg swaylock \
+  mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
+  network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
+  qt5ct xsettingsd autotiling wmenu
 ```
 
 ### Tools which I use to enhance my development workflow
 
 - Linux (Ubuntu 26.04 LTS)
 - Neovim configured from scratch (ref: [Primeagen's video](https://www.youtube.com/watch?v=w7i4amO_zaE))
-- Hyprland (Wayland) — migrated from Awesome WM
+- Sway (Wayland) — migrated from Hyprland / Awesome WM
 - VSCode with VIM Extension configured
 
-## Hyprland Setup (Ubuntu 26.04 / Wayland)
+## Sway Setup (Ubuntu 26.04 / Wayland)
 
 ### Session
 
-Log out of GNOME → at GDM login screen, click the gear icon → select **Hyprland**.
-Hyprland cannot be launched from inside a running GNOME session.
+Log out of GNOME → at GDM login screen, click the gear icon → select **Sway**.
+Sway cannot be launched from inside a running GNOME session.
 
 ### Symlink configs
 
 ```bash
-# Hyprland + scripts
-ln -sf ~/personal/configs/hypr       ~/.config/hypr
+# Sway + scripts
+ln -sf ~/personal/configs/sway       ~/.config/sway
+
+# Swaylock
+ln -sf ~/personal/configs/swaylock   ~/.config/swaylock
 
 # Waybar
 ln -sf ~/personal/configs/waybar     ~/.config/waybar
 
-# Rofi (launcher)
-ln -sf ~/personal/configs/rofi       ~/.config/rofi
-
 # Mako (notifications)
-mkdir -p ~/.config/mako
-ln -sf ~/personal/configs/mako/config ~/.config/mako/config
+ln -sf ~/personal/configs/mako       ~/.config/mako
 
 # Qt5 theme (dark theme for Qt apps e.g. CopyQ)
 ln -sf ~/personal/configs/qt5ct      ~/.config/qt5ct
@@ -73,53 +72,18 @@ ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
 
 ### Multi-monitor (Wayland)
 
-Edit `hypr/hyprland.conf` — replace the generic monitor line with explicit entries:
+List outputs:
 
-```ini
-monitor = eDP-1,  1920x1080@60, 0x0,    1
-monitor = HDMI-A-1, 1920x1080@60, 1920x0, 1
+```bash
+swaymsg -t get_outputs
 ```
 
-Run `hyprctl monitors` to confirm output names.
+Edit `sway/config` — replace the generic output line with explicit entries:
 
-### Keybinding cheat-sheet
-
-| Key                             | Action                       |
-| ------------------------------- | ---------------------------- |
-| `Super+Return`                  | ghostty terminal             |
-| `Super+r`                       | rofi app launcher            |
-| `Super+e`                       | nautilus file manager        |
-| `Super+b` / `Super+Shift+b`     | brave (work / personal)      |
-| `Super+Shift+o`                 | obsidian                     |
-| `Super+p`                       | CopyQ clipboard history      |
-| `Print`                         | screenshot → clipboard       |
-| `Super+h/j/k/l`                 | focus left/down/up/right     |
-| `Super+Shift+j/k`               | swap window next/prev        |
-| `Super+Shift+Return`            | swap with master             |
-| `Super+=` / `Super+-`           | add/remove master            |
-| `Super+Ctrl+=` / `Super+Ctrl+-` | cycle layout orientation     |
-| `Super+Tab`                     | focus next monitor           |
-| `Super+u`                       | jump to urgent window        |
-| `Super+f`                       | fullscreen                   |
-| `Super+m`                       | maximize                     |
-| `Super+q`                       | close window                 |
-| `Super+o`                       | toggle floating              |
-| `Super+t`                       | pin (always visible)         |
-| `Super+n`                       | minimize → special workspace |
-| `Super+Shift+n`                 | restore minimized            |
-| `Super+arrows`                  | resize window                |
-| `Alt+arrows`                    | move floating window         |
-| `Super+d`                       | start / stop voice dictation |
-| `Super+Shift+d`                 | cancel / discard dictation   |
-| `Super+x`                       | toggle waybar                |
-| `Super+BackSpace`               | dismiss all notifications    |
-| `Super+Ctrl+r`                  | reload hyprland config       |
-| `Super+1..9`                    | switch workspace             |
-| `Super+Shift+1..9`              | move window to workspace     |
-| `XF86MonBrightness*`            | brightness ±5%               |
-| `XF86Audio*`                    | volume / mute (wpctl)        |
-| `Super+LMB drag`                | move window                  |
-| `Super+RMB drag`                | resize window                |
+```
+output eDP-1    resolution 1920x1080 position 0,0    scale 1
+output HDMI-A-1 resolution 1920x1080 position 1920,0 scale 1
+```
 
 ### Voice Dictation (hyprvoice)
 
@@ -145,7 +109,7 @@ Type=simple
 ExecStart=%h/.local/bin/hyprvoice serve
 Restart=on-failure
 RestartSec=3
-PassEnvironment=WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR XDG_SESSION_TYPE DISPLAY
+PassEnvironment=WAYLAND_DISPLAY XDG_RUNTIME_DIR XDG_SESSION_TYPE DISPLAY
 
 StandardOutput=journal
 StandardError=journal
@@ -175,19 +139,17 @@ ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
 ```
 
 **Usage:**
-- `Super+d` — start recording (speak)
-- `Super+d` again — stop and transcribe → text injected at cursor
+- `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
 
-> Note: uses `bindr` (fires on key release) so SUPER is fully released before text injection — prevents modifier interference with Hyprland keybinds.
+### Caveats vs Hyprland / Awesome WM
 
-### Caveats vs Awesome WM
-
-- **No true minimize**: `Super+n` moves to `special:min` workspace; `Super+Shift+n` restores.
-- **No multi-tag toggle** (`Super+Ctrl+#` / `Super+Ctrl+Shift+#`): not supported in Hyprland.
-- **Lua widgets not portable**: waybar native modules used (cpu/mem/net/audio/battery/backlight/clock/tray + power menu).
-- **picom not needed**: Hyprland is its own compositor.
-- **xinput touchpad**: replaced by `input {}` block in hyprland.conf.
+- **No blur or rounded corners**: standard Sway has none; use SwayFX fork if needed.
+- **No maximize**: Sway has no native maximize command; `Super+f` toggles fullscreen.
+- **autotiling for layout**: master-stack behavior via the `autotiling` script (alternating splits).
+- **No pin/always-on-top**: Sway has no equivalent; use `sticky toggle` to make a window visible on all workspaces.
+- **picom not needed**: Sway is its own Wayland compositor.
+- **Touchpad config**: managed via `input type:touchpad {}` block in `sway/config`.
 
 ## Fix Screen Tearing
 
@@ -241,18 +203,10 @@ x-scheme-handler/webcal=brave-browser.desktop
 x-scheme-handler/postman=Postman.desktop
 ```
 
-## ScreenShots
+## Screenshots
 
 #### Awesome WM
 
 ![](/assets/2025-05-14-06-57-57.png)
 
 ![](/assets/2025-05-14-06-58-17.png)
-
-#### Hyprland
-
-![](/assets/2026-06-20-13-40-12.png)
-
-![](/assets/2026-06-20-13-39-58.png)
-
-![](/assets/2026-06-20-13-40-27.png)

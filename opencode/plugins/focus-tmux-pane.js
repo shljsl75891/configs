@@ -15,7 +15,6 @@ export const FocusPane = async ({ $, client }) => {
         "permission.asked",
         "question.asked",
       ];
-      const TERMINAL_WORKSPACE = 2;
       if (!eventsToWatch.includes(event.type)) return;
       if (event.type === "session.idle") {
         const { sessionID } = event.properties;
@@ -23,7 +22,6 @@ export const FocusPane = async ({ $, client }) => {
         if (!isPrimaryAgent) return;
       }
 
-      await $`hyprctl dispatch workspace ${TERMINAL_WORKSPACE}`.quiet();
       if (process.env.TMUX_PANE) {
         await $`tmux select-pane -t ${process.env.TMUX_PANE}`;
         await $`tmux switch-client -t ${process.env.TMUX_PANE}`;
