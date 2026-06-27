@@ -47,7 +47,7 @@
     "build": { "color": "#d3869b" },
     "plan": { "permission": { "edit": "deny" }, "color": "#8ec07c" },
     "explore": { "model": "opencode-go/deepseek-v4-flash", "color": "#b8bb26" },
-    "general": { "model": "opencode-go/glm-5.2", "color": "#b8bb26" },
+    "general": { "model": "zai-coding-plan/glm-5.2", "color": "#b8bb26" },
     "scout": {
       "model": "opencode-go/minimax-m3",
       "mode": "subagent",
