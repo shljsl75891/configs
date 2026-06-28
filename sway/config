@@ -17,6 +17,7 @@ exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CUR
 exec_always $scripts/random-wallpaper.sh
 exec_always bash -c "pidof autotiling || autotiling"
 exec_always bash -c "pidof nm-applet || nm-applet --indicator"
+exec_always bash -c "pidof blueman-applet || blueman-applet"
 exec_always bash -c "pidof copyq || copyq"
 exec_always bash -c "pidof mako || mako"
 exec systemctl --user restart hyprvoice
