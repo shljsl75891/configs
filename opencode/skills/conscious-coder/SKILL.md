@@ -10,19 +10,46 @@ description: Comprehensive guidelines for writing clean, minimal, well-tested co
 - State assumptions explicitly; if uncertain, ask the user
 - If multiple interpretations exist, present all — never pick one silently
 - Name what is confusing and ask rather than guessing
+- If a simpler approach exists, say so; push back when warranted
 
 ## Simplicity First
 
 - Do not add features, abstractions, flexibility, or error handling beyond what was asked
+- No abstractions for single-use code
+- No error handling for impossible scenarios
 - If the same outcome can be achieved with significantly less code, always prefer it — failing to do so is grounds for rejection without review
+- If you write 200 lines and it could be 50, rewrite it
 - If a senior engineer would call it over-complicated, simplify it
 
 ## Surgical Changes
 
 - Touch only what is needed — every changed line must trace back to the user's request
 - Do not improve adjacent code, comments, or formatting; it increases diff size and review time
+- Match existing style, even if you'd do it differently
+- If you notice unrelated dead code, mention it — don't delete it
+- Remove imports/variables/functions YOUR changes made unused
+- Don't remove pre-existing dead code unless asked
 - Do not suppress type errors with `any` or `unknown` unless explicitly asked
 - Use dedicated types; only define abstract classes or interfaces when one or more classes implement them
+
+## Goal-Driven Execution
+
+Define success criteria. Loop until verified.
+
+Transform tasks into verifiable goals:
+
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan with per-step verify checks:
+
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+```
+
+Strong success criteria enable independent looping. Weak criteria ("make it work") require constant clarification.
 
 ## Testing
 
@@ -116,3 +143,7 @@ RIGHT (vertical):
 ```
 
 Bulk tests guess at behavior before you understand the implementation — they test _shape_, not behavior.
+
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
