@@ -14,7 +14,7 @@ return {
 						"emmet_language_server",
 						"eslint-lsp",
 						"jsonls",
-						"ts_ls",
+						"tsgo",
 						"lua_ls",
 						"tailwindcss",
 						"cssls",
@@ -102,7 +102,11 @@ return {
 						completionItem = {
 							snippetSupport = true,
 							resolveSupport = {
-								properties = { "documentation", "detail", "additionalTextEdits" },
+								properties = {
+									"documentation",
+									"detail",
+									"additionalTextEdits",
+								},
 							},
 						},
 					},
