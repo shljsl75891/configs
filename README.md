@@ -21,13 +21,6 @@ sudo apt install sway waybar grim slurp wl-clipboard wtype swaybg swaylock \
   qt5ct xsettingsd autotiling wmenu
 ```
 
-### Tools which I use to enhance my development workflow
-
-- Linux (Ubuntu 26.04 LTS)
-- Neovim configured from scratch (ref: [Primeagen's video](https://www.youtube.com/watch?v=w7i4amO_zaE))
-- Sway (Wayland) — migrated from Hyprland / Awesome WM
-- VSCode with VIM Extension configured
-
 ## Sway Setup (Ubuntu 26.04 / Wayland)
 
 ### Session
@@ -38,36 +31,19 @@ Sway cannot be launched from inside a running GNOME session.
 ### Symlink configs
 
 ```bash
-# Sway + scripts
 ln -sf ~/personal/configs/sway       ~/.config/sway
-
-# Swaylock
 ln -sf ~/personal/configs/swaylock   ~/.config/swaylock
-
-# Waybar
 ln -sf ~/personal/configs/waybar     ~/.config/waybar
-
-# Mako (notifications)
 ln -sf ~/personal/configs/mako       ~/.config/mako
-
-# Qt5 theme (dark theme for Qt apps e.g. CopyQ)
 ln -sf ~/personal/configs/qt5ct      ~/.config/qt5ct
+ln -sf ~/personal/configs/hyprvoice  ~/.config/hyprvoice
 
-# GTK fonts (3 + 4)
-mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
-ln -sf ~/personal/configs/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
-ln -sf ~/personal/configs/gtk-4.0/settings.ini ~/.config/gtk-4.0/settings.ini
-
-# Fontconfig (Qt / system-wide font aliases)
-mkdir -p ~/.config/fontconfig
-ln -sf ~/personal/configs/fontconfig/fonts.conf ~/.config/fontconfig/fonts.conf
-fc-cache -f
-
-# xsettingsd (legacy GTK/XWayland font/theme propagation)
+mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0 ~/.config/fontconfig
+ln -sf ~/personal/configs/gtk-3.0/settings.ini   ~/.config/gtk-3.0/settings.ini
+ln -sf ~/personal/configs/gtk-4.0/settings.ini   ~/.config/gtk-4.0/settings.ini
+ln -sf ~/personal/configs/fontconfig/fonts.conf   ~/.config/fontconfig/fonts.conf
 ln -sf ~/personal/configs/fontconfig/xsettingsd.conf ~/.config/xsettingsd/xsettingsd.conf
-
-# hyprvoice (voice-to-text dictation)
-ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
+fc-cache -f
 ```
 
 ### Multi-monitor (Wayland)
@@ -133,14 +109,38 @@ systemctl --user daemon-reload
 systemctl --user enable --now hyprvoice
 ```
 
-**Symlink config** (already covered in Symlink configs section above):
-```bash
-ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
-```
-
 **Usage:**
 - `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
+
+### Cursor Smoothness Fix (Wayland vs X11)
+
+wlroots uses atomic KMS commits, coupling the cursor plane to compositor frame timing. X11 moves the cursor via an unsynchronized DRM ioctl — hence the difference. Fix: disable atomic KMS.
+
+Add to `/etc/environment` (requires sudo, read by PAM for all sessions including lightdm):
+
+```sh
+WLR_DRM_NO_ATOMIC=1
+```
+
+Add to `sway/config`:
+
+```conf
+input type:pointer {
+    accel_profile flat
+    pointer_accel 0
+}
+
+output * max_render_time off
+```
+
+Reboot for `/etc/environment` to take effect. Verify the var is live in Sway's process:
+
+```bash
+cat /proc/$(pidof sway)/environ | tr '\0' '\n' | grep WLR
+```
+
+> Note: `~/.config/environment.d/` is loaded by systemd user manager but **not** inherited by Sway when launched via lightdm. `/etc/environment` is the reliable path.
 
 ### Caveats vs Hyprland / Awesome WM
 
@@ -151,9 +151,10 @@ ln -sf ~/personal/configs/hyprvoice ~/.config/hyprvoice
 - **picom not needed**: Sway is its own Wayland compositor.
 - **Touchpad config**: managed via `input type:touchpad {}` block in `sway/config`.
 
-## Fix Screen Tearing
+## Fix Screen Tearing (X11 / Legacy)
 
-- [Reference](https://christitus.com/fix-screen-tearing-linux/) - [Chris Titus Video](https://www.youtube.com/watch?v=rVBq6d3c1gM)
+> Wayland compositors like Sway handle this natively. These steps apply to X11 only (awesome WM etc.).
+
 
 ##### Keep `vsync` on
 
@@ -181,27 +182,7 @@ Note: There are extra options that can help like: Option "AccelMethod" "uxa" or 
 
 #### Set Default Applications
 
-- Edit the file `~/.config/mimeapps.list`. For example, for `pcmanfm` as default file manager.
-
-The current content in this file
-
-```dosini
-[Added Associations]
-text/plain=nvim.desktop;
-inode/directory=org.gnome.Nautilus.desktop;
-application/json=nvim.desktop;
-application/vnd.appimage=gnome-disk-image-writer.desktop;
-image/svg+xml=nvim.desktop;
-
-[Default Applications]
-text/html=brave-browser.desktop
-x-scheme-handler/http=brave-browser.desktop
-x-scheme-handler/https=brave-browser.desktop
-x-scheme-handler/about=brave-browser.desktop
-x-scheme-handler/unknown=brave-browser.desktop
-x-scheme-handler/webcal=brave-browser.desktop
-x-scheme-handler/postman=Postman.desktop
-```
+Edit `~/.config/mimeapps.list` to set per-MIME defaults (e.g. `pcmanfm` for directories, `nvim` for text).
 
 ## Screenshots
 
