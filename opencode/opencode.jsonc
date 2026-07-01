@@ -2,8 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "default_agent": "plan",
-  "model": "anthropic/claude-sonnet-4-6",
-  "small_model": "opencode/big-pickle",
+  "model": "anthropic/claude-sonnet-5",
+  "small_model": "anthropic/claude-haiku-4-5",
   "permission": {
     "external_directory": "allow",
     "edit": {
@@ -46,7 +46,7 @@
     },
     "build": { "color": "#d3869b" },
     "plan": { "permission": { "edit": "deny" }, "color": "#8ec07c" },
-    "explore": { "model": "opencode-go/deepseek-v4-flash", "color": "#b8bb26" },
+    "explore": { "model": "opencode-go/minimax-m3", "color": "#b8bb26" },
     "general": { "model": "zai-coding-plan/glm-5.2", "color": "#b8bb26" },
     "scout": {
       "model": "opencode-go/minimax-m3",
