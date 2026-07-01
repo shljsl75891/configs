@@ -43,16 +43,13 @@
       "1": [], "2": [], "3": [], "4": [], "5": [],
       "6": [], "7": [], "8": [], "9": [],
     },
-    "on-scroll-up": "swaymsg workspace prev",
-    "on-scroll-down": "swaymsg workspace next",
-    "disable-scroll": false,
+    "disable-scroll": true,
   },
 
   // ── Center ────────────────────────────────────────────────────────────────
 
   "clock": {
     "format": "{:%a %d %B %Y  %I:%M %p}",
-    "format-alt": "{:%I:%M %p}",
     "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
     "interval": 5,
   },
@@ -79,13 +76,10 @@
     "interval": 10,
     "format": "  {used:0.1f}GB",
     "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB used",
-    "on-click": "alacritty -e btop",
   },
 
   "backlight": {
     "format": "󰃠  {percent}%",
-    "on-scroll-up": "brightnessctl set +5%",
-    "on-scroll-down": "brightnessctl set 5%-",
     "tooltip": false,
   },
 
@@ -97,7 +91,6 @@
     "format-connected": "",
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "blueman-manager",
   },
 
   "pulseaudio": {
@@ -106,16 +99,12 @@
     "format-icons": {
       "default": ["", "", ""],
     },
-    "on-click": "pavucontrol",
-    "on-click-right": "pamixer -t",
-    "scroll-step": 5,
     "tooltip": false,
   },
 
   "cpu": {
     "interval": 5,
     "format": "  {usage}%",
-    "on-click": "alacritty -e btop",
     "tooltip": false,
   },
 
