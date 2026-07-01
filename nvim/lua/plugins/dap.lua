@@ -176,6 +176,8 @@ return {
 			end
 
 			dap.listeners.after.event_stopped["focus-tmux-pane"] = function()
+				local terminal_workspace = "2"
+				vim.fn.jobstart({ "swaymsg", "workspace", terminal_workspace })
 				local pane = vim.env.TMUX_PANE
 				if pane then
 					vim.fn.jobstart({ "tmux", "select-pane", "-t", pane })
