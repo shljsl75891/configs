@@ -176,6 +176,8 @@ bindsym $mod+Shift+9 move container to workspace number 9
 # ─── Window Rules ─────────────────────────────────────────────────────────────
 
 # Float
+for_window [app_id="pcmanfm"] floating enable
+for_window [app_id="pcmanfm"] resize set 800 600
 for_window [instance="copyq"] floating enable
 for_window [app_id="azote"] floating enable
 for_window [app_id="pinentry.*"] floating enable
