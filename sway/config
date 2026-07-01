@@ -107,6 +107,7 @@ bindsym $mod+Shift+r reload
 bindsym $mod+x exec pkill -SIGUSR1 waybar
 bindsym $mod+Shift+l exec swaylock
 bindsym $mod+Shift+q exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+bindsym $mod+t sticky toggle
 
 # Focus by direction
 bindsym $mod+h focus left
