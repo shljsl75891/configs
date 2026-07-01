@@ -75,7 +75,7 @@ output * max_render_time off
 
 # ─── Cursor ───────────────────────────────────────────────────────────────────
 # Sway uses hardware cursors by default (no lag)
-seat seat0 xcursor_theme Bibata-Modern-Ice 20
+seat seat0 xcursor_theme Bibata-Modern-Classic 20
 
 # ─── Focus behavior ───────────────────────────────────────────────────────────
 focus_follows_mouse no
