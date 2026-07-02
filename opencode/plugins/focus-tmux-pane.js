@@ -24,11 +24,11 @@ export const FocusPane = async ({ $, client }) => {
 
       if (process.env.TMUX_PANE) {
         const TERMINAL_WORKSPACE = 2;
-        await $`swaymsg workspace ${TERMINAL_WORKSPACE} 1>/dev/null 2>&1`;
-        await $`tmux select-pane -t ${process.env.TMUX_PANE}`;
-        await $`tmux switch-client -t ${process.env.TMUX_PANE}`;
+        await $`swaymsg workspace ${TERMINAL_WORKSPACE}`.quiet();
+        await $`tmux select-pane -t ${process.env.TMUX_PANE}`.quiet();
+        await $`tmux switch-client -t ${process.env.TMUX_PANE}`.quiet();
         if (event.type.includes("asked")) {
-          await $`tmux send-keys -t ${process.env.TMUX_PANE} Up`;
+          await $`tmux send-keys -t ${process.env.TMUX_PANE} Up`.quiet();
         }
       }
     },
