@@ -24,7 +24,7 @@ export const FocusPane = async ({ $, client }) => {
 
       if (process.env.TMUX_PANE) {
         const TERMINAL_WORKSPACE = 2;
-        await $`swaymsg workspace ${TERMINAL_WORKSPACE}`;
+        await $`swaymsg workspace ${TERMINAL_WORKSPACE} 1>/dev/null 2>&1`;
         await $`tmux select-pane -t ${process.env.TMUX_PANE}`;
         await $`tmux switch-client -t ${process.env.TMUX_PANE}`;
         if (event.type.includes("asked")) {
