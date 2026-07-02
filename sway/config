@@ -14,15 +14,15 @@ output * scale 1
 
 # ─── Autostart ────────────────────────────────────────────────────────────────
 exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-exec_always $scripts/random-wallpaper.sh
-exec_always bash -c "pidof autotiling || autotiling"
-exec_always bash -c "pidof nm-applet || nm-applet --indicator"
-exec_always bash -c "pidof blueman-applet || blueman-applet"
-exec_always bash -c "pidof copyq || copyq"
-exec_always bash -c "pidof mako || mako"
+exec $scripts/random-wallpaper.sh
+exec autotiling
+exec nm-applet --indicator
+exec blueman-applet
+exec copyq
+exec mako
 exec systemctl --user restart hyprvoice
-exec_always bash -c "pidof xsettingsd || xsettingsd"
-exec_always bash -c "pidof waybar || waybar"
+exec xsettingsd
+exec waybar
 exec $browser --profile-directory='Profile 2' https://sourcefuse.peoplestrong.com/oneweb/#/home
 
 # ─── Environment ──────────────────────────────────────────────────────────────
