@@ -3,7 +3,7 @@
   "autoupdate": true,
   "default_agent": "plan",
   "model": "anthropic/claude-sonnet-5",
-  "small_model": "anthropic/claude-haiku-4-5",
+  "small_model": "github-copilot/gpt-5.4-mini",
   "permission": {
     "external_directory": "allow",
     "edit": {
