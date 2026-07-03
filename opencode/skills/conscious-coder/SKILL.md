@@ -143,7 +143,3 @@ RIGHT (vertical):
 ```
 
 Bulk tests guess at behavior before you understand the implementation — they test _shape_, not behavior.
-
----
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
