@@ -179,19 +179,8 @@ bindsym $mod+Shift+9 move container to workspace number 9
 # Float
 for_window [app_id="pcmanfm"] floating enable
 for_window [app_id="pcmanfm"] resize set 800 600
-for_window [instance="copyq"] floating enable
-for_window [app_id="azote"] floating enable
-for_window [app_id="pinentry.*"] floating enable
-for_window [app_id="Arandr"] floating enable
-for_window [app_id="blueman-manager"] floating enable
-for_window [app_id="Gpick"] floating enable
-for_window [app_id="Kruler"] floating enable
-for_window [app_id="Sxiv"] floating enable
-for_window [title="Tor Browser"] floating enable
-for_window [app_id="Wpa_gui"] floating enable
-for_window [app_id="xtightvncviewer"] floating enable
-for_window [app_id="veromix"] floating enable
-for_window [title="MessageWin"] floating enable
+for_window [app_id="com.github.hluk.copyq"] floating enable
+for_window [app_id="com.github.hluk.copyq"] resize set 700 500
 
 # Center all floating windows
 for_window [floating] move position center
