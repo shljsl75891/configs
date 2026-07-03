@@ -54,8 +54,8 @@
       "color": "#d3869b",
     },
   },
-  "plugin": ["@sahiljassal/opencode-anthropic-auth", "@tarquinen/opencode-dcp"],
-  "compaction": { "auto": false, "prune": true, "reserved": 8000 },
+  "plugin": ["@sahiljassal/opencode-anthropic-auth"],
+  "compaction": { "auto": false, "prune": false, "reserved": 8000 },
   "mcp": {
     "exa": {
       "type": "local",
@@ -73,6 +73,35 @@
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": false,
+    },
+  },
+  "provider": {
+    "anthropic": {
+      "options": {
+        "headers": {
+          "sleeve-provider": "anthropic",
+          "sleeve-harness": "opencode",
+        },
+        "baseURL": "http://127.0.0.1:17321",
+      },
+    },
+    "opencode-go": {
+      "options": {
+        "headers": {
+          "sleeve-provider": "opencode-go",
+          "sleeve-harness": "opencode",
+        },
+        "baseURL": "http://127.0.0.1:17321",
+      },
+    },
+    "zai-coding-plan": {
+      "options": {
+        "headers": {
+          "sleeve-provider": "zai-coding-plan",
+          "sleeve-harness": "opencode",
+        },
+        "baseURL": "http://127.0.0.1:17321",
+      },
     },
   },
 }
