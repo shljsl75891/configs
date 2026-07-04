@@ -1,5 +1,13 @@
 # swaylock config — gruvbox-dark palette
 
+# Effects (swaylock-effects)
+screenshots
+effect-blur=7x5
+fade-in=0.4
+clock
+timestr=%H:%M:%S
+datestr=%a, %b %d
+
 # Background
 color=1d2021
 

@@ -36,9 +36,9 @@ exec $browser --profile-directory='Profile 2' https://sourcefuse.peoplestrong.co
 
 # ─── Look & Feel ──────────────────────────────────────────────────────────────
 # Borders & gaps
-default_border pixel 3
-gaps inner 8
-gaps outer 8
+default_border none
+gaps inner 4
+gaps outer 4
 
 # Border colors (gruvbox)
 client.focused          #FE8019 #FE8019 #1D2021 #FE8019
@@ -47,7 +47,19 @@ client.unfocused        #1A1B26 #1A1B26 #D4BE98 #1A1B26
 client.urgent           #9D0006 #9D0006 #D4BE98 #9D0006
 
 # ─── Opacity ──────────────────────────────────────────────────────────────────
-for_window [all] opacity 0.95
+for_window [all] opacity 0.9
+
+# ─── SwayFX ───────────────────────────────────────────────────────────────────
+corner_radius 8
+
+default_dim_inactive 0.5
+dim_inactive_colors.unfocused #1A1B26FF
+dim_inactive_colors.urgent    #9D0006FF
+
+blur enable
+blur_xray disable
+blur_passes 2
+blur_radius 5
 
 # ─── Input ────────────────────────────────────────────────────────────────────
 input type:keyboard {
@@ -58,11 +70,12 @@ input type:touchpad {
     natural_scroll enabled
     tap enabled
     drag enabled
+    drag_lock disabled
     click_method button_areas
     scroll_factor 0.8
     accel_profile adaptive
     pointer_accel 0.1
-    dwt disabled
+    dwt enabled
 }
 
 input type:pointer {
@@ -105,7 +118,7 @@ bindsym $mod+p exec copyq toggle
 bindsym $mod+BackSpace exec makoctl dismiss --all
 bindsym $mod+Shift+r reload
 bindsym $mod+x exec pkill -SIGUSR1 waybar
-bindsym $mod+Shift+l exec swaylock
+bindsym $mod+Shift+l exec gtklock -c ~/.config/gtklock/config.ini
 bindsym $mod+Shift+q exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 bindsym $mod+t sticky toggle
 
@@ -187,5 +200,4 @@ for_window [floating] move position center
 
 # Workspace assignments
 assign [app_id="obsidian"] workspace number 4
-assign [app_id="Slack"] workspace number 7
-assign [class="Slack"] workspace number 7
+assign [app_id="slack"] workspace number 7

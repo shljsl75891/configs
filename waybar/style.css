@@ -48,8 +48,8 @@ window#waybar.empty #window {
 
 #workspaces button.focused,
 #workspaces button.active {
-  background: #1d2021;
-  color: #d4be98;
+  background: #689d6a;
+  color: #1d2021;
 }
 
 #workspaces button.urgent {
