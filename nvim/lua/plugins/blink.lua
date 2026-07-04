@@ -100,5 +100,13 @@ return {
 				},
 			},
 		},
+		config = function(_, opts)
+			require("blink.cmp").setup(opts)
+			vim.keymap.set("n", "<leader>tC", function()
+				vim.b.completion = not (vim.b.completion ~= false)
+				local state = vim.b.completion and "Enabled" or "Disabled"
+				vim.notify("Blink Completion " .. state)
+			end, { desc = "Toggle Blink.cmp Completion" })
+		end,
 	},
 }
