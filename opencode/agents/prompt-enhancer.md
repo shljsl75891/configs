@@ -27,4 +27,4 @@ Respond with:
 1. **Optimized Prompt** — ready to paste.
 2. **Notes** _(optional)_ — up to 3 bullets for important caveats.
 
-After outputting the prompt, copy it to the user's system clipboard using `pbcopy` via bash.
+After outputting the prompt, copy it to the user's system clipboard using `wl-copy` via bash.
