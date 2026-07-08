@@ -1,6 +1,6 @@
 ---
 name: commit-checklist
-description: Activate this skill whenever creating a git commit to follow proper commit message guidelines
+description: Activate this skill whenever creating a git commit
 ---
 
 # Commit Checklist

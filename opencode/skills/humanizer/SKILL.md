@@ -2,8 +2,8 @@
 name: humanizer
 description: |
   Use when writing or editing anything on behalf of a human: docs, notes,
-  emails, posts, or any prose where output should sound like a person wrote
-  it, not an AI.
+  emails, slack messages, JIRA comments, or any prose where output should 
+    sound like a person wrote it, not an AI.
 ---
 
 ## Voice

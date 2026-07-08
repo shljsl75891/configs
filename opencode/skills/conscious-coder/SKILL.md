@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Comprehensive guidelines for writing clean, minimal, well-tested code. Activate when writing code, implementing features, fixing bugs, refactoring, or starting to execute any plan involving a programming task.
+description: Comprehensive guidelines for writing clean, minimal, well-tested code. Activate when starting to execute any plan involving a programming task, or writting or reviewing code.
 ---
 
 # Mindset
