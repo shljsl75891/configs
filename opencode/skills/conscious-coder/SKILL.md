@@ -57,10 +57,9 @@ Test Driven Development is the default workflow. Follow it unless the user expli
 
 #### Workflow
 
-1. **Plan**: list behaviors to test; confirm with user, get approval
+1. **Plan**: list behaviors to test and the seam each attaches to (which public interface the test goes through); confirm with user, get approval
 2. **Tracer bullet**: one test → minimal impl; proves end-to-end path
 3. **Loop**: repeat one test → one impl; never anticipate future tests
-4. **Refactor**: after GREEN only (see Design > Refactor Candidates); run tests after each step
 
 #### Good vs Bad Tests
 
@@ -115,16 +114,26 @@ Avoid shallow modules that just pass through. When designing interfaces ask:
 - Can I simplify the parameters?
 - Can I hide more complexity inside?
 
-#### Refactor Candidates
+#### Anti-Pattern: Tautological Tests
 
-After each cycle, look for:
+A test whose expected value is recomputed the same way the code computes it passes by construction and gives zero confidence. Expected values must come from an independent source of truth, not the implementation's own logic.
 
-- **Duplication** → extract function/class
-- **Long methods** → break into private helpers
-- **Shallow modules** → combine or deepen
-- **Feature envy** → move logic to where data lives
-- **Primitive obsession** → introduce value objects
-- **Existing code** the new code reveals as problematic
+```ts
+// BAD - tautological: recomputes the same formula the code uses
+it("calculates total", () => {
+  const items = [{ price: 10, qty: 2 }, { price: 5, qty: 3 }];
+  const expected = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  expect(calculateTotal(items)).toBe(expected);
+});
+
+// GOOD - expected value is an independently known constant
+it("calculates total", () => {
+  const items = [{ price: 10, qty: 2 }, { price: 5, qty: 3 }];
+  expect(calculateTotal(items)).toBe(35);
+});
+```
+
+Distinct from implementation-coupling (testing internals) — this is about the *assertion*, not the *access path*.
 
 #### Anti-Pattern: Horizontal Slices
 
