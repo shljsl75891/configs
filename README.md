@@ -15,7 +15,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 ### Sway (Wayland — Ubuntu 26.04+)
 
 ```console
-sudo apt install sway waybar grim slurp wl-clipboard wtype swaybg swaylock \
+sudo apt install sway waybar grim slurp wl-clipboard wtype swaybg gtklock \
   mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
   qt5ct xsettingsd autotiling wmenu
@@ -32,7 +32,7 @@ Sway cannot be launched from inside a running GNOME session.
 
 ```bash
 ln -sf ~/personal/configs/sway       ~/.config/sway
-ln -sf ~/personal/configs/swaylock   ~/.config/swaylock
+ln -sf ~/personal/configs/gtklock    ~/.config/gtklock
 ln -sf ~/personal/configs/waybar     ~/.config/waybar
 ln -sf ~/personal/configs/mako       ~/.config/mako
 ln -sf ~/personal/configs/qt5ct      ~/.config/qt5ct
@@ -144,7 +144,7 @@ cat /proc/$(pidof sway)/environ | tr '\0' '\n' | grep WLR
 
 ### Caveats vs Hyprland / Awesome WM
 
-- **No blur or rounded corners**: standard Sway has none; use SwayFX fork if needed.
+- **No blur or rounded corners**: standard Sway has none.
 - **No maximize**: Sway has no native maximize command; `Super+f` toggles fullscreen.
 - **autotiling for layout**: master-stack behavior via the `autotiling` script (alternating splits).
 - **No pin/always-on-top**: Sway has no equivalent; use `sticky toggle` to make a window visible on all workspaces.

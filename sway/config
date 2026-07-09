@@ -36,7 +36,7 @@ exec $browser --profile-directory='Profile 2' https://sourcefuse.peoplestrong.co
 
 # ─── Look & Feel ──────────────────────────────────────────────────────────────
 # Borders & gaps
-default_border none
+default_border pixel 2
 gaps inner 4
 gaps outer 4
 
@@ -48,18 +48,6 @@ client.urgent           #9D0006 #9D0006 #D4BE98 #9D0006
 
 # ─── Opacity ──────────────────────────────────────────────────────────────────
 for_window [all] opacity 0.95
-
-# ─── SwayFX ───────────────────────────────────────────────────────────────────
-corner_radius 8
-
-default_dim_inactive 0.5
-dim_inactive_colors.unfocused #1A1B26FF
-dim_inactive_colors.urgent    #9D0006FF
-#
-# blur enable
-# blur_xray disable
-# blur_passes 2
-# blur_radius 5
 
 # ─── Input ────────────────────────────────────────────────────────────────────
 input type:keyboard {
