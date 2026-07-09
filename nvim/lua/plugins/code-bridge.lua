@@ -82,7 +82,7 @@ return {
 				find_node_process = false,
 			},
 			chat = {
-				model = "opencode/big-pickle",
+				model = "anthropic/claude-haiku-4-5",
 			},
 		},
 	},
