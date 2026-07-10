@@ -15,7 +15,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 ### Sway (Wayland — Ubuntu 26.04+)
 
 ```console
-sudo apt install sway waybar grim slurp wl-clipboard wtype swaybg gtklock \
+sudo apt install sway waybar xwayland grim slurp wl-clipboard wtype swaybg gtklock \
   mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
   qt5ct xsettingsd autotiling wmenu
@@ -110,6 +110,7 @@ systemctl --user enable --now hyprvoice
 ```
 
 **Usage:**
+
 - `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
 
@@ -154,7 +155,6 @@ cat /proc/$(pidof sway)/environ | tr '\0' '\n' | grep WLR
 ## Fix Screen Tearing (X11 / Legacy)
 
 > Wayland compositors like Sway handle this natively. These steps apply to X11 only (awesome WM etc.).
-
 
 ##### Keep `vsync` on
 
