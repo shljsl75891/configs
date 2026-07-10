@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Comprehensive guidelines for writing clean, minimal, well-tested code. Activate when starting to execute any plan involving a programming task, or writting or reviewing code.
+description: ALWAYS activate this skill before the first code-producing tool call in any task — writing, editing, or reviewing code, including right after a plan is approved, even mid-session.
 ---
 
 # Mindset
@@ -121,19 +121,25 @@ A test whose expected value is recomputed the same way the code computes it pass
 ```ts
 // BAD - tautological: recomputes the same formula the code uses
 it("calculates total", () => {
-  const items = [{ price: 10, qty: 2 }, { price: 5, qty: 3 }];
+  const items = [
+    { price: 10, qty: 2 },
+    { price: 5, qty: 3 },
+  ];
   const expected = items.reduce((sum, i) => sum + i.price * i.qty, 0);
   expect(calculateTotal(items)).toBe(expected);
 });
 
 // GOOD - expected value is an independently known constant
 it("calculates total", () => {
-  const items = [{ price: 10, qty: 2 }, { price: 5, qty: 3 }];
+  const items = [
+    { price: 10, qty: 2 },
+    { price: 5, qty: 3 },
+  ];
   expect(calculateTotal(items)).toBe(35);
 });
 ```
 
-Distinct from implementation-coupling (testing internals) — this is about the *assertion*, not the *access path*.
+Distinct from implementation-coupling (testing internals) — this is about the _assertion_, not the _access path_.
 
 #### Anti-Pattern: Horizontal Slices
 
