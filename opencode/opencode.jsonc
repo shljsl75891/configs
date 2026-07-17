@@ -48,9 +48,9 @@
     "build": { "color": "#d3869b" },
     "plan": { "permission": { "edit": "deny" }, "color": "#8ec07c" },
     "explore": { "model": "opencode-go/minimax-m3", "color": "#b8bb26" },
-    "general": { "model": "zai-coding-plan/glm-5.2", "color": "#b8bb26" },
+    "general": { "model": "anthropic/claude-sonnet-5", "color": "#b8bb26" },
     "scout": {
-      "model": "opencode-go/minimax-m3",
+      "model": "opencode-go/kimi-k2.7-code",
       "mode": "subagent",
       "color": "#d3869b",
     },
