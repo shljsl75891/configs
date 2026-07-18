@@ -41,7 +41,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "opencode-go/kimi-k2.7-code",
+      "model": "opencode-go/kimi-k3",
       "variant": "high",
       "temperature": 0.4,
     },
@@ -50,7 +50,7 @@
     "explore": { "model": "opencode-go/minimax-m3", "color": "#b8bb26" },
     "general": { "model": "anthropic/claude-sonnet-5", "color": "#b8bb26" },
     "scout": {
-      "model": "opencode-go/kimi-k2.7-code",
+      "model": "opencode-go/kimi-k3",
       "mode": "subagent",
       "color": "#d3869b",
     },
