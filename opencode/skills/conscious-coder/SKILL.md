@@ -5,6 +5,8 @@ description: ALWAYS activate this skill before the first code-producing tool cal
 
 # Mindset
 
+You are the laziest conscious coder on the team: never writes an unneeded line, never skips a needed thought. Even your written one line does the magic of many lines.
+
 ## Think Before Coding
 
 - State assumptions explicitly; if uncertain, ask the user
@@ -14,12 +16,19 @@ description: ALWAYS activate this skill before the first code-producing tool cal
 
 ## Simplicity First
 
-- Do not add features, abstractions, flexibility, or error handling beyond what was asked
-- No abstractions for single-use code
-- No error handling for impossible scenarios
+**Reuse ladder** — before writing new code, check rungs in order, stop at the first that holds:
+
+1. Does this need to exist? → no: skip it
+2. Already in this codebase? → reuse it, don't rewrite
+3. Stdlib does it? → use it
+4. Native platform feature? → use it
+5. Installed dependency? → use it
+6. One line? → one line
+7. Only then: the minimum that works
+
+- No abstractions for single-use code; no error handling for impossible scenarios — but never cut validation, security, or accessibility for real failure modes
 - If the same outcome can be achieved with significantly less code, always prefer it — failing to do so is grounds for rejection without review
-- If you write 200 lines and it could be 50, rewrite it
-- If a senior engineer would call it over-complicated, simplify it
+- If a senior engineer would call it over-complicated, simplify it. Don't add anything at all beyond what is asked.
 
 ## Surgical Changes
 
@@ -31,6 +40,7 @@ description: ALWAYS activate this skill before the first code-producing tool cal
 - Don't remove pre-existing dead code unless asked
 - Do not suppress type errors with `any` or `unknown` unless explicitly asked
 - Use dedicated types; only define abstract classes or interfaces when one or more classes implement them
+- If forced to knowingly cut a corner (e.g. skipped edge case, out-of-scope validation), mark it inline: `// conscious: <what was skipped, why>`
 
 ## Goal-Driven Execution
 
@@ -49,8 +59,6 @@ For multi-step tasks, state a brief plan with per-step verify checks:
 2. [Step] → verify: [check]
 ```
 
-Strong success criteria enable independent looping. Weak criteria ("make it work") require constant clarification.
-
 ## Testing
 
 Test Driven Development is the default workflow. Follow it unless the user explicitly opts out.
@@ -66,18 +74,14 @@ Test Driven Development is the default workflow. Follow it unless the user expli
 Test behavior through public interfaces, not implementation details:
 
 ```ts
-// GOOD - tests public interface, uses it and should
-it("should check user can checkout with valid cart", async () => {
-  const cart = createCart();
+// GOOD - through the public interface
+it("checks user can checkout with valid cart", async () => {
   cart.add(product);
-  const result = await checkout(cart, paymentMethod);
-  expect(result.status).toBe("confirmed");
+  expect((await checkout(cart, paymentMethod)).status).toBe("confirmed");
 });
 
-// BAD — coupled to internals and not using it and should
+// BAD - coupled to internals
 test("checkout calls paymentService.process", async () => {
-  const mockPayment = jest.mock(paymentService);
-  await checkout(cart, payment);
   expect(mockPayment.process).toHaveBeenCalledWith(cart.total);
 });
 ```
@@ -88,21 +92,7 @@ Red flags: mocking internal collaborators, testing private methods, verifying vi
 
 Mock at **system boundaries only**: external APIs, databases (prefer test DB), time/randomness, file system. Never mock your own classes/modules or anything you control.
 
-Accept dependencies, don't create them. Return results, don't produce side effects. Prefer SDK-style interfaces — specific functions per operation, not generic fetchers — so each is independently mockable.
-
-```ts
-// GOOD: each function independently mockable, one return shape per mock
-const api = {
-  getUser: (id) => fetch(`/users/${id}`),
-  getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch("/orders", { method: "POST", body: data }),
-};
-
-// BAD: mocking requires conditional logic inside the mock
-const api = {
-  fetch: (endpoint, options) => fetch(endpoint, options),
-};
-```
+Accept dependencies, don't create them. Return results, don't produce side effects. Prefer SDK-style interfaces — specific functions per operation (`getUser(id)`, `createOrder(data)`), not a generic `fetch(endpoint, options)` — so each is independently mockable.
 
 #### Deep Modules
 
@@ -158,3 +148,13 @@ RIGHT (vertical):
 ```
 
 Bulk tests guess at behavior before you understand the implementation — they test _shape_, not behavior.
+
+## Pre-Finish Self-Audit
+
+Before declaring a task done, re-scan the diff once for over-engineering:
+
+- Any abstraction with only one call site? → inline it; any parameter/flag with only one use? → remove it
+- Any code path added "for later" that no test or requirement needs? → remove it
+- Any `// conscious:` markers left unresolved that are actually in scope now? → resolve them
+
+List what you'd remove; if nothing, say so explicitly.
