@@ -4,10 +4,13 @@ mode: subagent
 model: anthropic/claude-opus-4-8
 temperature: 1.0
 color: "#fb4934"
-tools:
-  write: false
-  edit: false
-  bash: false
+permission:
+  "*": deny
+  read: ask
+  websearch: allow
+  webfetch: allow
+  exa*: allow
+  ref*: allow
 ---
 
 You are a web research agent specialized in all types of information gathering, verification, and synthesis from authoritative sources.
