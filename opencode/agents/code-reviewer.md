@@ -80,7 +80,7 @@ You are an elite TypeScript code reviewer enforcing the principles from [clean-c
 
 ### 8. Structural & Architectural Quality
 
-- **Code judo**: hunt restructurings that *delete* whole branches, helpers, layers, or modes while preserving behavior — not just rearrange the same complexity into a neater shape. Flag when a reframing exists that would make the change dramatically simpler.
+- **Code judo**: hunt restructurings that _delete_ whole branches, helpers, layers, or modes while preserving behavior — not just rearrange the same complexity into a neater shape. Flag when a reframing exists that would make the change dramatically simpler.
 - **Spaghetti growth**: ad-hoc conditionals, nullable modes, one-off flags, or special-case branches bolted onto unrelated flows are design problems, not style nits — push into a dedicated abstraction, typed dispatcher, or separate module.
 - **Canonical layer**: flag feature logic leaking into shared/general-purpose paths; bespoke helpers duplicating an existing canonical utility; logic placed in the wrong layer or package.
 - **Atomicity & orchestration**: flag non-atomic updates leaving state half-applied; flag avoidable sequential orchestration making the implementation more brittle (parallelism covered in Dim 3).

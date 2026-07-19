@@ -3,6 +3,26 @@
   "autoupdate": true,
   "default_agent": "plan",
   "subagent_depth": 4,
+  "provider": {
+    "opencode": {
+      "options": {
+        "headers": {
+          "sleeve-provider": "opencode",
+          "sleeve-harness": "opencode",
+        },
+        "baseURL": "http://127.0.0.1:17321",
+      },
+    },
+    "anthropic": {
+      "options": {
+        "headers": {
+          "sleeve-provider": "anthropic",
+          "sleeve-harness": "opencode",
+        },
+        "baseURL": "http://127.0.0.1:17321",
+      },
+    },
+  },
   "model": "anthropic/claude-sonnet-5",
   "small_model": "anthropic/claude-haiku-4-5",
   "permission": {
@@ -41,16 +61,16 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "opencode-go/kimi-k3",
+      "model": "anthropic/claude-sonnet-5",
       "variant": "high",
       "temperature": 0.4,
     },
     "build": { "color": "#d3869b" },
     "plan": { "permission": { "edit": "deny" }, "color": "#8ec07c" },
-    "explore": { "model": "opencode-go/minimax-m3", "color": "#b8bb26" },
+    "explore": { "model": "opencode/big-pickle", "color": "#b8bb26" },
     "general": { "model": "anthropic/claude-sonnet-5", "color": "#b8bb26" },
     "scout": {
-      "model": "opencode-go/kimi-k3",
+      "model": "opencode/deepseek-v4-flash-free",
       "mode": "subagent",
       "color": "#d3869b",
     },
@@ -74,35 +94,6 @@
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": false,
-    },
-  },
-  "provider": {
-    "anthropic": {
-      "options": {
-        "headers": {
-          "sleeve-provider": "anthropic",
-          "sleeve-harness": "opencode",
-        },
-        "baseURL": "http://127.0.0.1:17321",
-      },
-    },
-    "opencode-go": {
-      "options": {
-        "headers": {
-          "sleeve-provider": "opencode-go",
-          "sleeve-harness": "opencode",
-        },
-        "baseURL": "http://127.0.0.1:17321",
-      },
-    },
-    "zai-coding-plan": {
-      "options": {
-        "headers": {
-          "sleeve-provider": "zai-coding-plan",
-          "sleeve-harness": "opencode",
-        },
-        "baseURL": "http://127.0.0.1:17321",
-      },
     },
   },
 }

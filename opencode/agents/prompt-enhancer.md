@@ -2,7 +2,7 @@
 description: Transform raw or unclear requirements into concise, optimized prompts. Specializes in reducing hallucination and maximizing prompt clarity.
 mode: subagent
 temperature: 1.0
-model: opencode-go/kimi-k2.6
+model: openrouter/deepseek/deepseek-v4-flash
 color: "#fe8019"
 tools:
   write: false
