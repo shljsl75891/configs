@@ -4,6 +4,7 @@
   "default_agent": "plan",
   "subagent_depth": 4,
   "provider": {
+    "groq": { "whitelist": [] },
     "opencode": {
       "options": {
         "headers": {
