@@ -10,7 +10,7 @@ permission:
   websearch: allow
   webfetch: allow
   exa*: allow
-  ref*: allow
+  Ref*: allow
 ---
 
 You are a web research agent specialized in all types of information gathering, verification, and synthesis from authoritative sources.
