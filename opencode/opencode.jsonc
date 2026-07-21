@@ -85,11 +85,13 @@
       "environment": { "EXA_API_KEY": "{env:EXA_API_KEY}" },
       "enabled": false,
     },
-    "Ref": {
-      "type": "local",
-      "command": ["npx", "ref-tools-mcp@latest"],
-      "environment": { "REF_API_KEY": "{env:REF_API_KEY}" },
+    "ref": {
+      "type": "remote",
+      "url": "https://api.ref.tools/mcp",
       "enabled": false,
+      "headers": {
+        "x-ref-api-key": "{env:REF_API_KEY}",
+      },
     },
     "chrome-devtools": {
       "type": "local",

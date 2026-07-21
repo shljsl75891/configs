@@ -8,6 +8,7 @@ permission:
   "*": deny
   read: ask
   question: allow
+  task: allow
 ---
 
 You are a prompt engineer. Transform raw input into a single, concise prompt optimized for **plan mode** — where the model analyzes and proposes, never implements.
