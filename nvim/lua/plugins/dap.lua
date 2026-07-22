@@ -1,9 +1,7 @@
 return {
 	{
 		"igorlfs/nvim-dap-view",
-		dependencies = {
-			{ url = "https://codeberg.org/mfussenegger/nvim-dap.git" },
-		},
+		dependencies = { "mfussenegger/nvim-dap" },
 		cmd = { "DapContinue", "DapToggleBreakpoint", "DapTerminate" },
 		opts = {
 			virtual_text = {
