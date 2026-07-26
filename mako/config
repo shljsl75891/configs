@@ -26,6 +26,8 @@ markup=1
 actions=1
 format=<b>%s</b>\n%b
 
+on-button-right=dismiss
+
 [urgency=low]
 border-color=#49503B
 
@@ -36,3 +38,8 @@ border-color=#722529
 background-color=#722529
 border-color=#B8BB26
 default-timeout=0
+
+# invoke action without closing
+[app-name=ps-remind]
+on-button-left=exec makoctl invoke -n $id
+on-notify=exec pw-play /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga

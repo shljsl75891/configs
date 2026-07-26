@@ -23,7 +23,7 @@ exec mako
 exec systemctl --user restart hyprvoice
 exec xsettingsd
 exec waybar
-exec $browser --profile-directory='Profile 2' https://sourcefuse.peoplestrong.com/oneweb/#/home
+exec_always $scripts/ps-remind.sh
 
 # ─── Environment ──────────────────────────────────────────────────────────────
 # Sway does not have env directives; set these in your ~/.profile or login manager:
