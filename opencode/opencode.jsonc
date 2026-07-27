@@ -68,7 +68,10 @@
     },
     "build": { "color": "#d3869b" },
     "plan": { "permission": { "edit": "deny" }, "color": "#8ec07c" },
-    "explore": { "model": "opencode/big-pickle", "color": "#b8bb26" },
+    "explore": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "color": "#b8bb26",
+    },
     "general": { "model": "anthropic/claude-sonnet-5", "color": "#b8bb26" },
     "scout": {
       "model": "opencode/deepseek-v4-flash-free",
