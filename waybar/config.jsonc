@@ -8,7 +8,7 @@
   "exclusive": true,
 
   "modules-left": ["sway/workspaces"],
-  "modules-center": ["clock"],
+  "modules-center": ["custom/date"],
   "modules-right": [
     "custom/arr0",
     "cpu",
@@ -48,10 +48,11 @@
 
   // ── Center ────────────────────────────────────────────────────────────────
 
-  "clock": {
-    "format": "{:%a %d %B %Y  %I:%M %p}",
-    "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+  "custom/date": {
+    "exec": "~/.config/waybar/scripts/date-tooltip.sh",
+    "return-type": "json",
     "interval": 5,
+    "tooltip": true,
   },
 
   // ── Right ─────────────────────────────────────────────────────────────────

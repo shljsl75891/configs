@@ -73,7 +73,7 @@ window#waybar.empty #window {
 
 /* ── Clock (shared layout) ───────────────────────────────────────────────── */
 
-#clock,
+#custom-date,
 #mpris {
   color: #1d2021;
   border-radius: 4px;
@@ -121,7 +121,7 @@ window#waybar.empty #window {
 #mpris {
   background: #7daea3;
 } /* blue   */
-#clock {
+#custom-date {
   background: #89b482;
 }
 
@@ -175,7 +175,7 @@ window#waybar.empty #window {
 
 /* ── Clock (center) ───────────────────────────────────────────────────────── */
 
-#clock {
+#custom-date {
   padding: 4px 10px;
   margin: 6px 0 0;
 }
