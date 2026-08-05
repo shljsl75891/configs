@@ -16,6 +16,7 @@ return {
 		},
 		config = function(_, opts)
 			require("nvim-treesitter").setup(opts)
+			require("nvim-treesitter").install({ "regex" })
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "*",
 				callback = function(args)

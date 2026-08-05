@@ -108,6 +108,22 @@ return {
 				desc = "[F]ind Project [F]iles",
 			},
 			{
+				"<leader>if",
+				function()
+					local pattern = vim.fn.input("File Pattern > ")
+					if pattern ~= "" then
+						require("snacks").picker.files({
+							cmd = "fd",
+							search = pattern,
+							args = { "-p" },
+							hidden = true,
+							ignored = true,
+						})
+					end
+				end,
+				desc = "Find [I]gnored [F]iles",
+			},
+			{
 				"<leader>fc",
 				function()
 					local dir = vim.fn.expand("%:p:h")
