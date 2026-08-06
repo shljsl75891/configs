@@ -1,7 +1,7 @@
 ---
 description: Use this agent when the user needs comprehensive research, information gathering, or analysis that requires synthesizing information from multiple sources. Always use this agent for deep web research tasks.
 mode: subagent
-model: anthropic/claude-opus-4-8
+model: anthropic/claude-opus-5
 temperature: 1.0
 color: "#fb4934"
 permission:
@@ -10,7 +10,7 @@ permission:
   websearch: allow
   webfetch: allow
   exa*: allow
-  Ref*: allow
+  ref*: allow
   task: allow
   doom_loop: ask
 ---
