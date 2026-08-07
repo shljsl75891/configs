@@ -57,8 +57,7 @@ Omit empty sections. Use exact headers shown.
 - [ ] [Next prioritized action]
 
 ## Must Follow
-Before proceeding, run \`git status && git diff && git diff --cached\` to reconstruct intent from uncommitted changes.
-If the goal is unclear after reviewing the diff, invoke \`/grill-me\` skill to resolve ambiguity before acting.
+Before proceeding, run \`git status && git diff && git diff --cached\` to reconstruct intent from uncommitted changes. If the goal is unclear after reviewing the diff, ask questions 
 `;
   },
 });
