@@ -62,7 +62,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "opencode/big-pickle",
+      "model": "anthropic/claude-fable-5",
       "variant": "high",
       "temperature": 0.4,
     },
