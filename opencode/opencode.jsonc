@@ -62,7 +62,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "anthropic/claude-fable-5",
+      "model": "anthropic/claude-opus-4-7",
       "variant": "high",
       "temperature": 0.4,
     },

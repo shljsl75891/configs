@@ -14,7 +14,7 @@ return {
 						"emmet_language_server",
 						"eslint-lsp",
 						"jsonls",
-						"tsgo",
+						"ts_ls",
 						"lua_ls",
 						"tailwindcss",
 						"cssls",
