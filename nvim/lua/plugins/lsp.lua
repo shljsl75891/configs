@@ -58,10 +58,6 @@ return {
 						},
 					},
 				},
-				eslint = {
-					useFlatConfig = false,
-					settings = { useFlatConfig = false },
-				},
 				jsonls = {
 					filetypes = { "json", "jsonc" },
 					settings = {
