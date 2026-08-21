@@ -22,5 +22,6 @@ application/vnd.oasis.opendocument.spreadsheet=onlyoffice-desktopeditors.desktop
 application/vnd.oasis.opendocument.spreadsheet-template=onlyoffice-desktopeditors.desktop
 application/vnd.oasis.opendocument.presentation=onlyoffice-desktopeditors.desktop
 application/vnd.oasis.opendocument.presentation-template=onlyoffice-desktopeditors.desktop
+x-scheme-handler/bruno=bruno.desktop
 
 [Added Associations]
