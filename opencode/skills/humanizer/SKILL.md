@@ -6,111 +6,79 @@ description: |
     sound like a person wrote it, not an AI.
 ---
 
+## Process
+
+1. Scan text for the patterns below.
+2. Rewrite each hit. Keep the meaning. Keep the tone. Follow Simplified Technical English (ASD-STE100): short sentences, active voice, one idea per sentence, plain approved words over jargon.
+3. Add voice (see Soul).
+4. Ask: "What makes this text look AI-written?" Fix what's left.
+
 ## Voice
 
 Write using **we/our/us** instead of you/your/you're.
 
-## Personality and soul
-
-Sterile, voiceless writing is just as obvious as AI slop. Signs of soulless writing:
-
-- Uniform sentence length and structure
-- No opinions, no uncertainty, no mixed feelings
-- Reads like a press release
-
-How to add voice:
+## Soul
 
 - Have opinions. React to facts, don't just report them.
-- Vary rhythm. Short punchy sentences. Then longer ones that take their time and build toward something.
-- Acknowledge complexity. "Impressive but unsettling" beats "impressive."
+- Vary rhythm: short sentences, then a longer one that builds.
+- Acknowledge complexity: "impressive but unsettling" beats "impressive".
 - Let mess in. Perfect structure feels algorithmic.
+- Take a real position. Say something a reader could disagree with.
+- Uniform sentence length and no uncertainty = press release, not a person.
 
-## Content patterns
+## Word swaps
 
-### Superficial -ing phrases
+**Tier 1 — kill on sight:** delve, utilize, leverage (verb), facilitate, elucidate, embark, endeavor, encompass, multifaceted, tapestry, testament, paradigm, synergy, holistic, catalyze, juxtapose, realm, landscape (metaphorical), myriad, plethora, ever-evolving, crucial, additionally, garner, interplay, intricate, pivotal, showcase, underscore, vibrant, fostering.
 
-**Watch:** highlighting/underscoring/emphasizing, reflecting/symbolizing, cultivating/fostering, showcasing
+**Tier 2 — suspicious in clusters (3+ in one paragraph, rewrite):** robust→strong, comprehensive→complete, seamless→smooth, cutting-edge→new, innovative→new, streamline→simplify, empower→let/help, foster→build, enhance→improve, elevate→raise, optimize→tune, pivotal→key, resonate→connect with, harness→use, navigate (metaphorical)→handle, cultivate→build, cornerstone→basis, serves as/stands as/boasts/features→is/has.
 
-Cut or rewrite as a real clause.
+**Filler, delete outright:** it's worth noting that, it's important to note that, importantly, notably, interestingly, in order to→to, due to the fact that→because.
 
-> ~~reflecting the community's deep connection to the land~~ → The architect cited local bluebonnets and the Gulf coast.
+## Patterns
 
-### Negative parallelisms
+- **Puffery:** pivotal moment, testament to, evolving landscape, indelible mark, the future looks bright → state what happened or what's planned.
+- **Name-dropping:** sources listed with no context ("as reported by X, Y, Z") → pick one, say what it said.
+- **Vague attribution:** experts believe, studies show, critics argue → name the source or cut the claim.
+- **Formulaic challenge:** "Despite challenges, ... continues to thrive" → replace with the specific fact.
+- **Rule of three:** ideas forced into groups of three → use the number the content needs.
+- **Abstract metaphor nouns:** substrate, vector, north star, flywheel, gold-plating, scaffolding (metaphor) → plain word ("base", "way", "more than the job needs").
+- **Superficial -ing phrases:** highlighting, reflecting, showcasing, cultivating → cut or rewrite as a real clause. `~~reflecting the community's deep connection to the land~~ → The architect cited local bluebonnets and the Gulf coast.`
+- **Negative parallelism:** "Not just X, but Y", "It's not X — it's Y" → state the point directly. `~~It's not just about autocomplete; it's about creativity~~ → The heavy beat adds to the aggressive tone.`
+- **"Not X. Not Y. Just Z."** dramatic countdown before the point → say the point.
+- **Rhetorical-question hook:** "Have you ever wondered..." opener → open with the actual claim.
+- **Synonym cycling:** protagonist/main character/hero all in one paragraph → pick one term, repeat it.
+- **False ranges:** "from X to Y" where X, Y aren't on a real scale → list the topics directly. `~~from the Big Bang to the cosmic web~~ → covers the Big Bang, star formation, and dark matter.`
+- **Preamble/announcement:** "The real question is", "let's dive in", "here's the kicker" → cut it, say the point.
+- **Summary closer:** final paragraph restates the opening → end on the last real point.
+- **False balance:** "While X has merits, Y is better" when Y is clearly better → say Y is better.
+- **Fragmented header:** heading followed by a line restating the heading → cut the restatement.
+- **Hyphen-pair overuse:** cross-functional, data-driven, real-time, end-to-end → drop hyphens on common pairs.
+- **Inline-header lists:** `- **Header:** description` → rewrite as prose or a plain list.
+- **Hedge stacking:** "could potentially possibly be argued that it might" → state the claim, one hedge or none.
 
-**Watch:** Not only...but..., It's not just about..., it's..., tailing fragments like "no guessing"
+## Style
 
-Rewrite as a direct positive statement.
+- **Em dash:** zero. Use a period or comma.
+- **Colon:** only before a list or example, never to join two clauses mid-sentence.
+- **Boldface:** don't bold every proper noun or acronym.
+- **Headings:** sentence case, not title case.
+- **Emojis:** none in headings or bullets.
+- **Quotes:** straight, not curly.
+- **Say the mechanism, not the feeling:** "the database stays close at hand" → name a number or a concrete fact instead. If there's no fact, cut the line.
+- **Active voice:** name the actor. "Queries are validated" → "The compiler validates queries." Passive only when the actor is unknown or doesn't matter.
+- **Adverbs:** cut them or use a stronger verb. "Runs quickly" → "is fast" or state the number.
+- **Dense sentences:** if the reader must re-read it, split it. One idea per sentence.
+- **Section symmetry:** don't force every section to the same length. Real topics are lumpy.
 
-> ~~It's not just about autocomplete; it's about creativity~~ → The heavy beat adds to the aggressive tone.
+## Structure
 
-### Synonym cycling
+Higher-order signals vocabulary swaps can't fix:
 
-**Watch:** protagonist / main character / central figure / hero all in one paragraph
-
-Repetition-penalty causes excessive synonym substitution. Pick one term and repeat it.
-
-### False ranges
-
-**Watch:** from X to Y where X and Y aren't on a meaningful scale
-
-> ~~from the singularity of the Big Bang to the grand cosmic web~~ → covers the Big Bang, star formation, and dark matter theories
-
-### Persuasive authority tropes
-
-**Watch:** The real question is, at its core, what really matters, fundamentally, the heart of the matter
-
-These announce a restatement as if it's a revelation. Cut the preamble.
-
-### Signposting and announcements
-
-**Watch:** Let's dive in, let's explore, here's what you need to know, without further ado
-
-Don't announce what's coming. Just say it.
-
-### Fragmented headers
-
-A heading followed by one line restating the heading before real content. Cut the restatement.
-
-### Hyphenated word pair overuse
-
-**Watch:** cross-functional, data-driven, client-facing, decision-making, high-quality, real-time, end-to-end
-
-Humans hyphenate inconsistently. Drop hyphens on common pairs.
-
-### Inline-header lists
-
-**Watch:** `- **Header:** description` lists
-
-Rewrite as prose or a simple list without bolded labels.
-
-## Structural patterns
-
-These are higher-order signals that AI detectors flag and vocabulary swaps cannot fix.
-
-### Sentence burstiness
-
-Humans write in bursts — clusters of short sentences, then a longer complex one, then occasionally a fragment. AI maintains suspiciously even sentence-length distribution within paragraphs. Vary sentence length aggressively.
-
-### Discourse marker regularity
-
-AI places "However," "Furthermore," "Additionally" at metronomic intervals. Humans chain three sentences without any marker, then stack two back-to-back ("But also, and besides..."). Break the rhythm.
-
-### Uniform hedging
-
-AI hedges at predictable intervals regardless of actual certainty. Humans cluster hedges around genuinely uncertain claims and drop them entirely when confident. Hedge unevenly — be blunt where confident, messy where uncertain.
-
-### Register mixing
-
-Humans unconsciously mix registers — a colloquial word in formal text, a technical term in casual writing. AI maintains register consistency to a degree humans never do. Intentionally break register once or twice per piece.
-
-### Opinion topology
-
-Humans let contradictory opinions coexist without resolution. AI resolves tensions into balanced "on one hand / on the other hand" structures. Let contradictions stand unresolved.
-
-### Information density variation
-
-AI maintains steady information density across paragraphs. Humans have dense paragraphs followed by throwaway asides. Vary paragraph weight — not every paragraph needs to carry equal load.
-
-### Front-loading
-
-AI almost always opens with the topic sentence. Humans bury the point mid-paragraph or end-load with a punch line. Occasionally move the main point to the middle or end.
+- **Burstiness:** vary sentence length aggressively — short bursts, then one that runs long.
+- **Discourse markers:** don't open every paragraph with However/Furthermore/Additionally. Chain sentences with no marker, then stack two together.
+- **Hedging:** cluster hedges around genuinely uncertain claims, drop them when confident.
+- **Register mixing:** let one colloquial word land in formal text, once or twice per piece.
+- **Unresolved opinions:** let contradictions stand. Don't force "on one hand / on the other" balance.
+- **Density variation:** dense paragraph, then a throwaway aside. Not every paragraph carries equal weight.
+- **End-loading:** don't always open with the topic sentence. Bury the point mid-paragraph sometimes, or end on it.
+- **Topic-sentence machine:** don't run the same template (claim, elaborate, example, wrap-up) on every paragraph.
