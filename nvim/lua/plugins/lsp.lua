@@ -11,15 +11,11 @@ return {
 					ensure_installed = {
 						-- Language Servers
 						"angularls",
-						"emmet_language_server",
-						"eslint-lsp",
 						"jsonls",
 						"tsc",
 						"lua_ls",
-						"tailwindcss",
 						"cssls",
 						"dockerfile-language-server",
-						"gopls",
 						-- Formatters
 						"prettierd",
 						"stylua",
