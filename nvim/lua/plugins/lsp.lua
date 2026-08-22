@@ -14,7 +14,7 @@ return {
 						"emmet_language_server",
 						"eslint-lsp",
 						"jsonls",
-						"ts_ls",
+						"tsc",
 						"lua_ls",
 						"tailwindcss",
 						"cssls",
@@ -37,27 +37,6 @@ return {
 			require("mason").setup(opts)
 
 			local servers = {
-				ts_ls = {
-					flags = { debounce_text_changes = 150 },
-					init_options = {
-						maxTsServerMemory = 2560,
-						disableAutomaticTypeAcquisition = true,
-						preferences = {
-							includeInlayParameterNameHints = "none",
-							includeInlayFunctionParameterTypeHints = false,
-						},
-					},
-					settings = {
-						typescript = {
-							inlayHints = { enabled = false },
-							suggest = { completeFunctionCalls = false },
-						},
-						javascript = {
-							inlayHints = { enabled = false },
-							suggest = { completeFunctionCalls = false },
-						},
-					},
-				},
 				jsonls = {
 					filetypes = { "json", "jsonc" },
 					settings = {
