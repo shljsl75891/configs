@@ -76,22 +76,8 @@ bindkey -s ^bf "^Usessionizer\n"
 # eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env --shell zsh)"
 
-# Update homebrew every 5 days
-export HOMEBREW_AUTO_UPDATE_SECS=$((60 * 60 * 24 * 7))
-export PATH="$PATH:$HOME/.local/opt/go/bin"
-export PATH=$PATH:$HOME/go/bin
-
-# MDM suppression (auto-killed at login via personal.kill-agents LaunchAgent)
-# See ~/personal/configs/mdm/README.md for setup
-alias start-zscaler="~/.local/bin/start-zscaler"
-alias start-scalefusion="~/.local/bin/start-scalefusion"
-
 # Rust / cargo
 . "$HOME/.cargo/env"
-
-# go 
-export PATH=$PATH:/usr/local/go/bin
-export GOBIN=${GOBIN:-$(go env GOPATH)/bin}
 
 # opencode
 export PATH=/home/sahil.jassal/.opencode/bin:$PATH
