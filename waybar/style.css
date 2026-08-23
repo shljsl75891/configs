@@ -1,7 +1,7 @@
 /* Waybar style — V7 island layout, gruvbox-dark palette
  *
  *  bg  = #1D2021   module background
- *  fg  = #d4be98   primary text
+ *  fg  = #ebdbb2   primary text
  */
 
 * {
@@ -18,7 +18,7 @@
 
 window#waybar {
   background: transparent;
-  color: #d4be98;
+  color: #ebdbb2;
 }
 
 window#waybar.empty #window {
@@ -54,7 +54,7 @@ window#waybar.empty #window {
 
 #workspaces button.urgent {
   background: #9d0006;
-  color: #d4be98;
+  color: #ebdbb2;
 }
 
 #workspaces button:first-child {
@@ -67,7 +67,7 @@ window#waybar.empty #window {
 
 #workspaces button:hover {
   background: #1d2021;
-  color: #d4be98;
+  color: #ebdbb2;
   transition: all 0.2s ease;
 }
 
@@ -97,32 +97,32 @@ window#waybar.empty #window {
   opacity: 0.8;
 }
 
-/* ── Per-module colors (Gruvbox Material Dark Hard) ──────────────────────── */
+/* ── Per-module colors (Gruvbox Dark Hard, bright variants) ───────────────── */
 
 #cpu {
-  background: #ea6962;
+  background: #fb4934;
 } /* red    */
 #memory {
-  background: #e78a4e;
+  background: #fe8019;
 } /* orange */
 #backlight {
-  background: #d8a657;
+  background: #fabd2f;
 } /* yellow */
 #pulseaudio {
-  background: #a9b665;
+  background: #b8bb26;
 } /* green  */
 #battery {
-  background: #89b482;
+  background: #8ec07c;
 } /* aqua   */
 #tray {
   background: #1d2021;
-  color: #d4be98;
+  color: #ebdbb2;
 }
 #mpris {
-  background: #7daea3;
+  background: #83a598;
 } /* blue   */
 #custom-date {
-  background: #89b482;
+  background: #8ec07c;
 }
 
 /* ── Arrows between right-side modules ───────────────────────────────────── */
@@ -144,29 +144,29 @@ window#waybar.empty #window {
 
 /* ◀ rule: color = RIGHT module bg (triangle fill), background = LEFT side  */
 #custom-arr0 {
-  color: #ea6962;
+  color: #fb4934;
   background: transparent;
   border-radius: 4px 0 0 4px;
 } /* entry → red   */
 #custom-arr1 {
-  color: #e78a4e;
-  background: #ea6962;
+  color: #fe8019;
+  background: #fb4934;
 } /* red    → orange  */
 #custom-arr2 {
-  color: #d8a657;
-  background: #e78a4e;
+  color: #fabd2f;
+  background: #fe8019;
 } /* orange → yellow  */
 #custom-arr3 {
-  color: #a9b665;
-  background: #d8a657;
+  color: #b8bb26;
+  background: #fabd2f;
 } /* yellow → green   */
 #custom-arr4 {
-  color: #89b482;
-  background: #a9b665;
+  color: #8ec07c;
+  background: #b8bb26;
 } /* green  → aqua    */
 #custom-arr5 {
   color: #1d2021;
-  background: #89b482;
+  background: #8ec07c;
 } /* aqua   → dark    */
 #custom-arr6 {
   color: #d3869b;
@@ -183,12 +183,12 @@ window#waybar.empty #window {
 /* ── Battery states ───────────────────────────────────────────────────────── */
 
 #battery.warning {
-  background: #89b482;
+  background: #8ec07c;
   color: #1d2021;
 }
 
 #battery.critical {
-  background: #89b482;
+  background: #8ec07c;
   color: #1d2021;
   animation: blink 0.5s linear infinite;
 }
@@ -208,7 +208,7 @@ window#waybar.empty #window {
 }
 
 #tray > .needs-attention {
-  background: #ea6962;
+  background: #fb4934;
 }
 
 /* ── mpris ────────────────────────────────────────────────────────────────── */
@@ -221,7 +221,7 @@ window#waybar.empty #window {
 
 @keyframes blink {
   to {
-    color: #ea6962;
+    color: #fb4934;
   }
 }
 
@@ -230,9 +230,9 @@ window#waybar.empty #window {
 tooltip {
   background: #1d2021;
   border-radius: 4px;
-  color: #d4be98;
+  color: #ebdbb2;
 }
 
 tooltip label {
-  color: #d4be98;
+  color: #ebdbb2;
 }
