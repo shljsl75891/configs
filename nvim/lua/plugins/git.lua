@@ -2,7 +2,6 @@ return {
 	{
 		"tpope/vim-fugitive",
 		lazy = false,
-		dependencies = { "tpope/vim-rhubarb" },
 		config = function()
 			vim.g.fugitive_git_executable = "HUSKY=0 git"
 
