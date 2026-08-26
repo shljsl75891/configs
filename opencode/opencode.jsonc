@@ -23,9 +23,15 @@
         "baseURL": "http://127.0.0.1:17321",
       },
     },
+    "copilot": {
+      "options": {
+        "headers": { "sleev-provider": "copilot", "sleev-harness": "opencode" },
+        "baseURL": "http://127.0.0.1:17321",
+      },
+    },
   },
   "model": "anthropic/claude-sonnet-5",
-  "small_model": "anthropic/claude-haiku-4-5",
+  "small_model": "github-copilot/gpt-5.4-mini",
   "permission": {
     "external_directory": "allow",
     "edit": {
@@ -62,7 +68,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "opencode/big-pickle",
+      "model": "github-copilot/gpt-5.3-codex",
       "variant": "high",
       "temperature": 0.4,
     },
