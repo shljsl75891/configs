@@ -125,7 +125,10 @@ For skill acquisition, difficulty is the tool. Effortful retrieval is what build
 
 Each of these should be based on a **feedback loop**, where the user receives feedback on their performance. This feedback loop should be as tight as possible, giving feedback immediately - and ideally automatically.
 
-For quizzes, each answer should be exactly the same number of words (and characters, if possible). Don't give the user any clues about the answer through formatting.
+Quizzes must be MCQ or self-graded recall. Never free-text exact-match grading (no "type the answer" checked by string comparison — it punishes correct answers phrased differently).
+
+- **MCQ** (default choice): 3-5 options, one correct. Distractors must be plausible, not obviously wrong. Keep options similar length so formatting doesn't give away the answer.
+- **Self-graded recall**: show the question, let the user recall the answer themselves, then reveal the model answer for them to compare against. Use only when the answer is prose or nuanced and MCQ can't capture it well.
 
 ## Acquiring Wisdom
 
