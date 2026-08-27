@@ -81,7 +81,7 @@ CHANGED_FILES=$(grep -c '^+++ ' "$WORKTREE_DIR/.pr.diff")
 
 **≤25 files — single-pass:** review each changed file directly against the command's review-focus tiers. Only flag issues on lines within `.valid-lines.txt` ranges.
 
-**>25 files — multi-agent:** spawn parallel specialized subagents (one message, multiple Task calls), one per taxonomy tier the command defines focus items for (e.g. Security, Structural, Performance/Abstraction, Quality). Each subagent prompt must include:
+**>25 files — multi-agent:** spawn parallel specialized @code-reviewersubagents (one message, multiple Task calls), one per taxonomy tier the command defines focus items for (e.g. Security, Structural, Performance/Abstraction, Quality). Each subagent prompt must include:
 
 - Worktree path, `.pr.diff` path, `.valid-lines.txt` path
 - The command's focus items for its tier only
