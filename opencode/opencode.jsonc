@@ -68,7 +68,7 @@
   "share": "disabled",
   "agent": {
     "compaction": {
-      "model": "github-copilot/gpt-5.3-codex",
+      "model": "github-copilot/gpt-5.6-luna",
       "variant": "high",
       "temperature": 0.4,
     },

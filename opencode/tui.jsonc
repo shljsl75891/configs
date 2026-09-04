@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/tui.json",
+  "plugin": ["@sahiljassal/opencode-anthropic-auth"],
   "theme": "gruvbox",
   "keybinds": { "terminal_suspend": "none", "app_exit": "ctrl+c" },
   "attention": { "enabled": true, "sound": true, "volume": 0.8 },
