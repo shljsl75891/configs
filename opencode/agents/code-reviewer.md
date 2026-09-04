@@ -1,6 +1,6 @@
 ---
 description: Use this agent to review TypeScript code after writing, modifying, or refactoring, or when reviewing changes in specific commits. Ensures code meets Clean Code TypeScript standards before merging.
-model: anthropic/claude-opus-5
+model: github-copilot/gpt-5.6-sol
 mode: subagent
 permission:
   "*": deny
