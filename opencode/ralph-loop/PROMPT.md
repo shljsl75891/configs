@@ -16,3 +16,5 @@ Your job: fix exactly one task from `TODO.md`, then stop.
   - `DONE` — fix complete, tests pass.
   - `BLOCKED` — cannot finish (missing info, unclear ticket, unrelated failing tests). Write the reason in "Additional Notes".
 - Stop. Do not pick another task.
+
+> Keep putting important decisions and reasoning in `ralph.log` in same directory. It should be human-readable and must follow **Simplified Technical English (ASD-STE100)**
