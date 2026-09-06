@@ -75,3 +75,9 @@ vim.keymap.set("i", "<F1>", "<C-o>:echo<CR>", opts)
 -- Undo tree toggle (local pack loaded in init.lua)
 opts.desc = "[U]ndo Tree [T]oggle"
 vim.keymap.set("n", "<leader>ut", vim.cmd.Undotree, opts)
+
+-- Horizontal scrolling
+opts.desc = "Scroll left"
+vim.keymap.set({ "n", "v" }, "<C-h>", "5zh", opts)
+opts.desc = "Scroll right"
+vim.keymap.set({ "v", "n" }, "<C-l>", "5zl", opts)
