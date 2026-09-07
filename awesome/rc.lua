@@ -14,7 +14,6 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
-local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 --local menubar       = require("menubar")
@@ -67,45 +66,35 @@ end
 
 -- }}}
 
--- {{{ Autostart windowless processes
+-- {{{ Variable definitions
 
--- This function will run once every time Awesome is started
-local function run_once(cmd_arr)
-	for _, cmd in ipairs(cmd_arr) do
-		awful.spawn.with_shell(
-			string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd)
-		)
+local modkey = "Mod4"
+local altkey = "Mod1"
+local terminal = "ghostty"
+local editor = os.getenv("EDITOR") or "nvim"
+local browser = "brave-origin"
+
+awful.util.terminal = terminal
+-- Tag icons mirror waybar sway/workspaces format-icons (waybar/config.jsonc)
+local tagnames =
+	{ " ", " ", " ", "󰙨 ", "󰆼 ", "󰈹 ", " ", " ", " " }
+awful.util.tagnames = tagnames
+
+-- Global (not local): called externally via `awesome-client 'focus_terminal_tag()'`
+-- (opencode's focus-tmux-pane plugin, nvim-dap's event_stopped listener),
+-- whose separate execution context can't see this file's locals.
+function focus_terminal_tag()
+	local s = awful.screen.focused()
+	local t = s.tags[2]
+	if t then
+		t:view_only()
 	end
 end
 
-run_once({ "urxvtd", "unclutter -root" }) -- comma-separated entries
+-- Per-tag wallpapers (see wallpaper.lua). Caches a pre-scaled surface per
+-- tag so switches are near-instant after the first (background-warmed) visit.
+local set_tag_wallpaper = require("./wallpaper").setup(#tagnames)
 
--- This function implements the XDG autostart specification
---[[
-awful.spawn.with_shell(
-    'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
-    'xrdb -merge <<< "awesome.started:true";' ..
-    -- list each of your autostart commands, followed by ; inside single quotes, followed by ..
-    'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
-)
---]]
-
--- }}}
-
--- {{{ Variable definitions
-
-local chosen_theme = "powerarrow-dark"
-local modkey = "Mod4"
-local altkey = "Mod1"
-local terminal = "alacritty"
-local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
-local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
-local editor = os.getenv("EDITOR") or "nvim"
-local browser = "brave-browser"
-
-awful.util.terminal = terminal
-awful.util.tagnames =
-	{ " ", " ", "󰨞 ", " ", " ", " ", "󰒱 ", " ", "󱖏 " }
 awful.layout.layouts = {
 	-- awful.layout.suit.floating,
 	awful.layout.suit.tile,
@@ -154,7 +143,7 @@ awful.util.tasklist_buttons = mytable.join(
 )
 
 beautiful.init(
-	string.format("%s/.config/awesome/bar.lua", os.getenv("HOME"), chosen_theme)
+	string.format("%s/.config/awesome/bar.lua", os.getenv("HOME"))
 )
 
 -- }}}
@@ -219,22 +208,12 @@ end)
 
 -- {{{ Screen
 
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", function(s)
-	-- Wallpaper
-	if beautiful.wallpaper then
-		local wallpaper = beautiful.wallpaper
-		-- If wallpaper is a function, call it with the screen
-		if type(wallpaper) == "function" then
-			wallpaper = wallpaper(s)
-		end
-		gears.wallpaper.maximized(wallpaper, s, true)
-	end
-end)
-
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
 	beautiful.at_screen_connect(s)
+	-- property::selected only fires on switches; paint the initially-selected
+	-- tag's wallpaper here since it's already selected by the time tags exist.
+	set_tag_wallpaper(s.selected_tag)
 end)
 
 -- }}}
@@ -246,10 +225,10 @@ local globalkeys = mytable.join(
 		naughty.destroy_all_notifications()
 	end, { description = "destroy all notifications", group = "hotkeys" }),
 
-	-- Show help
+	-- Show help ($mod+s is the screenshot bind in sway, so help moves to F1)
 	awful.key(
 		{ modkey },
-		"s",
+		"F1",
 		hotkeys_popup.show_help,
 		{ description = "show help", group = "awesome" }
 	),
@@ -344,14 +323,46 @@ local globalkeys = mytable.join(
 		awesome.restart,
 		{ description = "reload awesome", group = "awesome" }
 	),
+	awful.key({ modkey, "Shift" }, "r", awesome.restart, {
+		description = "reload awesome",
+		group = "awesome",
+	}),
+	awful.key({ modkey, "Shift" }, "q", function()
+		awful.prompt.run({
+			prompt = "Exit awesome? [y/N] ",
+			textbox = awful.screen.focused().mypromptbox.widget,
+			exe_callback = function(input)
+				if input:lower() == "y" then
+					awesome.quit()
+				end
+			end,
+		})
+	end, { description = "quit awesome", group = "awesome" }),
+	awful.key({ modkey }, "s", function()
+		awful.spawn("flameshot gui -c")
+	end, { description = "screenshot region to clipboard", group = "launcher" }),
 	awful.key({}, "Print", function()
-		awful.spawn.with_shell(
-			"maim -sDo | xclip -selection clipboard -t image/png"
-		)
-	end, { description = "capture partial screenshot", group = "launcher" }),
+		awful.spawn("flameshot gui -c")
+	end, { description = "screenshot region to clipboard", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.spawn.with_shell("~/.config/awesome/scripts/recording.sh")
+	end, { description = "toggle screen recording", group = "launcher" }),
 	awful.key({ modkey }, "e", function()
 		awful.spawn("pcmanfm")
 	end, { description = "open a explorer", group = "launcher" }),
+	awful.key({ modkey }, "p", function()
+		awful.spawn.with_shell("copyq toggle")
+	end, { description = "toggle clipboard manager", group = "launcher" }),
+	-- Voice dictation — sway parity (needs `ydotool` + `ydotoold` on X11)
+	awful.key({ modkey }, "d", function()
+		awful.spawn.with_shell("hyprvoice toggle")
+	end, { description = "toggle voice dictation", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "d", function()
+		awful.spawn.with_shell("hyprvoice cancel")
+	end, { description = "cancel voice dictation", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "l", function()
+		awful.spawn.with_shell("slock")
+	end, { description = "lock screen", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "o", function()
 		awful.spawn.with_shell("obsidian")
 	end, {
@@ -359,13 +370,13 @@ local globalkeys = mytable.join(
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "b", function()
-		awful.spawn(browser .. " --profile-directory='Profile 1'")
+		awful.spawn(browser .. " --profile-directory='Profile 2'")
 	end, {
 		description = "launch brave browser with work profile",
 		group = "launcher",
 	}),
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn(browser .. " --profile-directory='Default'")
+		awful.spawn(browser .. " --profile-directory='Profile 1'")
 	end, {
 		description = "launch brave browser with personal profile",
 		group = "launcher",
@@ -402,28 +413,20 @@ local globalkeys = mytable.join(
 
 	-- Screen brightness
 	awful.key({}, "XF86MonBrightnessUp", function()
-		-- os.execute("xbacklight -inc 10")
 		brightness_widget:inc()
 	end, { description = "+5%", group = "hotkeys" }),
 	awful.key({}, "XF86MonBrightnessDown", function()
-		-- os.execute("xbacklight -dec 10")
 		brightness_widget:dec()
 	end, { description = "-5%", group = "hotkeys" }),
 
 	-- ALSA volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		-- os.execute(string.format("amixer -q set %s 5%%+", beautiful.volume.channel))
-		-- beautiful.volume.update()
 		volume_widget.inc()
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-		-- os.execute(string.format("amixer -q set %s 5%%-", beautiful.volume.channel))
-		-- beautiful.volume.update()
 		volume_widget.dec()
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-		-- os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
-		-- beautiful.volume.update()
 		volume_widget.toggle()
 	end, { description = "toggle mute", group = "hotkeys" }),
 
@@ -433,15 +436,11 @@ local globalkeys = mytable.join(
               {description = "show the menubar", group = "launcher"}),
     --]]
 	-- dmenu
+	-- dmenu — colours/font mirror sway/scripts/launcher.sh (wmenu-run)
 	awful.key({ modkey }, "r", function()
-		os.execute(
-			string.format(
-				"dmenu_run -i -fn 'NotoSans Nerd Font-8' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
-				beautiful.bg_normal,
-				beautiful.fg_normal,
-				beautiful.bg_focus,
-				beautiful.fg_focus
-			)
+		awful.spawn.with_shell(
+			"dmenu_run -i -fn 'NotoSans Nerd Font-10'"
+				.. " -nb '#1d2021' -nf '#d4be98' -sb '#689d6a' -sf '#1d2021'"
 		)
 	end, { description = "show dmenu", group = "launcher" })
 	--
@@ -534,7 +533,11 @@ local clientkeys = mytable.join(
 	awful.key({ modkey, "Shift" }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
+	-- sway binds $mod+t to sticky; ontop moves to $mod+Shift+t
 	awful.key({ modkey }, "t", function(c)
+		c.sticky = not c.sticky
+	end, { description = "toggle sticky", group = "client" }),
+	awful.key({ modkey, "Shift" }, "t", function(c)
 		c.ontop = not c.ontop
 		if c.ontop then
 			c.border_color = beautiful.bg_urgent
@@ -650,43 +653,47 @@ awful.rules.rules = {
 			screen = awful.screen.preferred,
 			placement = awful.placement.no_overlap + awful.placement.no_offscreen,
 			size_hints_honor = false,
+			-- sway/config: `for_window [all] opacity 0.95` (needs picom running)
+			opacity = 0.95,
 		},
 	},
 
-	-- Floating clients.
+	-- Floating clients — sway/config: `for_window [floating] move position center`
 	{
 		rule_any = {
-			instance = {
-				"DTA", -- Firefox addon DownThemAll.
-				"copyq", -- Includes session name in class.
-				"pinentry",
-			},
-			class = {
-				"Arandr",
-				"Blueman-manager",
-				"Gpick",
-				"Kruler",
-				"MessageWin", -- kalarm.
-				"Sxiv",
-				"Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-				"Wpa_gui",
-				"veromix",
-				"xtightvncviewer",
-				"Codium",
-			},
-
-			-- Note that the name property shown in xprop might be set slightly after creation of the client
-			-- and the name shown there might not match defined rules here.
-			name = {
-				"Event Tester", -- xev.
-			},
-			role = {
-				"AlarmWindow", -- Thunderbird's calendar.
-				"ConfigManager", -- Thunderbird's about:config.
-				-- "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
-			},
+			instance = { "pinentry" },
+			role = { "pop-up" },
+			type = { "dialog" },
 		},
 		properties = { floating = true, placement = awful.placement.centered },
+	},
+
+	-- sway: `for_window [app_id="pcmanfm"] floating enable, resize set 800 600`
+	{
+		rule = { class = "Pcmanfm" },
+		properties = {
+			floating = true,
+			width = 800,
+			height = 600,
+			placement = awful.placement.centered,
+		},
+	},
+
+	-- sway: `for_window [app_id="com.github.hluk.copyq"] floating enable, resize set 700 500`
+	{
+		rule_any = { class = { "copyq" }, instance = { "copyq" } },
+		properties = {
+			floating = true,
+			width = 700,
+			height = 500,
+			placement = awful.placement.centered,
+		},
+	},
+
+	-- Override the default rule's tiling + 0.95 opacity for the capture overlay.
+	{
+		rule = { class = "flameshot" },
+		properties = { floating = true, border_width = 0, opacity = 1 },
 	},
 
 	-- Add titlebars to normal clients and dialogs
@@ -695,21 +702,15 @@ awful.rules.rules = {
 		properties = { titlebars_enabled = false },
 	},
 
-	-- Set Firefox to always map on the tag named "2" on screen 1.
+	-- Workspace assignments — sway/config: assign obsidian -> 4, slack -> 7
+	{
+		rule = { class = "obsidian" },
+		properties = { screen = 1, tag = tagnames[4] },
+	},
 	{
 		rule = { class = "Slack" },
-		properties = { screen = target_screen, tag = "󰒱 " },
+		properties = { screen = target_screen, tag = tagnames[7] },
 	},
-	{
-		rule = { class = "Codium" },
-		properties = { screen = 1, tag = "󰨞 " },
-	},
-	{ rule = { class = "obsidian" }, properties = { screen = 1, tag = " " } },
-	{
-		rule = { class = "pgadmin4" },
-		properties = { screen = target_screen, tag = " " },
-	},
-	{ rule = { class = "Spotify" }, properties = { screen = 1, tag = "󱖏 " } },
 }
 
 -- }}}
@@ -733,53 +734,6 @@ client.connect_signal("manage", function(c)
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
 	end
-end)
-
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
-	-- Custom
-	if beautiful.titlebar_fun then
-		beautiful.titlebar_fun(c)
-		return
-	end
-
-	-- Default
-	-- buttons for the titlebar
-	local buttons = mytable.join(
-		awful.button({}, 1, function()
-			c:emit_signal("request::activate", "titlebar", { raise = true })
-			awful.mouse.client.move(c)
-		end),
-		awful.button({}, 3, function()
-			c:emit_signal("request::activate", "titlebar", { raise = true })
-			awful.mouse.client.resize(c)
-		end)
-	)
-
-	awful.titlebar(c, { size = 16 }):setup({
-		{ -- Left
-			awful.titlebar.widget.iconwidget(c),
-			buttons = buttons,
-			layout = wibox.layout.fixed.horizontal,
-		},
-		{ -- Middle
-			{ -- Title
-				align = "center",
-				widget = awful.titlebar.widget.titlewidget(c),
-			},
-			buttons = buttons,
-			layout = wibox.layout.flex.horizontal,
-		},
-		{ -- Right
-			awful.titlebar.widget.floatingbutton(c),
-			awful.titlebar.widget.maximizedbutton(c),
-			awful.titlebar.widget.stickybutton(c),
-			awful.titlebar.widget.ontopbutton(c),
-			awful.titlebar.widget.closebutton(c),
-			layout = wibox.layout.fixed.horizontal(),
-		},
-		layout = wibox.layout.align.horizontal,
-	})
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

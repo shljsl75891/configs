@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
+# Autostart for awesome (X11).
 
-function run {
-  if ! pgrep $1 ;
-  then
-    $@&
-  fi
+# Start $1 only if it is not already running.
+run_once() {
+  local cmd="$1"
+  local bin="${cmd%% *}"
+  command -v "$bin" >/dev/null 2>&1 || return 0
+  pgrep -u "$USER" -fx "$cmd" >/dev/null 2>&1 || $cmd &
 }
 
-# programs
-run "picom"
-run "nitrogen --set-scaled --random $HOME/gitprojects/wallpapers"
-run "nm-applet"
-run "copyq"
+# Compositor — X11 has none built in, unlike sway. Needed for the 0.95 window
+# opacity set in rc.lua's default rule, and to stop screen tearing.
+run_once "picom"
 
-# for remembering to punch in
-xinput set-prop 'DELL0A20:00 06CB:CE65 Touchpad' 'libinput Tapping Enabled' 1
-xinput set-prop 'DELL0A20:00 06CB:CE65 Touchpad' 'libinput Natural Scrolling Enabled' 1
-brave-browser --profile-directory='Profile 1' https://sourcefuse.peoplestrong.com/oneweb/#/home
+run_once "nm-applet --indicator"
+run_once "blueman-applet"
+run_once "copyq"
+run_once "xsettingsd"
+
+# Tray icon + instant captures via $mod+s / Print (rc.lua).
+run_once "flameshot"

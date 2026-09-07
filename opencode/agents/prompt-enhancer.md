@@ -23,4 +23,4 @@ Every enhanced prompt must:
 
 Respond with optimized prompt easy to copy and paste, and ask for approval before finalizing.
 
-After approval, copy it to the user's system clipboard using `wl-copy` via bash.
+After approval, copy it to the user's system clipboard using `xclip -selection clipboard` via bash.

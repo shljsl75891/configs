@@ -4,39 +4,43 @@
 git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 ```
 
+> **History note:** this machine ran Sway (Wayland) for a while. It was abandoned after a
+> long-running touchpad/cursor stutter investigation — the root cause turned out to be I²C
+> runtime-PM suspending the touchpad's PCI controller (fixed via a udev rule, see
+> `/etc/udev/rules.d/90-i2c-no-runtime-pm.rules`), but the stutter persisted under Wayland even
+> after that fix. Rather than keep chasing it, the setup moved back to awesome/X11. If you ever
+> see `WLR_DRM_NO_ATOMIC` or `WLR_NO_HARDWARE_CURSORS` referenced anywhere, those were dead-end
+> Wayland cursor-rendering workarounds from that investigation — not needed on X11, don't
+> reintroduce them.
+
 # Dependencies
 
-### Awesome WM (X11 — legacy)
-
 ```console
-zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awesome maim ffmpegthumbnailer mpv cmake
-```
-
-### Sway (Wayland — Ubuntu 26.04+)
-
-```console
-sudo apt install sway waybar xwayland grim slurp wl-clipboard wtype swaybg gtklock \
-  mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
+sudo apt install zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential \
+  awesome ffmpeg xclip picom brightnessctl pamixer playerctl copyq pcmanfm \
+  flameshot \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
-  qt5ct xsettingsd autotiling wmenu tealdeer
+  qt5ct xsettingsd ydotool tealdeer cmake \
+  fd-find x11-utils libnotify-bin blueman alsa-utils
 ```
 
-## Sway Setup (Ubuntu 26.04 / Wayland)
+`dmenu` and `slock` are vendored as suckless source builds in this repo (`dmenu/`, `slock/`) —
+build them yourself, see below.
+
+## Awesome Setup
 
 ### Session
 
-Log out of GNOME → at GDM login screen, click the gear icon → select **Sway**.
-Sway cannot be launched from inside a running GNOME session.
+At the LightDM login screen, click the session-type gear icon → select **awesome**.
 
 ### Symlink configs
 
 ```bash
-ln -sf ~/personal/configs/sway       ~/.config/sway
-ln -sf ~/personal/configs/gtklock    ~/.config/gtklock
-ln -sf ~/personal/configs/waybar     ~/.config/waybar
-ln -sf ~/personal/configs/mako       ~/.config/mako
-ln -sf ~/personal/configs/qt5ct      ~/.config/qt5ct
-ln -sf ~/personal/configs/hyprvoice  ~/.config/hyprvoice
+ln -sf ~/personal/configs/awesome        ~/.config/awesome
+ln -sf ~/personal/configs/picom          ~/.config/picom
+ln -sf ~/personal/configs/qt5ct          ~/.config/qt5ct
+ln -sf ~/personal/configs/hyprvoice      ~/.config/hyprvoice
+ln -sf ~/personal/configs/X11/xsessionrc ~/.xsessionrc
 
 mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0 ~/.config/fontconfig
 ln -sf ~/personal/configs/gtk-3.0/settings.ini   ~/.config/gtk-3.0/settings.ini
@@ -46,34 +50,71 @@ ln -sf ~/personal/configs/fontconfig/xsettingsd.conf ~/.config/xsettingsd/xsetti
 fc-cache -f
 ```
 
-### Multi-monitor (Wayland)
+### Cursor theme
+
+GTK apps read `gtk-cursor-theme-name` above, but the root window (desktop background,
+awesome's own cursor) falls back to `~/.icons/default/index.theme`. Keep both pointed at the
+same theme or you'll get a different cursor over the desktop vs. over windows:
+
+```bash
+mkdir -p ~/.icons/default
+cat > ~/.icons/default/index.theme << 'EOF'
+[Icon Theme]
+Name=Default
+Comment=Default Cursor Theme
+Inherits=Bibata-Modern-Classic
+EOF
+```
+
+`X11/xsessionrc` (symlinked above) also exports `XCURSOR_THEME`/`XCURSOR_SIZE` so Xlib and Qt
+apps agree too. Takes effect on next login.
+
+### Build dmenu and slock
+
+```bash
+sudo make -C ~/personal/configs/dmenu install
+sudo make -C ~/personal/configs/slock install
+```
+
+### Touchpad config
+
+```bash
+sudo install -Dm644 ~/personal/configs/awesome/40-touchpad.conf /etc/X11/xorg.conf.d/40-touchpad.conf
+```
+
+### Multi-monitor
 
 List outputs:
 
 ```bash
-swaymsg -t get_outputs
+xrandr
 ```
 
-Edit `sway/config` — replace the generic output line with explicit entries:
+Then set positions, e.g.:
 
-```
-output eDP-1    resolution 1920x1080 position 0,0    scale 1
-output HDMI-A-1 resolution 1920x1080 position 1920,0 scale 1
+```bash
+xrandr --output eDP-1 --primary --auto --output HDMI-1 --auto --right-of eDP-1
 ```
 
 ### Voice Dictation (hyprvoice)
 
-Voice-to-text via [hyprvoice](https://github.com/leonardotrapani/hyprvoice) + Groq cloud (whisper-large-v3-turbo, ~200ms latency).
+Voice-to-text via [hyprvoice](https://github.com/leonardotrapani/hyprvoice) + Groq cloud (whisper-large-v3-turbo, ~200ms latency). Injects text via `ydotool` (uinput-based, works under X11).
 
 **One-time setup on a fresh machine:**
 
 ```bash
 # 1. Install binary
+mkdir -p ~/.local/bin
 wget -O ~/.local/bin/hyprvoice \
   https://github.com/leonardotrapani/hyprvoice/releases/download/v1.0.2/hyprvoice-linux-x86_64
 chmod +x ~/.local/bin/hyprvoice
 
-# 2. Install systemd user service
+# 2. Install ydotool and start its daemon (needs /dev/uinput access via the `input` group)
+sudo apt install ydotool
+sudo usermod -aG input "$USER"   # log out/in to pick up the group
+systemctl --user enable --now ydotool.service
+
+# 3. Install systemd user service for hyprvoice
 mkdir -p ~/.config/systemd/user
 cat > ~/.config/systemd/user/hyprvoice.service << 'EOF'
 [Unit]
@@ -85,7 +126,7 @@ Type=simple
 ExecStart=%h/.local/bin/hyprvoice serve
 Restart=on-failure
 RestartSec=3
-PassEnvironment=WAYLAND_DISPLAY XDG_RUNTIME_DIR XDG_SESSION_TYPE DISPLAY
+PassEnvironment=XDG_RUNTIME_DIR XDG_SESSION_TYPE DISPLAY
 
 StandardOutput=journal
 StandardError=journal
@@ -94,7 +135,7 @@ StandardError=journal
 WantedBy=default.target
 EOF
 
-# 3. Set Groq API key (get free key at console.groq.com)
+# 4. Set Groq API key (get free key at console.groq.com)
 #    Add to ~/.zshenv:
 #      export GROQ_API_KEY=gsk_...
 #    Then inject into the service:
@@ -104,61 +145,33 @@ cat > ~/.config/systemd/user/hyprvoice.service.d/env.conf << 'EOF'
 Environment=GROQ_API_KEY=<your-key-here>
 EOF
 
-# 4. Enable and start
+# 5. Enable and start
 systemctl --user daemon-reload
 systemctl --user enable --now hyprvoice
 ```
+
+Config lives at `~/.config/hyprvoice/config.toml` — `[injection] backends = ["ydotool"]`,
+`ydotool_timeout = "30s"` (default 3s is too short and kills mid-injection on longer
+transcriptions).
 
 **Usage:**
 
 - `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
 
-### Cursor Smoothness Fix (Wayland vs X11)
+## Screen Capture
 
-wlroots uses atomic KMS commits, coupling the cursor plane to compositor frame timing. X11 moves the cursor via an unsynchronized DRM ioctl — hence the difference. Fix: disable atomic KMS.
+- `Super+s` / `Print` — flameshot region capture to clipboard. Autostarts with a tray icon
+  (see `awesome/autostart.sh`); config lives at `~/.config/flameshot/flameshot.ini` once you've
+  run it and changed a setting.
+- `Super+Shift+s` — toggles screen recording (`awesome/scripts/recording.sh`, ffmpeg x11grab).
+  Saves to `~/Videos/Recordings/`, with a notify-send on start/stop.
 
-Add to `/etc/environment` (requires sudo, read by PAM for all sessions including lightdm):
-
-```sh
-WLR_DRM_NO_ATOMIC=1
-```
-
-Add to `sway/config`:
-
-```conf
-input type:pointer {
-    accel_profile flat
-    pointer_accel 0
-}
-
-output * max_render_time off
-```
-
-Reboot for `/etc/environment` to take effect. Verify the var is live in Sway's process:
-
-```bash
-cat /proc/$(pidof sway)/environ | tr '\0' '\n' | grep WLR
-```
-
-> Note: `~/.config/environment.d/` is loaded by systemd user manager but **not** inherited by Sway when launched via lightdm. `/etc/environment` is the reliable path.
-
-### Caveats vs Hyprland / Awesome WM
-
-- **No blur or rounded corners**: standard Sway has none.
-- **No maximize**: Sway has no native maximize command; `Super+f` toggles fullscreen.
-- **autotiling for layout**: master-stack behavior via the `autotiling` script (alternating splits).
-- **No pin/always-on-top**: Sway has no equivalent; use `sticky toggle` to make a window visible on all workspaces.
-- **picom not needed**: Sway is its own Wayland compositor.
-- **Touchpad config**: managed via `input type:touchpad {}` block in `sway/config`.
-
-## Fix Screen Tearing (X11 / Legacy)
-
-> Wayland compositors like Sway handle this natively. These steps apply to X11 only (awesome WM etc.).
+## Fix Screen Tearing (X11)
 
 ##### Keep `vsync` on
 
-In `picom.conf`
+In `picom/picom.conf`:
 
 ```bash
 vsync = true;
@@ -166,7 +179,7 @@ vsync = true;
 
 #### Intel / AMD X11 Config
 
-File to Edit/Add: /etc/X11/xorg.conf.d/20-intel.conf or 20-amd.conf
+File to Edit/Add: `/etc/X11/xorg.conf.d/20-intel.conf` or `20-amd.conf`
 
 ```xf86conf
 Section "Device"

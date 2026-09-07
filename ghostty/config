@@ -21,3 +21,4 @@ clipboard-read = allow
 clipboard-write = allow
 
 confirm-close-surface = false
+window-decoration = false

@@ -1,0 +1,13 @@
+#!/bin/sh
+# Sourced by /etc/X11/Xsession.d/40x11-common_xsessionrc at session start,
+# before the WM launches — so awesome's root cursor picks these up too.
+# GTK apps read gtk-cursor-theme-name from gtk-{3,4}.0/settings.ini and
+# xsettingsd.conf; these vars cover Xlib and Qt, keeping all toolkits in sync.
+export XCURSOR_THEME=Bibata-Modern-Classic
+export XCURSOR_SIZE=20
+
+# Qt apps have no native GTK theming. flameshot/copyq are Qt6, SSR is Qt5;
+# gtk3 is the one platformtheme value that works for both, so all Qt apps
+# follow the same Gruvbox-Green-Dark GTK theme as everything else. Needs
+# qt6-gtk-platformtheme installed for the Qt6 half of this to work.
+export QT_QPA_PLATFORMTHEME=gtk3

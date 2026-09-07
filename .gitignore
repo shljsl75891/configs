@@ -3,3 +3,10 @@
 mpv/watch_later/
 qt5ct.conf
 obsidian/workspace.json
+
+# suckless build artifacts (build via README instructions, don't commit)
+dmenu/dmenu
+dmenu/stest
+dmenu/*.o
+slock/slock
+slock/*.o

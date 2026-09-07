@@ -23,8 +23,8 @@ export const FocusPane = async ({ $, client }) => {
       }
 
       if (process.env.TMUX_PANE) {
-        const TERMINAL_WORKSPACE = 2;
-        await $`swaymsg workspace ${TERMINAL_WORKSPACE}`.quiet();
+        // Tag 2 = terminal tag, defined in awesome/rc.lua's focus_terminal_tag()
+        await $`awesome-client 'focus_terminal_tag()'`.quiet();
         await $`tmux select-pane -t ${process.env.TMUX_PANE}`.quiet();
         await $`tmux switch-client -t ${process.env.TMUX_PANE}`.quiet();
         if (event.type.includes("asked")) {
