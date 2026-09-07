@@ -18,7 +18,7 @@ zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential awe
 sudo apt install sway waybar xwayland grim slurp wl-clipboard wtype swaybg gtklock \
   mako-notifier brightnessctl pamixer playerctl copyq pcmanfm \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
-  qt5ct xsettingsd autotiling wmenu
+  qt5ct xsettingsd autotiling wmenu tealdeer
 ```
 
 ## Sway Setup (Ubuntu 26.04 / Wayland)
