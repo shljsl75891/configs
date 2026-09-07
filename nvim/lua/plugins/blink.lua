@@ -90,6 +90,14 @@ return {
 					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 					dap = { name = "DAP", module = "blink-cmp-dap" },
 					path = { opts = { show_hidden_files_by_default = true } },
+					-- Disable native getcompletion() for :G/:Git: fugitive's completion
+					-- function shells out to git synchronously, causing cmdline lag.
+					cmdline = {
+						enabled = function()
+							local cmd = vim.fn.getcmdline():match("^%s*(%S+)")
+							return cmd ~= "G" and cmd ~= "Git"
+						end,
+					},
 				},
 			},
 			fuzzy = {
