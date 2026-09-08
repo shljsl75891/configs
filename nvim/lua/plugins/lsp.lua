@@ -17,7 +17,7 @@ return {
 						"cssls",
 						"dockerfile-language-server",
 						-- Formatters
-						"prettierd",
+						"prettier",
 						"stylua",
 						"pgformatter",
 						-- Debug adapters
