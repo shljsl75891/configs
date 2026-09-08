@@ -25,8 +25,9 @@ if [ "$stopped" -eq 0 ]; then
 	geometry=$(xdpyinfo | awk '/dimensions:/ {print $2}')
 	file="$HOME/Videos/Recordings/$(date +%F_%H-%M-%S).mp4"
 	mkdir -p "$(dirname "$file")"
-	ffmpeg -loglevel error -f x11grab -framerate 60 -video_size "$geometry" \
-		-i "${DISPLAY:-:0}" -c:v libx264 -preset ultrafast -pix_fmt yuv420p \
+	ffmpeg -loglevel error -vaapi_device /dev/dri/renderD128 \
+		-f x11grab -framerate 60 -video_size "$geometry" -i "${DISPLAY:-:0}" \
+		-vf 'format=nv12,hwupload' -c:v h264_vaapi -qp 20 \
 		"$file" &
 	echo $! >"$pidfile"
 	notify-send "Recording" "Recording started: $file"

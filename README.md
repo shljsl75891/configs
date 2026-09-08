@@ -20,7 +20,8 @@ sudo apt install zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev bu
   awesome ffmpeg xclip picom brightnessctl pamixer playerctl copyq pcmanfm maim \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
   qt5ct xsettingsd ydotool tealdeer cmake \
-  fd-find x11-utils libnotify-bin blueman alsa-utils
+  fd-find x11-utils libnotify-bin blueman alsa-utils \
+  intel-media-va-driver-non-free vainfo
 ```
 
 `dmenu` and `slock` are vendored as suckless source builds in this repo (`dmenu/`, `slock/`) —
@@ -161,8 +162,9 @@ transcriptions).
 ## Screen Capture
 
 - `Super+s` — maim region capture piped to the clipboard, with a notify-send on completion.
-- `Super+Shift+s` — toggles screen recording (`awesome/scripts/recording.sh`, ffmpeg x11grab).
-  Saves to `~/Videos/Recordings/`, with a notify-send on start/stop.
+- `Super+Shift+s` — toggles screen recording (`awesome/scripts/recording.sh`, ffmpeg x11grab
+  with VAAPI hardware encoding via the Intel iGPU). Saves to `~/Videos/Recordings/`, with a
+  notify-send on start/stop.
 
 ## Fix Screen Tearing (X11)
 
