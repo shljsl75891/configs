@@ -339,10 +339,9 @@ local globalkeys = mytable.join(
 		})
 	end, { description = "quit awesome", group = "awesome" }),
 	awful.key({ modkey }, "s", function()
-		awful.spawn("flameshot gui -c")
-	end, { description = "screenshot region to clipboard", group = "launcher" }),
-	awful.key({}, "Print", function()
-		awful.spawn("flameshot gui -c")
+		awful.spawn.with_shell(
+			"maim -o -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to clipboard'"
+		)
 	end, { description = "screenshot region to clipboard", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "s", function()
 		awful.spawn.with_shell("~/.config/awesome/scripts/recording.sh")
@@ -688,12 +687,6 @@ awful.rules.rules = {
 			height = 500,
 			placement = awful.placement.centered,
 		},
-	},
-
-	-- Override the default rule's tiling + 0.95 opacity for the capture overlay.
-	{
-		rule = { class = "flameshot" },
-		properties = { floating = true, border_width = 0, opacity = 1 },
 	},
 
 	-- Add titlebars to normal clients and dialogs

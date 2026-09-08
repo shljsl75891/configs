@@ -17,8 +17,7 @@ git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 
 ```console
 sudo apt install zsh tmux libx11-dev libxft-dev libxrandr-dev libxinerama-dev build-essential \
-  awesome ffmpeg xclip picom brightnessctl pamixer playerctl copyq pcmanfm \
-  flameshot \
+  awesome ffmpeg xclip picom brightnessctl pamixer playerctl copyq pcmanfm maim \
   network-manager-gnome bluez xdg-desktop-portal-gtk ghostty \
   qt5ct xsettingsd ydotool tealdeer cmake \
   fd-find x11-utils libnotify-bin blueman alsa-utils
@@ -161,9 +160,7 @@ transcriptions).
 
 ## Screen Capture
 
-- `Super+s` / `Print` — flameshot region capture to clipboard. Autostarts with a tray icon
-  (see `awesome/autostart.sh`); config lives at `~/.config/flameshot/flameshot.ini` once you've
-  run it and changed a setting.
+- `Super+s` — maim region capture piped to the clipboard, with a notify-send on completion.
 - `Super+Shift+s` — toggles screen recording (`awesome/scripts/recording.sh`, ffmpeg x11grab).
   Saves to `~/Videos/Recordings/`, with a notify-send on start/stop.
 

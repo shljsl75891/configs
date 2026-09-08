@@ -17,6 +17,3 @@ run_once "nm-applet --indicator"
 run_once "blueman-applet"
 run_once "copyq"
 run_once "xsettingsd"
-
-# Tray icon + instant captures via $mod+s / Print (rc.lua).
-run_once "flameshot"
