@@ -20,5 +20,7 @@ keybind = shift+enter=text:\x1b\r
 clipboard-read = allow
 clipboard-write = allow
 
+mouse-scroll-multiplier = precision:4
+
 confirm-close-surface = false
 window-decoration = false

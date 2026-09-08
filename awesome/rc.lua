@@ -701,7 +701,7 @@ awful.rules.rules = {
 		properties = { screen = 1, tag = tagnames[4] },
 	},
 	{
-		rule = { class = "Slack" },
+		rule = { class = "slack" },
 		properties = { screen = target_screen, tag = tagnames[7] },
 	},
 }
