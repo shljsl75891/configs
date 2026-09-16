@@ -12,7 +12,13 @@ pi/models-store.json
 pi/npm/
 pi/git/
 pi/logs/
+pi/mcp-cache.json
+pi/mcp-npx-cache.json
 pi/extensions/pi-permission-system/logs/
+pi-yolo/extensions/pi-permission-system/logs/
+pi-yolo/mcp-cache.json
+pi-yolo/mcp-npx-cache.json
+pi-yolo/sessions/
 ralph.log
 
 # suckless build artifacts (build via README instructions, don't commit)
