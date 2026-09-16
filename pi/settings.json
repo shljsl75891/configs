@@ -10,6 +10,7 @@
   "packages": [
     "npm:@gotgenes/pi-subagents",
     "npm:@gotgenes/pi-permission-system",
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "npm:@cortexkit/pi-anthropic-auth"
   ]
 }

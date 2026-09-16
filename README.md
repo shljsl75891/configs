@@ -176,9 +176,18 @@ adapter, plan mode):
 pi update --extensions
 ```
 
-Then `pi` → `/login` → Claude Pro/Max. `pi/extensions/anthropic-oauth` strips the pi-harness
-fingerprint from the system prompt and upgrades prompt caching to a 1h TTL on OAuth turns —
-see `pi/extensions/anthropic-oauth/README.md`.
+Then `pi` → `/login anthropic` → Claude Pro/Max. The `@cortexkit/pi-anthropic-auth` package
+(declared in `pi/settings.json`) overrides pi's built-in Anthropic provider: strips the
+pi-harness fingerprint, upgrades prompt caching to a 1h TTL, and fixes request construction
+for adaptive-thinking models (opus-5/sonnet-5) in subagents.
+
+The plugin creates and owns `pi/anthropic-auth.json` (gitignored — contains OAuth material).
+To enable 1h caching:
+
+```
+/claude-cache on
+/claude-cache mode explicit
+```
 
 `ralph-loop/` runs the [Ralph Wiggum technique](https://ghuntley.com/ralph/) unattended
 against a target repo's `TODO.md`, using the same `~/.pi/agent` config — `ask` rules fail
