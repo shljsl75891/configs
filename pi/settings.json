@@ -1,0 +1,15 @@
+{
+  "lastChangelogVersion": "0.85.1",
+  "theme": "gruvbox-dark-hard",
+  "tuiMode": "fullscreen",
+  "quietStartup": true,
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-sonnet-5",
+  "compaction": { "enabled": false },
+  "warnings": { "anthropicExtraUsage": false },
+  "packages": [
+    "npm:@gotgenes/pi-subagents",
+    "npm:@gotgenes/pi-permission-system",
+    "npm:pi-mcp-adapter"
+  ]
+}

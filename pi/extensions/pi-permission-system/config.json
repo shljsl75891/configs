@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "permission": {
+    "*": "allow",
+    "external_directory": "allow",
+    "skill": {
+      "*": "allow",
+      "understand*": "deny"
+    },
+    "write": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "ask",
+      "*.env.example": "ask"
+    },
+    "edit": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "ask",
+      "*.env.example": "ask"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "allow",
+      "*.env.example": "allow"
+    },
+    "bash": {
+      "*": "allow",
+      "rm *": "ask",
+      "rmdir *": "ask",
+      "* .env *": "ask",
+      "git stash *": "ask",
+      "git clean *": "ask",
+      "HUSKY=0 git *": "ask",
+      "git commit *": "ask",
+      "git reset *": "ask",
+      "git push *": "ask",
+      "docker compose down *": "ask",
+      "docker volume rm *": "ask",
+      "git restore *": "deny",
+      "git -C *": "deny"
+    }
+  }
+}

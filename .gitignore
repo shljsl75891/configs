@@ -4,6 +4,17 @@ mpv/watch_later/
 qt5ct.conf
 obsidian/workspace.json
 
+# pi agent runtime state (secrets, sessions, installed packages)
+pi/auth.json
+pi/sessions/
+pi/trust.json
+pi/models-store.json
+pi/npm/
+pi/git/
+pi/logs/
+pi/extensions/pi-permission-system/logs/
+ralph.log
+
 # suckless build artifacts (build via README instructions, don't commit)
 dmenu/dmenu
 dmenu/stest
