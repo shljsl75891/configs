@@ -4,7 +4,7 @@
  * Replaces pi's default footer (branch, token deltas, cache hit, cost,
  * subagent status) with a single status line:
  *
- *   claude-sonnet-5 [high]                       Ctx 291k/1.0M (29.2%) ₹12.34
+ *   claude-sonnet-5 [high]                       291k/1.0M (29.2%) ₹12.34
  *
  * Model name (+ thinking/effort level, when set) left-aligned, context-window
  * usage + session cost (converted to INR) right-aligned.
@@ -102,7 +102,7 @@ export default function contextBar(pi: ExtensionAPI) {
 				const contextWindow: number = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
 
 				if (!contextWindow) {
-					const line = left + theme.fg("dim", "  Ctx: no model");
+					const line = left + theme.fg("dim", "  no model");
 					return [truncateToWidth(line, width)];
 				}
 
@@ -119,9 +119,8 @@ export default function contextBar(pi: ExtensionAPI) {
 				const costUsd = sumSessionCostUsd(ctx.sessionManager.getEntries());
 				const costStr = rate !== null ? ` ₹${(costUsd * rate).toFixed(2)}` : "";
 
-				const rightPlain = `Ctx ${tokStr}/${winStr} (${pctStr})${costStr}`;
+				const rightPlain = `${tokStr}/${winStr} (${pctStr})${costStr}`;
 				const right =
-					theme.fg("dim", "Ctx ") +
 					theme.fg(sev, `${tokStr}/${winStr}`) +
 					theme.fg("dim", ` (${pctStr})`) +
 					(costStr ? theme.fg("dim", costStr) : "");
