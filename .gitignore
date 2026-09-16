@@ -4,21 +4,31 @@ mpv/watch_later/
 qt5ct.conf
 obsidian/workspace.json
 
-# pi agent runtime state (secrets, sessions, installed packages)
-pi/auth.json
-pi/sessions/
-pi/trust.json
-pi/models-store.json
-pi/npm/
-pi/git/
-pi/logs/
-pi/mcp-cache.json
-pi/mcp-npx-cache.json
-pi/extensions/pi-permission-system/logs/
-pi-yolo/extensions/pi-permission-system/logs/
-pi-yolo/mcp-cache.json
-pi-yolo/mcp-npx-cache.json
-pi-yolo/sessions/
+# pi agent: deny-by-default, allowlist real config so new runtime/cache
+# files pi invents (auth.json, sessions/, trust.json, models-store.json,
+# npm/, git/, logs/, mcp-*-cache.json, mcp-onboarding.json, ...) are
+# ignored automatically without editing this file.
+pi/*
+!pi/AGENTS.md
+!pi/settings.json
+!pi/keybindings.json
+!pi/mcp.json
+!pi/models.json
+!pi/agents/
+!pi/agents/**
+!pi/extensions/
+!pi/extensions/**
+!pi/prompts/
+!pi/prompts/**
+!pi/skills/
+!pi/skills/**
+!pi/themes/
+!pi/themes/**
+
+# must follow the re-includes above (gitignore is last-match-wins)
+pi/extensions/**/logs/
+pi/extensions/**/node_modules/
+
 ralph.log
 
 # suckless build artifacts (build via README instructions, don't commit)
