@@ -1,0 +1,11 @@
+{
+  "providers": {
+    "anthropic": {
+      "headers": {
+        "sleev-provider": "anthropic",
+        "sleev-harness": "pi"
+      },
+      "baseUrl": "http://127.0.0.1:17321"
+    }
+  }
+}

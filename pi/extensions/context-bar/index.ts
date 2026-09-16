@@ -4,10 +4,10 @@
  * Replaces pi's default footer (branch, token deltas, cache hit, cost,
  * subagent status) with a single status line:
  *
- *   claude-sonnet-5                              Ctx 291k/1.0M (29.2%) ₹12.34
+ *   claude-sonnet-5 [high]                       Ctx 291k/1.0M (29.2%) ₹12.34
  *
- * Model name left-aligned, context-window usage + session cost (converted
- * to INR) right-aligned.
+ * Model name (+ thinking/effort level, when set) left-aligned, context-window
+ * usage + session cost (converted to INR) right-aligned.
  *
  * `ctx.getContextUsage()` returns { tokens, contextWindow, percent }. After
  * compaction, tokens/percent are null until the next response — shown as
@@ -93,7 +93,10 @@ export default function contextBar(pi: ExtensionAPI) {
 			invalidate() {},
 			render(width: number): string[] {
 				const modelName = ctx.model?.name ?? ctx.model?.id ?? "no model";
-				const left = theme.fg("dim", modelName);
+				const leftPlain = ctx.thinkingLevel ? `${modelName} [${ctx.thinkingLevel}]` : modelName;
+				const left = ctx.thinkingLevel
+					? theme.fg("dim", modelName) + theme.fg("dim", ` [${ctx.thinkingLevel}]`)
+					: theme.fg("dim", modelName);
 
 				const usage = ctx.getContextUsage?.();
 				const contextWindow: number = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
@@ -123,7 +126,7 @@ export default function contextBar(pi: ExtensionAPI) {
 					theme.fg("dim", ` (${pctStr})`) +
 					(costStr ? theme.fg("dim", costStr) : "");
 
-				const gap = Math.max(1, width - visibleWidth(modelName) - visibleWidth(rightPlain));
+				const gap = Math.max(1, width - visibleWidth(leftPlain) - visibleWidth(rightPlain));
 				const line = left + " ".repeat(gap) + right;
 
 				return [truncateToWidth(line, width)];
