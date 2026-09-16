@@ -159,6 +159,31 @@ transcriptions).
 - `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
 
+## pi (coding agent)
+
+Symlink the repo's `pi/` dir as pi's whole agent-state dir (extensions, agents, skills,
+themes, settings — plus pi's own auth/session/package state, which lives inside `pi/` too
+and is gitignored):
+
+```bash
+ln -sf ~/personal/configs/pi ~/.pi/agent
+```
+
+Install the packages declared in `pi/settings.json` (subagents, permission system, MCP
+adapter, plan mode):
+
+```bash
+pi update --extensions
+```
+
+Then `pi` → `/login` → Claude Pro/Max. `pi/extensions/anthropic-oauth` strips the pi-harness
+fingerprint from the system prompt and upgrades prompt caching to a 1h TTL on OAuth turns —
+see `pi/extensions/anthropic-oauth/README.md`.
+
+`ralph-loop/` runs the [Ralph Wiggum technique](https://ghuntley.com/ralph/) unattended
+against a target repo's `TODO.md`, via a second config dir (`pi-yolo/`) with permission
+checks disabled. See `ralph-loop/README.md`.
+
 ## Screen Capture
 
 - `Super+s` — maim region capture piped to the clipboard, with a notify-send on completion.
