@@ -49,7 +49,10 @@ export default function question(pi: ExtensionAPI) {
 	pi.registerTool({
 		name: "question",
 		label: "Question",
-		description: "Ask the user a question and let them pick from options. Use when you need user input to proceed.",
+		description:
+			"Ask the user a question and let them pick from options. Use when you need user input to proceed. " +
+			"`options` is REQUIRED and must contain at least one choice — never call this tool as a standalone " +
+			"intro/preamble with no options; every call must carry the real question plus its concrete options.",
 		parameters: QuestionParams,
 		executionMode: "sequential",
 

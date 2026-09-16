@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "yoloMode": true,
   "permission": {
     "*": "allow",
     "external_directory": "allow",
@@ -38,6 +39,10 @@
       "git push *": "ask",
       "docker compose down *": "ask",
       "docker volume rm *": "ask",
+      "xargs *rm*": "ask",
+      "xargs *mv*": "ask",
+      "xargs *sed*-i*": "ask",
+      "xargs *docker*": "ask",
       "git restore *": "deny",
       "git -C *": "deny"
     }
