@@ -15,6 +15,11 @@
  *
  * USD→INR rate is fetched periodically and cached to disk; the last known
  * rate is reused if a fetch fails or hasn't happened yet.
+ *
+ * Cost is estimated from each model's static per-token pricing (from the
+ * models registry), not from `usage.cost.total` in session entries — that
+ * field reflects whatever the upstream API/relay reports, which is $0 for
+ * flat-rate/subscription billing relays regardless of actual token usage.
  */
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -67,16 +72,60 @@ function getUsdToInrRate(): number | null {
 	return cachedRate;
 }
 
-function sumSessionCostUsd(entries: SessionEntry[]): number {
+interface CostRates {
+	input: number;
+	output: number;
+	cacheRead: number;
+	cacheWrite: number;
+}
+
+interface UsageTokens {
+	input: number;
+	output: number;
+	cacheRead: number;
+	cacheWrite: number;
+}
+
+function costFromUsage(usage: UsageTokens, rates: CostRates): number {
+	return (
+		(usage.input / 1_000_000) * rates.input +
+		(usage.output / 1_000_000) * rates.output +
+		(usage.cacheRead / 1_000_000) * rates.cacheRead +
+		(usage.cacheWrite / 1_000_000) * rates.cacheWrite
+	);
+}
+
+/**
+ * Estimate USD cost from static per-model pricing rather than trusting
+ * `usage.cost.total`, which the upstream relay reports as $0 under
+ * flat-rate/subscription billing. Assistant entries resolve pricing for the
+ * exact model that produced them; toolResult/branch_summary/compaction
+ * entries carry no model info, so they fall back to the current model's
+ * pricing as a best-effort estimate.
+ */
+function estimateSessionCostUsd(
+	entries: SessionEntry[],
+	modelRegistry: { find(provider: string, modelId: string): { cost?: CostRates } | undefined },
+	fallbackModel: { cost?: CostRates } | undefined,
+): number {
 	let total = 0;
 	for (const entry of entries) {
-		const usage =
-			entry.type === "message" && (entry.message.role === "assistant" || entry.message.role === "toolResult")
-				? entry.message.usage
-				: entry.type === "branch_summary" || entry.type === "compaction"
-					? entry.usage
-					: undefined;
-		if (usage?.cost?.total) total += usage.cost.total;
+		let usage: UsageTokens | undefined;
+		let rates: CostRates | undefined;
+
+		if (entry.type === "message" && entry.message.role === "assistant") {
+			usage = entry.message.usage;
+			const model = modelRegistry.find(entry.message.provider, entry.message.responseModel ?? entry.message.model);
+			rates = model?.cost;
+		} else if (entry.type === "message" && entry.message.role === "toolResult" && entry.message.usage) {
+			usage = entry.message.usage;
+			rates = fallbackModel?.cost;
+		} else if ((entry.type === "branch_summary" || entry.type === "compaction") && entry.usage) {
+			usage = entry.usage;
+			rates = fallbackModel?.cost;
+		}
+
+		if (usage && rates) total += costFromUsage(usage, rates);
 	}
 	return total;
 }
@@ -95,8 +144,8 @@ export default function contextBar(pi: ExtensionAPI) {
 				const modelName = ctx.model?.name ?? ctx.model?.id ?? "no model";
 				const leftPlain = ctx.thinkingLevel ? `${modelName} [${ctx.thinkingLevel}]` : modelName;
 				const left = ctx.thinkingLevel
-					? theme.fg("dim", modelName) + theme.fg("dim", ` [${ctx.thinkingLevel}]`)
-					: theme.fg("dim", modelName);
+					? theme.fg("text", modelName) + theme.fg("dim", ` [${ctx.thinkingLevel}]`)
+					: theme.fg("text", modelName);
 
 				const usage = ctx.getContextUsage?.();
 				const contextWindow: number = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
@@ -116,7 +165,7 @@ export default function contextBar(pi: ExtensionAPI) {
 					percent === null ? "dim" : percent > 90 ? "error" : percent > 70 ? "warning" : "success";
 
 				const rate = getUsdToInrRate();
-				const costUsd = sumSessionCostUsd(ctx.sessionManager.getEntries());
+				const costUsd = estimateSessionCostUsd(ctx.sessionManager.getEntries(), ctx.modelRegistry, ctx.model);
 				const costStr = rate !== null ? ` ₹${(costUsd * rate).toFixed(2)}` : "";
 
 				const rightPlain = `${tokStr}/${winStr} (${pctStr})${costStr}`;
