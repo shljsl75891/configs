@@ -181,8 +181,9 @@ fingerprint from the system prompt and upgrades prompt caching to a 1h TTL on OA
 see `pi/extensions/anthropic-oauth/README.md`.
 
 `ralph-loop/` runs the [Ralph Wiggum technique](https://ghuntley.com/ralph/) unattended
-against a target repo's `TODO.md`, via a second config dir (`pi-yolo/`) with permission
-checks disabled. See `ralph-loop/README.md`.
+against a target repo's `TODO.md`, using the same `~/.pi/agent` config — `ask` rules fail
+closed with no UI attached, so destructive bash stays blocked unattended. See
+`ralph-loop/README.md`.
 
 ## Screen Capture
 

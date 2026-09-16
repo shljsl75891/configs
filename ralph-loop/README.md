@@ -4,11 +4,11 @@ Generic [Ralph Wiggum technique](https://ghuntley.com/ralph/) runner for pi: a b
 that repeatedly feeds `PROMPT.md` to `pi -p`, each iteration a fresh context window.
 State persists across loops via files in the target repo (`TODO.md`, `AGENTS.md`), not chat history.
 
-Runs unattended against `../pi-yolo`, a second pi config dir with a permissive
-`pi-permission-system` config (`yoloMode: true`, `"*": "allow"`) but the same
-extensions/skills/agents as the main config. Interactive `pi` in any directory still
-uses the fully gated `~/.pi/agent` config — only loop runs started through `ralph.sh`
-are unattended.
+Runs unattended against the same `~/.pi/agent` config used interactively. `ask` rules
+fail closed with no UI attached (`confirmation_unavailable` — blocked, not a hang), so
+destructive bash (`rm *`, `git push *`, `docker volume rm *`, etc.) stays blocked in the
+loop exactly as it does interactively; `yoloMode: true` only bypasses synthetic
+wrapper-floor asks (`xargs`, `sudo`, `env`, ...), not configured rules.
 
 ## Setup (per target repo)
 
@@ -22,7 +22,7 @@ are unattended.
 3. Edit `PROMPT.md` if the repo needs conventions beyond "select a task, fix it, close it out"
    (test commands, code style, worktree isolation, etc.).
 4. Ensure any MCP servers the prompt needs (Jira, GitHub, etc.) are declared in
-   `<dotfiles>/pi/mcp.json` (symlinked into `pi-yolo`, all lazy by default).
+   `<dotfiles>/pi/mcp.json`, all lazy by default.
 
 ## Run
 

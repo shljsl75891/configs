@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-RALPH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export PI_CODING_AGENT_DIR="${RALPH_DIR%/*}/pi-yolo"
-
 [ -f PROMPT.md ] || { echo "PROMPT.md missing in $PWD" >&2; exit 1; }
 [ -f TODO.md ] || { echo "TODO.md missing in $PWD" >&2; exit 1; }
 
