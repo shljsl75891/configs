@@ -2,17 +2,18 @@
 description: Use this agent when the user needs comprehensive research, information gathering, or analysis that requires synthesizing information from multiple sources. Always use this agent for deep web research tasks.
 mode: subagent
 model: anthropic/claude-sonnet-5
-temperature: 1.0
 color: "#fb4934"
-permission:
-  "*": deny
-  read: ask
-  websearch: allow
-  webfetch: allow
-  exa*: allow
-  ref*: allow
-  task: allow
-  doom_loop: ask
+request:
+  body: { temperature: 1.0 }
+permissions:
+  - { action: "*", resource: "*", effect: deny }
+  - { action: read, resource: "*", effect: ask }
+  - { action: websearch, resource: "*", effect: allow }
+  - { action: webfetch, resource: "*", effect: allow }
+  - { action: exa_*, resource: "*", effect: allow }
+  - { action: ref_*, resource: "*", effect: allow }
+  - { action: subagent, resource: "*", effect: allow }
+  - { action: subagent, resource: code-reviewer, effect: deny }
 ---
 
 You are a web research agent specialized in all types of information gathering, verification, and synthesis from authoritative sources.

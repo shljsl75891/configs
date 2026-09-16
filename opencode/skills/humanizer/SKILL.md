@@ -4,6 +4,8 @@ description: |
   Use when writing or editing anything on behalf of a human: docs, notes,
   emails, READMEs, github comments, slack messages, JIRA comments, or any prose where output should 
     sound like a person wrote it, not an AI.
+metadata:
+  opencode/autoinvoke: false
 ---
 
 ## Process
