@@ -76,8 +76,8 @@ return {
 		opts = {
 			tmux = {
 				target_mode = "window_name",
-				process_name = "opencode",
-				window_name = "opencode",
+				process_name = "pi",
+				window_name = "pi",
 				switch_to_target = true,
 				find_node_process = false,
 			},
