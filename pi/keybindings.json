@@ -1,0 +1,6 @@
+{
+  "app.model.cycleForward": [],
+  "tui.select.up": ["up", "ctrl+p"],
+  "tui.select.down": ["down", "ctrl+n"],
+  "tui.input.tab": ["ctrl+k"]
+}

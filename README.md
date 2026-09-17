@@ -196,6 +196,18 @@ Note: There are extra options that can help like: Option "AccelMethod" "uxa" or 
 
 Edit `~/.config/mimeapps.list` to set per-MIME defaults (e.g. `pcmanfm` for directories, `nvim` for text).
 
+## pi extension tests
+
+Some extensions under `pi/extensions/` ship `*.test.ts` files. They use Node's built-in test
+runner and its native type stripping, so there is nothing to install:
+
+```bash
+node --test pi/extensions/question-tool/*.test.ts
+```
+
+Run them from a directory where `@earendil-works/pi-tui` resolves if a test imports an extension
+entry point.
+
 ## Screenshots
 
 #### Awesome WM

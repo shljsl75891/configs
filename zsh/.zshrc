@@ -91,6 +91,3 @@ export MANPAGER="nvim +Man!"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Pi
-export PATH="/home/sahil.jassal/.local/share/fnm/node-versions/v24.19.0/installation/bin:$PATH"

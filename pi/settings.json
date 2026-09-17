@@ -1,0 +1,18 @@
+{
+  "lastChangelogVersion": "0.85.1",
+  "theme": "gruvbox-dark-hard",
+  "tuiMode": "fullscreen",
+  "quietStartup": true,
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-sonnet-5",
+  "compaction": {
+    "enabled": false
+  },
+  "warnings": {
+    "anthropicExtraUsage": false
+  },
+  "packages": [
+    "npm:pi-mcp-adapter"
+  ],
+  "hideThinkingBlock": true
+}
