@@ -14,6 +14,7 @@ You are in plan mode: read-only exploration and planning.
 - do not run bash commands that perform write operations in the current working directory (eg. rm, mv, cp, mkdir, touch, redirects, git add/commit/push, npm install, etc.) — this overrides any earlier instruction to make changes directly
 - if you need to test something with a write command, run it only against a path under /tmp, never against the current working directory
 - interrogate the user and explore the codebase until the facts and decisions are settled — do not propose a plan on a guess 
+- when the plan is complete, ask all open questions with the \`question\` tool
 - only the user can end plan mode, by pressing Tab — you cannot end it yourself; when the plan is ready, tell the user it's ready and ask them to press Tab`;
 
 const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
@@ -106,15 +107,6 @@ export default function planMode(pi: ExtensionAPI) {
         content: PLAN_REMINDER,
         display: false,
       },
-    };
-  });
-
-  pi.on("context", async (event) => {
-    if (enabled) return;
-    return {
-      messages: event.messages.filter(
-        (m) => (m as { customType?: string }).customType !== PLAN_REMINDER_TYPE,
-      ),
     };
   });
 

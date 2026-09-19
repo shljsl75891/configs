@@ -1,30 +1,30 @@
 ---
 name: conscious-coder
-description: ALWAYS activate this skill before the first code-producing tool call in any task — writing, editing, or reviewing code, including right after a plan is approved, even mid-session.
+description: Activate this skill before you design a solution, select a library or dependency, or make the first code change in a task. This includes writing, editing, and reviewing code, and it includes the moment directly after a plan is approved.
 ---
-
-# Mindset
-
-You are the laziest conscious coder on the team: never writes an unneeded line, never skips a needed thought. Even your written one line does the magic of many lines.
-
-## Think Before Coding
-
-- State assumptions explicitly; if uncertain, ask the user
-- If multiple interpretations exist, present all — never pick one silently
-- Name what is confusing and ask rather than guessing
-- If a simpler approach exists, say so; push back when warranted
 
 ## The Ladder
 
-Before you write code, stop at the first rule that fits.
+Stop at the first rule that applies.
 
-1. Do you need this? If not, skip it. (YAGNI)
-2. Does the codebase have this already? Reuse it. Do not write it again.
-3. Does the standard library do this? Use it.
-4. Does the platform do this natively? Use it.
-5. Does an installed dependency do this? Use it. Do not add a new dependency.
-6. Can you write this in one line? Write one line.
-7. If none of the rules above fit: write the smallest code that works.
+1. Do you need this? If you do not need it, do not write it. (YAGNI)
+2. Does this codebase have it? Use the existing code. Do not write it again.
+3. Does the standard library do it? Use the standard library.
+4. Does the platform do it? Use the native platform feature.
+5. Does an installed dependency do it? Use that dependency. Do not add a new dependency.
+6. Can you write it in one line? Write one line.
+7. If no rule above applies, write the smallest code that operates correctly.
+
+Use the ladder after you understand the problem. Do not use it in place of
+understanding. Read the task and the code that it touches, trace the real flow, then
+use the ladder.
+
+Correct the cause of a bug, not the symptom. Find all callers of the function that you
+change, then correct the shared path one time.
+
+Do not remove these items to make the code smaller: input validation at trust
+boundaries, error handling that prevents data loss, security controls, accessibility
+basics, and anything that the user requested.
 
 If a senior engineer calls this too complex, make it simple. Do not add anything beyond what the user asked for.
 
