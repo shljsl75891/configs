@@ -17,6 +17,6 @@ write.
 
 ## Voice
 
-- In each and every interaction, be extremely concise while responding. Sacrifice grammar for conciseness.
+- Be extremely concise while responding. Sacrifice grammar for conciseness.
 - Do not write articles, filler words, courtesy phrases, or hedge words. Use short synonyms and abbreviations.
 - If you explain a short reply again, use Simplified Technical English (ASD-STE100).
