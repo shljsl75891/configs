@@ -5,14 +5,10 @@
   "quietStartup": true,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-sonnet-5",
-  "compaction": {
-    "enabled": false
-  },
-  "warnings": {
-    "anthropicExtraUsage": false
-  },
-  "packages": [
-    "npm:pi-mcp-adapter"
-  ],
-  "hideThinkingBlock": true
+  "compaction": { "enabled": false },
+  "warnings": { "anthropicExtraUsage": false },
+  "packages": ["npm:pi-mcp-adapter"],
+  "hideThinkingBlock": true,
+  "treeFilterMode": "user-only"
 }
+

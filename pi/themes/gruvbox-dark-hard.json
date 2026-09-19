@@ -20,8 +20,8 @@
     "darkPurpleBright": "#d3869b",
     "darkAquaBright": "#8ec07c",
     "darkOrangeBright": "#fe8019",
-    "darkGreenDiffBg": "#263314",
-    "darkRedDiffBg": "#66100f"
+    "darkGreenDiffBg": "#2b3328",
+    "darkRedDiffBg": "#3c2a28"
   },
   "colors": {
     "accent": "darkAquaBright",
