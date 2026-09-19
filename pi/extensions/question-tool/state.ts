@@ -14,6 +14,7 @@ export interface State {
 	tab: number;
 	cursor: number;
 	selected: Set<number>[];
+	/** Custom answer text per question; never an empty string — see Editor.onSubmit. */
 	custom: (string | null)[];
 	editing: boolean;
 	submitted: boolean;
@@ -44,6 +45,14 @@ function clamp(value: number, max: number): number {
 	return Math.min(Math.max(value, 0), max);
 }
 
+/** Cursor position that best represents the current answer for a tab. */
+function defaultCursor(state: State, questions: QuestionSpec[], tab: number): number {
+	if (tab >= questions.length) return 0;
+	if (state.custom[tab] != null) return customRow(questions[tab]);
+	if (!questions[tab].multiple) return [...state.selected[tab]][0] ?? 0;
+	return 0;
+}
+
 export function createState(questions: QuestionSpec[]): State {
 	return {
 		tab: 0,
@@ -59,7 +68,7 @@ export function createState(questions: QuestionSpec[]): State {
 export function answersOf(state: State, questions: QuestionSpec[]): string[][] {
 	return questions.map((question, i) => {
 		const custom = state.custom[i];
-		if (custom) return [custom];
+		if (custom != null) return [custom];
 		return question.options.filter((_, index) => state.selected[i].has(index)).map((option) => option.label);
 	});
 }
@@ -71,11 +80,15 @@ export function reduce(state: State, action: Action, questions: QuestionSpec[]):
 			const max = customRow(questions[state.tab]);
 			return { ...state, cursor: clamp(state.cursor + action.delta, max) };
 		}
-		case "tab":
-			return { ...state, tab: clamp(state.tab + action.delta, lastTab(questions)), cursor: 0 };
+		case "tab": {
+			const newTab = clamp(state.tab + action.delta, lastTab(questions));
+			return { ...state, tab: newTab, cursor: defaultCursor(state, questions, newTab) };
+		}
 
-		case "tabTo":
-			return { ...state, tab: clamp(action.index, lastTab(questions)), cursor: 0 };
+		case "tabTo": {
+			const newTab = clamp(action.index, lastTab(questions));
+			return { ...state, tab: newTab, cursor: defaultCursor(state, questions, newTab) };
+		}
 
 		case "choose": {
 			if (isConfirmTab(state, questions)) return { ...state, submitted: true };
@@ -87,7 +100,8 @@ export function reduce(state: State, action: Action, questions: QuestionSpec[]):
 			const selected = state.selected.map((set, i) => (i === state.tab ? new Set(set) : set));
 			if (question.multiple) {
 				if (!selected[state.tab].delete(index)) selected[state.tab].add(index);
-				return { ...state, cursor: index, selected };
+				// Clear any custom answer so the checkbox selection is authoritative.
+				return { ...state, cursor: index, selected, custom: replace(state.custom, state.tab, null) };
 			}
 			selected[state.tab] = new Set([index]);
 			return advance({ ...state, cursor: index, selected, custom: replace(state.custom, state.tab, null) }, questions);
@@ -108,8 +122,9 @@ function replace<T>(values: T[], index: number, value: T): T[] {
 	return values.map((existing, i) => (i === index ? value : existing));
 }
 
-/** Single-select answers move on by themselves: to the next question, or straight out. */
+/** Exclusive answers (single-select, or any custom text) move on by themselves: to the next question, or straight out. */
 function advance(state: State, questions: QuestionSpec[]): State {
 	if (questions.length === 1) return { ...state, submitted: true };
-	return { ...state, tab: clamp(state.tab + 1, lastTab(questions)), cursor: 0 };
+	const newTab = clamp(state.tab + 1, lastTab(questions));
+	return { ...state, tab: newTab, cursor: defaultCursor(state, questions, newTab) };
 }

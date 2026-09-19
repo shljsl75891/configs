@@ -29,6 +29,12 @@ pi/*
 # must follow the re-includes above (gitignore is last-match-wins)
 pi/extensions/**/logs/
 pi/extensions/**/node_modules/
+# ...except the hand-written test stubs for @earendil-works packages that pi's
+# own loader resolves at runtime but plain `node --test` cannot (see
+# pi/extensions/subagent/marker-extension.test.ts header comment).
+!pi/extensions/node_modules/
+!pi/extensions/node_modules/@earendil-works/
+!pi/extensions/node_modules/@earendil-works/pi-tui/
 
 ralph.log
 

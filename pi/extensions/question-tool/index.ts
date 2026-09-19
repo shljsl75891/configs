@@ -1,23 +1,13 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { askQuestions, CUSTOM_LABEL } from "./prompt.ts";
 import type { QuestionSpec } from "./state.ts";
 
-const MIME_TYPES: Record<string, string> = {
-	".png": "image/png",
-	".jpg": "image/jpeg",
-	".jpeg": "image/jpeg",
-	".gif": "image/gif",
-	".webp": "image/webp",
-	".bmp": "image/bmp",
-};
-
 interface QuestionDetails {
-	questions: { question: string; header: string; options: string[] }[];
+	headers: string[];
 	answers: string[][];
+	cancelled: boolean;
 }
 
 const OptionSchema = Type.Object({
@@ -35,19 +25,6 @@ const QuestionSchema = Type.Object({
 const QuestionParams = Type.Object({
 	questions: Type.Array(QuestionSchema, { description: "Questions to ask, answered together" }),
 });
-
-/** Pasted images arrive as file paths in the answer text; send the bytes, not the path. */
-function imagesIn(text: string): { type: "image"; data: string; mimeType: string }[] {
-	return text.split(/\s+/).flatMap((token) => {
-		const mimeType = MIME_TYPES[path.extname(token).toLowerCase()];
-		if (!mimeType) return [];
-		try {
-			return [{ type: "image" as const, data: fs.readFileSync(token).toString("base64"), mimeType }];
-		} catch {
-			return [];
-		}
-	});
-}
 
 function summarize(questions: QuestionSpec[], answers: string[][]): string {
 	const parts = questions.map((q, i) => `"${q.question}"="${answers[i].join(", ") || "Unanswered"}"`);
@@ -67,15 +44,12 @@ export default function question(pi: ExtensionAPI) {
 		parameters: QuestionParams,
 		executionMode: "sequential",
 
-		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
-			const questions = params.questions as QuestionSpec[];
+		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+			const questions: QuestionSpec[] = params.questions;
 			const details: QuestionDetails = {
-				questions: questions.map((q) => ({
-					question: q.question,
-					header: q.header,
-					options: q.options.map((o) => o.label),
-				})),
+				headers: questions.map((q) => q.header),
 				answers: questions.map(() => []),
+				cancelled: false,
 			};
 
 			if (ctx.mode !== "tui") {
@@ -88,25 +62,30 @@ export default function question(pi: ExtensionAPI) {
 				return { content: [{ type: "text", text: "Error: every question needs at least one option" }], details };
 			}
 
-			const answers = await askQuestions(ctx.ui, questions);
+			const result = await askQuestions(ctx.ui, questions, { signal });
 
-			if (!answers) {
-				return { content: [{ type: "text", text: "User cancelled the selection" }], details };
+			if (!result) {
+				return { content: [{ type: "text", text: "User cancelled the selection" }], details: { ...details, cancelled: true } };
 			}
 
-			details.answers = answers;
+			details.answers = result.answers;
 			return {
-				content: [{ type: "text", text: summarize(questions, answers) }, ...answers.flat().flatMap(imagesIn)],
+				content: [
+					{ type: "text", text: summarize(questions, result.answers) },
+					...result.images.map(({ data, mimeType }) => ({ type: "image" as const, data, mimeType })),
+				],
 				details,
 			};
 		},
 
 		renderCall(args, theme, _context) {
-			const questions = (Array.isArray(args.questions) ? args.questions : []) as QuestionSpec[];
+			const questions = (Array.isArray(args.questions) ? args.questions : []).filter(
+				(q): q is QuestionSpec => Boolean(q?.question && q?.header && Array.isArray(q?.options)),
+			);
 			let text = theme.fg("toolTitle", theme.bold("question "));
 			text += theme.fg("muted", questions.map((q) => q.header).join(" • "));
 			for (const q of questions) {
-				const labels = [...q.options.map((o) => o.label), CUSTOM_LABEL].map((o, i) => `${i + 1}. ${o}`);
+				const labels = [...q.options.map((o) => o?.label ?? ""), CUSTOM_LABEL].map((o, i) => `${i + 1}. ${o}`);
 				text += `\n${theme.fg("muted", `  ${q.question}`)}`;
 				text += `\n${theme.fg("dim", `    ${labels.join(", ")}`)}`;
 			}
@@ -119,14 +98,14 @@ export default function question(pi: ExtensionAPI) {
 				const text = result.content[0];
 				return new Text(text?.type === "text" ? text.text : "", 0, 0);
 			}
-			if (details.answers.every((answer) => answer.length === 0)) {
+			if (details.cancelled) {
 				return new Text(theme.fg("warning", "Cancelled"), 0, 0);
 			}
-			const lines = details.questions.map((q, i) => {
+			const lines = details.headers.map((header, i) => {
 				const answer = details.answers[i]?.join(", ");
 				return answer
-					? `${theme.fg("success", "✓ ")}${theme.fg("muted", `${q.header}: `)}${theme.fg("accent", answer)}`
-					: `${theme.fg("dim", `· ${q.header}: unanswered`)}`;
+					? `${theme.fg("success", "✓ ")}${theme.fg("muted", `${header}: `)}${theme.fg("accent", answer)}`
+					: `${theme.fg("dim", `· ${header}: unanswered`)}`;
 			});
 			return new Text(lines.join("\n"), 0, 0);
 		},

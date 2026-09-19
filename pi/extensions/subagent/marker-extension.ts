@@ -15,51 +15,47 @@ import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-a
 // Static, not dynamic: only pi's extension loader can resolve pi-tui for a
 // sibling extension, so an `import()` at runtime would always fail.
 import { askQuestions } from "../question-tool/prompt.ts";
+import { childDepth, ENV, reviewMarkerFor } from "./protocol.ts";
+import type { SubagentResult } from "./result.ts";
+import { errorText } from "./errors.ts";
+import { formatWindowName, type WindowState } from "./window-name.ts";
 
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
 const SEND = "Send as-is";
 const KEEP_WORKING = "Keep working";
 
-interface Result {
-	status: "ok" | "error";
-	output: string;
-	usage?: unknown;
-	stopReason?: string;
-	errorMessage?: string;
-}
-
-async function renameWindow(pi: ExtensionAPI, marker: string): Promise<void> {
-	const label = process.env.PI_SUBAGENT_LABEL;
+async function renameWindow(pi: ExtensionAPI, state: WindowState): Promise<void> {
+	const label = process.env[ENV.label];
 	const pane = process.env.TMUX_PANE;
 	// Without -t tmux renames whatever window the user is looking at, not this one.
 	if (!label || !pane) return;
-	const depth = Number(process.env.PI_SUBAGENT_DEPTH) || 0;
-	const prefix = depth >= 2 ? `L${depth} ` : "";
-	await pi.exec("tmux", ["rename-window", "-t", pane, `${prefix}${marker} ${label}`]).catch(() => {});
+	const depth = childDepth();
+	await pi.exec("tmux", ["rename-window", "-t", pane, formatWindowName(state, label, depth)]).catch(() => {});
 }
 
-function collectResult(ctx: ExtensionContext): Result {
-	for (const entry of [...ctx.sessionManager.getEntries()].reverse()) {
-		if (entry.type !== "message" || entry.message.role !== "assistant") continue;
-		const message = entry.message;
-		const output = message.content
-			.filter((part): part is { type: "text"; text: string } => part.type === "text")
-			.map((part) => part.text)
-			.join("\n");
-		const isError =
-			Boolean(message.errorMessage) || message.stopReason === "error" || message.stopReason === "aborted";
-		return {
-			status: isError ? "error" : "ok",
-			output: output || "(no output)",
-			usage: message.usage,
-			stopReason: message.stopReason,
-			errorMessage: message.errorMessage,
-		};
+function collectResult(ctx: ExtensionContext): SubagentResult {
+	const entry = ctx.sessionManager
+		.getEntries()
+		.findLast((e) => e.type === "message" && e.message.role === "assistant");
+	if (!entry || entry.type !== "message") {
+		return { status: "error", output: "(no output)", errorMessage: "Agent produced no assistant message." };
 	}
-	return { status: "error", output: "(no output)", errorMessage: "Agent produced no assistant message." };
+	const message = entry.message;
+	const output = message.content
+		.filter((part): part is { type: "text"; text: string } => part.type === "text")
+		.map((part) => part.text)
+		.join("\n");
+	const isError = Boolean(message.errorMessage) || message.stopReason === "error" || message.stopReason === "aborted";
+	return {
+		status: isError ? "error" : "ok",
+		output: output || "(no output)",
+		usage: message.usage,
+		stopReason: message.stopReason,
+		errorMessage: message.errorMessage,
+	};
 }
 
-async function writeResult(resultFile: string, result: Result): Promise<void> {
+async function writeResult(resultFile: string, result: SubagentResult): Promise<void> {
 	// tmp + rename so the poller never reads a torn file. The directory is
 	// orchestrator-owned, so a missing one means nobody is reading anymore.
 	const tmpPath = `${resultFile}.tmp`;
@@ -68,28 +64,23 @@ async function writeResult(resultFile: string, result: Result): Promise<void> {
 }
 
 /** Resolves to the result to send, or null to keep the agent working. */
-async function review(ctx: ExtensionContext, result: Result): Promise<Result | null> {
-	// Only an untouched prompt times out; once the user engages, their editing
-	// time is their own.
+async function review(ctx: ExtensionContext, result: SubagentResult): Promise<SubagentResult | null> {
+	// Any stdin byte counts as engagement, including focus/mouse reports — deliberately
+	// lenient: a false positive only costs a longer wait, a false negative steals the
+	// user's half-written edit.
 	const controller = new AbortController();
 	const timer = setTimeout(() => controller.abort(), REVIEW_TIMEOUT_MS);
-	let touched = false;
-	const stopTimer = () => {
-		if (touched) return;
-		touched = true;
-		clearTimeout(timer);
-	};
 	const unsubscribe = ctx.ui.onTerminalInput(() => {
-		stopTimer();
+		clearTimeout(timer);
 		return undefined;
 	});
 
 	try {
-		const answers = await askQuestions(
+		const choice = await askQuestions(
 			ctx.ui,
 			[
 				{
-					question: `${result.status === "ok" ? "Agent finished" : "Agent failed"}. Send this to the caller?\n\n${result.output}`,
+					question: `${result.status === "ok" ? "Agent finished" : "Agent failed"}. Send this to the caller?`,
 					header: "Review",
 					options: [
 						{ label: SEND, description: "Report the result above, unchanged." },
@@ -100,13 +91,13 @@ async function review(ctx: ExtensionContext, result: Result): Promise<Result | n
 			{ signal: controller.signal },
 		);
 
-		const answer = answers?.[0]?.[0];
+		const answer = choice?.answers[0]?.[0];
 		if (controller.signal.aborted) return result;
 		if (!answer || answer === KEEP_WORKING) return null;
 		if (answer === SEND) return result;
 		return { ...result, output: answer };
-	} catch {
-		return result;
+	} catch (error) {
+		return { ...result, output: `${result.output}\n\n[review UI failed, sent unreviewed: ${errorText(error)}]` };
 	} finally {
 		clearTimeout(timer);
 		unsubscribe();
@@ -114,41 +105,68 @@ async function review(ctx: ExtensionContext, result: Result): Promise<Result | n
 }
 
 export default function markerExtension(pi: ExtensionAPI) {
-	const resultFile = process.env.PI_SUBAGENT_RESULT_FILE;
+	const resultFile = process.env[ENV.resultFile];
 	if (!resultFile) return;
-	const reviewFile = `${resultFile}.review`;
-	const reviewEnabled = process.env.PI_SUBAGENT_REVIEW === "1";
+	const reviewFile = reviewMarkerFor(resultFile);
+	const reviewEnabled = process.env[ENV.review] === "1";
+
+	// pending: no result delivered yet. delivered: the parent has the result and
+	// stopped polling. followUp: the user is manually continuing after delivery.
+	let phase: "pending" | "delivered" | "followUp" = "pending";
+	// Delivery is known broken (e.g. disk full) — stop advertising review, since
+	// pausing the parent's clock for a result that can no longer arrive buys nothing.
+	let deliveryBroken = false;
+
+	const settle = async (result: SubagentResult): Promise<void> => {
+		const written = await writeResult(resultFile, result).then(() => true, () => false);
+		if (written) phase = "delivered";
+		deliveryBroken = !written; // clears on a later successful retry, not just sets on failure
+		await renameWindow(pi, written ? (result.status === "ok" ? "ok" : "error") : "unreported");
+	};
 
 	pi.on("agent_start", async () => {
-		await renameWindow(pi, "⋯");
+		if (phase === "delivered") phase = "followUp"; // a follow-up run reopens the outcome display
+		await renameWindow(pi, "running");
 	});
 
+	// pi emits ui_prompt_start only for extension-raised prompts (ui.select/confirm/
+	// input/editor/custom) — not for the child's own idle editor prompt. So this pauses
+	// the parent's clock for the review prompt and any extension prompt the child raises,
+	// but a child merely sitting idle after a turn does not pause it.
 	pi.on("ui_prompt_start", async () => {
-		await renameWindow(pi, "!");
+		// After delivery the parent is no longer polling this child; keeping the marker
+		// up would reset a clock that belongs to nobody and stall the parent for hours.
+		if (phase === "pending" && !deliveryBroken) await fs.promises.writeFile(reviewFile, "", "utf-8").catch(() => {});
+		if (phase === "delivered") return; // terminal outcome wins over the transient prompt state
+		await renameWindow(pi, "waiting");
 	});
 
 	pi.on("ui_prompt_end", async (_event, ctx) => {
-		await renameWindow(pi, ctx.isIdle() ? "!" : "⋯");
+		await fs.promises.rm(reviewFile, { force: true }).catch(() => {});
+		if (phase === "delivered") return; // terminal outcome wins over the transient prompt state
+		await renameWindow(pi, ctx.isIdle() ? "waiting" : "running");
 	});
 
 	pi.on("agent_settled", async (_event, ctx) => {
+		// After the first delivery the parent's tool call is complete; further turns
+		// are manual follow-ups in the kept-open window and produce no new result.
+		if (phase !== "pending") { await renameWindow(pi, "waiting"); return; }
+
 		const result = collectResult(ctx);
 
-		if (!reviewEnabled || ctx.mode !== "tui") {
-			await renameWindow(pi, result.status === "ok" ? "✓" : "✗");
-			await writeResult(resultFile, result).catch(() => {});
+		// A broken pipe means no answer can reach the caller; retry silently instead of re-asking.
+		if (!reviewEnabled || deliveryBroken || ctx.mode !== "tui") {
+			await settle(result);
 			return;
 		}
 
-		await fs.promises.writeFile(reviewFile, "", "utf-8").catch(() => {});
+		// review() calls askQuestions, which fires ui_prompt_start/end — those
+		// handlers own the marker file and window rename for the review prompt.
 		const approved = await review(ctx, result);
-		await fs.promises.rm(reviewFile, { force: true }).catch(() => {});
-
 		if (!approved) {
-			await renameWindow(pi, "!");
+			await renameWindow(pi, "waiting");
 			return;
 		}
-		await renameWindow(pi, approved.status === "ok" ? "✓" : "✗");
-		await writeResult(resultFile, approved).catch(() => {});
+		await settle(approved);
 	});
 }

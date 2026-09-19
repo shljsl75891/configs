@@ -45,10 +45,6 @@ function parseToolList(value: unknown): string[] | undefined {
 function loadAgentsFromDir(dir: string, source: "user" | "project"): AgentConfig[] {
 	const agents: AgentConfig[] = [];
 
-	if (!fs.existsSync(dir)) {
-		return agents;
-	}
-
 	let entries: fs.Dirent[];
 	try {
 		entries = fs.readdirSync(dir, { withFileTypes: true });

@@ -1,6 +1,3 @@
-import * as crypto from "node:crypto";
-import * as fs from "node:fs";
-import * as os from "node:os";
 import * as path from "node:path";
 import type { ExtensionUIContext } from "@earendil-works/pi-coding-agent";
 import {
@@ -12,29 +9,21 @@ import {
 	visibleWidth,
 	wrapTextWithAnsi,
 } from "@earendil-works/pi-tui";
-import { type Action, answersOf, createState, customRow, isConfirmTab, type QuestionSpec, reduce } from "./state.ts";
+import { type Action, answersOf, createState, customRow, isConfirmTab, type QuestionSpec, type State, reduce } from "./state.ts";
+import { findPiRoot } from "./pi-root.ts";
+
 
 export const CUSTOM_LABEL = "Type your own answer";
 
+export type PastedImage = { token: string; data: string; mimeType: string };
+export type AskResult = { answers: string[][]; images: PastedImage[] };
+
 type ClipboardApi = {
 	readClipboardImage(): Promise<{ bytes: Uint8Array; mimeType: string } | null>;
-	extensionForImageMimeType(mimeType: string): string | null;
 	readClipboardText(): Promise<string | null>;
 };
 
 let clipboardApi: Promise<ClipboardApi | null> | undefined;
-
-/** Walk up from the running CLI to the pi package root. */
-export function findPiRoot(from: string = process.argv[1] ?? ""): string | null {
-	let dir = path.dirname(fs.realpathSync(from));
-	for (let i = 0; i < 6; i++) {
-		if (fs.existsSync(path.join(dir, "dist/utils/clipboard-image.js"))) return dir;
-		const parent = path.dirname(dir);
-		if (parent === dir) break;
-		dir = parent;
-	}
-	return null;
-}
 
 /**
  * pi implements clipboard reading in files it does not export, and its `exports`
@@ -50,7 +39,6 @@ function loadClipboardApi(): Promise<ClipboardApi | null> {
 			const text = await import(path.join(root, "dist/utils/clipboard.js"));
 			return {
 				readClipboardImage: image.readClipboardImage,
-				extensionForImageMimeType: image.extensionForImageMimeType,
 				readClipboardText: text.readClipboardText,
 			};
 		} catch {
@@ -60,22 +48,41 @@ function loadClipboardApi(): Promise<ClipboardApi | null> {
 	return clipboardApi;
 }
 
+const MIN_QUESTION_LINES = 3;
+const MAX_QUESTION_LINES = 12;
+/** Rows drawn outside the question text: separators, tabs, options, hints. */
+const CHROME_ROWS = 14;
+const PAGE_SCROLL_LINES = 5;
+
+function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): string {
+	if (state.editing) return "Enter to submit \u2022 Ctrl+V to paste an image \u2022 Esc to go back";
+	if (isConfirmTab(state, questions)) return "Enter to submit \u2022 \u2190\u2192 to revisit \u2022 Esc to cancel";
+	if (scrolling) return "\u2191\u2193 navigate \u2022 1-9 select \u2022 \u2190\u2192 switch \u2022 Enter to choose \u2022 PgUp/PgDn scroll text \u2022 Esc to cancel";
+	return "\u2191\u2193 navigate \u2022 1-9 select \u2022 \u2190\u2192 switch \u2022 Enter to choose \u2022 Esc to cancel";
+}
+
 /**
- * Renders the question UI and resolves with one list of chosen labels per
- * question, or null when dismissed. An aborted signal dismisses it too, so
- * callers distinguish the two by checking the signal afterwards.
+ * Renders the question UI and resolves with the chosen labels and any pasted
+ * images still referenced in those answers (carried as base64 tokens), or null
+ * when dismissed. An aborted signal dismisses it too, so callers distinguish
+ * the two by checking the signal afterwards.
  */
 export function askQuestions(
 	ui: Pick<ExtensionUIContext, "custom">,
 	questions: QuestionSpec[],
 	options: { signal?: AbortSignal } = {},
-): Promise<string[][] | null> {
-	return ui.custom<string[][] | null>((tui, theme, keybindings, done) => {
+): Promise<AskResult | null> {
+	// Guard pre-aborted signals: addEventListener won't fire for an already-aborted signal.
+	if (options.signal?.aborted) return Promise.resolve(null);
+	return ui.custom<AskResult | null>((tui, theme, keybindings, done) => {
 		let state = createState(questions);
 		let warning: string | null = null;
-		let cachedLines: string[] | undefined;
+		let cache: { width: number; rows: number; lines: string[] } | undefined;
 		const rows = new Map<number, Action>();
 		let tabBar: { line: number; ends: number[] } | undefined;
+		let questionScroll = 0;
+		let questionTextRegion: { start: number; end: number; total: number } | undefined;
+		const pastedImages: PastedImage[] = [];
 
 		const dismiss = () => done(null);
 		options.signal?.addEventListener("abort", dismiss, { once: true });
@@ -93,18 +100,35 @@ export function askQuestions(
 		const editor = new Editor(tui, editorTheme);
 
 		function refresh() {
-			cachedLines = undefined;
+			cache = undefined;
 			tui.requestRender();
 		}
 
+		/** Returns the max visible lines for the scrollable question text region. */
+		const questionLineBudget = () =>
+			Math.max(MIN_QUESTION_LINES, Math.min(MAX_QUESTION_LINES, tui.terminal.rows - CHROME_ROWS));
+
+		/** Scroll question text by `delta` lines, clamped to valid range. */
+		const scrollQuestion = (delta: number) => {
+			const budget = questionLineBudget();
+			const max = Math.max(0, (questionTextRegion?.total ?? 0) - budget);
+			questionScroll = Math.max(0, Math.min(questionScroll + delta, max));
+			refresh();
+		};
+
 		function apply(action: Action) {
+			warning = null;
 			const wasEditing = state.editing;
+			const prevTab = state.tab;
 			state = reduce(state, action, questions);
 			if (state.submitted) {
-				done(answersOf(state, questions));
+				const answers = answersOf(state, questions);
+				const flat = answers.flat();
+				done({ answers, images: pastedImages.filter((img) => flat.some((a) => a.includes(img.token))) });
 				return;
 			}
-			if (state.editing && !wasEditing) editor.setText("");
+			if (state.tab !== prevTab) { questionScroll = 0; questionTextRegion = undefined; }
+			if (state.editing && !wasEditing) editor.setText(state.custom[state.tab] ?? "");
 			refresh();
 		}
 
@@ -121,15 +145,18 @@ export function askQuestions(
 				refresh();
 				return;
 			}
-			const image = await clipboard.readClipboardImage();
-			if (image) {
-				const ext = clipboard.extensionForImageMimeType(image.mimeType) ?? "png";
-				const file = path.join(os.tmpdir(), `pi-clipboard-${crypto.randomUUID()}.${ext}`);
-				fs.writeFileSync(file, Buffer.from(image.bytes));
-				editor.insertTextAtCursor(file);
-			} else {
-				const text = await clipboard.readClipboardText();
-				if (text) editor.insertTextAtCursor(text);
+			try {
+				const image = await clipboard.readClipboardImage();
+				if (image) {
+					const token = `[image:${pastedImages.length + 1}]`;
+					pastedImages.push({ token, data: Buffer.from(image.bytes).toString("base64"), mimeType: image.mimeType });
+					editor.insertTextAtCursor(token);
+				} else {
+					const text = await clipboard.readClipboardText();
+					if (text) editor.insertTextAtCursor(text);
+				}
+			} catch (error) {
+				warning = `Paste failed: ${error instanceof Error ? error.message : String(error)}`;
 			}
 			refresh();
 		}
@@ -157,6 +184,14 @@ export function askQuestions(
 				apply({ type: "choose" });
 				return;
 			}
+			if (matchesKey(data, Key.pageUp)) {
+				scrollQuestion(-PAGE_SCROLL_LINES);
+				return;
+			}
+			if (matchesKey(data, Key.pageDown)) {
+				scrollQuestion(PAGE_SCROLL_LINES);
+				return;
+			}
 			if (matchesKey(data, Key.up) || data === "k") {
 				apply({ type: "cursor", delta: -1 });
 				return;
@@ -179,7 +214,18 @@ export function askQuestions(
 			}
 		}
 
+		// Returns undefined for unhandled events; the host treats undefined as unhandled.
 		function handleMouse(event: TuiMouseEvent) {
+			// Only scroll when the pointer is actually over the question text band.
+			if (event.type === "wheel" && questionTextRegion &&
+				event.y >= questionTextRegion.start && event.y <= questionTextRegion.end) {
+				// Normalize to ±1 to match pi's other scroll lists (wheelDelta is direction * scrollLines).
+				const delta = Math.sign(event.wheelDelta ?? 0);
+				if (delta) {
+					scrollQuestion(delta);
+					return { handled: true };
+				}
+			}
 			if (event.type !== "click") return;
 			if (tabBar && event.y === tabBar.line) {
 				const index = tabBar.ends.findIndex((end) => event.x < end);
@@ -187,12 +233,13 @@ export function askQuestions(
 				return { handled: true };
 			}
 			const action = rows.get(event.y);
-			if (action) apply(action);
+			if (!action) return; // let the host handle clicks outside option rows
+			apply(action);
 			return { handled: true };
 		}
 
 		function render(width: number): string[] {
-			if (cachedLines) return cachedLines;
+			if (cache?.width === width && cache.rows === tui.terminal.rows) return cache.lines;
 
 			const lines: string[] = [];
 			const renderWidth = Math.max(1, width);
@@ -213,12 +260,13 @@ export function askQuestions(
 
 			lines.push(theme.fg("accent", "─".repeat(renderWidth)));
 
-			if (questions.length > 1) {
+			function renderTabBar() {
+				if (questions.length <= 1) return;
 				const headers = [...questions.map((q) => q.header), "Confirm"];
 				const ends: number[] = [];
 				let column = 1;
 				const tabs = headers.map((header, i) => {
-					column += header.length + 3;
+					column += visibleWidth(header) + 3;
 					ends.push(column);
 					const active = i === state.tab;
 					return theme.fg(active ? "accent" : "dim", active ? `[${header}]` : ` ${header} `);
@@ -228,7 +276,7 @@ export function askQuestions(
 				lines.push("");
 			}
 
-			if (isConfirmTab(state, questions)) {
+			function renderConfirm() {
 				addWrappedWithPrefix(" ", theme.fg("text", "Review your answers:"));
 				lines.push("");
 				const answers = answersOf(state, questions);
@@ -239,11 +287,29 @@ export function askQuestions(
 						index: i,
 					});
 				});
-			} else {
-				const current = questions[state.tab];
-				addWrappedWithPrefix(" ", theme.fg("text", current.question));
-				lines.push("");
+			}
 
+			function renderQuestionText() {
+				const current = questions[state.tab];
+				const qText = theme.fg("text", current.question);
+				const qWrapped = wrapTextWithAnsi(qText, Math.max(1, renderWidth - 1)).map((l) => ` ${l}`);
+				const budget = questionLineBudget();
+				if (qWrapped.length <= budget) {
+					questionTextRegion = undefined;
+					for (const l of qWrapped) lines.push(l);
+				} else {
+					// Also clamp here to handle terminal resize that reduced the budget.
+					questionScroll = Math.min(questionScroll, Math.max(0, qWrapped.length - budget));
+					const regionStart = lines.length;
+					for (const l of qWrapped.slice(questionScroll, questionScroll + budget)) lines.push(l);
+					questionTextRegion = { start: regionStart, end: lines.length - 1, total: qWrapped.length };
+					lines.push(theme.fg("dim", `  Lines ${questionScroll + 1}–${questionScroll + budget} of ${qWrapped.length}`));
+				}
+				lines.push("");
+			}
+
+			function renderOptions() {
+				const current = questions[state.tab];
 				const labels = [...current.options.map((o) => o.label), CUSTOM_LABEL];
 				for (let i = 0; i < labels.length; i++) {
 					const isCustom = i === customRow(current);
@@ -253,7 +319,6 @@ export function askQuestions(
 					const mark = !current.multiple && chosen ? " ✓" : "";
 					const prefix = active ? theme.fg("accent", "> ") : "  ";
 					const color = active || chosen ? "accent" : "text";
-
 					addWrappedWithPrefix(prefix, theme.fg(color, `${i + 1}. ${box}${labels[i]}${mark}`), {
 						type: "choose",
 						index: i,
@@ -261,12 +326,19 @@ export function askQuestions(
 					const description = current.options[i]?.description;
 					if (description) addWrappedWithPrefix("     ", theme.fg("muted", description));
 				}
-
 				const custom = state.custom[state.tab];
 				if (custom && !state.editing) {
 					lines.push("");
 					addWrappedWithPrefix(" ", theme.fg("muted", `Your answer: ${custom}`));
 				}
+			}
+
+			renderTabBar();
+			if (isConfirmTab(state, questions)) {
+				renderConfirm();
+			} else {
+				renderQuestionText();
+				renderOptions();
 			}
 
 			if (state.editing) {
@@ -281,26 +353,24 @@ export function askQuestions(
 			}
 
 			lines.push("");
-			const hints = state.editing
-				? "Enter to submit • Ctrl+V to paste an image • Esc to go back"
-				: isConfirmTab(state, questions)
-					? "Enter to submit • ←→ to revisit • Esc to cancel"
-					: "↑↓ navigate • 1-9 select • ←→ switch • Enter to choose • Esc to cancel";
-			addWrappedWithPrefix(" ", theme.fg("dim", hints));
+			addWrappedWithPrefix(" ", theme.fg("dim", hintFor(state, questions, Boolean(questionTextRegion))));
 			lines.push(theme.fg("accent", "─".repeat(renderWidth)));
 
-			cachedLines = lines;
+			cache = { width, rows: tui.terminal.rows, lines };
 			return lines;
 		}
 
 		return {
 			render,
 			invalidate: () => {
-				cachedLines = undefined;
+				cache = undefined;
 			},
 			handleInput,
 			handleMouse,
-			dispose: () => options.signal?.removeEventListener("abort", dismiss),
+			dispose: () => {
+				options.signal?.removeEventListener("abort", dismiss);
+				// Images are carried in memory as base64 tokens — nothing to clean up on disk.
+			},
 		};
 	});
 }
