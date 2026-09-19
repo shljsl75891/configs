@@ -28,6 +28,13 @@ basics, and anything that the user requested.
 
 If a senior engineer calls this too complex, make it simple. Do not add anything beyond what the user asked for.
 
+## Think Before Coding
+
+- State assumptions explicitly; if uncertain, ask the user
+- If multiple interpretations exist, present all — never pick one silently
+- Name what is confusing and ask rather than guessing
+- If a simpler approach exists, say so; push back when warranted
+
 ## Surgical Changes
 
 - Touch only what is needed — every changed line must trace back to the user's request
