@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Activate this skill before you design a solution, select a library or dependency, or make the first code change in a task. This includes writing, editing, and reviewing code, and it includes the moment directly after a plan is approved.
+description: Activate this skill before you design a solution, select a library or dependency, or make the first code change in a task. This includes writing, editing, and reviewing code, and it includes the moment directly after a plan is approved even in mid-session
 ---
 
 ## The Ladder
@@ -15,16 +15,9 @@ Stop at the first rule that applies.
 6. Can you write it in one line? Write one line.
 7. If no rule above applies, write the smallest code that operates correctly.
 
-Use the ladder after you understand the problem. Do not use it in place of
-understanding. Read the task and the code that it touches, trace the real flow, then
-use the ladder.
-
-Correct the cause of a bug, not the symptom. Find all callers of the function that you
-change, then correct the shared path one time.
-
-Do not remove these items to make the code smaller: input validation at trust
-boundaries, error handling that prevents data loss, security controls, accessibility
-basics, and anything that the user requested.
+- Use the ladder after you understand the problem. Do not use it in place of understanding. Read the task and the code that it touches, trace the real flow, then use the ladder.
+- Correct the cause of a bug, not the symptom. Find all callers of the function that you change, then correct the shared path one time.
+- Do not remove these items to make the code smaller: input validation at trust boundaries, error handling that prevents data loss, security controls, accessibility basics, and anything that the user requested.
 
 If a senior engineer calls this too complex, make it simple. Do not add anything beyond what the user asked for.
 

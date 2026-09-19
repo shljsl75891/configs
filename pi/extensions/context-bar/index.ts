@@ -113,26 +113,52 @@ function formatTokens(n: number): string {
 	return String(n);
 }
 
+interface PlanModeEntryData {
+	enabled?: boolean;
+}
+
+/** Mirrors plan-mode's own session_start restore logic (see plan-mode/index.ts). */
+function isPlanModeActive(ctx: { sessionManager: { getEntries(): SessionEntry[] } }): boolean {
+	const entries = ctx.sessionManager.getEntries();
+	for (let i = entries.length - 1; i >= 0; i--) {
+		const entry = entries[i];
+		if (entry.type === "custom" && entry.customType === "plan-mode") {
+			return Boolean((entry.data as PlanModeEntryData | undefined)?.enabled);
+		}
+	}
+	return false;
+}
+
 export default function contextBar(pi: ExtensionAPI) {
 	pi.on("session_start", (_event, ctx) => {
 		ctx.ui.setFooter((_tui, theme, footerData) => ({
 			invalidate() {},
 			render(width: number): string[] {
-				const modelName = ctx.model?.name ?? ctx.model?.id ?? "no model";
-				// Custom footers replace the built-in one entirely, so this is the only
-				// place ctx.ui.setStatus() from other extensions still gets shown.
-				const statuses = [...footerData.getExtensionStatuses().entries()].sort(([a], [b]) => a.localeCompare(b));
-				const statusSuffix = statuses.length > 0 ? `  ${statuses.map(([, text]) => text).join("  ")}` : "";
-				const left =
-					(ctx.thinkingLevel
-						? theme.fg("text", modelName) + theme.fg("dim", ` [${ctx.thinkingLevel}]`)
-						: theme.fg("text", modelName)) + statusSuffix;
+				const model = ctx.model;
+				const modeLabel = isPlanModeActive(ctx) ? "Plan" : "Build";
+				// Skip plan-mode's own "[plan]" badge; we already render Plan/Build above.
+				const statusSuffix = [...footerData.getExtensionStatuses()]
+					.filter(([key]) => key !== "plan-mode")
+					.map(([, text]) => text)
+					.join("  ");
+
+				let left = "";
+				if (model) {
+					const modeColor = isPlanModeActive(ctx) ? "success" : "customMessageLabel";
+					left += theme.fg(modeColor, modeLabel);
+					left += theme.fg("text", `  ${model.name ?? model.id}`);
+					left += theme.fg("dim", `  ${model.provider}`);
+					if (ctx.thinkingLevel) {
+						left += `  \x1b[1m${theme.fg("warning", ctx.thinkingLevel)}\x1b[22m`;
+					}
+				}
+				if (statusSuffix) left += (left ? "  " : "") + statusSuffix;
 
 				const usage = ctx.getContextUsage?.();
 				const contextWindow: number = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
 
 				if (!contextWindow) {
-					const line = left + theme.fg("dim", " no model");
+					const line = left + theme.fg("dim", left ? " no model" : "no model");
 					return [truncateToWidth(line, width)];
 				}
 

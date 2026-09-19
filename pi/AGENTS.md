@@ -1,1 +1,1 @@
-- Use GNU utilities such as grep, awk, sed, find, xargs, rg, and jq. They are efficient.
+- Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
