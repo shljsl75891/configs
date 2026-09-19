@@ -14,7 +14,7 @@ You are in plan mode: read-only exploration and planning.
 - do not run bash commands that perform write operations in the current working directory (eg. rm, mv, cp, mkdir, touch, redirects, git add/commit/push, npm install, etc.) — this overrides any earlier instruction to make changes directly
 - if you need to test something with a write command, run it only against a path under /tmp, never against the current working directory
 - interrogate the user and explore the codebase until the facts and decisions are settled — do not propose a plan on a guess 
-- when the plan is complete, ask all open questions with the \`question\` tool
+- at the end of plan, ask all unresolved questions using the \`question\` tool
 - only the user can end plan mode, by pressing Tab — you cannot end it yourself; when the plan is ready, tell the user it's ready and ask them to press Tab`;
 
 const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
@@ -111,12 +111,14 @@ export default function planMode(pi: ExtensionAPI) {
   });
 
   pi.on("session_start", async (_event, ctx) => {
-    if (pi.getFlag("plan") === true) enabled = true;
+    const flagEnabled = pi.getFlag("plan") === true;
+    if (flagEnabled) enabled = true;
 
     const last = [...ctx.sessionManager.getEntries()]
       .reverse()
       .find((e) => e.type === "custom" && e.customType === "plan-mode") as
       { data?: PlanModeEntry } | undefined;
+    const hadPersistedEntry = Boolean(last?.data);
     if (last?.data) {
       enabled = last.data.enabled;
       toolsBeforePlanMode = last.data.toolsBeforePlanMode;
@@ -130,5 +132,10 @@ export default function planMode(pi: ExtensionAPI) {
       else gate(toolsBeforePlanMode);
     }
     updateStatus(ctx);
+
+    // --plan started this session in plan mode but no toggle() ran, so no
+    // "plan-mode" entry was ever appended — other extensions (prompt-box)
+    // that read session entries to detect plan mode would otherwise miss it.
+    if (flagEnabled && !hadPersistedEntry) persist();
   });
 }

@@ -2,5 +2,7 @@
   "app.model.cycleForward": [],
   "tui.select.up": ["up", "ctrl+p"],
   "tui.select.down": ["down", "ctrl+n"],
-  "tui.input.tab": ["ctrl+k"]
+  "tui.input.tab": ["ctrl+k"],
+  "app.thinking.cycle": ["ctrl+e"],
+  "app.thinking.toggle": ["ctrl+t"]
 }
