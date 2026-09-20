@@ -34,9 +34,13 @@ If a senior engineer calls this too complex, make it simple. Do not add anything
 - Do not improve adjacent code, comments, or formatting; it increases diff size and review time
 - Do not suppress type errors with `any` or `unknown` unless explicitly asked
 - Use dedicated types; only define abstract classes or interfaces when one or more classes implement them
-- Comments default to none — add only for a non-obvious WHY; to the point, crisp and crystal clear, never WHAT
-- A comment explaining self explanatory code is a smell; remove it completely.
-- Never write comments that narrate this session's history; every comment must stand on its own to a reader who has not seen this conversation.
+
+## Comments
+
+- Try to make the comment unnecessary first: rename the variable/function, extract a helper, or restructure the condition. Do this before writing any comment.
+- Write a comment only when the code still cannot show a WHY that reading it will not reveal — a business rule, external constraint, tradeoff, or workaround for a bug/API quirk. Never write a WHAT comment, never restate self-explanatory code, and never narrate this session's history.
+- Use JSDoc (`/** */`) for anything a reader may hover: functions, variables, types, classes. Use a single-line `//` only for a one-line note on business logic. Never stack multiple `//` lines for a multi-line note — use JSDoc or a `/* */` block instead.
+- Write every comment in Simplified Technical English (ASD-STE100).
 
 ## Testing
 
@@ -128,4 +132,4 @@ Before declaring a task done, re-scan the diff once for over-engineering and rem
 
 - Any abstraction with only one call site? or any parameter/flag with only one use?
 - Any code path added "for later" that no test or requirement needs?
-- Any comments those explain the obvious things, session coupled and WHAT for self explanatory code?
+- Re-check every comment against the Comments rules above; fix or delete any that fail.
