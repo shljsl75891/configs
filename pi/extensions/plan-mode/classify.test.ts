@@ -1,0 +1,157 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { isBlockedBashCommand } from "./classify.ts";
+
+/**
+ * Relative args resolve against cwd; if the suite itself ran from under
+ * /tmp, the /tmp hatch would wrongly rescue the relative-path corpus cases
+ * below. Pin cwd so the corpus means the same thing everywhere.
+ */
+process.chdir(import.meta.dirname);
+
+/**
+ * Table test over the regression corpus built up across review rounds:
+ * each case pins a real bypass or false-positive found (and fixed) at
+ * some point, so a future regex tweak that reintroduces one fails loudly
+ * here instead of waiting for the next code review round.
+ */
+
+const allowed: string[] = [
+  "ls -la",
+  "cat package.json",
+  "pwd",
+  "git status",
+  "git log",
+  "git diff",
+  // \b on the git subcommand alternation: must not match a "config"/"init" prefix.
+  "git configx",
+  "git initialize",
+  "npm run build",
+  "bun run build",
+  "cargo build",
+  "go build ./...",
+  'grep -rn "mv" .',
+  "rg '\\brm\\b' src/",
+  "ls src/dd",
+  "grep npx README.md",
+  "echo hi > /tmp/out.txt",
+  "printf foo > /tmp/log.txt",
+  "mkdir -p /tmp/foo",
+  "touch /tmp/scratch.txt",
+  "rm -rf /tmp/foo",
+  "FOO=1 rm -rf /tmp/x",
+  // Throwaway redirects (fd dups, /dev/null) never make a real write.
+  "rg foo . 2>/dev/null",
+  "grep -r TODO . 2>/dev/null | wc -l",
+  "ls -la 2>&1 | less",
+  "echo hi 2>&1 > /tmp/out.txt",
+  "sed -n '1,5p' file.txt",
+  "perl -e 'print 1'",
+  // curl defaults to stdout, not a file write.
+  "curl https://example.com",
+  // Indirect invocation is an accepted "backstop not sandbox" gap.
+  "env rm -rf x",
+  "find . -name '*.ts'",
+  // "i" alias must not match the start of "info".
+  "npm info left-pad",
+];
+
+const blocked: string[] = [
+  "rm -rf /",
+  "rm -rf / 2>/dev/null",
+  "rm -rf / 2>/dev/null | cat",
+  "sudo rm -rf /",
+  "git commit -m x",
+  "git commit -m x 2>/dev/null",
+  "npm install",
+  "npm install 2>/dev/null",
+  "bun install",
+  "bun add left-pad",
+  "git clean -fd",
+  "git rm -rf .",
+  "git restore .",
+  "git switch main",
+  "git checkout main",
+  "git apply patch.diff",
+  "git worktree add ../x",
+  "git config user.name x",
+  "git submodule add https://example.com/x.git",
+  "git remote add origin git@example.com:x.git",
+  // Tool-level flags before the subcommand must not hide it.
+  "git -C . commit -m x",
+  "npm --prefix . install lodash",
+  // &> is treated like && chaining (blocked outright), not parsed for a target.
+  "echo x &> /tmp/y",
+  "echo x >| /tmp/y",
+  "pip3 install requests",
+  "pipx install black",
+  "uv add requests",
+  "python -m pip install requests",
+  "npx create-react-app foo",
+  "npx --yes cowsay hi /tmp/x", // coarse: args are packages, never tmp-rescued
+  "pnpm dlx cowsay hi",
+  "bunx cowsay hi",
+  "cargo add serde",
+  "go get example.com/pkg",
+  "gem install rails",
+  "brew install foo",
+  "poetry add requests",
+  "composer install",
+  // npm/pnpm short aliases (i/un/rm/r/up).
+  "npm i left-pad",
+  "pnpm rm x",
+  "yarn un left-pad",
+  "curl -o out.txt https://example.com",
+  "curl -O https://example.com/file.zip",
+  "curl --output out.txt https://example.com",
+  "wget https://example.com/file.zip",
+  "tar -xf archive.tar",
+  "unzip archive.zip",
+  "install -m755 src /usr/bin/dst",
+  "rsync -a src/ dest/",
+  "shred secret.txt",
+  "mkfifo mypipe",
+  "patch -p1 < diff.patch",
+  // find needs an action flag to write/execute; bare find above is read-only.
+  "find . -delete",
+  "find . -name '*.ts' -delete",
+  "ls && rm -rf /",
+  "echo $(rm -rf ~/work)",
+  "echo `rm -rf ~/work`",
+  "ls\nrm -rf src",
+  "echo hi > /tmp/x\nrm -rf /",
+  "rm -rf /tmp/../etc/passwd",
+  "echo x > /tmp/../etc/foo",
+  "touch /tmp/../../root/x",
+  "/bin/rm -rf x",
+  "FOO=1 rm -rf x",
+  "mv --target-directory=/etc /tmp/x",
+  "sed -i s/a/b/ src/f.ts",
+  "sed -i.bak s/a/b/ /tmp/f.txt",
+  "perl -pi -e 's/a/b/' file",
+  "perl -ni -e 'print' f",
+  "sed --in-place s/a/b/ src/f.ts",
+  "sudo touch /tmp/x",
+  "rm /dev/null",
+  // "/dev/nullx" is a real path, not the /dev/null throwaway target.
+  "echo pwned > /dev/nullx",
+  // Chaining blocks outright even when both sides are individually tmp-safe.
+  "mkdir -p /tmp/foo && touch /tmp/foo/bar",
+  // Coarse-but-accepted: a source/redirect target outside /tmp still blocks,
+  // even when the command's other argument is /tmp-safe.
+  "cp a.txt /tmp/b.txt",
+  "rm -rf /tmp/foo > /etc/log",
+];
+
+describe("isBlockedBashCommand", () => {
+  for (const command of allowed) {
+    it(`allows: ${command}`, () => {
+      assert.equal(isBlockedBashCommand(command), false);
+    });
+  }
+  for (const command of blocked) {
+    it(`blocks: ${command}`, () => {
+      assert.equal(isBlockedBashCommand(command), true);
+    });
+  }
+});

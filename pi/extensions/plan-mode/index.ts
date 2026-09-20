@@ -1,12 +1,15 @@
+import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
 import type {
   ExtensionAPI,
   ExtensionContext,
+  SessionEntry,
 } from "@earendil-works/pi-coding-agent";
 import { Key } from "@earendil-works/pi-tui";
+import { isBlockedBashCommand } from "./classify.ts";
 
 const MUTATING_TOOLS = new Set(["edit", "write"]);
 
-const PLAN_REMINDER_TYPE = "plan-mode-context";
+const PLAN_SECTION = "plan_mode";
 const PLAN_REMINDER = `[PLAN MODE ACTIVE]
 You are in plan mode: read-only exploration and planning.
 
@@ -21,14 +24,61 @@ const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
 const BUILD_SWITCH_REMINDER = `[PLAN MODE OFF]
 The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed.`;
 
+/**
+ * Session-entry customType (persistence format) — private. Kept separate
+ * from the status-bar key below even though both currently read
+ * "plan-mode": renaming one is a serialization-format change, the other a
+ * UI-contract change, and they shouldn't silently move together.
+ */
+const PLAN_MODE_ENTRY = "plan-mode";
+/**
+ * ctx.ui.setStatus key: the public contract other extensions (context-bar)
+ * read via the live footer status map to detect plan-mode state.
+ */
+export const PLAN_MODE_STATUS_KEY = "plan-mode";
+
 interface PlanModeEntry {
   enabled: boolean;
   toolsBeforePlanMode?: string[];
 }
 
+function readPlanModeEntry(
+  entries: readonly SessionEntry[],
+): PlanModeEntry | undefined {
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const entry = entries[i];
+    if (entry.type === "custom" && entry.customType === PLAN_MODE_ENTRY) {
+      /**
+       * Data crosses a serialization boundary (a session file, possibly
+       * written by an older version of this extension) — narrow instead
+       * of trusting the cast.
+       */
+      const data = entry.data as Partial<PlanModeEntry> | undefined;
+      if (typeof data?.enabled !== "boolean") {
+        // Malformed entry: fail closed into plan mode with no baseline,
+        // rather than silently resuming in build mode with the gate off.
+        return { enabled: true, toolsBeforePlanMode: undefined };
+      }
+      const tools = data.toolsBeforePlanMode;
+      return {
+        enabled: data.enabled,
+        toolsBeforePlanMode: Array.isArray(tools) ? tools : undefined,
+      };
+    }
+  }
+  return undefined;
+}
+
 export default function planMode(pi: ExtensionAPI) {
   let enabled = false;
+  /**
+   * Snapshot, not derive-on-exit: this must restore whatever active-tool
+   * set existed before plan mode — including tools already disabled by
+   * eg. --exclude-tools/-nbt at startup — not just re-enable edit/write.
+   */
   let toolsBeforePlanMode: string[] | undefined;
+  // Best-effort, per-process only: enabled is persisted across resume,
+  // this one-shot notice isn't. Not worth persisting for a one-liner.
   let pendingBuildSwitch = false;
 
   pi.registerFlag("plan", {
@@ -39,13 +89,13 @@ export default function planMode(pi: ExtensionAPI) {
 
   function updateStatus(ctx: ExtensionContext): void {
     ctx.ui.setStatus(
-      "plan-mode",
+      PLAN_MODE_STATUS_KEY,
       enabled ? ctx.ui.theme.fg("warning", "[plan]") : undefined,
     );
   }
 
   function persist(): void {
-    pi.appendEntry<PlanModeEntry>("plan-mode", {
+    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, {
       enabled,
       toolsBeforePlanMode,
     });
@@ -61,12 +111,13 @@ export default function planMode(pi: ExtensionAPI) {
   }
 
   function exit(): void {
-    pi.setActiveTools(toolsBeforePlanMode ?? pi.getActiveTools());
+    // enabled only flips off inside toggle(), which only ever turns it on
+    // by calling enter() first — a baseline is always captured by here.
+    pi.setActiveTools(toolsBeforePlanMode!);
     toolsBeforePlanMode = undefined;
   }
 
-  // Turning plan mode off is the only way out, and only the user can trigger
-  // it (Tab) — the model has no tool that ends plan mode itself.
+  // Only the user can end plan mode (Tab) — the model has no tool that does.
   function toggle(ctx: ExtensionContext): void {
     enabled = !enabled;
     if (enabled) {
@@ -85,12 +136,47 @@ export default function planMode(pi: ExtensionAPI) {
 
   pi.registerShortcut(Key.tab, {
     description: "Toggle plan mode",
-    handler: async (ctx) => toggle(ctx),
+    handler: (ctx) => toggle(ctx),
   });
 
-  pi.on("before_agent_start", async () => {
-    if (pendingBuildSwitch && !enabled) {
-      pendingBuildSwitch = false;
+  pi.on("tool_call", (event) => {
+    if (!enabled) return;
+    /**
+     * The bash classifier is bash-shaped and can't parse PowerShell
+     * syntax, so a powershell tool would otherwise bypass the write-
+     * gating backstop entirely — block it outright, same treatment as
+     * sudo (plan mode has no reason to need either).
+     */
+    if (isToolCallEventType("powershell", event)) {
+      return {
+        block: true,
+        reason:
+          "Plan mode: powershell is blocked outright (no write classifier for it). Press Tab to leave plan mode.",
+      };
+    }
+    // subagent spawns a separate `pi` process (see extensions/subagent)
+    // with no --plan flag, so it isn't gated by this session's plan mode
+    // at all. Left unblocked intentionally: delegating to it is part of
+    // the normal plan-mode workflow here.
+    if (!isToolCallEventType("bash", event)) return;
+    const { command } = event.input;
+    if (!isBlockedBashCommand(command)) return;
+    return {
+      block: true,
+      reason: `Plan mode: write command blocked. Press Tab to leave plan mode, or target a path under /tmp.\nCommand: ${command}`,
+    };
+  });
+
+  pi.on("before_agent_start", (event) => {
+    if (enabled) {
+      event.systemPromptOptions.sections[PLAN_SECTION] = PLAN_REMINDER;
+    } else {
+      delete event.systemPromptOptions.sections[PLAN_SECTION];
+    }
+
+    const switched = pendingBuildSwitch;
+    pendingBuildSwitch = false;
+    if (switched && !enabled) {
       return {
         message: {
           customType: BUILD_SWITCH_TYPE,
@@ -99,43 +185,34 @@ export default function planMode(pi: ExtensionAPI) {
         },
       };
     }
-    pendingBuildSwitch = false;
-    if (!enabled) return;
-    return {
-      message: {
-        customType: PLAN_REMINDER_TYPE,
-        content: PLAN_REMINDER,
-        display: false,
-      },
-    };
   });
 
   pi.on("session_start", async (_event, ctx) => {
     const flagEnabled = pi.getFlag("plan") === true;
     if (flagEnabled) enabled = true;
 
-    const last = [...ctx.sessionManager.getEntries()]
-      .reverse()
-      .find((e) => e.type === "custom" && e.customType === "plan-mode") as
-      { data?: PlanModeEntry } | undefined;
-    const hadPersistedEntry = Boolean(last?.data);
-    if (last?.data) {
-      enabled = last.data.enabled;
-      toolsBeforePlanMode = last.data.toolsBeforePlanMode;
+    // getBranch(), not getEntries(): after a rewind/fork, getEntries()
+    // can still carry a plan-mode entry from an abandoned branch.
+    const persisted = readPlanModeEntry(ctx.sessionManager.getBranch());
+    // Resumed state wins over --plan: the flag only seeds a fresh session.
+    if (persisted) {
+      enabled = persisted.enabled;
+      toolsBeforePlanMode = persisted.toolsBeforePlanMode;
     }
 
-    // A persisted baseline is the tool set from when plan mode was first
-    // turned on; re-filter that rather than re-capturing today's (already
-    // gated, at session start) active tools as a new, wrong baseline.
     if (enabled) {
+      // No persisted baseline: nothing has gated tools yet this process,
+      // so the current active-tool set is a correct baseline to capture.
       if (toolsBeforePlanMode === undefined) enter();
+      // Persisted baseline exists: re-filter it, rather than re-capturing
+      // today's already-gated active tools as a new, wrong baseline.
       else gate(toolsBeforePlanMode);
     }
     updateStatus(ctx);
 
-    // --plan started this session in plan mode but no toggle() ran, so no
-    // "plan-mode" entry was ever appended — other extensions (prompt-box)
-    // that read session entries to detect plan mode would otherwise miss it.
-    if (flagEnabled && !hadPersistedEntry) persist();
+    // --plan started this session with no toggle(), so no entry was ever
+    // appended — a later resume of this session would come back in build
+    // mode without it.
+    if (flagEnabled && !persisted) persist();
   });
 }
