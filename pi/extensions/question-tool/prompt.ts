@@ -50,7 +50,6 @@ function loadClipboardApi(): Promise<ClipboardApi | null> {
 
 const MIN_QUESTION_LINES = 3;
 const MAX_QUESTION_LINES = 12;
-/** Rows drawn outside the question text: separators, tabs, options, hints. */
 const CHROME_ROWS = 14;
 const PAGE_SCROLL_LINES = 5;
 
@@ -62,10 +61,9 @@ function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): s
 }
 
 /**
- * Renders the question UI and resolves with the chosen labels and any pasted
- * images still referenced in those answers (carried as base64 tokens), or null
- * when dismissed. An aborted signal dismisses it too, so callers distinguish
- * the two by checking the signal afterwards.
+ * Renders the question UI. Resolves with answers and pasted images, or null.
+ * Both cancellation and abort dismissal return null; check the signal
+ * afterwards to distinguish them.
  */
 export function askQuestions(
 	ui: Pick<ExtensionUIContext, "custom">,

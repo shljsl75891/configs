@@ -9,8 +9,10 @@ import type { SubagentResult } from "./result.ts";
 import { windowHint } from "./tmux.ts";
 import type { WaitOutcome } from "./wait.ts";
 
-// RunResult extends the wire type: output, usage, stopReason, errorMessage are inherited.
-// Two extra status values (timeout, aborted) cover outcomes that never reach the child.
+/**
+ * RunResult extends the wire type: output, usage, stopReason, errorMessage are inherited.
+ * Two extra status values (timeout, aborted) cover outcomes that never reach the child.
+ */
 export interface RunResult extends Omit<SubagentResult, "status"> {
 	agent: string;
 	agentSource: AgentConfig["source"] | "unknown";

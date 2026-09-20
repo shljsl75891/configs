@@ -61,9 +61,11 @@ describe("formatWindowName", () => {
 	});
 
 	it("truncates a name containing emoji without splitting a surrogate pair", () => {
-		// 🐙 is U+1F419 — two UTF-16 units. With depth=2 the prefix is "L2 ⋯ "
-		// (5 UTF-16 units); old String.prototype.slice(0,30) would cut at offset 30
-		// inside a surrogate pair, producing a broken string. Code-point slicing avoids this.
+		/**
+		 * 🐙 is U+1F419 — two UTF-16 units. With depth=2 the prefix is "L2 ⋯ "
+		 * (5 UTF-16 units); old String.prototype.slice(0,30) would cut at offset 30
+		 * inside a surrogate pair, producing a broken string. Code-point slicing avoids this.
+		 */
 		const name = formatWindowName("running", "🐙".repeat(30), 2);
 		assert.equal([...name].length, MAX_WINDOW_NAME_LENGTH);
 	});

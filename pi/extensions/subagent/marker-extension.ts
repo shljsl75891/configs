@@ -12,8 +12,10 @@
 
 import * as fs from "node:fs";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-// Static, not dynamic: only pi's extension loader can resolve pi-tui for a
-// sibling extension, so an `import()` at runtime would always fail.
+/**
+ * Static, not dynamic: only pi's extension loader can resolve pi-tui for a
+ * sibling extension, so an `import()` at runtime would always fail.
+ */
 import { askQuestions } from "../question-tool/prompt.ts";
 import { childDepth, ENV, reviewMarkerFor } from "./protocol.ts";
 import type { SubagentResult } from "./result.ts";
@@ -56,8 +58,10 @@ function collectResult(ctx: ExtensionContext): SubagentResult {
 }
 
 async function writeResult(resultFile: string, result: SubagentResult): Promise<void> {
-	// tmp + rename so the poller never reads a torn file. The directory is
-	// orchestrator-owned, so a missing one means nobody is reading anymore.
+	/**
+	 * tmp + rename so the poller never reads a torn file. The directory is
+	 * orchestrator-owned, so a missing one means nobody is reading anymore.
+	 */
 	const tmpPath = `${resultFile}.tmp`;
 	await fs.promises.writeFile(tmpPath, JSON.stringify(result), "utf-8");
 	await fs.promises.rename(tmpPath, resultFile);
@@ -65,9 +69,11 @@ async function writeResult(resultFile: string, result: SubagentResult): Promise<
 
 /** Resolves to the result to send, or null to keep the agent working. */
 async function review(ctx: ExtensionContext, result: SubagentResult): Promise<SubagentResult | null> {
-	// Any stdin byte counts as engagement, including focus/mouse reports — deliberately
-	// lenient: a false positive only costs a longer wait, a false negative steals the
-	// user's half-written edit.
+	/**
+	 * Any stdin byte counts as engagement, including focus/mouse reports — deliberately
+	 * lenient: a false positive only costs a longer wait, a false negative steals the
+	 * user's half-written edit.
+	 */
 	const controller = new AbortController();
 	const timer = setTimeout(() => controller.abort(), REVIEW_TIMEOUT_MS);
 	const unsubscribe = ctx.ui.onTerminalInput(() => {
@@ -110,11 +116,15 @@ export default function markerExtension(pi: ExtensionAPI) {
 	const reviewFile = reviewMarkerFor(resultFile);
 	const reviewEnabled = process.env[ENV.review] === "1";
 
-	// pending: no result delivered yet. delivered: the parent has the result and
-	// stopped polling. followUp: the user is manually continuing after delivery.
+	/**
+	 * pending: no result delivered yet. delivered: the parent has the result and
+	 * stopped polling. followUp: the user is manually continuing after delivery.
+	 */
 	let phase: "pending" | "delivered" | "followUp" = "pending";
-	// Delivery is known broken (e.g. disk full) — stop advertising review, since
-	// pausing the parent's clock for a result that can no longer arrive buys nothing.
+	/**
+	 * Delivery is known broken (e.g. disk full) — stop advertising review, since
+	 * pausing the parent's clock for a result that can no longer arrive buys nothing.
+	 */
 	let deliveryBroken = false;
 
 	const settle = async (result: SubagentResult): Promise<void> => {
@@ -129,13 +139,17 @@ export default function markerExtension(pi: ExtensionAPI) {
 		await renameWindow(pi, "running");
 	});
 
-	// pi emits ui_prompt_start only for extension-raised prompts (ui.select/confirm/
-	// input/editor/custom) — not for the child's own idle editor prompt. So this pauses
-	// the parent's clock for the review prompt and any extension prompt the child raises,
-	// but a child merely sitting idle after a turn does not pause it.
+	/**
+	 * pi emits ui_prompt_start only for extension-raised prompts (ui.select/confirm/
+	 * input/editor/custom) — not for the child's own idle editor prompt. So this pauses
+	 * the parent's clock for the review prompt and any extension prompt the child raises,
+	 * but a child merely sitting idle after a turn does not pause it.
+	 */
 	pi.on("ui_prompt_start", async () => {
-		// After delivery the parent is no longer polling this child; keeping the marker
-		// up would reset a clock that belongs to nobody and stall the parent for hours.
+		/**
+		 * After delivery the parent is no longer polling this child; keeping the marker
+		 * up would reset a clock that belongs to nobody and stall the parent for hours.
+		 */
 		if (phase === "pending" && !deliveryBroken) await fs.promises.writeFile(reviewFile, "", "utf-8").catch(() => {});
 		if (phase === "delivered") return; // terminal outcome wins over the transient prompt state
 		await renameWindow(pi, "waiting");
@@ -143,13 +157,15 @@ export default function markerExtension(pi: ExtensionAPI) {
 
 	pi.on("ui_prompt_end", async (_event, ctx) => {
 		await fs.promises.rm(reviewFile, { force: true }).catch(() => {});
-		if (phase === "delivered") return; // terminal outcome wins over the transient prompt state
+		if (phase === "delivered") return;
 		await renameWindow(pi, ctx.isIdle() ? "waiting" : "running");
 	});
 
 	pi.on("agent_settled", async (_event, ctx) => {
-		// After the first delivery the parent's tool call is complete; further turns
-		// are manual follow-ups in the kept-open window and produce no new result.
+		/**
+		 * After the first delivery the parent's tool call is complete; further turns
+		 * are manual follow-ups in the kept-open window and produce no new result.
+		 */
 		if (phase !== "pending") { await renameWindow(pi, "waiting"); return; }
 
 		const result = collectResult(ctx);
@@ -160,8 +176,10 @@ export default function markerExtension(pi: ExtensionAPI) {
 			return;
 		}
 
-		// review() calls askQuestions, which fires ui_prompt_start/end — those
-		// handlers own the marker file and window rename for the review prompt.
+		/**
+		 * review() calls askQuestions, which fires ui_prompt_start/end — those
+		 * handlers own the marker file and window rename for the review prompt.
+		 */
 		const approved = await review(ctx, result);
 		if (!approved) {
 			await renameWindow(pi, "waiting");

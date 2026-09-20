@@ -189,15 +189,18 @@ export default function (pi: ExtensionAPI) {
 	// Deeper processes stay inert leaves so nesting is bounded.
 	if (depth >= MAX_SUBAGENT_DEPTH) return;
 
-	// Sweep stale subagent temp dirs from previous runs (non-critical).
-	// Only the root process sweeps: children would duplicate the parent's scan.
+	// Only root sweeps; children would duplicate the scan (non-critical).
 	if (depth === 0) void sweepStaleTempDirs(pi);
 
-	// Not a tool snippet: a custom SYSTEM.md replaces the section those land in.
-	// Rebuilt per request so agent file edits apply without a restart.
+	/**
+	 * Not a tool snippet: a custom SYSTEM.md replaces the section those land in.
+	 * Rebuilt per request so agent file edits apply without a restart.
+	 */
 	pi.on("before_agent_start", (event, ctx) => {
-		// Only user agents are advertised; project agents require an explicit name
-		// plus a trust confirm, so listing them here would invite unapproved calls.
+		/**
+		 * Only user agents are advertised; project agents require an explicit name
+		 * plus a trust confirm, so listing them here would invite unapproved calls.
+		 */
 		const agents = discoverAgents(ctx.cwd, "user").agents.filter((a) => !a.disableModelInvocation);
 		if (agents.length === 0) return;
 		return { systemPrompt: `${event.systemPrompt}\n\n${renderAgentBlock(agents)}` };
@@ -217,8 +220,10 @@ export default function (pi: ExtensionAPI) {
 		parameters: SubagentParams,
 
 		async execute(_toolCallId, params, signal, onUpdate, ctx) {
-			// Normalize first: single call is treated as parallel with n=1.
-			// Before any prompting, so an invalid call cannot ask about agents it will then refuse to run.
+			/**
+			 * Normalize first: single call is treated as parallel with n=1.
+			 * Before any prompting, so an invalid call cannot ask about agents it will then refuse to run.
+			 */
 			const tasks = normalizeTasks(params);
 			const timeoutMs = clampTimeout(params.timeoutMs);
 

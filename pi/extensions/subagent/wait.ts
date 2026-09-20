@@ -60,8 +60,10 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 	const { windowId, resultFile, timeoutMs, signal, onReview, checkWindowAlive } = opts;
 	const pollIntervalMs = opts.pollIntervalMs ?? POLL_INTERVAL_MS;
 	const reviewFile = reviewMarkerFor(resultFile);
-	// Headroom over the caller's own timeout, not a coincident bound — otherwise a
-	// caller who requests the maximum timeout gets zero review-pause budget.
+	/**
+	 * Headroom over the caller's own timeout, not a coincident bound — otherwise a
+	 * caller who requests the maximum timeout gets zero review-pause budget.
+	 */
 	const hardDeadline = Date.now() + timeoutMs + REVIEW_GRACE_MS;
 	let deadline = Date.now() + timeoutMs;
 	let corruptReads = 0;
@@ -69,13 +71,17 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 	let reviewing = false;
 
 	try {
-		// deadline never exceeds hardDeadline: initialized below it, clamped to it on every
-		// review extension (see the Math.min below). No separate hardDeadline check needed here.
+		/**
+		 * deadline never exceeds hardDeadline: initialized below it, clamped to it on every
+		 * review extension (see the Math.min below). No separate hardDeadline check needed here.
+		 */
 		while (Date.now() < deadline) {
 			if (signal?.aborted) return { kind: "aborted" };
 
-			// The marker means a human is looking at the result, so the clock stops
-			// and restarts from full once they hand the agent more work.
+			/**
+			 * The marker means a human is looking at the result, so the clock stops
+			 * and restarts from full once they hand the agent more work.
+			 */
 			const nowReviewing = fs.existsSync(reviewFile);
 			if (nowReviewing !== reviewing) {
 				reviewing = nowReviewing;
@@ -85,16 +91,20 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 
 			const read = await readResult(resultFile);
 			if (read?.ok) return { kind: "result", result: read.result };
-			// The write is atomic, so an invalid file is corruption, not a torn read.
-			// A vanished file resets the counter; a valid read returns above.
+			/**
+			 * The write is atomic, so an invalid file is corruption, not a torn read.
+			 * A vanished file resets the counter; a valid read returns above.
+			 */
 			if (read?.ok === false) {
 				if (++corruptReads >= MAX_CORRUPT_READS) return { kind: "corrupt", detail: read.detail };
 			} else {
 				corruptReads = 0;
 			}
 
-			// Short-circuits the most likely failure: the child died before writing.
-			// Only null reads advance the cadence: corrupt reads have their own budget.
+			/**
+			 * Short-circuits the most likely failure: the child died before writing.
+			 * Only null reads advance the cadence: corrupt reads have their own budget.
+			 */
 			if (!read && ++tick % LIVENESS_CHECK_EVERY === 0 && !(await checkWindowAlive(windowId))) {
 				const final = await readResult(resultFile);
 				if (final?.ok) return { kind: "result", result: final.result };
@@ -106,8 +116,10 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 
 		return signal?.aborted ? { kind: "aborted" } : { kind: "timeout" };
 	} finally {
-		// Ensure the caller always hears the "not reviewing" edge, even when a
-		// result lands while the review marker is still present (a real race).
+		/**
+		 * Ensure the caller always hears the "not reviewing" edge, even when a
+		 * result lands while the review marker is still present (a real race).
+		 */
 		if (reviewing) onReview?.(false);
 	}
 }

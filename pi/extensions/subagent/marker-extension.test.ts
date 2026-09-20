@@ -17,8 +17,6 @@ import * as path from "node:path";
 import { ENV, reviewMarkerFor } from "./protocol.ts";
 import markerExtension from "./marker-extension.ts";
 
-// ── type helpers (no runtime cost) ───────────────────────────────────────────
-
 type Handler = (event: object, ctx: object) => Promise<void>;
 
 type FakePi = {
@@ -37,8 +35,6 @@ type FakeCtxOverrides = {
 	sessionManager?: { getEntries(): unknown[] };
 	ui?: FakeUi;
 };
-
-// ── helpers ───────────────────────────────────────────────────────────────────
 
 function fakePi() {
 	const handlers = new Map<string, Handler>();
@@ -75,8 +71,6 @@ function fakePi() {
 	return { pi, fire, renames };
 }
 
-// ── tests ─────────────────────────────────────────────────────────────────────
-
 describe("markerExtension", () => {
 	let dir: string;
 	let resultFile: string;
@@ -99,7 +93,6 @@ describe("markerExtension", () => {
 	});
 
 	it("retries the write on the next turn when the first write fails", async () => {
-		// Point resultFile at a subdirectory that does not exist yet so the first write fails.
 		const badDir = path.join(dir, "missing");
 		const badFile = path.join(badDir, "result.json");
 		process.env[ENV.resultFile] = badFile;
@@ -110,7 +103,6 @@ describe("markerExtension", () => {
 		await fire("agent_settled");
 		assert.ok(!fs.existsSync(badFile), "no result after failed write");
 
-		// Now make the directory available and simulate a follow-up turn.
 		fs.mkdirSync(badDir, { recursive: true });
 		await fire("agent_start");
 		await fire("agent_settled");
@@ -135,8 +127,6 @@ describe("markerExtension", () => {
 		markerExtension(pi);
 
 		await fire("agent_settled");
-		// A sentinel that a real settle() call would never produce, so any rewrite is detectable
-		// regardless of filesystem mtime granularity.
 		fs.writeFileSync(resultFile, "SENTINEL");
 
 		// Simulate the user continuing the conversation manually in the kept-open window.
@@ -154,13 +144,17 @@ describe("markerExtension", () => {
 		markerExtension(pi);
 		const reviewFile = reviewMarkerFor(resultFile);
 
-		// A faked ui.custom that mimics real pi: fires ui_prompt_start before
-		// showing the prompt and ui_prompt_end once it resolves. This is a
-		// legitimate boundary (the terminal UI), not an internal collaborator.
+		/**
+		 * A faked ui.custom that mimics real pi: fires ui_prompt_start before
+		 * showing the prompt and ui_prompt_end once it resolves. This is a
+		 * legitimate boundary (the terminal UI), not an internal collaborator.
+		 */
 		const custom = async () => {
 			await fire("ui_prompt_start");
-			// The load-bearing assertion: the marker must exist *while* the prompt is up,
-			// which is what pauses the parent's clock — not just its absence afterward.
+			/**
+			 * The load-bearing assertion: the marker must exist *while* the prompt is up,
+			 * which is what pauses the parent's clock — not just its absence afterward.
+			 */
 			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
 			assert.ok(!fs.existsSync(resultFile), "result must not be delivered before the user answers");
 			await fire("ui_prompt_end", { isIdle: () => true });
@@ -201,7 +195,6 @@ describe("markerExtension", () => {
 		const custom = async () => {
 			await fire("ui_prompt_start");
 			await fire("ui_prompt_end", { isIdle: () => true });
-			// Neither "Send as-is" nor "Keep working": the user typed a replacement answer.
 			return { answers: [["rewritten output"]], images: [] };
 		};
 

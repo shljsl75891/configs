@@ -35,11 +35,15 @@ export function windowHint(windowId: string): string {
 }
 
 export async function isWindowAlive(pi: ExtensionAPI, windowId: string): Promise<boolean> {
-	// By id, not by listing the origin session: a window moved to another session
-	// is still alive and must not be reported as gone.
+	/**
+	 * By id, not by listing the origin session: a window moved to another session
+	 * is still alive and must not be reported as gone.
+	 */
 	const result = await pi.exec("tmux", ["display-message", "-p", "-t", windowId, "#{window_id}"]).catch(() => null);
-	// A rejected exec says nothing about the window, so assume alive and let the
-	// timeout decide. A non-zero exit is a real answer.
+	/**
+	 * A rejected exec says nothing about the window, so assume alive and let the
+	 * timeout decide. A non-zero exit is a real answer.
+	 */
 	if (!result) return true;
 	return result.code === 0 && result.stdout.trim() === windowId;
 }

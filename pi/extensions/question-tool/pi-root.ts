@@ -4,7 +4,6 @@ import * as path from "node:path";
 /** bin/ → dist/ → package root, plus slack for symlinked/pnpm/monorepo layouts. */
 const MAX_PI_ROOT_DEPTH = 6;
 
-/** Walk up from the running CLI to the pi package root. */
 export function findPiRoot(from: string = process.argv[1] ?? ""): string | null {
 	let dir: string;
 	try {

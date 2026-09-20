@@ -26,7 +26,6 @@ export function normalizeTasks(params: {
 	agent?: string;
 	task?: string;
 }): TaskItem[] {
-	// Reject any call that supplies both modes, even when tasks is an empty array.
 	if (params.tasks != null && (params.agent != null || params.task != null)) throw new Error(INVALID_PARAMS);
 	const fromBatch = params.tasks?.length ? params.tasks : null;
 	const fromSingle = params.agent && params.task ? [{ agent: params.agent, task: params.task }] : null;
