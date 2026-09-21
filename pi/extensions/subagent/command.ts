@@ -19,11 +19,17 @@ export function buildPiCommand(opts: {
 	tools?: string[];
 	systemPromptFile?: string;
 	task: string;
+	/** Propagates the parent session's plan mode to the spawned child, so a
+	 *  subagent can't be used to bypass the parent's write restriction:
+	 *  the child's own plan-mode extension picks this up on session_start
+	 *  and gates its own edit/write tools the same way the parent did. */
+	plan?: boolean;
 }): string {
 	const tokens = ["pi", "-e", MARKER_EXTENSION_PATH, "--no-session"];
 	if (opts.model) tokens.push("--model", opts.model);
 	if (opts.tools && opts.tools.length > 0) tokens.push("--tools", opts.tools.join(","));
 	if (opts.systemPromptFile) tokens.push("--append-system-prompt", opts.systemPromptFile);
+	if (opts.plan) tokens.push("--plan");
 	tokens.push(`Task: ${opts.task}`);
 	return tokens.map(shellQuote).join(" ");
 }

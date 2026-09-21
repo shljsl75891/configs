@@ -22,17 +22,15 @@ const WRITE_COMMAND_HEADS = new Set([
   "dd",
   "sudo",
   /**
-   * tar/unzip/patch/install/rsync/shred/mkfifo: same "every arg is a path"
-   * shape as rm/mv/cp, including their cp-style coarseness (a source
-   * argument must resolve under /tmp too, not just the destination).
+   * unzip/patch/rsync default to writing (extract/apply/sync) with no
+   * flag at all — the opposite shape from curl/tar's SUBCOMMAND_MUTATION
+   * patterns below (which require an explicit write flag) — so they stay
+   * head-blocked by default. SAFE_READONLY_OVERRIDES below rescues their
+   * explicit list/dry-run/test forms before this set is ever checked.
    */
-  "tar",
   "unzip",
   "patch",
-  "install",
   "rsync",
-  "shred",
-  "mkfifo",
   /**
    * wget writes to cwd by default (curl instead defaults to stdout — see
    * the flag-gated curl pattern below). Its argument is a URL, not a
@@ -118,6 +116,28 @@ const SUBCOMMAND_MUTATION_PATTERNS = [
   // curl defaults to stdout (read-only); only an explicit output flag
   // makes it a write.
   /\bcurl\s+(-[a-zA-Z]*[oO]\b|--output\b|--remote-name\b)/i,
+  /**
+   * tar, unlike unzip/patch/rsync below, always requires an explicit mode
+   * flag (it errors with none) — so "does this flag imply a write" is a
+   * clean positive match, same shape as curl's -o above. -t/-d (list/diff)
+   * are read-only and intentionally excluded.
+   */
+  /\btar\s+(?:\S+\s+)*(-[a-zA-Z]*[cxruA][a-zA-Z]*\b|--(create|extract|append|update|concatenate|delete)\b)/i,
+];
+
+/**
+ * unzip/patch/rsync default to writing (extract/apply/sync) with no flag
+ * at all, the opposite shape from curl/tar above — so they can't be
+ * expressed as "this flag makes it a write". Checked once, up front in
+ * isWriteCommand, before the head-block below would otherwise catch them
+ * unconditionally: a command matching one of these is read-only regardless
+ * of what else is on the line.
+ */
+const SAFE_READONLY_OVERRIDES = [
+  // -l/--list, -v (verbose listing), -p (pipe to stdout), -t (test archive).
+  /\bunzip\s+(?:\S+\s+)*(-[a-zA-Z]*[lvpt][a-zA-Z]*\b|--list\b)/i,
+  /\bpatch\s+(?:\S+\s+)*(--dry-run\b|-C\b|--check\b)/i,
+  /\brsync\s+(?:\S+\s+)*(-[a-zA-Z]*n[a-zA-Z]*\b|--dry-run\b)/i,
 ];
 
 const WRITE_SUBCOMMAND_PATTERNS = [
@@ -137,16 +157,54 @@ function stripLeadingAssignments(words: string[]): string[] {
 }
 
 /**
+ * Wrapper commands that pass their remaining arguments through to a real
+ * command untouched (`timeout 5 rm -rf x`, `find . | xargs rm`). Peeled
+ * before head-matching so the gate sees "rm", not "timeout"/"xargs", even
+ * for a single wrapped command outside of `&&`/`|` chaining, which
+ * commandHeads() already splits on. `sudo` is deliberately not here; it
+ * is already head-blocked above (isTmpOnlyCommand fails closed on it too),
+ * and `bash -c "..."`/`sh -c "..."` are a known, accepted gap: parsing
+ * their quoted script content would need real shell quoting support this
+ * classifier doesn't have anywhere else either.
+ */
+const WRAPPER_HEADS = new Set(["timeout", "env", "nice", "nohup", "stdbuf", "xargs"]);
+
+/**
+ * Strips a leading run of wrapper words and their flags, eg. ["timeout",
+ * "30", "rm", "-rf", "x"] -> ["rm", "-rf", "x"]. `timeout`'s duration is a
+ * bare positional arg rather than a flag, so it needs its own skip; every
+ * other `-...` token right after a wrapper head is dropped regardless of
+ * whether it takes a value; being permissive here only widens what gets
+ * re-classified as the real command, never narrows it to something unsafe.
+ */
+function peelWrappers(words: string[]): string[] {
+  let rest = words;
+  while (rest.length > 0) {
+    const head = (rest[0] ?? "").replace(/^.*\//, "");
+    if (!WRAPPER_HEADS.has(head)) break;
+    rest = rest.slice(1);
+    while (rest.length > 0 && rest[0].startsWith("-")) rest = rest.slice(1);
+    if (head === "timeout" && rest.length > 0 && /^\d/.test(rest[0]!)) {
+      rest = rest.slice(1);
+    }
+  }
+  return rest;
+}
+
+/**
  * Env-var prefixes are stripped and the head is basenamed, so "FOO=1 rm -rf
- * x" and "/bin/rm -rf x" both still match on "rm". Shared by commandHeads
- * below and isTmpOnlyCommand's own head check, so a future fix only needs
- * to land once.
+ * x" and "/bin/rm -rf x" both still match on "rm". Wrapper words (timeout,
+ * xargs, ...) are peeled the same way, so "timeout 5 rm -rf x" and "xargs
+ * rm" also match on "rm". Shared by commandHeads below and isTmpOnlyCommand's
+ * own head check, so a future fix only needs to land once.
  */
 function commandHead(segment: string): string {
   const words = stripLeadingAssignments(
     segment.trim().split(/\s+/).filter(Boolean),
   );
-  return (words[0] ?? "").replace(/^.*\//, "");
+  const peeled = peelWrappers(words);
+  const head = peeled.length > 0 ? peeled : words;
+  return (head[0] ?? "").replace(/^.*\//, "");
 }
 
 /**
@@ -177,6 +235,7 @@ const THROWAWAY_REDIRECT =
   /\d*>>?\s*(?:\/dev\/(?:null|stdout|stderr)|&\d+)(?=\s|$|[;&|])/g;
 
 function isWriteCommand(command: string): boolean {
+  if (SAFE_READONLY_OVERRIDES.some((p) => p.test(command))) return false;
   if (commandHeads(command).some((head) => WRITE_COMMAND_HEADS.has(head))) {
     return true;
   }
@@ -250,7 +309,16 @@ function isTmpOnlyCommand(command: string): boolean {
         const eq = tok.indexOf("=");
         return eq === -1 ? [] : [tok.slice(eq + 1)];
       });
-    return args.length > 0 && args.every(isWritableInPlanMode);
+    if (args.length === 0) return false;
+    /**
+     * cp only mutates its destination. Other WRITE_COMMAND_HEADS members
+     * (mv, tar, ...) mutate every path they touch (mv deletes the source,
+     * so there is no read-only source there either); but cp's earlier args
+     * are read-only sources; only the last arg (the destination) needs to
+     * resolve under /tmp.
+     */
+    if (head === "cp") return isWritableInPlanMode(args[args.length - 1]!);
+    return args.every(isWritableInPlanMode);
   }
 
   return sawFileRedirect;

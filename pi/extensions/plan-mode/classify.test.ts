@@ -49,11 +49,27 @@ const allowed: string[] = [
   "perl -e 'print 1'",
   // curl defaults to stdout, not a file write.
   "curl https://example.com",
-  // Indirect invocation is an accepted "backstop not sandbox" gap.
-  "env rm -rf x",
   "find . -name '*.ts'",
   // "i" alias must not match the start of "info".
   "npm info left-pad",
+  // Removed from WRITE_COMMAND_HEADS: low real-world relevance in exploration.
+  "install -m755 src /usr/bin/dst",
+  "shred secret.txt",
+  "mkfifo mypipe",
+  // tar/unzip/patch/rsync: flag-gated read-only forms.
+  "tar -tzvf archive.tar",
+  "tar -df archive.tar new/",
+  "unzip -l archive.zip",
+  "unzip -p archive.zip file.txt",
+  "patch --dry-run < diff.patch",
+  "rsync -an src/ dest/",
+  "rsync --dry-run -a src/ dest/",
+  // cp only mutates its destination; the source stays a read-only arg.
+  "cp a.txt /tmp/b.txt",
+  // timeout/env/nice/nohup/stdbuf/xargs are peeled, but bash -c's quoted
+  // script content isn't parsed anywhere in this classifier — known,
+  // accepted gap (non-adversarial, single-user threat model).
+  "bash -c 'rm -rf /'",
 ];
 
 const blocked: string[] = [
@@ -107,14 +123,20 @@ const blocked: string[] = [
   "wget https://example.com/file.zip",
   "tar -xf archive.tar",
   "unzip archive.zip",
-  "install -m755 src /usr/bin/dst",
   "rsync -a src/ dest/",
-  "shred secret.txt",
-  "mkfifo mypipe",
   "patch -p1 < diff.patch",
   // find needs an action flag to write/execute; bare find above is read-only.
   "find . -delete",
   "find . -name '*.ts' -delete",
+  // Wrapper peeling: the real command survives timeout/env/nohup/xargs.
+  "timeout 5 rm -rf /",
+  "timeout 30s rm -rf /",
+  "env rm -rf x",
+  "nohup rm -rf /",
+  "nice -n5 rm -rf /",
+  "find . -type f | xargs rm -rf",
+  "find . -type f | xargs -I{} rm -rf {}",
+  "/usr/bin/timeout 5 rm -rf /",
   "ls && rm -rf /",
   "echo $(rm -rf ~/work)",
   "echo `rm -rf ~/work`",
@@ -137,10 +159,19 @@ const blocked: string[] = [
   "echo pwned > /dev/nullx",
   // Chaining blocks outright even when both sides are individually tmp-safe.
   "mkdir -p /tmp/foo && touch /tmp/foo/bar",
-  // Coarse-but-accepted: a source/redirect target outside /tmp still blocks,
-  // even when the command's other argument is /tmp-safe.
-  "cp a.txt /tmp/b.txt",
   "rm -rf /tmp/foo > /etc/log",
+  // mv, unlike cp, mutates its source too (the move deletes it) — both
+  // args must resolve under /tmp, not just the destination.
+  "mv a.txt /tmp/b.txt",
+  // Wrapper peeling still respects the /tmp hatch: only the wrapped
+  // command's own target matters, and this one isn't under /tmp.
+  "timeout 5 rm -rf x",
+  // tar/unzip/patch/rsync without a rescuing flag stay blocked outright
+  // (no /tmp hatch — same bucket as git/npm above).
+  "tar -xf archive.tar",
+  "unzip archive.zip",
+  "patch -p1 < diff.patch",
+  "rsync -a src/ dest/",
 ];
 
 describe("isBlockedBashCommand", () => {

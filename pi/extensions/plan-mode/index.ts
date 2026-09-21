@@ -154,10 +154,12 @@ export default function planMode(pi: ExtensionAPI) {
           "Plan mode: powershell is blocked outright (no write classifier for it). Press Tab to leave plan mode.",
       };
     }
-    // subagent spawns a separate `pi` process (see extensions/subagent)
-    // with no --plan flag, so it isn't gated by this session's plan mode
-    // at all. Left unblocked intentionally: delegating to it is part of
-    // the normal plan-mode workflow here.
+    // subagent spawns a separate `pi` process (see extensions/subagent).
+    // Left unblocked here intentionally: delegating to it is part of the
+    // normal plan-mode workflow, and command.ts/index.ts in that
+    // extension propagate --plan to the child based on this session's
+    // live getActiveTools() state, so it can't be used to bypass the
+    // write restriction.
     if (!isToolCallEventType("bash", event)) return;
     const { command } = event.input;
     if (!isBlockedBashCommand(command)) return;

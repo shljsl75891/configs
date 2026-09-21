@@ -76,7 +76,16 @@ async function runSubagent({
 		}
 
 		const model = agent.model ?? (ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
-		const command = buildPiCommand({ model, tools: agent.tools, systemPromptFile, task });
+		/**
+		 * Plan mode always removes edit and write together (plan-mode/index.ts'
+		 * MUTATING_TOOLS), so requiring both absent is the correct live signal
+		 * to detect it: there is no separate flag to read across extensions,
+		 * and this is the same pi.getActiveTools()/setActiveTools() API
+		 * plan-mode itself uses to gate/restore tools.
+		 */
+		const activeTools = pi.getActiveTools();
+		const planActive = !activeTools.includes("edit") && !activeTools.includes("write");
+		const command = buildPiCommand({ model, tools: agent.tools, systemPromptFile, task, plan: planActive });
 
 		if (signal?.aborted) {
 			return { agent: agent.name, agentSource: agent.source, task, status: "aborted", output: "", errorMessage: "Aborted." };

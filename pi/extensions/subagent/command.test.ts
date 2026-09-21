@@ -34,6 +34,18 @@ describe("buildPiCommand", () => {
 		assert.ok(buildPiCommand({ task: "x", model: "anthropic/claude-3" }).includes("--model"));
 	});
 
+	it("omits --plan by default", () => {
+		assert.ok(!buildPiCommand({ task: "x" }).includes("--plan"));
+	});
+
+	it("includes --plan when the parent session is in plan mode", () => {
+		assert.ok(buildPiCommand({ task: "x", plan: true }).includes("--plan"));
+	});
+
+	it("omits --plan when explicitly false", () => {
+		assert.ok(!buildPiCommand({ task: "x", plan: false }).includes("--plan"));
+	});
+
 	it("shell-quotes the task so injection is impossible", () => {
 		const malicious = `rm -rf /'; echo pwned; '$(id)`;
 		const cmd = buildPiCommand({ task: malicious });
