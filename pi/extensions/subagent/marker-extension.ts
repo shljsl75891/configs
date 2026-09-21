@@ -6,8 +6,9 @@
  * process knows whether the agent is working, waiting on the user, or done.
  *
  * With review enabled the result is shown to the user first: they can send it,
- * replace its text, or send the agent back to work. The parent stops its clock
- * while the `.review` marker file exists.
+ * or reply with a follow-up that goes straight back to the agent — Esc leaves
+ * it for the user to take over by hand. The parent stops its clock while the
+ * `.review` marker file exists.
  */
 
 import * as fs from "node:fs";
@@ -24,7 +25,15 @@ import { formatWindowName, type WindowState } from "./window-name.ts";
 
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
 const SEND = "Send as-is";
-const KEEP_WORKING = "Keep working";
+const FOLLOW_UP_LABEL = "Reply with a follow-up";
+
+type FollowUpContent = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
+
+/**
+ * What review() decided: deliver the result, forward a follow-up to the
+ * agent, or (null) leave it for the user to take over by hand.
+ */
+type ReviewDecision = { send: SubagentResult } | { followUp: FollowUpContent[] } | null;
 
 async function renameWindow(pi: ExtensionAPI, state: WindowState): Promise<void> {
 	const label = process.env[ENV.label];
@@ -32,7 +41,7 @@ async function renameWindow(pi: ExtensionAPI, state: WindowState): Promise<void>
 	// Without -t tmux renames whatever window the user is looking at, not this one.
 	if (!label || !pane) return;
 	const depth = childDepth();
-	await pi.exec("tmux", ["rename-window", "-t", pane, formatWindowName(state, label, depth)]).catch(() => {});
+	await pi.exec("tmux", ["rename-window", "-t", pane, formatWindowName(state, label, depth)]);
 }
 
 function collectResult(ctx: ExtensionContext): SubagentResult {
@@ -67,8 +76,7 @@ async function writeResult(resultFile: string, result: SubagentResult): Promise<
 	await fs.promises.rename(tmpPath, resultFile);
 }
 
-/** Resolves to the result to send, or null to keep the agent working. */
-async function review(ctx: ExtensionContext, result: SubagentResult): Promise<SubagentResult | null> {
+async function review(ctx: ExtensionContext, result: SubagentResult): Promise<ReviewDecision> {
 	/**
 	 * Any stdin byte counts as engagement, including focus/mouse reports — deliberately
 	 * lenient: a false positive only costs a longer wait, a false negative steals the
@@ -88,22 +96,21 @@ async function review(ctx: ExtensionContext, result: SubagentResult): Promise<Su
 				{
 					question: `${result.status === "ok" ? "Agent finished" : "Agent failed"}. Send this to the caller?`,
 					header: "Review",
-					options: [
-						{ label: SEND, description: "Report the result above, unchanged." },
-						{ label: KEEP_WORKING, description: "Report nothing yet and keep talking to the agent." },
-					],
+					options: [{ label: SEND, description: "Report the result above, unchanged." }],
 				},
 			],
-			{ signal: controller.signal },
+			{ signal: controller.signal, customLabel: FOLLOW_UP_LABEL },
 		);
 
-		const answer = choice?.answers[0]?.[0];
-		if (controller.signal.aborted) return result;
-		if (!answer || answer === KEEP_WORKING) return null;
-		if (answer === SEND) return result;
-		return { ...result, output: answer };
+		if (controller.signal.aborted) return { send: result };
+		if (!choice) return null; // Esc / dismissed: leave it for the user to take over by hand
+		const answer = choice.answers[0]?.[0];
+		if (!answer) return null;
+		if (answer === SEND) return { send: result };
+		const images = choice.images.map(({ data, mimeType }): FollowUpContent => ({ type: "image", data, mimeType }));
+		return { followUp: [{ type: "text", text: answer }, ...images] };
 	} catch (error) {
-		return { ...result, output: `${result.output}\n\n[review UI failed, sent unreviewed: ${errorText(error)}]` };
+		return { send: { ...result, output: `${result.output}\n\n[review UI failed, sent unreviewed: ${errorText(error)}]` } };
 	} finally {
 		clearTimeout(timer);
 		unsubscribe();
@@ -118,9 +125,9 @@ export default function markerExtension(pi: ExtensionAPI) {
 
 	/**
 	 * pending: no result delivered yet. delivered: the parent has the result and
-	 * stopped polling. followUp: the user is manually continuing after delivery.
+	 * stopped polling. manual: the user is continuing by hand after delivery.
 	 */
-	let phase: "pending" | "delivered" | "followUp" = "pending";
+	let phase: "pending" | "delivered" | "manual" = "pending";
 	/**
 	 * Delivery is known broken (e.g. disk full) — stop advertising review, since
 	 * pausing the parent's clock for a result that can no longer arrive buys nothing.
@@ -135,7 +142,7 @@ export default function markerExtension(pi: ExtensionAPI) {
 	};
 
 	pi.on("agent_start", async () => {
-		if (phase === "delivered") phase = "followUp"; // a follow-up run reopens the outcome display
+		if (phase === "delivered") phase = "manual"; // a manual run reopens the outcome display
 		await renameWindow(pi, "running");
 	});
 
@@ -180,11 +187,17 @@ export default function markerExtension(pi: ExtensionAPI) {
 		 * review() calls askQuestions, which fires ui_prompt_start/end — those
 		 * handlers own the marker file and window rename for the review prompt.
 		 */
-		const approved = await review(ctx, result);
-		if (!approved) {
+		const decision = await review(ctx, result);
+		if (!decision) {
 			await renameWindow(pi, "waiting");
 			return;
 		}
-		await settle(approved);
+		if ("followUp" in decision) {
+			/* phase stays "pending": the follow-up turn still owes the caller a result,
+			   so the next agent_settled runs review() again instead of skipping it. */
+			pi.sendUserMessage(decision.followUp);
+			return;
+		}
+		await settle(decision.send);
 	});
 }

@@ -22,6 +22,7 @@ type Handler = (event: object, ctx: object) => Promise<void>;
 type FakePi = {
 	on(event: string, handler: Handler): void;
 	exec(cmd: string, args: string[]): Promise<{ code: number; stdout: string; stderr: string }>;
+	sendUserMessage(content: unknown): void;
 };
 
 type FakeUi = {
@@ -39,12 +40,14 @@ type FakeCtxOverrides = {
 function fakePi() {
 	const handlers = new Map<string, Handler>();
 	const renames: string[] = [];
+	const sentMessages: unknown[] = [];
 	const pi: FakePi = {
 		on(event, handler) { handlers.set(event, handler); },
 		async exec(_cmd, args) {
 			if (args[0] === "rename-window") renames.push(args[args.length - 1] as string);
 			return { code: 0, stdout: "", stderr: "" };
 		},
+		sendUserMessage(content) { sentMessages.push(content); },
 	};
 	const fire = async (event: string, overrides: FakeCtxOverrides = {}): Promise<void> => {
 		const h = handlers.get(event);
@@ -68,7 +71,7 @@ function fakePi() {
 			...overrides,
 		});
 	};
-	return { pi, fire, renames };
+	return { pi, fire, renames, sentMessages };
 }
 
 describe("markerExtension", () => {
@@ -167,9 +170,9 @@ describe("markerExtension", () => {
 		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");
 	});
 
-	it("writes nothing and keeps the review marker cleared when the user chooses Keep working", async () => {
+	it("writes nothing and keeps the review marker cleared when the user cancels (Esc)", async () => {
 		process.env[ENV.review] = "1";
-		const { pi, fire } = fakePi();
+		const { pi, fire, sentMessages } = fakePi();
 		markerExtension(pi);
 		const reviewFile = reviewMarkerFor(resultFile);
 
@@ -177,32 +180,36 @@ describe("markerExtension", () => {
 			await fire("ui_prompt_start");
 			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
 			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["Keep working"]], images: [] };
+			return null; // Esc / dismissed
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
 
-		assert.ok(!fs.existsSync(resultFile), "no result should be written when the user keeps working");
+		assert.ok(!fs.existsSync(resultFile), "no result should be written when the user cancels");
 		assert.ok(!fs.existsSync(reviewFile), "review marker must not linger after the prompt ends");
+		assert.equal(sentMessages.length, 0, "no follow-up should be sent when the user cancels");
 	});
 
-	it("delivers custom-typed replacement text when the user rewrites the answer", async () => {
+	it("sends a typed follow-up straight to the agent instead of writing a result", async () => {
 		process.env[ENV.review] = "1";
-		const { pi, fire } = fakePi();
+		const { pi, fire, sentMessages } = fakePi();
 		markerExtension(pi);
 		const reviewFile = reviewMarkerFor(resultFile);
 
 		const custom = async () => {
 			await fire("ui_prompt_start");
 			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["rewritten output"]], images: [] };
+			return { answers: [["please also check the edge case"]], images: [] };
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
 
-		assert.ok(fs.existsSync(resultFile), "result should be written for a custom-typed answer");
-		const written = JSON.parse(fs.readFileSync(resultFile, "utf-8"));
-		assert.equal(written.output, "rewritten output", "delivered output must be the user's typed replacement");
+		assert.ok(!fs.existsSync(resultFile), "a follow-up must not write a result file");
 		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");
+		assert.deepEqual(
+			sentMessages,
+			[[{ type: "text", text: "please also check the edge case" }]],
+			"the typed reply must be forwarded to the agent as a follow-up message",
+		);
 	});
 });

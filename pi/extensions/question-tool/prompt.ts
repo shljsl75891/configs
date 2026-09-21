@@ -68,7 +68,7 @@ function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): s
 export function askQuestions(
 	ui: Pick<ExtensionUIContext, "custom">,
 	questions: QuestionSpec[],
-	options: { signal?: AbortSignal } = {},
+	options: { signal?: AbortSignal; customLabel?: string } = {},
 ): Promise<AskResult | null> {
 	// Guard pre-aborted signals: addEventListener won't fire for an already-aborted signal.
 	if (options.signal?.aborted) return Promise.resolve(null);
@@ -308,7 +308,7 @@ export function askQuestions(
 
 			function renderOptions() {
 				const current = questions[state.tab];
-				const labels = [...current.options.map((o) => o.label), CUSTOM_LABEL];
+				const labels = [...current.options.map((o) => o.label), options.customLabel ?? CUSTOM_LABEL];
 				for (let i = 0; i < labels.length; i++) {
 					const isCustom = i === customRow(current);
 					const active = i === state.cursor;
