@@ -38,8 +38,9 @@ describe("buildPiCommand", () => {
 		assert.ok(!buildPiCommand({ task: "x" }).includes("--plan"));
 	});
 
-	it("includes --plan when the parent session is in plan mode", () => {
-		assert.ok(buildPiCommand({ task: "x", plan: true }).includes("--plan"));
+	it("includes --plan=true when the parent session is in plan mode", () => {
+		// Bare "--plan" would swallow the task string -- see buildPiCommand's `plan` JSDoc.
+		assert.ok(buildPiCommand({ task: "x", plan: true }).includes("--plan=true"));
 	});
 
 	it("omits --plan when explicitly false", () => {

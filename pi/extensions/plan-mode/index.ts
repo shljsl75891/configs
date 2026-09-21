@@ -24,6 +24,10 @@ const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
 const BUILD_SWITCH_REMINDER = `[PLAN MODE OFF]
 The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed.`;
 
+const PLAN_SWITCH_TYPE = "plan-mode-plan-switch";
+const PLAN_SWITCH_REMINDER = `[PLAN MODE ON]
+The user just turned plan mode on. Edit and write tools are disabled, and bash write commands in the current working directory are blocked. Switch to read-only exploration and planning — see the plan-mode instructions above.`;
+
 /**
  * Session-entry customType (persistence format) — private. Kept separate
  * from the status-bar key below even though both currently read
@@ -77,9 +81,13 @@ export default function planMode(pi: ExtensionAPI) {
    * eg. --exclude-tools/-nbt at startup — not just re-enable edit/write.
    */
   let toolsBeforePlanMode: string[] | undefined;
-  // Best-effort, per-process only: enabled is persisted across resume,
-  // this one-shot notice isn't. Not worth persisting for a one-liner.
-  let pendingBuildSwitch = false;
+  /**
+   * One-shot, per-process only: `enabled` is persisted across resume,
+   * this notice is not. Direction is read from `enabled` at fire-time —
+   * see before_agent_start for why an injected message is needed, not a
+   * toast.
+   */
+  let pendingSwitchNotice = false;
 
   pi.registerFlag("plan", {
     description: "Start in plan mode (read-only exploration)",
@@ -120,16 +128,9 @@ export default function planMode(pi: ExtensionAPI) {
   // Only the user can end plan mode (Tab) — the model has no tool that does.
   function toggle(ctx: ExtensionContext): void {
     enabled = !enabled;
-    if (enabled) {
-      enter();
-      ctx.ui.notify(
-        "Plan mode on — edit/write disabled, no write commands in cwd.",
-      );
-    } else {
-      exit();
-      pendingBuildSwitch = true;
-      ctx.ui.notify("Plan mode off — full access restored.");
-    }
+    if (enabled) enter();
+    else exit();
+    pendingSwitchNotice = true;
     updateStatus(ctx);
     persist();
   }
@@ -176,13 +177,20 @@ export default function planMode(pi: ExtensionAPI) {
       delete event.systemPromptOptions.sections[PLAN_SECTION];
     }
 
-    const switched = pendingBuildSwitch;
-    pendingBuildSwitch = false;
-    if (switched && !enabled) {
+    /**
+     * A toast (ctx.ui.notify) never reaches the model's context — only
+     * the system-prompt section above does, and only on the *next* turn.
+     * If the toggle lands mid-turn, that's silent: no in-transcript signal
+     * that anything changed, just a generic tool-removal error later if
+     * the model tries edit/write. Both directions get a real injected
+     * message here so it's unmissable either way, symmetric on/off.
+     */
+    if (pendingSwitchNotice) {
+      pendingSwitchNotice = false;
       return {
         message: {
-          customType: BUILD_SWITCH_TYPE,
-          content: BUILD_SWITCH_REMINDER,
+          customType: enabled ? PLAN_SWITCH_TYPE : BUILD_SWITCH_TYPE,
+          content: enabled ? PLAN_SWITCH_REMINDER : BUILD_SWITCH_REMINDER,
           display: false,
         },
       };

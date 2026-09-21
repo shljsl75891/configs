@@ -29,7 +29,18 @@ export function buildPiCommand(opts: {
 	if (opts.model) tokens.push("--model", opts.model);
 	if (opts.tools && opts.tools.length > 0) tokens.push("--tools", opts.tools.join(","));
 	if (opts.systemPromptFile) tokens.push("--append-system-prompt", opts.systemPromptFile);
-	if (opts.plan) tokens.push("--plan");
+	/**
+	 * "--plan=true", not bare "--plan": plan is an extension-registered
+	 * flag, not one of the CLI's hardcoded ones (cli/args.js in
+	 * pi-coding-agent), so the static parser's unknown-flag branch greedily
+	 * consumes the *next* token as its value whenever that token doesn't
+	 * start with "-"/"@" -- which the task string never does. Without "=",
+	 * that swallows "Task: ..." into --plan's value (later discarded, since
+	 * boolean extension flags ignore their captured value) and the child
+	 * opens with no initial message at all. The "=" form is parsed by a
+	 * different branch that never touches the next arg.
+	 */
+	if (opts.plan) tokens.push("--plan=true");
 	tokens.push(`Task: ${opts.task}`);
 	return tokens.map(shellQuote).join(" ");
 }
