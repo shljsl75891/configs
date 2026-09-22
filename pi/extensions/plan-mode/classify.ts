@@ -1,5 +1,3 @@
-import { resolve } from "node:path";
-
 /**
  * Bash write-gating backstop for plan mode: classifies commands so the
  * tool_call hook (index.ts) can block writes even under context pressure,
@@ -31,18 +29,13 @@ const WRITE_COMMAND_HEADS = new Set([
   "unzip",
   "patch",
   "rsync",
-  /**
-   * wget writes to cwd by default (curl instead defaults to stdout — see
-   * the flag-gated curl pattern below). Its argument is a URL, not a
-   * path, so the /tmp hatch never finds a real target to rescue it.
-   */
+  // wget writes to cwd by default (curl instead defaults to stdout — see
+  // the flag-gated curl pattern below). Always blocked: there's no
+  // read-only form of "fetch this URL to a file".
   "wget",
-  /**
-   * npx/bunx: single-word fetch-and-run commands, head-matched the same
-   * way as rm/mv. Their args are package names, not paths, so the /tmp
-   * hatch below can never rescue them — there is no safe /tmp-scoped
-   * form of "fetch and run arbitrary code".
-   */
+  // npx/bunx: single-word fetch-and-run commands, head-matched the same
+  // way as rm/mv. Always blocked: there's no safe read-only form of
+  // "fetch and run arbitrary code".
   "npx",
   "bunx",
 ]);
@@ -65,9 +58,9 @@ const APPEND_REDIRECT_PATTERN = />>/;
 const TOOL_FLAGS = String.raw`(?:-\S+(?:\s+\S+)?\s+)*`;
 
 /**
- * State-mutating subcommands with no filesystem path that could make them
- * safe — a redirect elsewhere in the command (`git commit -m x
- * 2>/dev/null`) must never neutralize these for the /tmp hatch below.
+ * State-mutating subcommands with no filesystem path — a redirect
+ * elsewhere in the command (`git commit -m x 2>/dev/null`) never makes
+ * these safe.
  */
 const SUBCOMMAND_MUTATION_PATTERNS = [
   /**
@@ -129,7 +122,7 @@ const SUBCOMMAND_MUTATION_PATTERNS = [
  * unzip/patch/rsync default to writing (extract/apply/sync) with no flag
  * at all, the opposite shape from curl/tar above — so they can't be
  * expressed as "this flag makes it a write". Checked once, up front in
- * isWriteCommand, before the head-block below would otherwise catch them
+ * isWriteCommand, before the head-block above would otherwise catch them
  * unconditionally: a command matching one of these is read-only regardless
  * of what else is on the line.
  */
@@ -161,11 +154,11 @@ function stripLeadingAssignments(words: string[]): string[] {
  * command untouched (`timeout 5 rm -rf x`, `find . | xargs rm`). Peeled
  * before head-matching so the gate sees "rm", not "timeout"/"xargs", even
  * for a single wrapped command outside of `&&`/`|` chaining, which
- * commandHeads() already splits on. `sudo` is deliberately not here; it
- * is already head-blocked above (isTmpOnlyCommand fails closed on it too),
- * and `bash -c "..."`/`sh -c "..."` are a known, accepted gap: parsing
- * their quoted script content would need real shell quoting support this
- * classifier doesn't have anywhere else either.
+ * commandHeads() already splits on. `sudo` is deliberately not here; it's
+ * already head-blocked above, and `bash -c "..."`/`sh -c "..."` are a
+ * known, accepted gap: parsing their quoted script content would need
+ * real shell quoting support this classifier doesn't have anywhere else
+ * either.
  */
 const WRAPPER_HEADS = new Set(["timeout", "env", "nice", "nohup", "stdbuf", "xargs"]);
 
@@ -195,8 +188,7 @@ function peelWrappers(words: string[]): string[] {
  * Env-var prefixes are stripped and the head is basenamed, so "FOO=1 rm -rf
  * x" and "/bin/rm -rf x" both still match on "rm". Wrapper words (timeout,
  * xargs, ...) are peeled the same way, so "timeout 5 rm -rf x" and "xargs
- * rm" also match on "rm". Shared by commandHeads below and isTmpOnlyCommand's
- * own head check, so a future fix only needs to land once.
+ * rm" also match on "rm".
  */
 function commandHead(segment: string): string {
   const words = stripLeadingAssignments(
@@ -223,13 +215,10 @@ function commandHeads(command: string): string[] {
 
 /**
  * `2>/dev/null`, `2>&1`, `>&2` and friends write nothing and point at no
- * real path. isBlockedBashCommand strips these once, up front, so
- * isWriteCommand and isTmpOnlyCommand share one view of what a command
- * actually writes — without it, `rg foo . 2>/dev/null | head` would be
- * misclassified as a write with no way for the /tmp hatch to rescue it
- * (it bails on any pipe). Trailing lookahead required: without it,
- * "/dev/null" prefix-matches inside "/dev/nullx", hiding a write to that
- * real path.
+ * real path. isBlockedBashCommand strips these once, up front, so a
+ * command like `rg foo . 2>/dev/null | head` isn't misclassified as a
+ * write. Trailing lookahead required: without it, "/dev/null" prefix-
+ * matches inside "/dev/nullx", hiding a write to that real path.
  */
 const THROWAWAY_REDIRECT =
   /\d*>>?\s*(?:\/dev\/(?:null|stdout|stderr)|&\d+)(?=\s|$|[;&|])/g;
@@ -243,96 +232,12 @@ function isWriteCommand(command: string): boolean {
 }
 
 /**
- * Newline included: a multi-line bash command is functionally a script,
- * and commandHeads()/the /tmp hatch below only look at line one otherwise
- * — `echo hi > /tmp/x\nrm -rf /` must not slip through as "just a
- * redirect to /tmp". Bare `&` also catches `&>`/`&>>` and blocks them
- * outright rather than parsing the target, same fail-safe bucket as `&&`
- * chaining.
- */
-const SHELL_METACHARS = /[;&|`\n]|\$\(/;
-
-/**
- * Every remaining redirect target must resolve under /tmp. (Throwaway
- * targets like /dev/null and fd-dups like `2>&1` never reach here — the
- * caller already stripped them before either classifier ran.)
- */
-function isWritableInPlanMode(target: string): boolean {
-  // resolve(), not startsWith: "/tmp/../etc/passwd" has a literal /tmp/
-  // prefix but resolves outside /tmp. A relative target resolves against
-  // cwd, which correctly fails this check too.
-  const abs = resolve(target);
-  return abs === "/tmp" || abs.startsWith("/tmp/");
-}
-
-/**
- * Global: a command can carry more than one real redirect (`cmd > /tmp/a
- * 2> /tmp/b`), and every one needs checking, not just the first.
- */
-const REDIRECT_TARGET_PATTERN = /(?:^|[^<>])(?:>>?)(?!>)\s*(\S+)/g;
-
-/**
- * Coarse escape hatch for a single simple command — pipes, subshells, and
- * chaining are blocked outright by SHELL_METACHARS rather than risk a
- * partial match. Caller strips throwaway redirects first, so every
- * redirect seen below is a real target. `sudo` never gets this hatch;
- * SUBCOMMAND_MUTATION_PATTERNS commands (git/npm/...) mutate state with
- * no filesystem path, so no redirect can make them safe; every redirect
- * target and every WRITE_COMMAND_HEADS argument must independently
- * resolve under /tmp.
- */
-function isTmpOnlyCommand(command: string): boolean {
-  if (SHELL_METACHARS.test(command)) return false;
-  const tokens = stripLeadingAssignments(command.trim().split(/\s+/));
-  const head = commandHead(command);
-  if (head === "sudo") return false;
-  if (SUBCOMMAND_MUTATION_PATTERNS.some((p) => p.test(command))) return false;
-
-  let sawFileRedirect = false;
-  for (const match of command.matchAll(REDIRECT_TARGET_PATTERN)) {
-    const target = match[1] ?? "";
-    sawFileRedirect = true;
-    if (!isWritableInPlanMode(target)) return false;
-  }
-
-  if (WRITE_COMMAND_HEADS.has(head)) {
-    /**
-     * `--opt=path` carries its value inline; checking only the flag would
-     * let `mv --target-directory=/etc /tmp/x` pass on the /tmp-safe arg
-     * alone while the real write target is the flag's value.
-     */
-    const args = tokens
-      .slice(1)
-      .filter((tok) => !tok.includes(">"))
-      .flatMap((tok) => {
-        if (!tok.startsWith("-")) return [tok];
-        const eq = tok.indexOf("=");
-        return eq === -1 ? [] : [tok.slice(eq + 1)];
-      });
-    if (args.length === 0) return false;
-    /**
-     * cp only mutates its destination. Other WRITE_COMMAND_HEADS members
-     * (mv, tar, ...) mutate every path they touch (mv deletes the source,
-     * so there is no read-only source there either); but cp's earlier args
-     * are read-only sources; only the last arg (the destination) needs to
-     * resolve under /tmp.
-     */
-    if (head === "cp") return isWritableInPlanMode(args[args.length - 1]!);
-    return args.every(isWritableInPlanMode);
-  }
-
-  return sawFileRedirect;
-}
-
-/**
  * True if `command` performs a write in plan mode's blocked scope (cwd
- * writes, package/tool installs, vcs mutations) and isn't rescued by the
- * /tmp escape hatch. Strips throwaway redirects (`2>/dev/null`, `2>&1`)
- * once up front, so isWriteCommand and isTmpOnlyCommand share one view of
- * what the command actually writes to.
+ * writes, package/tool installs, vcs mutations). Strips throwaway
+ * redirects (`2>/dev/null`, `2>&1`) once up front so `>`/`>>` isn't
+ * misread on those. No exceptions for any target (eg. /tmp) — plan mode
+ * blocks every write command outright.
  */
 export function isBlockedBashCommand(command: string): boolean {
-  const significant = command.replace(THROWAWAY_REDIRECT, " ");
-  if (!isWriteCommand(significant)) return false;
-  return !isTmpOnlyCommand(significant);
+  return isWriteCommand(command.replace(THROWAWAY_REDIRECT, " "));
 }

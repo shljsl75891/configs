@@ -3,13 +3,6 @@ import { describe, it } from "node:test";
 import { isBlockedBashCommand } from "./classify.ts";
 
 /**
- * Relative args resolve against cwd; if the suite itself ran from under
- * /tmp, the /tmp hatch would wrongly rescue the relative-path corpus cases
- * below. Pin cwd so the corpus means the same thing everywhere.
- */
-process.chdir(import.meta.dirname);
-
-/**
  * Table test over the regression corpus built up across review rounds:
  * each case pins a real bypass or false-positive found (and fixed) at
  * some point, so a future regex tweak that reintroduces one fails loudly
@@ -34,17 +27,10 @@ const allowed: string[] = [
   "rg '\\brm\\b' src/",
   "ls src/dd",
   "grep npx README.md",
-  "echo hi > /tmp/out.txt",
-  "printf foo > /tmp/log.txt",
-  "mkdir -p /tmp/foo",
-  "touch /tmp/scratch.txt",
-  "rm -rf /tmp/foo",
-  "FOO=1 rm -rf /tmp/x",
   // Throwaway redirects (fd dups, /dev/null) never make a real write.
   "rg foo . 2>/dev/null",
   "grep -r TODO . 2>/dev/null | wc -l",
   "ls -la 2>&1 | less",
-  "echo hi 2>&1 > /tmp/out.txt",
   "sed -n '1,5p' file.txt",
   "perl -e 'print 1'",
   // curl defaults to stdout, not a file write.
@@ -64,8 +50,6 @@ const allowed: string[] = [
   "patch --dry-run < diff.patch",
   "rsync -an src/ dest/",
   "rsync --dry-run -a src/ dest/",
-  // cp only mutates its destination; the source stays a read-only arg.
-  "cp a.txt /tmp/b.txt",
   // timeout/env/nice/nohup/stdbuf/xargs are peeled, but bash -c's quoted
   // script content isn't parsed anywhere in this classifier — known,
   // accepted gap (non-adversarial, single-user threat model).
@@ -96,7 +80,6 @@ const blocked: string[] = [
   // Tool-level flags before the subcommand must not hide it.
   "git -C . commit -m x",
   "npm --prefix . install lodash",
-  // &> is treated like && chaining (blocked outright), not parsed for a target.
   "echo x &> /tmp/y",
   "echo x >| /tmp/y",
   "pip3 install requests",
@@ -104,7 +87,7 @@ const blocked: string[] = [
   "uv add requests",
   "python -m pip install requests",
   "npx create-react-app foo",
-  "npx --yes cowsay hi /tmp/x", // coarse: args are packages, never tmp-rescued
+  "npx --yes cowsay hi /tmp/x",
   "pnpm dlx cowsay hi",
   "bunx cowsay hi",
   "cargo add serde",
@@ -157,21 +140,20 @@ const blocked: string[] = [
   "rm /dev/null",
   // "/dev/nullx" is a real path, not the /dev/null throwaway target.
   "echo pwned > /dev/nullx",
-  // Chaining blocks outright even when both sides are individually tmp-safe.
   "mkdir -p /tmp/foo && touch /tmp/foo/bar",
   "rm -rf /tmp/foo > /etc/log",
-  // mv, unlike cp, mutates its source too (the move deletes it) — both
-  // args must resolve under /tmp, not just the destination.
   "mv a.txt /tmp/b.txt",
-  // Wrapper peeling still respects the /tmp hatch: only the wrapped
-  // command's own target matters, and this one isn't under /tmp.
   "timeout 5 rm -rf x",
-  // tar/unzip/patch/rsync without a rescuing flag stay blocked outright
-  // (no /tmp hatch — same bucket as git/npm above).
-  "tar -xf archive.tar",
-  "unzip archive.zip",
-  "patch -p1 < diff.patch",
-  "rsync -a src/ dest/",
+  // No target is safe, /tmp included: plan mode blocks every write
+  // command outright, regardless of where it points.
+  "echo hi > /tmp/out.txt",
+  "printf foo > /tmp/log.txt",
+  "mkdir -p /tmp/foo",
+  "touch /tmp/scratch.txt",
+  "rm -rf /tmp/foo",
+  "FOO=1 rm -rf /tmp/x",
+  "echo hi 2>&1 > /tmp/out.txt",
+  "cp a.txt /tmp/b.txt",
 ];
 
 describe("isBlockedBashCommand", () => {
