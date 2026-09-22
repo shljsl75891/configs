@@ -12,4 +12,4 @@ description: Activate this skill whenever creating a git commit
 - Breaking changes: add `BREAKING CHANGE: <description>` as a footer (one blank line after body/description)
 - The commit message should be imperative, and on the basis of staged changes only. If nothing staged then do not commit even if explicitly requested.
 - Always read @AGENTS.md to follow pre/post commit instructions if present.
-- `.cz-config.js` must be followed for PR titles as well
+- `.cz-config.js` must be followed for PR titles as well, and everything should be in Simplified Technical English (ASD-STE100).
