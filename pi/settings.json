@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "0.87.0",
+  "lastChangelogVersion": "0.87.1",
   "theme": "gruvbox-dark-hard",
   "tuiMode": "fullscreen",
   "quietStartup": true,
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-sonnet-5",
+  "defaultModel": "claude-opus-5-5",
   "compaction": {
     "enabled": false
   },
