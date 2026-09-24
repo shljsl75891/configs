@@ -62,7 +62,6 @@ export const PLAN_MODE_STATUS_KEY = "plan-mode";
 
 interface PlanModeEntry {
   enabled: boolean;
-  toolsBeforePlanMode?: string[];
 }
 
 function readPlanModeEntry(
@@ -77,16 +76,8 @@ function readPlanModeEntry(
        * of trusting the cast.
        */
       const data = entry.data as Partial<PlanModeEntry> | undefined;
-      if (typeof data?.enabled !== "boolean") {
-        // Malformed entry: fail closed into plan mode with no baseline,
-        // rather than silently resuming in build mode with the gate off.
-        return { enabled: true, toolsBeforePlanMode: undefined };
-      }
-      const tools = data.toolsBeforePlanMode;
-      return {
-        enabled: data.enabled,
-        toolsBeforePlanMode: Array.isArray(tools) ? tools : undefined,
-      };
+      /* Malformed entry: fail closed into plan mode, not resume in build mode with the gate off. */
+      return { enabled: typeof data?.enabled === "boolean" ? data.enabled : true };
     }
   }
   return undefined;
@@ -94,12 +85,6 @@ function readPlanModeEntry(
 
 export default function planMode(pi: ExtensionAPI) {
   let enabled = false;
-  /**
-   * Snapshot, not derive-on-exit: this must restore whatever active-tool
-   * set existed before plan mode — including tools already disabled by
-   * eg. --exclude-tools/-nbt at startup — not just re-enable edit/write.
-   */
-  let toolsBeforePlanMode: string[] | undefined;
   /**
    * One-shot, per-process only: `enabled` is persisted across resume,
    * this notice is not. Direction is read from `enabled` at fire-time —
@@ -134,26 +119,28 @@ export default function planMode(pi: ExtensionAPI) {
   }
 
   function persist(): void {
-    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, {
-      enabled,
-      toolsBeforePlanMode,
-    });
+    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, { enabled });
   }
 
-  function gate(tools: string[]): void {
-    pi.setActiveTools(tools.filter((name) => !MUTATING_TOOLS.has(name)));
-  }
-
-  function enter(): void {
-    toolsBeforePlanMode = pi.getActiveTools();
-    gate(toolsBeforePlanMode);
-  }
-
-  function exit(): void {
-    // enabled only flips off inside toggle(), which only ever turns it on
-    // by calling enter() first — a baseline is always captured by here.
-    pi.setActiveTools(toolsBeforePlanMode!);
-    toolsBeforePlanMode = undefined;
+  /**
+   * Derive from the live active set, not from a snapshot: pi itself
+   * replaces the active set on /tree navigation (it restores the tools
+   * recorded at the target entry), so any snapshot can be stale.
+   * --exclude-tools and --tools remove tools from the registry, so ungate
+   * cannot bring them back. -nbt only clears the initial active set, so
+   * ungate adds edit and write back under -nbt.
+   */
+  function applyGate(): void {
+    const active = pi.getActiveTools();
+    if (enabled) {
+      pi.setActiveTools(active.filter((name) => !MUTATING_TOOLS.has(name)));
+      return;
+    }
+    const mutating = pi
+      .getAllTools()
+      .map((tool) => tool.name)
+      .filter((name) => MUTATING_TOOLS.has(name));
+    pi.setActiveTools([...new Set([...active, ...mutating])]);
   }
 
   function buildBlockReason(command: string): string {
@@ -166,8 +153,7 @@ export default function planMode(pi: ExtensionAPI) {
   // Only the user can end plan mode (Tab) — the model has no tool that does.
   function toggle(ctx: ExtensionContext): void {
     enabled = !enabled;
-    if (enabled) enter();
-    else exit();
+    applyGate();
     pendingSwitchNotice = true;
     consecutiveBlocks = 0;
     turnsSincePlanReminder = 0;
@@ -272,24 +258,28 @@ export default function planMode(pi: ExtensionAPI) {
     // can still carry a plan-mode entry from an abandoned branch.
     const persisted = readPlanModeEntry(ctx.sessionManager.getBranch());
     // Resumed state wins over --plan: the flag only seeds a fresh session.
-    if (persisted) {
-      enabled = persisted.enabled;
-      toolsBeforePlanMode = persisted.toolsBeforePlanMode;
-    }
+    if (persisted) enabled = persisted.enabled;
 
-    if (enabled) {
-      // No persisted baseline: nothing has gated tools yet this process,
-      // so the current active-tool set is a correct baseline to capture.
-      if (toolsBeforePlanMode === undefined) enter();
-      // Persisted baseline exists: re-filter it, rather than re-capturing
-      // today's already-gated active tools as a new, wrong baseline.
-      else gate(toolsBeforePlanMode);
-    }
+    if (enabled) applyGate();
     updateStatus(ctx);
 
     // --plan started this session with no toggle(), so no entry was ever
     // appended — a later resume of this session would come back in build
     // mode without it.
     if (flagEnabled && !persisted) persist();
+  });
+
+  /**
+   * /tree keeps the mode the user last chose, but pi has just restored
+   * the tools of the target entry, which can be from the other mode.
+   * Persist when the target branch records a different mode. A build-mode
+   * branch with no plan-mode entry never had tools gated, so leave it as
+   * is (this keeps edit and write off under -nbt).
+   */
+  pi.on("session_tree", (_event, ctx) => {
+    const persisted = readPlanModeEntry(ctx.sessionManager.getBranch());
+    if (!enabled && persisted === undefined) return;
+    applyGate();
+    if (persisted?.enabled !== enabled) persist();
   });
 }
