@@ -11,19 +11,19 @@ interface QuestionDetails {
 }
 
 const OptionSchema = Type.Object({
-	label: Type.String({ description: "Display text, 1-5 words" }),
-	description: Type.Optional(Type.String({ description: "Optional explanation shown below the label" })),
+	label: Type.String({ description: "The option text. Use 1 to 5 words. Add ' *' at the end for the recommended option." }),
+	description: Type.Optional(Type.String({ description: "An explanation. It shows below the label." })),
 });
 
 const QuestionSchema = Type.Object({
-	question: Type.String({ description: "The complete question" }),
-	header: Type.String({ description: "Very short tab label, max 30 chars" }),
-	options: Type.Array(OptionSchema, { description: "Choices to offer" }),
-	multiple: Type.Optional(Type.Boolean({ description: "Allow selecting more than one choice" })),
+	question: Type.String({ description: "The question text." }),
+	header: Type.String({ description: "A tab label. Maximum 30 characters." }),
+	options: Type.Array(OptionSchema, { description: "The options." }),
+	multiple: Type.Optional(Type.Boolean({ description: "Set true to allow more than one choice." })),
 });
 
 const QuestionParams = Type.Object({
-	questions: Type.Array(QuestionSchema, { description: "Questions to ask, answered together" }),
+	questions: Type.Array(QuestionSchema, { description: "The questions. The tool asks all of them together." }),
 });
 
 function summarize(questions: QuestionSpec[], answers: string[][]): string {
@@ -36,11 +36,10 @@ export default function question(pi: ExtensionAPI) {
 		name: "question",
 		label: "Question",
 		description:
-			"Ask the user one or more questions and let them pick from options. Use when you need user input to proceed. " +
-			"Each question needs a short `header` (used as a tab label) and at least one option — never call this tool " +
-			"as a standalone intro with no options. A 'Type your own answer' choice is added automatically, so never " +
-			"author your own 'Other' option. To recommend a choice, put it first and append '(Recommended)' to its label. " +
-			"Answers come back as the option labels the user chose; an unanswered question comes back empty.",
+			"Asks the user questions. Each question must have a header and one or more options. The header is a tab label, 30 characters maximum. " +
+			"The tool adds a free-text option. Do not add an 'Other' option. " +
+			"Put the recommended option first. Add ' *' to the end of its label. " +
+			"The tool returns the selected labels. If the user does not answer, the result is empty.",
 		parameters: QuestionParams,
 		executionMode: "sequential",
 

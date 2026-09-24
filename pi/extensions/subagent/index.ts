@@ -141,27 +141,27 @@ async function runSubagent({
 }
 
 const TaskItem = Type.Object({
-	agent: Type.String({ description: "Name of the agent to invoke" }),
-	task: Type.String({ description: "Task to delegate to the agent" }),
+	agent: Type.String({ description: "The agent name." }),
+	task: Type.String({ description: "The task for the agent." }),
 });
 
 const AgentScopeSchema = StringEnum(["user", "project", "both"] as const, {
-	description: 'Which agent directories to use. Default: "user". Use "both" to include project-local agents.',
+	description: 'The agent directories to use. Default: "user". Use "both" to add project agents.',
 	default: "user",
 });
 
 const SubagentParams = Type.Object({
-	agent: Type.Optional(Type.String({ description: "Name of the agent to invoke (for single mode)" })),
-	task: Type.Optional(Type.String({ description: "Task to delegate (for single mode)" })),
+	agent: Type.Optional(Type.String({ description: "The agent name, for single mode." })),
+	task: Type.Optional(Type.String({ description: "The task, for single mode." })),
 	tasks: Type.Optional(
-		Type.Array(TaskItem, { description: `Array of {agent, task} for parallel execution. Max ${MAX_CONCURRENT}.` }),
+		Type.Array(TaskItem, { description: `The tasks, for parallel mode. Maximum ${MAX_CONCURRENT}.` }),
 	),
 	agentScope: Type.Optional(AgentScopeSchema),
 	confirmProjectAgents: Type.Optional(
-		Type.Boolean({ description: "Prompt before running project-local agents. Default: true.", default: true }),
+		Type.Boolean({ description: "Set false to skip the prompt before a project agent runs. Default: true.", default: true }),
 	),
 	timeoutMs: Type.Optional(
-		Type.Number({ description: `Max ms to wait for the subagent to finish. Default ${DEFAULT_TIMEOUT_MS}.` }),
+		Type.Number({ description: `The time limit in milliseconds. Default ${DEFAULT_TIMEOUT_MS}.` }),
 	),
 });
 
@@ -219,12 +219,11 @@ export default function (pi: ExtensionAPI) {
 		name: "subagent",
 		label: "Subagent",
 		description: [
-			"Delegate a task to a specialized agent running as a real, visible `pi` TUI in its own tmux window (same session).",
-			"Prefer this over doing the work directly whenever the task matches one of the agents listed below, even if it looks small. The agent's own tool output stays out of this session, only its final report comes back.",
-			"Modes: single (agent + task) or parallel (tasks array, up to " + MAX_CONCURRENT + " concurrent).",
-			`Default agent scope is "user" (from ${path.join(getAgentDir(), "agents")}), listed under "Available agents" in the system prompt.`,
-			`To reach project-local agents in ${CONFIG_DIR_NAME}/agents, name one and set agentScope: "both" (or "project").`,
-			"Every window stays open after the run so the user can follow up in it by hand; you cannot send further messages to a subagent yourself.",
+			"Runs an agent in its own tmux window, in this session. The agent's tool output stays in that window. Only its final report comes back here.",
+			"Use single mode (agent and task) or parallel mode (a tasks array, maximum " + MAX_CONCURRENT + " at once).",
+			`The default agent scope is "user", from ${path.join(getAgentDir(), "agents")}. The system prompt lists these agents under "Available agents".`,
+			`To use a project agent from ${CONFIG_DIR_NAME}/agents, name it and set agentScope to "both" or "project".`,
+			"The window stays open after the run. The user can work in it by hand. You cannot send more messages to the agent.",
 		].join(" "),
 		parameters: SubagentParams,
 

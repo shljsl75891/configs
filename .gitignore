@@ -26,6 +26,8 @@ pi/*
 !pi/themes/
 !pi/themes/**
 
+.pi/*
+
 # must follow the re-includes above (gitignore is last-match-wins)
 pi/extensions/**/logs/
 pi/extensions/**/node_modules/
