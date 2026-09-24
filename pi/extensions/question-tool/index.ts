@@ -4,7 +4,7 @@ import { Type } from "typebox";
 import { askQuestions, CUSTOM_LABEL } from "./prompt.ts";
 import type { QuestionSpec } from "./state.ts";
 
-interface QuestionDetails {
+export interface QuestionDetails {
 	headers: string[];
 	answers: string[][];
 	cancelled: boolean;
