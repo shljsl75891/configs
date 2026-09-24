@@ -1,5 +1,5 @@
 ---
-description: Fast, read-only agent for exploring codebases. Cannot modify files. Use to find files by pattern (eg. "src/app/**/*.component.ts"), search code for keywords (eg. "cache invalidation"), or answer questions about the codebase (eg. "how does status change work?"). Use this agent for all types of exploration tasks rather than exploring nits in main session.
+description: Fast read-only codebase search. Use to find files, find code by keyword, or explain how code works. Use instead of exploring in main session.
 model: anthropic/claude-haiku-4-5
 tools: read, grep, find, ls, bash, question
 review: false

@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Interrogate the user for planning or implementing any raw requirement, new idea, feature, or design that isn't already fully specified — find the way through the ambiguity to a clear, shared understanding before a plan is presented.
+description: Load before you plan or build any requirement, idea, feature, or design that is not fully specified. Questions the user until both reach shared understanding.
 ---
 
 Interview me rentlessly until we reach shared understanding. Map the topic as a design tree. Each decision branches into more decisions.

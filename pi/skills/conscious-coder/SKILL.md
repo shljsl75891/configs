@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Activate this skill before you design a solution, select a library or dependency, or make the first code change in a task. This includes writing, editing, and reviewing code, and it includes the moment directly after a plan is approved even in mid-session
+description: Load before you design a solution, select a library or dependency, or write, edit, or review code. Also load immediately after plan approval.
 ---
 
 ## The Ladder

@@ -1,5 +1,5 @@
 ---
-description: Reviews TypeScript code against clean code rules. Use to check a diff before committing (eg. "review my staged changes"), audit a file or module (eg. "review src/auth/session.ts"), or check a specific commit. Cannot modify files. Returns each issue with a level, a file, and a line number.
+description: Reviews TypeScript code for clean-code rules. Use after implementation, or for staged changes, a commit, or a file. Read-only. Returns issues with file and line.
 model: anthropic/claude-opus-5
 tools: read, bash, grep, find, question
 ---

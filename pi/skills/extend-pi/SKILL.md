@@ -1,6 +1,6 @@
 ---
 name: extend-pi
-description: Use when the question is about pi itself, its SDK, extensions, themes, skills, or TUI. Gives the doc paths of the installed pi and how to read them.
+description: Load for questions about the pi coding agent, its SDK, extensions, themes, skills, or TUI. Gives installed pi doc paths.
 ---
 
 # pi documentation

@@ -1,5 +1,5 @@
 ---
-description: Finds facts about libraries, APIs, and other external subjects on the web. Use to check current API behavior (eg. "does React 19 still need forwardRef"), compare library versions, or verify a claim you're unsure about. Returns a summary with source URLs.
+description: Finds facts on the web about libraries, APIs, or external topics. Use to check current API behavior, compare versions, or verify a claim. Cites URLs.
 model: anthropic/claude-sonnet-5
 tools: read, bash, mcp, question
 review: false

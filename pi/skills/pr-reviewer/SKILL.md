@@ -1,6 +1,6 @@
 ---
 name: pr-reviewer
-description: Generic mechanics for reviewing GitHub PRs with inline pending-review comments — diff hunk line validation, review API payload construction/submission via gh api, adaptive single/multi-agent review, verification pass, and a reusable severity taxonomy. Load when doing any PR review
+description: Load for any GitHub PR review. Gives steps to post inline pending-review comments with gh api, verify findings, and rate severity.
 ---
 
 # PR Reviewer — Generic Mechanics

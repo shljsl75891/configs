@@ -1,9 +1,6 @@
 ---
 name: humanizer
-description: |
-  Use when writing or editing anything on behalf of a human: docs, notes,
-  emails, READMEs, github comments, slack messages, JIRA comments, or any prose where output should 
-    sound like a person wrote it, not an AI.
+description: Load when you write or edit prose that the user will publish as their own, such as docs, READMEs, emails, GitHub, Slack, or JIRA comments.
 ---
 
 ## Process

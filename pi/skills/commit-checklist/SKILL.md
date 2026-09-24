@@ -1,6 +1,6 @@
 ---
 name: commit-checklist
-description: Activate this skill whenever creating a git commit
+description: Load before you run git commit or write a commit message.
 ---
 
 # Commit Checklist
