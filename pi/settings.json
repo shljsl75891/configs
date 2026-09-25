@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.87.1",
   "theme": "gruvbox-dark-hard",
   "tuiMode": "fullscreen",
-  "quietStartup": true,
+  "quietStartup": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5-5",
   "compaction": {
