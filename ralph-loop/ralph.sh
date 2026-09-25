@@ -6,7 +6,13 @@ set -euo pipefail
 [ -f TODO.md ] || { echo "TODO.md missing in $PWD" >&2; exit 1; }
 
 while :; do
-  pi -p "$(cat PROMPT.md)" --approve | tee -a ralph.log
+  pi --no-session --mode json --approve "$(cat PROMPT.md)" \
+    | jq --unbuffered -rj '
+        if .type == "message_update" and .assistantMessageEvent.type == "text_delta" then .assistantMessageEvent.delta
+        elif .type == "tool_execution_start" then "\n▶ \(.toolName) \(.args | tostring | .[0:200])\n"
+        elif .type == "turn_end" then "\n"
+        else empty end' \
+    | tee -a ralph.log
 
   if ! grep -qi '| *queued *|' TODO.md; then
     echo "No queued tasks remaining in TODO.md. Stopping." | tee -a ralph.log

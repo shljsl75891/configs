@@ -12,16 +12,10 @@ wrapper-floor asks (`xargs`, `sudo`, `env`, ...), not configured rules.
 
 ## Setup (per target repo)
 
-1. Copy the task ledger and prompt:
-   ```sh
-   cp <dotfiles>/ralph-loop/TODO.md ./TODO.md
-   cp <dotfiles>/ralph-loop/PROMPT.md ./PROMPT.md
-   ```
-2. Add tasks to `TODO.md`, one row per task, status `QUEUED`. Note the source (Jira key, GitHub
-   issue, free-form) in the "Task" column.
-3. Edit `PROMPT.md` if the repo needs conventions beyond "select a task, fix it, close it out"
-   (test commands, code style, worktree isolation, etc.).
-4. Ensure any MCP servers the prompt needs (Jira, GitHub, etc.) are declared in
+1. In the target repo, run `/skill:ralph-artifacts` in pi. Give tasks and project rules in raw
+   language. The skill writes `TODO.md` and `PROMPT.md` from the templates in
+   `<dotfiles>/pi/skills/ralph-artifacts/templates/`.
+2. Ensure any MCP servers the prompt needs (Jira, GitHub, etc.) are declared in
    `<dotfiles>/pi/mcp.json`, all lazy by default.
 
 ## Run
