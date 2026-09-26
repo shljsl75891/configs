@@ -6,6 +6,13 @@
         "sleev-harness": "pi"
       },
       "baseUrl": "http://127.0.0.1:17321"
+    },
+    "openrouter": {
+      "headers": {
+        "sleev-provider": "openrouter",
+        "sleev-harness": "pi"
+      },
+      "baseUrl": "http://127.0.0.1:17321"
     }
   }
 }

@@ -2,9 +2,12 @@
   "lastChangelogVersion": "0.87.1",
   "theme": "gruvbox-dark-hard",
   "tuiMode": "fullscreen",
-  "quietStartup": false,
+  "quietStartup": true,
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-5-5",
+  "modeModels": {
+    "plan": "anthropic/claude-opus-5-5",
+    "build": "anthropic/claude-sonnet-5"
+  },
   "compaction": {
     "enabled": false
   },
@@ -16,5 +19,55 @@
   ],
   "hideThinkingBlock": true,
   "treeFilterMode": "default",
-  "editorPaddingX": 1
+  "permission": {
+    "edit": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "ask",
+      "*.env.example": "ask"
+    },
+    "write": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "ask",
+      "*.env.example": "ask"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.defaults": "allow",
+      "*.env.example": "allow"
+    },
+    "bash": {
+      "*": "allow",
+      "rm *": "ask",
+      "rmdir *": "ask",
+      "* .env *": "ask",
+      "git restore *": "deny",
+      "git stash *": "ask",
+      "git clean *": "ask",
+      "HUSKY=0 git *": "ask",
+      "git commit *": "ask",
+      "git reset *": "ask",
+      "git push *": "ask",
+      "git -C *": "deny",
+      "docker compose down *": "ask",
+      "docker volume rm *": "ask"
+    },
+    "plan": {
+      "bash": {
+        "> *": "deny",
+        "rm *": "deny",
+        "mv *": "deny",
+        "cp *": "deny",
+        "mkdir *": "deny",
+        "touch *": "deny",
+        "sed -i*": "deny",
+        "sed * -i*": "deny",
+        "git add *": "deny",
+        "git commit *": "deny",
+        "git push *": "deny"
+      }
+    }
+  }
 }

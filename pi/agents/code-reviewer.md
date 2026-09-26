@@ -1,6 +1,6 @@
 ---
 description: Reviews TypeScript code for clean-code rules. Use after implementation, or for staged changes, a commit, or a file. Read-only. Returns issues with file and line.
-model: anthropic/claude-opus-5
+model: anthropic/claude-opus-5-5
 tools: read, bash, grep, find, question
 ---
 

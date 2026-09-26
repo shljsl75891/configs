@@ -20,9 +20,10 @@ export function buildPiCommand(opts: {
 	systemPromptFile?: string;
 	task: string;
 	/** Propagates the parent session's plan mode to the spawned child, so a
-	 *  subagent can't be used to bypass the parent's write restriction:
-	 *  the child's own plan-mode extension picks this up on session_start
-	 *  and gates its own edit/write tools the same way the parent did. */
+	 *  subagent can't be used to bypass the parent's write restriction: the
+	 *  child's own plan-mode extension picks this up on session_start, and
+	 *  its own permission extension then denies edit/write/bash-writes the
+	 *  same way the parent's does. */
 	plan?: boolean;
 }): string {
 	const tokens = ["pi", "-e", MARKER_EXTENSION_PATH, "--no-session"];

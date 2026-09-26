@@ -1,1 +1,3 @@
 - Prefer GNU utilities (grep, awk, sed, find, xargs, rg, jq, etc.) for efficiency.
+- Base each statement about the code on a file that you read. Give the file path and the line number.
+- Do not invent command output, file content, API signatures, or library behavior. Call a tool first to confirm.

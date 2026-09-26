@@ -1,0 +1,12 @@
+{
+  "name": "pi-permission",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "tree-sitter-bash": "^0.25.1",
+    "web-tree-sitter": "^0.27.0"
+  }
+}

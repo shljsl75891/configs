@@ -16,11 +16,7 @@ import type {
 	Theme,
 } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
-/**
- * Only the status key, not plan-mode's session-scan logic: the footer's
- * live extension-status map already mirrors plan-mode's enabled state.
- */
-import { PLAN_MODE_STATUS_KEY } from "../plan-mode/index.ts";
+import { APPROVE_STATUS_KEY, PLAN_MODE_STATUS_KEY } from "../lib/status-keys.ts";
 
 const BOLD = "\x1b[1m";
 const BOLD_OFF = "\x1b[22m";
@@ -186,9 +182,10 @@ function renderLeft(ctx: ExtensionContext, theme: Theme, footerData: ReadonlyFoo
 	const statuses = footerData.getExtensionStatuses();
 	const planActive = statuses.has(PLAN_MODE_STATUS_KEY);
 	const modeLabel = planActive ? "Plan" : "Build";
-	// Skip plan-mode's own "[plan]" badge; we already render Plan/Build above.
+	const approve = statuses.get(APPROVE_STATUS_KEY);
+	// Skip plan-mode's "[plan]" badge (rendered as Plan/Build) and approve (rendered after the model).
 	const statusSuffix = [...statuses]
-		.filter(([key]) => key !== PLAN_MODE_STATUS_KEY)
+		.filter(([key]) => key !== PLAN_MODE_STATUS_KEY && key !== APPROVE_STATUS_KEY)
 		.map(([, text]) => text)
 		.join("  ");
 
@@ -197,6 +194,10 @@ function renderLeft(ctx: ExtensionContext, theme: Theme, footerData: ReadonlyFoo
 		const modeColor = planActive ? "success" : "customMessageLabel";
 		left += theme.fg(modeColor, modeLabel);
 		left += theme.fg("text", `  ${model.name ?? model.id}`);
+	}
+	/* Outside the `if (model)` block so the auto-approve badge - a security-relevant state - still shows even before a model is active. */
+	if (approve) left += theme.fg("error", `${left ? " " : ""}${approve}`);
+	if (model) {
 		left += theme.fg("dim", `  ${model.provider}`);
 		if (ctx.thinkingLevel) {
 			left += `  ${BOLD}${theme.fg("warning", ctx.thinkingLevel)}${BOLD_OFF}`;

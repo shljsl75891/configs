@@ -23,5 +23,8 @@
     "mcp": {
       "url": "https://mcp.exa.ai/mcp"
     }
+  },
+  "settings": {
+    "mcpFooterStatus": "off"
   }
 }

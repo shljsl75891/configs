@@ -12,6 +12,8 @@ import * as path from "node:path";
 import { CONFIG_DIR_NAME, type ExtensionAPI, getAgentDir } from "@earendil-works/pi-coding-agent";
 import { StringEnum } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
+import { onPlanModeChange } from "../plan-mode/index.ts";
+import { modelKey } from "../lib/model.ts";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.ts";
 import { buildPiCommand } from "./command.ts";
 import { childDepth, ENV } from "./protocol.ts";
@@ -35,6 +37,8 @@ interface RunSubagentOptions {
 	timeoutMs: number;
 	signal: AbortSignal | undefined;
 	depth: number;
+	/** Parent is in plan mode: the child starts with --plan so its own permission rules apply. */
+	plan: boolean;
 	onReview?: (agent: string, windowId: string, reviewing: boolean) => void;
 }
 
@@ -48,6 +52,7 @@ async function runSubagent({
 	timeoutMs,
 	signal,
 	depth,
+	plan,
 	onReview,
 }: RunSubagentOptions): Promise<RunResult> {
 	const agent = agents.find((a) => a.name === agentName);
@@ -75,17 +80,8 @@ async function runSubagent({
 			await fs.promises.writeFile(systemPromptFile, agent.systemPrompt, "utf-8");
 		}
 
-		const model = agent.model ?? (ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
-		/**
-		 * Plan mode always removes edit and write together (plan-mode/index.ts'
-		 * MUTATING_TOOLS), so requiring both absent is the correct live signal
-		 * to detect it: there is no separate flag to read across extensions,
-		 * and this is the same pi.getActiveTools()/setActiveTools() API
-		 * plan-mode itself uses to gate/restore tools.
-		 */
-		const activeTools = pi.getActiveTools();
-		const planActive = !activeTools.includes("edit") && !activeTools.includes("write");
-		const command = buildPiCommand({ model, tools: agent.tools, systemPromptFile, task, plan: planActive });
+		const model = agent.model ?? modelKey(ctx.model);
+		const command = buildPiCommand({ model, tools: agent.tools, systemPromptFile, task, plan });
 
 		if (signal?.aborted) {
 			return { agent: agent.name, agentSource: agent.source, task, status: "aborted", output: "", errorMessage: "Aborted." };
@@ -198,6 +194,11 @@ export default function (pi: ExtensionAPI) {
 	// Deeper processes stay inert leaves so nesting is bounded.
 	if (depth >= MAX_SUBAGENT_DEPTH) return;
 
+	let planActive = false;
+	onPlanModeChange(pi, (enabled) => {
+		planActive = enabled;
+	});
+
 	// Only root sweeps; children would duplicate the scan (non-critical).
 	if (depth === 0) void sweepStaleTempDirs(pi);
 
@@ -281,7 +282,7 @@ export default function (pi: ExtensionAPI) {
 
 			// allSettled: a failed spawn must not discard sibling window ids.
 			const settled = await Promise.allSettled(
-				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, onReview: reportReview })),
+				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, plan: planActive, onReview: reportReview })),
 			);
 			const results: RunResult[] = settled.map((outcome, i) =>
 				outcome.status === "fulfilled"
