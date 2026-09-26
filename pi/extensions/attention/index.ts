@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
  * subagent review prompt right after agent_settled) into one alert instead of two.
  */
 const SIGNAL_DEBOUNCE_MS = 200;
-const SOUND_VOLUME = "0.30";
+const SOUND_VOLUME = "0.40";
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "assets");
 const DONE_SOUND = join(ASSETS_DIR, "done.wav");
 const PROMPT_SOUND = join(ASSETS_DIR, "prompt.wav");
@@ -48,7 +48,9 @@ export default function attention(pi: ExtensionAPI) {
 
   pi.on("agent_settled", () => signalAttention({ sound: DONE_SOUND }));
 
-  pi.on("ui_prompt_start", (event) => {
+  pi.on("ui_prompt_start", (event, ctx) => {
+    // Idle = user-opened UI (e.g. /mcp); only prompts raised mid-run need attention.
+    if (ctx.isIdle()) return;
     /**
      * "Up" pre-selects the first option. This repo's only custom UI
      * (question-tool) renders a list, so it qualifies.
