@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Load before you design a solution, select a library or dependency, or write, edit, or review code. Also load immediately after plan approval.
+description: Load before you design a solution, select a library or dependency, or write, edit, or review code. Also load immediately after plan approval like "Go Ahead".
 ---
 
 ## The Ladder
