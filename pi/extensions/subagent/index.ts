@@ -2,8 +2,10 @@
  * Runs agents as real `pi` TUIs in their own tmux window. Completion is detected
  * by polling the result file that ./marker-extension.ts writes in the child.
  *
- * Windows outlive the run so the user can follow up in them by hand; only an
- * aborted call kills one. Finished windows are renamed to carry their outcome.
+ * Windows outlive a run that ends in an error, or is still open for review, so the
+ * user can inspect it or follow up by hand. A successful, reviewed-and-sent (or
+ * unreviewed) run has nothing left to do there, so its window closes like an
+ * aborted one. Finished windows are renamed to carry their outcome.
  */
 
 import * as fs from "node:fs";
@@ -126,10 +128,11 @@ async function runSubagent({
 			};
 		}
 
-		// The window stays alive for all outcomes except aborted (killed) and windowGone (dead).
-		keepTmpDir = outcome.kind !== "aborted" && outcome.kind !== "windowGone";
+		// Closed like an abort: a successful run has nothing left to review, so the window would just sit there.
+		const closeWindow = outcome.kind === "aborted" || (outcome.kind === "result" && outcome.result.status === "ok");
+		keepTmpDir = !closeWindow && outcome.kind !== "windowGone";
 		const result = toRunResult(outcome, base, { resultFile, timeoutMs });
-		if (outcome.kind === "aborted") await killTmuxWindow(pi, windowId);
+		if (closeWindow) await killTmuxWindow(pi, windowId);
 		return result;
 	} finally {
 		if (!keepTmpDir) fs.rm(tmpDir, { recursive: true, force: true }, () => {});

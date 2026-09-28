@@ -22,8 +22,9 @@ export interface RunResult extends Omit<SubagentResult, "status"> {
 }
 
 /**
- * Maps a wait outcome to a RunResult. The caller handles the `aborted`
- * side-effect (`killTmuxWindow`) and the `finally` block (`rm tmpDir`).
+ * Maps a wait outcome to a RunResult. The caller handles the window-close side
+ * effect (`killTmuxWindow`, for `aborted` and a successful result) and the
+ * `finally` block (`rm tmpDir`).
  */
 export function toRunResult(
 	outcome: WaitOutcome,
@@ -53,14 +54,12 @@ export function toRunResult(
 
 		case "result": {
 			const { status, output, usage, stopReason, errorMessage } = outcome.result;
-			return {
-				...base,
-				status,
-				output,
-				usage,
-				stopReason,
-				...(status === "error" && { errorMessage: errorMessage ?? "Agent failed." }),
-			};
+			if (status === "ok") {
+				// The orchestrator closes the window on success; a hint pointing at it would mislead.
+				const { windowId: _closed, ...withoutWindow } = base;
+				return { ...withoutWindow, status, output, usage, stopReason };
+			}
+			return { ...base, status, output, usage, stopReason, errorMessage: errorMessage ?? "Agent failed." };
 		}
 	}
 }

@@ -44,12 +44,14 @@ describe("toRunResult", () => {
 		assert.equal(r.output, "done");
 		assert.equal(r.stopReason, "end_turn");
 		assert.equal(r.errorMessage, undefined);
+		assert.equal(r.windowId, undefined, "the orchestrator closes the window on success; a hint pointing at it would mislead");
 	});
 
 	it("falls back to a generic message when a failed child result has no errorMessage", () => {
 		const r = toRunResult({ kind: "result", result: { status: "error", output: "" } }, base, ctx);
 		assert.equal(r.status, "error");
 		assert.equal(r.errorMessage, "Agent failed.");
+		assert.equal(r.windowId, "@3", "the window stays open on error so it can be inspected");
 	});
 
 	it("keeps the child's own errorMessage when present", () => {
@@ -75,6 +77,11 @@ describe("formatResult", () => {
 
 		const gone = toRunResult({ kind: "windowGone" }, base, ctx);
 		assert.ok(!formatResult(gone).includes("select-window"), "windowGone has no windowId to hint at");
+	});
+
+	it("omits the window hint for a successful result, since the window closes", () => {
+		const r = toRunResult({ kind: "result", result: { status: "ok", output: "done" } }, base, ctx);
+		assert.ok(!formatResult(r).includes("select-window"));
 	});
 
 	it("tags project-sourced agents in the header", () => {

@@ -7,6 +7,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ENV } from "../subagent/protocol.ts";
 
 /**
  * Collapses a settle event and the prompt that immediately follows it (e.g. the
@@ -46,7 +47,16 @@ export default function attention(pi: ExtensionAPI) {
     }
   }
 
-  pi.on("agent_settled", () => signalAttention({ sound: DONE_SOUND }));
+  pi.on("agent_settled", () => {
+    /**
+     * A non-review subagent's window closes itself right after this: sounding
+     * an alert nobody will act on just adds noise. Review-enabled subagents
+     * still alert here, since the review prompt that follows needs it.
+     */
+    const closesItself = process.env[ENV.resultFile] !== undefined && process.env[ENV.review] === "0";
+    if (closesItself) return;
+    return signalAttention({ sound: DONE_SOUND });
+  });
 
   pi.on("ui_prompt_start", (event, ctx) => {
     // Idle = user-opened UI (e.g. /mcp); only prompts raised mid-run need attention.

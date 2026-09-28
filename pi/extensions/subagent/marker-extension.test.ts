@@ -19,6 +19,19 @@ import markerExtension from "./marker-extension.ts";
 
 type Handler = (event: object, ctx: object) => Promise<void>;
 
+/**
+ * agent_settled's review branch is fire-and-forget in production (see
+ * marker-extension.ts), so `fire("agent_settled", ...)` below resolves before
+ * the review flow finishes. Poll for the side effect each test actually cares about.
+ */
+async function waitFor(predicate: () => boolean, timeoutMs = 1000): Promise<void> {
+	const start = Date.now();
+	while (!predicate()) {
+		if (Date.now() - start > timeoutMs) throw new Error("waitFor: condition was not met in time");
+		await new Promise((resolve) => setTimeout(resolve, 5));
+	}
+}
+
 type FakePi = {
 	on(event: string, handler: Handler): void;
 	exec(cmd: string, args: string[]): Promise<{ code: number; stdout: string; stderr: string }>;
@@ -165,6 +178,7 @@ describe("markerExtension", () => {
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
+		await waitFor(() => fs.existsSync(resultFile));
 
 		assert.ok(fs.existsSync(resultFile), "result should be written after Send as-is");
 		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");
@@ -176,14 +190,17 @@ describe("markerExtension", () => {
 		markerExtension(pi);
 		const reviewFile = reviewMarkerFor(resultFile);
 
+		let promptDone = false;
 		const custom = async () => {
 			await fire("ui_prompt_start");
 			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
 			await fire("ui_prompt_end", { isIdle: () => true });
+			promptDone = true;
 			return null; // Esc / dismissed
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
+		await waitFor(() => promptDone);
 
 		assert.ok(!fs.existsSync(resultFile), "no result should be written when the user cancels");
 		assert.ok(!fs.existsSync(reviewFile), "review marker must not linger after the prompt ends");
@@ -203,6 +220,7 @@ describe("markerExtension", () => {
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
+		await waitFor(() => sentMessages.length > 0);
 
 		assert.ok(!fs.existsSync(resultFile), "a follow-up must not write a result file");
 		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");

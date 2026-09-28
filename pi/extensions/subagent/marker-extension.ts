@@ -123,11 +123,8 @@ export default function markerExtension(pi: ExtensionAPI) {
 	const reviewFile = reviewMarkerFor(resultFile);
 	const reviewEnabled = process.env[ENV.review] === "1";
 
-	/**
-	 * pending: no result delivered yet. delivered: the parent has the result and
-	 * stopped polling. manual: the user is continuing by hand after delivery.
-	 */
-	let phase: "pending" | "delivered" | "manual" = "pending";
+	/** The parent has the result and stopped polling; an ok result's window is about to close. */
+	let delivered = false;
 	/**
 	 * Delivery is known broken (e.g. disk full) — stop advertising review, since
 	 * pausing the parent's clock for a result that can no longer arrive buys nothing.
@@ -136,13 +133,37 @@ export default function markerExtension(pi: ExtensionAPI) {
 
 	const settle = async (result: SubagentResult): Promise<void> => {
 		const written = await writeResult(resultFile, result).then(() => true, () => false);
-		if (written) phase = "delivered";
+		if (written) delivered = true;
 		deliveryBroken = !written; // clears on a later successful retry, not just sets on failure
 		await renameWindow(pi, written ? (result.status === "ok" ? "ok" : "error") : "unreported");
 	};
 
+	/**
+	 * The user's answer can take arbitrarily long, so this must not be awaited by
+	 * agent_settled: pi awaits every extension's handler for an event in turn, and
+	 * awaiting the answer here would also stall the ones registered after this one
+	 * (e.g. attention's done sound; see ./index.ts's `pi -e` load order).
+	 */
+	const reviewAndSettle = async (ctx: ExtensionContext, result: SubagentResult): Promise<void> => {
+		/**
+		 * review() calls askQuestions, which fires ui_prompt_start/end — those
+		 * handlers own the marker file and window rename for the review prompt.
+		 */
+		const decision = await review(ctx, result);
+		if (!decision) {
+			await renameWindow(pi, "waiting");
+			return;
+		}
+		if ("followUp" in decision) {
+			/* delivered stays false: the follow-up turn still owes the caller a result,
+			   so the next agent_settled runs review() again instead of skipping it. */
+			pi.sendUserMessage(decision.followUp);
+			return;
+		}
+		await settle(decision.send);
+	};
+
 	pi.on("agent_start", async () => {
-		if (phase === "delivered") phase = "manual"; // a manual run reopens the outcome display
 		await renameWindow(pi, "running");
 	});
 
@@ -157,14 +178,14 @@ export default function markerExtension(pi: ExtensionAPI) {
 		 * After delivery the parent is no longer polling this child; keeping the marker
 		 * up would reset a clock that belongs to nobody and stall the parent for hours.
 		 */
-		if (phase === "pending" && !deliveryBroken) await fs.promises.writeFile(reviewFile, "", "utf-8").catch(() => {});
-		if (phase === "delivered") return; // terminal outcome wins over the transient prompt state
+		if (!delivered && !deliveryBroken) await fs.promises.writeFile(reviewFile, "", "utf-8").catch(() => {});
+		if (delivered) return; // terminal outcome wins over the transient prompt state
 		await renameWindow(pi, "waiting");
 	});
 
 	pi.on("ui_prompt_end", async (_event, ctx) => {
 		await fs.promises.rm(reviewFile, { force: true }).catch(() => {});
-		if (phase === "delivered") return;
+		if (delivered) return;
 		await renameWindow(pi, ctx.isIdle() ? "waiting" : "running");
 	});
 
@@ -173,7 +194,7 @@ export default function markerExtension(pi: ExtensionAPI) {
 		 * After the first delivery the parent's tool call is complete; further turns
 		 * are manual follow-ups in the kept-open window and produce no new result.
 		 */
-		if (phase !== "pending") { await renameWindow(pi, "waiting"); return; }
+		if (delivered) { await renameWindow(pi, "waiting"); return; }
 
 		const result = collectResult(ctx);
 
@@ -183,21 +204,6 @@ export default function markerExtension(pi: ExtensionAPI) {
 			return;
 		}
 
-		/**
-		 * review() calls askQuestions, which fires ui_prompt_start/end — those
-		 * handlers own the marker file and window rename for the review prompt.
-		 */
-		const decision = await review(ctx, result);
-		if (!decision) {
-			await renameWindow(pi, "waiting");
-			return;
-		}
-		if ("followUp" in decision) {
-			/* phase stays "pending": the follow-up turn still owes the caller a result,
-			   so the next agent_settled runs review() again instead of skipping it. */
-			pi.sendUserMessage(decision.followUp);
-			return;
-		}
-		await settle(decision.send);
+		void reviewAndSettle(ctx, result);
 	});
 }
