@@ -25,6 +25,12 @@ alias egrep='egrep --color=auto'
 alias cal='ncal -C'
 alias ngrok="TERM=xterm-256color ngrok"
 
+# Git: register global 'git track-all' alias (fetch all remote branches in bare repos)
+git-bare-init() {
+  git config --global alias.track-all '!git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" && git fetch origin'
+  echo "Success! 'git track-all' is now a permanent global Git command."
+}
+
 # Prompt
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml

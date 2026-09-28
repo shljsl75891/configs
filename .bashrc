@@ -95,6 +95,12 @@ fi
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# Git: register global 'git track-all' alias (fetch all remote branches in bare repos)
+git-bare-init() {
+  git config --global alias.track-all '!git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" && git fetch origin'
+  echo "Success! 'git track-all' is now a permanent global Git command."
+}
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
