@@ -6,7 +6,7 @@
   "defaultProvider": "anthropic",
   "modeModels": {
     "plan": "anthropic/claude-opus-5-5",
-    "build": "anthropic/claude-sonnet-5"
+    "build": "anthropic/claude-sonnet-5-5"
   },
   "compaction": {
     "enabled": false
@@ -14,9 +14,7 @@
   "warnings": {
     "anthropicExtraUsage": false
   },
-  "packages": [
-    "npm:pi-mcp-adapter"
-  ],
+  "packages": ["npm:pi-mcp-adapter"],
   "hideThinkingBlock": true,
   "treeFilterMode": "default",
   "permission": {
