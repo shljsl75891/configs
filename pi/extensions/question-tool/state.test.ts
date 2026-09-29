@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { answersOf, createState, type QuestionSpec, reduce } from "./state.ts";
+import { answersOf, createState, type QuestionSpec, reduce, splitLabel } from "./state.ts";
 
 const one: QuestionSpec[] = [{ question: "Pick one?", header: "Pick", options: [{ label: "A" }, { label: "B" }] }];
 
@@ -8,6 +8,27 @@ const many: QuestionSpec[] = [
 	{ question: "Pick one?", header: "Pick", options: [{ label: "A" }, { label: "B" }] },
 	{ question: "Pick some?", header: "Some", options: [{ label: "C" }, { label: "D" }], multiple: true },
 ];
+
+describe("recommended marker", () => {
+	it("leaves a plain label untouched", () => {
+		assert.deepEqual(splitLabel("Use JWT"), { text: "Use JWT", recommended: false });
+	});
+
+	it("strips a trailing [rec] marker", () => {
+		assert.deepEqual(splitLabel("Use JWT [rec]"), { text: "Use JWT", recommended: true });
+		assert.deepEqual(splitLabel("Use JWT [REC] "), { text: "Use JWT", recommended: true });
+	});
+
+	it("ignores [rec] in the middle of a label", () => {
+		assert.equal(splitLabel("A [rec] B").recommended, false);
+	});
+
+	it("returns answers without the marker", () => {
+		const qs: QuestionSpec[] = [{ question: "Q?", header: "Q", options: [{ label: "A [rec]" }, { label: "B" }] }];
+		const state = reduce(createState(qs), { type: "choose", index: 0 }, qs);
+		assert.deepEqual(answersOf(state, qs), [["A"]]);
+	});
+});
 
 describe("answers", () => {
 	it("reports an unanswered question as an empty list", () => {

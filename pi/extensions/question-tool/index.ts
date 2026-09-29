@@ -2,7 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { askQuestions, CUSTOM_LABEL } from "./prompt.ts";
-import type { QuestionSpec } from "./state.ts";
+import { RECOMMENDED_BADGE, type QuestionSpec, splitLabel } from "./state.ts";
 
 export interface QuestionDetails {
 	headers: string[];
@@ -11,7 +11,7 @@ export interface QuestionDetails {
 }
 
 const OptionSchema = Type.Object({
-	label: Type.String({ description: "The option text. Use 1 to 5 words. Add ' *' at the end for the recommended option." }),
+	label: Type.String({ description: "The option text. Use 1 to 5 words. End the label of the recommended option with ' [rec]'." }),
 	description: Type.Optional(Type.String({ description: "An explanation. It shows below the label." })),
 });
 
@@ -38,7 +38,7 @@ export default function question(pi: ExtensionAPI) {
 		description:
 			"Asks the user questions. Each question must have a header and one or more options. The header is a tab label, 30 characters maximum. " +
 			"The tool adds a free-text option. Do not add an 'Other' option. " +
-			"Put the recommended option first. Add ' *' to the end of its label. " +
+			"Mark the recommended option: end its label with ' [rec]'. Mark at most one option per question. " +
 			"The tool returns the selected labels. If the user does not answer, the result is empty.",
 		parameters: QuestionParams,
 		executionMode: "sequential",
@@ -84,7 +84,9 @@ export default function question(pi: ExtensionAPI) {
 			let text = theme.fg("toolTitle", theme.bold("question "));
 			text += theme.fg("muted", questions.map((q) => q.header).join(" • "));
 			for (const q of questions) {
-				const labels = [...q.options.map((o) => o?.label ?? ""), CUSTOM_LABEL].map((o, i) => `${i + 1}. ${o}`);
+				const labels = [...q.options.map((o) => splitLabel(o?.label ?? "")), { text: CUSTOM_LABEL, recommended: false }].map(
+					(o, i) => `${i + 1}. ${o.text}${o.recommended ? ` ${RECOMMENDED_BADGE}` : ""}`,
+				);
 				text += `\n${theme.fg("muted", `  ${q.question}`)}`;
 				text += `\n${theme.fg("dim", `    ${labels.join(", ")}`)}`;
 			}

@@ -128,7 +128,7 @@ elif [ "$PENDING_SHA" = "$HEAD_SHA" ]; then
       addPullRequestReviewThread(input:{pullRequestReviewId:$rid,path:$path,body:$body,line:$line,side:$side,startLine:$startLine,startSide:$startSide}){thread{id}}}' \
       -f rid="$NODE_ID" -f path="$(jq -r .path <<<"$c")" -f body="$(jq -r .body <<<"$c")" \
       -F line="$(jq -r .line <<<"$c")" -f side="$(jq -r .side <<<"$c")" \
-      -F startLine="$(jq -r '.start_line // "null"' <<<"$c")" -f startSide="$(jq -r '.start_side // "null"' <<<"$c")" > /dev/null
+      -F startLine="$(jq -r '.start_line // "null"' <<<"$c")" -F startSide="$(jq -r '.start_side // "null"' <<<"$c")" > /dev/null
     sleep 0.7   # stay under the 80/min content-generating secondary rate limit
   done
 else

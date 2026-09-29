@@ -3,6 +3,17 @@ export interface QuestionOption {
 	description?: string;
 }
 
+/** Badge the TUI shows after a recommended option. */
+export const RECOMMENDED_BADGE = "\u{F0335}";
+
+const RECOMMENDED_MARKER = /\s*\[rec\]\s*$/i;
+
+/** Separates the label text from the trailing `[rec]` marker that the model writes. */
+export function splitLabel(label: string): { text: string; recommended: boolean } {
+	const text = label.replace(RECOMMENDED_MARKER, "");
+	return { text, recommended: text !== label };
+}
+
 export interface QuestionSpec {
 	question: string;
 	header: string;
@@ -69,7 +80,7 @@ export function answersOf(state: State, questions: QuestionSpec[]): string[][] {
 	return questions.map((question, i) => {
 		const custom = state.custom[i];
 		if (custom != null) return [custom];
-		return question.options.filter((_, index) => state.selected[i].has(index)).map((option) => option.label);
+		return question.options.filter((_, index) => state.selected[i].has(index)).map((option) => splitLabel(option.label).text);
 	});
 }
 

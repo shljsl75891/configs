@@ -9,7 +9,18 @@ import {
 	visibleWidth,
 	wrapTextWithAnsi,
 } from "@earendil-works/pi-tui";
-import { type Action, answersOf, createState, customRow, isConfirmTab, type QuestionSpec, type State, reduce } from "./state.ts";
+import {
+	type Action,
+	answersOf,
+	createState,
+	customRow,
+	isConfirmTab,
+	type QuestionSpec,
+	RECOMMENDED_BADGE,
+	type State,
+	reduce,
+	splitLabel,
+} from "./state.ts";
 import { findPiRoot } from "./pi-root.ts";
 
 
@@ -308,16 +319,17 @@ export function askQuestions(
 
 			function renderOptions() {
 				const current = questions[state.tab];
-				const labels = [...current.options.map((o) => o.label), options.customLabel ?? CUSTOM_LABEL];
-				for (let i = 0; i < labels.length; i++) {
+				const parsed = [...current.options.map((o) => splitLabel(o.label)), { text: options.customLabel ?? CUSTOM_LABEL, recommended: false }];
+				for (let i = 0; i < parsed.length; i++) {
 					const isCustom = i === customRow(current);
 					const active = i === state.cursor;
 					const chosen = state.selected[state.tab].has(i);
 					const box = current.multiple && !isCustom ? (chosen ? "[✓] " : "[ ] ") : "";
+					const badge = parsed[i].recommended ? ` ${RECOMMENDED_BADGE}` : "";
 					const mark = !current.multiple && chosen ? " ✓" : "";
 					const prefix = active ? theme.fg("accent", "> ") : "  ";
 					const color = active || chosen ? "accent" : "text";
-					addWrappedWithPrefix(prefix, theme.fg(color, `${i + 1}. ${box}${labels[i]}${mark}`), {
+					addWrappedWithPrefix(prefix, theme.fg(color, `${i + 1}. ${box}${parsed[i].text}${badge}${mark}`), {
 						type: "choose",
 						index: i,
 					});
