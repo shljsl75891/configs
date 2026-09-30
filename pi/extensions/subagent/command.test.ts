@@ -22,12 +22,8 @@ describe("shellQuote", () => {
 });
 
 describe("buildPiCommand", () => {
-	it("omits --tools when the agent inherits every tool", () => {
+	it("never passes --tools, which would drop MCP tools from the registry", () => {
 		assert.ok(!buildPiCommand({ task: "x" }).includes("--tools"));
-	});
-
-	it("includes --tools when tools are specified", () => {
-		assert.ok(buildPiCommand({ task: "x", tools: ["bash", "read"] }).includes("--tools"));
 	});
 
 	it("includes --model when specified", () => {

@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.1",
   "theme": "gruvbox-dark-hard",
   "tuiMode": "fullscreen",
   "quietStartup": true,
@@ -14,7 +14,6 @@
   "warnings": {
     "anthropicExtraUsage": false
   },
-  "packages": ["npm:pi-mcp-adapter"],
   "hideThinkingBlock": true,
   "treeFilterMode": "default",
   "permission": {
@@ -67,5 +66,8 @@
         "git push *": "deny"
       }
     }
-  }
+  },
+  "defaultTools": [
+    "+codemode"
+  ]
 }

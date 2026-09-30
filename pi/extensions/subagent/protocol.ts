@@ -10,6 +10,7 @@ export const ENV = {
 	review: "PI_SUBAGENT_REVIEW",
 	label: "PI_SUBAGENT_LABEL",
 	depth: "PI_SUBAGENT_DEPTH",
+	tools: "PI_SUBAGENT_TOOLS",
 } as const;
 
 /** Append this suffix to the result file path to get the review-pending marker. */

@@ -13,7 +13,7 @@ pi/*
 !pi/SYSTEM.md
 !pi/settings.json
 !pi/keybindings.json
-!pi/mcp-adapter.json
+!pi/mcp-servers.json
 !pi/models.json
 !pi/agents/
 !pi/agents/**

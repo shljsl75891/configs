@@ -83,7 +83,7 @@ async function runSubagent({
 		}
 
 		const model = agent.model ?? modelKey(ctx.model);
-		const command = buildPiCommand({ model, tools: agent.tools, systemPromptFile, task, plan });
+		const command = buildPiCommand({ model, systemPromptFile, task, plan });
 
 		if (signal?.aborted) {
 			return { agent: agent.name, agentSource: agent.source, task, status: "aborted", output: "", errorMessage: "Aborted." };
@@ -99,6 +99,7 @@ async function runSubagent({
 				[ENV.review]: agent.review ? "1" : "0",
 				[ENV.label]: agent.name,
 				[ENV.depth]: String(depth + 1),
+				...(agent.tools ? { [ENV.tools]: agent.tools.join(",") } : {}),
 			},
 			command,
 		);

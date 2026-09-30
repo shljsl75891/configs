@@ -16,7 +16,6 @@ export function shellQuote(value: string): string {
 
 export function buildPiCommand(opts: {
 	model?: string;
-	tools?: string[];
 	systemPromptFile?: string;
 	task: string;
 	/** Propagates the parent session's plan mode to the spawned child, so a
@@ -28,7 +27,6 @@ export function buildPiCommand(opts: {
 }): string {
 	const tokens = ["pi", "-e", MARKER_EXTENSION_PATH, "--no-session"];
 	if (opts.model) tokens.push("--model", opts.model);
-	if (opts.tools && opts.tools.length > 0) tokens.push("--tools", opts.tools.join(","));
 	if (opts.systemPromptFile) tokens.push("--append-system-prompt", opts.systemPromptFile);
 	/**
 	 * "--plan=true", not bare "--plan": plan is an extension-registered

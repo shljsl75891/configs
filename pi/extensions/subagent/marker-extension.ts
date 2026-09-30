@@ -123,6 +123,18 @@ export default function markerExtension(pi: ExtensionAPI) {
 	const reviewFile = reviewMarkerFor(resultFile);
 	const reviewEnabled = process.env[ENV.review] === "1";
 
+	/**
+	 * Limits only the active set, not the registry: --tools would also drop the
+	 * mcp__* tools, so Alt+M could never turn a server on. codemode stays active
+	 * because it is the only way to call MCP tools.
+	 */
+	const tools = process.env[ENV.tools];
+	if (tools) {
+		pi.on("session_start", () => {
+			pi.setActiveTools([...tools.split(","), "codemode"]);
+		});
+	}
+
 	/** The parent has the result and stopped polling; an ok result's window is about to close. */
 	let delivered = false;
 	/**

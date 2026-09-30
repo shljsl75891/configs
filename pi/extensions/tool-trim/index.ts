@@ -1,9 +1,9 @@
 /**
- * Shrinks built-in and mcp-adapter tool descriptions to Simplified Technical
+ * Shrinks built-in tool descriptions to Simplified Technical
  * English (ASD-STE100) right before the provider request goes out.
  *
  * Rewriting here, instead of overriding each tool, keeps the real
- * implementations (read/bash/edit/write/mcp/mcpScript) untouched. Only the
+ * implementations (read/bash/edit/write) untouched. Only the
  * model-facing text shrinks.
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -50,22 +50,7 @@ const TRIMS: Record<string, Trim> = {
 			content: "The file content.",
 		},
 	},
-	mcpScript: {
-		description:
-			"Runs JavaScript that makes many MCP calls in one request. For one call, use mcp. tools.search({query}) returns {items, total, hasMore}. tools.describe({path}) returns the input schema. tools.call(path, args) returns {ok, data} or {ok: false, error}. Use emit(value) to show output. For more data, read the mcp-scripting skill.",
-		params: {
-			code: "The JavaScript code.",
-			timeoutMs: "The time limit in milliseconds. Default 30000.",
-		},
-	},
 };
-
-// The mcp tool keeps its live "Disabled servers: ..." line (it changes as
-// servers connect), so only the fixed lead-in is replaced.
-const MCP_TOOL_NAME = "mcp";
-const MCP_PREFIX =
-	"Controls MCP servers and calls one MCP tool. Use it for status, search, describe, install, auth, and single calls. For many calls with logic between them, use mcpScript. The tool uses the first parameter that is set, in this order: action, tool, connect, describe, instructions, search, server. With no parameters, it shows the status.";
-const MCP_DISABLED_RE = /Disabled servers[^\n]*/;
 
 function stripNestedDescriptions(schema: unknown): void {
 	if (!schema || typeof schema !== "object") return;
@@ -112,11 +97,6 @@ export default function toolTrim(pi: ExtensionAPI): void {
 				const schema = t.input_schema as { properties?: Record<string, unknown> } | undefined;
 				if (trim.params && schema?.properties) applyParamText(schema.properties, trim.params);
 				continue;
-			}
-
-			if (name === MCP_TOOL_NAME && typeof t.description === "string") {
-				const disabled = t.description.match(MCP_DISABLED_RE);
-				t.description = disabled ? `${MCP_PREFIX} ${disabled[0]}` : MCP_PREFIX;
 			}
 		}
 
