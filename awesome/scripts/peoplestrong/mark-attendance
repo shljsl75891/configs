@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# Called by the Attendance widget in awesome's bar (bar.lua), not by hand.
+# `mark-attendance status` (every 5 minutes) prints today's "in→out" times and never opens
+# a window. `mark-attendance` (a click on the widget) punches; the server decides in or out.
+set -euo pipefail
+
+API=https://onewebapi.peoplestrong.com/api/punch/v1/inout/web
+STATE="${XDG_CACHE_HOME:-$HOME/.cache}/punch"
+TOKEN_FILE="$STATE/token"
+# Exists while a sign-in alert is out, so the bar widget alerts only once.
+ALERTED="$STATE/alerted"
+# One line per rejected token with its age, to learn the token lifetime.
+EXPIRED_LOG="$STATE/expired.log"
+LOGIN_LOG="$STATE/login.log"
+DIR=$(dirname "$(readlink -f "$0")")
+# awesome's PATH has no fnm shims.
+NODE=$(command -v node || echo "$HOME/.local/share/fnm/aliases/default/bin/node")
+# The API returns no date, so a punch-out is judged against today's punch-in time.
+MIN_SHIFT_SECONDS=$((8 * 3600))
+
+alert() {
+	notify-send -u critical Punch "$1"
+}
+
+# $1 is empty for the background sign-in or --headed for the visible window.
+login() {
+	local code=0 seconds=90
+	[[ ${1:-} == --headed ]] && seconds=330
+	(umask 077 && timeout "$seconds" "$NODE" "$DIR/login.mjs" ${1:+"$1"} >"$TOKEN_FILE.tmp" 2>"$LOGIN_LOG" 9>&-) || code=$?
+	if ((code == 0)); then
+		mv "$TOKEN_FILE.tmp" "$TOKEN_FILE"
+		return
+	fi
+	rm -f "$TOKEN_FILE.tmp"
+	# Exit 1 means the sign-in needs the user; anything else is a broken script, a
+	# hung browser (124, from timeout) or a missing browser.
+	((code == 1)) || alert "Sign-in script failed (exit $code), see $LOGIN_LOG"
+	return 1
+}
+
+# Returns 0 with a new token. A status check never opens a window: it alerts once
+# and lets the widget turn red. A click opens Brave, so the user can sign in.
+refresh_token() {
+	[[ $MODE == status && -e $ALERTED ]] && return 1
+	if [[ ! -e $ALERTED && -e $TOKEN_FILE ]]; then
+		printf '%s token age %s min\n' "$(date -Is)" "$((($(date +%s) - $(stat -c %Y "$TOKEN_FILE")) / 60))" >>"$EXPIRED_LOG"
+	fi
+	login && return
+	touch "$ALERTED"
+	if [[ $MODE == status ]]; then
+		alert "Sign-in needed: click the Attendance widget"
+		return 1
+	fi
+	alert "Finish the PeopleStrong sign-in in the Brave window"
+	login --headed
+}
+
+# Prints the response body. Returns 1 when the server rejects the token, 2 when
+# there is no valid answer (network down). The token goes in through a file
+# descriptor, so it never shows in the process list.
+call() {
+	local body
+	# The API rejects calls without the platform and timezone headers.
+	body=$(curl -sS -m 20 -X POST "$API/$1" \
+		-H 'content-type: application/json' \
+		-H 'platform: Web' \
+		-H 'timezone: Asia/Calcutta' \
+		-H @<(printf 'sessiontoken: %s' "$(<"$TOKEN_FILE")") \
+		-d "$2") || return 2
+	jq -e . >/dev/null 2>&1 <<<"$body" || return 2
+	[[ $(jq -r '.responseCode // empty' <<<"$body") == 401 ]] && return 1
+	rm -f "$ALERTED"
+	printf '%s' "$body"
+}
+
+api() {
+	local status=0
+	call "$@" || status=$?
+	[[ $status == 1 ]] || return $status
+	refresh_token && call "$@"
+}
+
+# Prints the server message and returns 1 unless the response is a success.
+check() {
+	[[ $(jq -r '.message.code // empty' <<<"$1") == EC200 ]] && return
+	jq -r '.status.message // .message.message // .' <<<"$1"
+	return 1
+}
+
+# Status 2 means no answer came back, so the punch may or may not have happened.
+api_failed() {
+	if (($1 == 2)); then
+		alert "No answer from the server: the widget will show whether the punch went through"
+	else
+		alert "Punch failed: sign-in did not finish"
+	fi
+}
+
+times() {
+	jq -r '.responseData | "\(.punchInTime // "--")→\(.punchOutTime // "--")"' <<<"$1"
+}
+
+# Prints the minutes left when punched in less than MIN_SHIFT_SECONDS ago.
+# The API gives only HH:MM, so a shift over midnight has a negative age: no block.
+minutes_left() {
+	local in_time age
+	in_time=$(jq -r '.responseData.punchInTime // empty' <<<"$1")
+	[[ -n $in_time ]] || return 1
+	age=$(($(date +%s) - $(date -d "today $in_time" +%s)))
+	((age >= 0 && age < MIN_SHIFT_SECONDS)) || return 1
+	echo $(((MIN_SHIFT_SECONDS - age + 59) / 60))
+}
+
+# One run at a time: a double click must not punch in and then out, and two
+# browser processes must not share the profile.
+mkdir -m 700 -p "$STATE"
+(umask 077 && touch "$TOKEN_FILE")
+exec 9>"$STATE/lock"
+
+MODE=${1:-punch}
+case "$MODE" in
+status)
+	flock -n 9 || { echo "busy"; exit 1; }
+	attendance=$(api get-attendance-v2 '{}') || { [[ $? == 2 ]] && echo offline || echo "login?"; exit 1; }
+	check "$attendance" >&2 || { echo "error"; exit 1; }
+	times "$attendance"
+	;;
+punch)
+	flock -n 9 || { alert "Punch is busy with another run, try again in a minute"; exit 0; }
+	attendance=$(api get-attendance-v2 '{}') || { api_failed $?; exit 1; }
+	error=$(check "$attendance") || { alert "Punch failed: $error"; exit 1; }
+	if left=$(minutes_left "$attendance"); then
+		alert "Punching Out Too early !! Wait $((left / 60))h $((left % 60))m more"
+		exit 1
+	fi
+	shift_data=$(jq -c '.responseData | {shiftId, shiftPremiseID: 0, holiday, roasterId: (.roasterId // 0), roasterSource: (.roasterSource // "")}' <<<"$attendance")
+	result=$(api punch-attendance "$shift_data") || { api_failed $?; exit 1; }
+	error=$(check "$result") || { alert "Punch failed: $error"; exit 1; }
+	notify-send Punch "Today: $(times "$result")"
+	;;
+*)
+	exit 2
+	;;
+esac
