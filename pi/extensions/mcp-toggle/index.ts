@@ -1,5 +1,6 @@
 /**
- * Alt+M: turn MCP servers on and off with the space key.
+ * Alt+M: open the MCP server list. Type to filter; Enter toggles (space too, while
+ * the query is empty); Alt+M closes. Esc and Ctrl+C do nothing.
  * Servers come from ~/.pi/agent/mcp-servers.json and, in a trusted project,
  * .pi/mcp-servers.json. Pi does not read these files, so all servers are off
  * at the start of every session. Changes apply at once and are not saved.
@@ -8,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { getAgentDir, getSettingsListTheme } from "@earendil-works/pi-coding-agent";
-import { Box, matchesKey, type SettingItem, SettingsList, visibleWidth } from "@earendil-works/pi-tui";
+import { Box, getKeybindings, matchesKey, type SettingItem, SettingsList, visibleWidth } from "@earendil-works/pi-tui";
 
 const FILE = "mcp-servers.json";
 const POLL_MS = 300;
@@ -118,10 +119,8 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 							ctx.ui.notify(`${name}: ${error instanceof Error ? error.message : error}`, "error");
 						}
 					},
-					() => {
-						view = undefined;
-						done(undefined);
-					},
+					() => {},
+					{ enableSearch: true },
 				);
 				view = { list, render: () => tui.requestRender() };
 				const container = new Box(2, 1, (text) => theme.bg("userMessageBg", text));
@@ -141,6 +140,7 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 					render: (width: number) => container.render(width),
 					invalidate: () => container.invalidate(),
 					handleInput: (data: string) => {
+						if (getKeybindings().matches(data, "tui.select.cancel")) return;
 						if (matchesKey(data, "alt+m")) {
 							done(undefined);
 							return;
