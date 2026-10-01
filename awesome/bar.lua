@@ -45,7 +45,7 @@ local function punch_state(status)
 	elseif to:match("^%d%d:%d%d$") then
 		return from .. "  " .. ARROWS .. "  " .. to, theme.mod_backlight, theme.bg_normal
 	end
-	return from, theme.mod_mem, theme.bg_normal
+	return from .. "  " .. ARROWS .. "  --", theme.mod_mem, theme.bg_normal
 end
 
 local punch, punch_timer = awful.widget.watch(punch_cmd .. " status", 300, function(widget, stdout)
