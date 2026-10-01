@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "exa": { "url": "https://mcp.exa.ai/mcp" },
+    "exa": { "url": "https://mcp.exa.ai/mcp", "headers": { "Authorization": "Bearer ${EXA_API_KEY}" } },
     "ref": { "url": "https://api.ref.tools/mcp", "headers": { "x-ref-api-key": "${REF_API_KEY}" } },
     "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest"] }
   }
