@@ -16,11 +16,12 @@ OUT_DIR="$STATE_DIR/out"
 [ -d "$STATE_DIR" ] || { echo "ERROR: no state dir for $REPO#$PR_NUM — run prepare.sh first." >&2; exit 1; }
 
 PR_GROUPS=$(cut -f2 "$STATE_DIR/file-groups.tsv" | LC_ALL=C sort -u)
+LENSES="correctness conformance necessity security reliability tests"
 
 echo "== Missing lens output =="
 MISSING=0
 for g in $PR_GROUPS; do
-  for lens in correctness conformance necessity; do
+  for lens in $LENSES; do
     f="$OUT_DIR/$g-$lens.jsonl"
     if [ ! -f "$f" ]; then
       echo "MISSING: $g-$lens.jsonl (re-run this one lens once, then re-run post.sh)"
@@ -33,7 +34,7 @@ done
 echo "== File coverage (files assigned to a lens vs files it reported reading) =="
 : > "$STATE_DIR/all-findings.jsonl"
 for g in $PR_GROUPS; do
-  for lens in correctness conformance necessity; do
+  for lens in $LENSES; do
     f="$OUT_DIR/$g-$lens.jsonl"
     [ -f "$f" ] || continue
     jq -r 'select(.type=="file") | .path' "$f" 2>/dev/null | LC_ALL=C sort -u > "$f.read"

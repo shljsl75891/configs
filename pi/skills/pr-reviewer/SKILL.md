@@ -58,7 +58,7 @@ If the invoking command supplied project conventions ("house rules") or acceptan
 
 ### 4. Lens runs
 
-Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `lenses/conformance.md`, `lenses/necessity.md`. For each group `$g`, spawn all 3 as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), batched 4 tasks at a time (the tool's limit). Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
+Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), batched 4 tasks at a time (the tool's limit), one per lens. Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
 
 ```
 MODE: PR_LENS_REVIEW
@@ -71,6 +71,8 @@ Acceptance criteria (if present, correctness lens only): $STATE_DIR/ac.md
 ID prefix for findings: $g-<lens>-
 Output: append JSONL to $STATE_DIR/out/$g-<lens>.jsonl
 
+RECALL MANDATE: Assume this diff contains bugs. The human deletes unwanted comments later, so a missed bug costs more than a noisy comment. List EVERY finding; do not stop at the first. Apply no confidence, nit, style, or "will the author agree" filter. Read outside the diff freely (callers, callees, siblings, config, tests). Flag pre-existing issues on diff lines as ❓. A high-impact issue you cannot prove is a ❓, never dropped. Do not read the PR title or description.
+
 Follow this method:
 <paste the full content of lenses/<lens>.md here>
 
@@ -78,7 +80,7 @@ Comment format (write the finding's "body" field exactly in this shape):
 <paste the COMMENT FORMAT section below here>
 ```
 
-(One task per lens name — `correctness`, `conformance`, `necessity` — each writing its own `$g-<lens>.jsonl`.)
+(One task per lens name — `correctness`, `conformance`, `necessity`, `security`, `reliability`, `tests` — each writing its own `$g-<lens>.jsonl`.)
 
 ### 5. Retry a crashed lens
 
@@ -102,9 +104,9 @@ Paste `post.sh`'s own summary output (it already has the counts and the review U
 
 ## SEVERITY TAXONOMY
 
-- 🔴 **Critical** — security, auth, data loss/corruption, resource/transaction leaks
+- 🔴 **Critical** — security, auth, data loss/corruption, resource/transaction leaks, money/precision errors, silent failure of a write path, unsafe rollout/migration
 - 🟣 **Structural** — ad-hoc conditional bolted onto an unrelated flow | feature logic in shared/general-purpose code | thin wrapper/identity abstraction with no clarity gain | a restructure would delete whole branches/layers instead of adding to them | logic in the wrong layer
-- 🟠 **Major** — performance (N+1, sequential `await` where `Promise.all` applies) | bespoke helper duplicating a canonical utility | boundary/type erosion (`any`/`unknown`/casts hiding an invariant)
+- 🟠 **Major** — missing test for changed behavior | swallowed error | missing timeout/retry bound | performance (N+1, sequential `await` where `Promise.all` applies) | bespoke helper duplicating a canonical utility | boundary/type erosion (`any`/`unknown`/casts hiding an invariant)
 - 🟡 **Improve** — naming, legibility, comment quality, parameter shape
 - ❓ **Question** — a finding the lens could not fully prove, or a pre-existing issue found on a diff line
 
@@ -166,7 +168,7 @@ Preconditions → prepare.sh (detached worktree @HEAD_SHA, local diff, hunks, gr
 ↓
 Context (house rules + AC from caller)
 ↓
-correctness + conformance + necessity, per group, in parallel — each decides proven vs. ❓ itself
+correctness + conformance + necessity + security + reliability + tests, per group, in parallel (2 batches) — each decides proven vs. ❓ itself
 ↓
 Retry any lens with no output, once
 ↓

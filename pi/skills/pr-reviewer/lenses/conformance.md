@@ -10,8 +10,10 @@ Goal: find code that does not follow the patterns already established in this co
 4. **Check the architectural layer.** Does this logic sit where the codebase's own layering puts that kind of logic (e.g. validation, orchestration, persistence), matching what the analogs do?
 5. **Check whether a new endpoint, file, or module duplicates something an existing one could be extended to cover instead.**
 6. **If house rules were given** (`house-rules.md`), check every hunk against them. House rules describe what the code itself cannot show you — team preferences, business rules, naming conventions specific to this repo. Apply them the same way as the rest of this method, not as a separate pass.
-7. **Before writing a finding, check `existing-comments.jsonl`** for the same path and a nearby line; skip it if already raised there.
-8. **Decide proven vs. question yourself.** You named the exact sibling file and the exact difference → Issue/Fix format. You suspect a deviation but can't point to a specific sibling that does it differently → ❓ question format.
+7. **Type design**: states that should be illegal but the type allows (optional fields that are really required together, `string` where a union fits, boolean flags that combine into impossible states); invariants not enforced at construction; mutable internals exposed; `any`; `@ts-ignore`/`@ts-expect-error` with no reason; `unknown`/casts hiding an invariant; DTO and entity types diverging from the analogs; a type/interface duplicated instead of derived (`Pick`/`Omit`/`ReturnType`).
+8. **Contracts and docs**: README, OpenAPI, JSDoc, migration notes, or CHANGELOG not updated for a changed signature, route, or env var; new env var/config key missing from the sample/validation schema.
+9. **Before writing a finding, check `existing-comments.jsonl`** for the same path and a nearby line; skip it if already raised there.
+10. **Decide proven vs. question yourself.** You named the exact sibling file and the exact difference → Issue/Fix format. You suspect a deviation but can't point to a specific sibling that does it differently → ❓ question format.
 
 ## Output
 
