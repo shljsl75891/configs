@@ -1,8 +1,7 @@
 {
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.0",
   "theme": "gruvbox-dark-hard",
-  "tuiMode": "fullscreen",
-  "quietStartup": true,
+  "quietStartup": "header",
   "defaultProvider": "anthropic",
   "modeModels": {
     "plan": "anthropic/claude-opus-5-5",
