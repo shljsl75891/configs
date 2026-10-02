@@ -2,8 +2,8 @@
  * Alt+M: open the MCP server list. Type to filter; Enter toggles; Esc and Ctrl+C
  * close. Alt+M and Space do nothing inside the list.
  * Servers come from ~/.pi/agent/mcp-servers.json and, in a trusted project,
- * .pi/mcp-servers.json. Pi does not read these files, so all servers are off
- * at the start of every session. Changes apply at once and are not saved.
+ * .pi/mcp-servers.json. Servers with enabled:true start with the session; the
+ * rest start off. Changes in the list apply at once and are not saved.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -47,7 +47,7 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 	};
 
 	const hasTools = (name: string) =>
-		pi.getAllTools().some((tool) => tool.namespace?.name === `mcp__${name}` && tool.exposure !== "hidden");
+		pi.getAllTools().some((tool) => tool.namespace?.name === `mcp__${name.replace(/-/g, "_")}` && tool.exposure !== "hidden");
 
 	const turnOff = (name: string) => {
 		stop(name);
@@ -56,7 +56,8 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 	};
 
 	const turnOn = (ctx: ExtensionContext, name: string, config: unknown) => {
-		pi.registerMcpServer(name, config as never);
+		stop(name);
+		pi.registerMcpServer(name, { ...(config as object), enabled: true } as never);
 		state.set(name, "…");
 		show(name, "…");
 		const started = Date.now();
@@ -79,6 +80,24 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 	pi.on("session_shutdown", () => {
 		for (const name of timers.keys()) stop(name);
 		view = undefined;
+	});
+
+	pi.on("session_start", (_event, ctx) => {
+		let servers: Record<string, unknown>;
+		try {
+			servers = loadServers(ctx);
+		} catch (error) {
+			ctx.ui.notify(`${FILE}: ${error instanceof Error ? error.message : error}`, "error");
+			return;
+		}
+		for (const [name, config] of Object.entries(servers)) {
+			if ((config as { enabled?: unknown }).enabled !== true) continue;
+			try {
+				turnOn(ctx, name, config);
+			} catch (error) {
+				ctx.ui.notify(`${name}: ${error instanceof Error ? error.message : error}`, "error");
+			}
+		}
 	});
 
 	pi.registerShortcut("alt+m", {
