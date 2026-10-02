@@ -126,6 +126,28 @@ describe("markerExtension", () => {
 		assert.ok(fs.existsSync(badFile), "result written after retry");
 	});
 
+	it("keeps findings from before a question call and before a follow-up", async () => {
+		const msg = (role: string, content: unknown[]) => ({ type: "message", message: { role, content, stopReason: "stop" } });
+		const text = (t: string) => ({ type: "text", text: t });
+		const entries = [
+			msg("user", [text("task")]),
+			msg("assistant", [text("let me check"), { type: "toolCall", name: "read" }]),
+			msg("assistant", [text("FINDINGS"), { type: "toolCall", name: "question" }]),
+			msg("toolResult", [text("answer")]),
+			msg("assistant", [text("CHANGES")]),
+			msg("user", [text("follow-up")]),
+			msg("assistant", [text("FINAL")]),
+		];
+		const { pi, fire } = fakePi();
+		markerExtension(pi);
+
+		await fire("agent_settled", { sessionManager: { getEntries: () => entries } });
+
+		const { output } = JSON.parse(fs.readFileSync(resultFile, "utf-8"));
+		const sep = "\n\n--- after user input ---\n\n";
+		assert.equal(output, ["FINDINGS", "CHANGES", "FINAL"].join(sep));
+	});
+
 	it("does not write the review marker after successful delivery", async () => {
 		const { pi, fire } = fakePi();
 		markerExtension(pi);

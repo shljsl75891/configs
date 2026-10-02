@@ -13,6 +13,7 @@
 
 import * as fs from "node:fs";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+import type { AssistantMessage, UserMessage } from "@earendil-works/pi-ai";
 /**
  * Static, not dynamic: only pi's extension loader can resolve pi-tui for a
  * sibling extension, so an `import()` at runtime would always fail.
@@ -26,6 +27,8 @@ import { formatWindowName, type WindowState } from "./window-name.ts";
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
 const SEND = "Send as-is";
 const FOLLOW_UP_LABEL = "Reply with a follow-up";
+
+type AssistantOrUser = AssistantMessage | UserMessage;
 
 type FollowUpContent = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
 
@@ -44,18 +47,51 @@ async function renameWindow(pi: ExtensionAPI, state: WindowState): Promise<void>
 	await pi.exec("tmux", ["rename-window", "-t", pane, formatWindowName(state, label, depth)]);
 }
 
-function collectResult(ctx: ExtensionContext): SubagentResult {
-	const entry = ctx.sessionManager
-		.getEntries()
-		.findLast((e) => e.type === "message" && e.message.role === "assistant");
-	if (!entry || entry.type !== "message") {
-		return { status: "error", output: "(no output)", errorMessage: "Agent produced no assistant message." };
-	}
-	const message = entry.message;
-	const output = message.content
+const SEGMENT_SEPARATOR = "\n\n--- after user input ---\n\n";
+
+function textOf(content: readonly { type: string }[]): string {
+	return content
 		.filter((part): part is { type: "text"; text: string } => part.type === "text")
 		.map((part) => part.text)
 		.join("\n");
+}
+
+/**
+ * The user may answer a question or send a follow-up after the findings were
+ * shown, so the last message alone can hold only the changes. Keep the text the
+ * user saw as output: messages that asked a question, the last message before
+ * each follow-up, and the final message.
+ */
+function collectOutput(messages: readonly AssistantOrUser[], final: AssistantMessage): string {
+	const kept: AssistantMessage[] = [];
+	const keep = (m: AssistantMessage): void => {
+		if (kept.at(-1) !== m) kept.push(m);
+	};
+	let lastWithText: AssistantMessage | undefined;
+	let seenTask = false;
+	for (const message of messages) {
+		if (message.role === "assistant") {
+			if (!textOf(message.content)) continue;
+			lastWithText = message;
+			if (message.content.some((part) => part.type === "toolCall" && part.name === "question")) keep(message);
+		} else {
+			if (seenTask && lastWithText) keep(lastWithText);
+			seenTask = true;
+		}
+	}
+	keep(final);
+	return kept.map((m) => textOf(m.content)).filter(Boolean).join(SEGMENT_SEPARATOR);
+}
+
+function collectResult(ctx: ExtensionContext): SubagentResult {
+	const messages = ctx.sessionManager
+		.getEntries()
+		.flatMap((e) => (e.type === "message" && (e.message.role === "assistant" || e.message.role === "user") ? [e.message] : []));
+	const message = messages.findLast((m): m is AssistantMessage => m.role === "assistant");
+	if (!message) {
+		return { status: "error", output: "(no output)", errorMessage: "Agent produced no assistant message." };
+	}
+	const output = collectOutput(messages, message);
 	const isError = Boolean(message.errorMessage) || message.stopReason === "error" || message.stopReason === "aborted";
 	return {
 		status: isError ? "error" : "ok",
