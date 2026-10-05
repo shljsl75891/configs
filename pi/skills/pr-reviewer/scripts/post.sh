@@ -83,6 +83,17 @@ jq -s 'unique_by([.path, .line, .side, .body])' "$STATE_DIR/valid-findings.jsonl
 AFTER=$(jq 'length' "$STATE_DIR/deduped-findings.json")
 echo "Before: $BEFORE  After: $AFTER  Merged: $((BEFORE-AFTER))"
 
+echo "== Triage filter (approved-ids.txt, written by SKILL.md Step 6) =="
+if [ "$DRY_RUN" = "0" ]; then
+  [ -f "$STATE_DIR/approved-ids.txt" ] || { echo "ERROR: $STATE_DIR/approved-ids.txt missing — run the interrogate & triage step first." >&2; exit 1; }
+  jq --rawfile ids "$STATE_DIR/approved-ids.txt" '($ids | split("\n")) as $ok | map(select(.id | IN($ok[])))' \
+    "$STATE_DIR/deduped-findings.json" > "$STATE_DIR/triaged-findings.json"
+  mv "$STATE_DIR/triaged-findings.json" "$STATE_DIR/deduped-findings.json"
+  echo "Dropped in triage: $((AFTER-$(jq 'length' "$STATE_DIR/deduped-findings.json")))"
+else
+  echo "--dry-run: skipped"
+fi
+
 echo "== Findings by lens =="
 jq -r '.[].lens' "$STATE_DIR/deduped-findings.json" | sort | uniq -c
 
@@ -130,7 +141,7 @@ elif [ "$PENDING_SHA" = "$HEAD_SHA" ]; then
       -f rid="$NODE_ID" -f path="$(jq -r .path <<<"$c")" -f body="$(jq -r .body <<<"$c")" \
       -F line="$(jq -r .line <<<"$c")" -f side="$(jq -r .side <<<"$c")" \
       -F startLine="$(jq -r '.start_line // "null"' <<<"$c")" -F startSide="$(jq -r '.start_side // "null"' <<<"$c")" > /dev/null
-    sleep 0.7   # stay under the 80/min content-generating secondary rate limit
+    sleep 1.2   # GitHub docs: wait >=1s between mutative requests; limit is 80 content-generating/min, 500/hour
   done
 else
   echo "STOP: a pending review exists at commit $PENDING_SHA, not the current head $HEAD_SHA."

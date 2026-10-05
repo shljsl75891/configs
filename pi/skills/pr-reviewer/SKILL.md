@@ -18,7 +18,7 @@ Flag every issue you find. No count cap. No confidence score. No filter for "nit
 - an existing PR comment already raises it — cite the comment URL;
 - a lint/type-check rule that actually runs in this repo's CI already catches it — cite the config `path:line`.
 
-Everything else posts. A finding you cannot fully prove still posts, as a ❓ question — never silence it. Each lens makes this proven-vs-question call itself, at the moment it writes the finding — there is no separate verification pass.
+Everything else goes to triage (Step 6). Only the human drops a finding there; the agent only recommends. A finding you cannot fully prove stays, as a ❓ question — never silence it. Each lens makes the proven-vs-question call itself when it writes the finding; Step 6 re-checks it and the human decides.
 
 A pre-existing bug on a line inside a diff hunk still posts, as a ❓ question. A bug repeated at N sites gets a comment at each site — do not collapse them into one summary comment. Generated and lock files (`package-lock.json`, generated OpenAPI specs, snapshots) are reviewed like any other changed file.
 
@@ -71,7 +71,7 @@ Acceptance criteria (if present, correctness lens only): $STATE_DIR/ac.md
 ID prefix for findings: $g-<lens>-
 Output: append JSONL to $STATE_DIR/out/$g-<lens>.jsonl
 
-RECALL MANDATE: Assume this diff contains bugs. The human deletes unwanted comments later, so a missed bug costs more than a noisy comment. List EVERY finding; do not stop at the first. Apply no confidence, nit, style, or "will the author agree" filter. Read outside the diff freely (callers, callees, siblings, config, tests). Flag pre-existing issues on diff lines as ❓. A high-impact issue you cannot prove is a ❓, never dropped. Do not read the PR title or description.
+RECALL MANDATE: Assume this diff contains bugs. The human triages every finding before posting, so a missed bug costs more than a noisy comment. List EVERY finding; do not stop at the first. Apply no confidence, nit, style, or "will the author agree" filter. Read outside the diff freely (callers, callees, siblings, config, tests). Flag pre-existing issues on diff lines as ❓. A high-impact issue you cannot prove is a ❓, never dropped. Do not read the PR title or description.
 
 Follow this method:
 <paste the full content of lenses/<lens>.md here>
@@ -84,21 +84,35 @@ Comment format (write the finding's "body" field exactly in this shape):
 
 ### 5. Retry a crashed lens
 
-`post.sh` (Step 6) reports any `$g-<lens>.jsonl` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
+`post.sh` (Step 6 dry-run) reports any `$g-<lens>.jsonl` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
 
-### 6. Post
+### 6. Interrogate & triage
 
-Run this skill's `scripts/post.sh <PR_NUM>` (add `--dry-run` to preview without posting). It, in order:
+Always runs; no skip. Never drop a finding on your own.
+
+1. **Preview.** Run `scripts/post.sh <PR_NUM> --dry-run`. It writes validated, deduped `$STATE_DIR/deduped-findings.json` (each item has `id`, `path`, `line`, `side`, `body`, `lens`).
+2. **Challenge.** Re-check every finding against `$STATE_DIR/src`. Give one verdict:
+   - **Holds** — evidence as `path:line`.
+   - **Weak** — cannot prove it; recommend downgrade to ❓.
+   - **Wrong** — proof as `path:line` (POLICY drop reasons only).
+3. **Table.** Print: `#`, id, severity, lens, `path:line[side]`, title, verdict.
+4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens, ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
+5. **Apply.** Edits and downgrades rewrite `body` in `deduped-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+
+### 7. Post
+
+Run this skill's `scripts/post.sh <PR_NUM>` (needs `approved-ids.txt`; `--dry-run` previews without posting). It, in order:
 
 1. Reports any missing lens output (Step 5 above).
 2. Reports file coverage: for each group and lens, any assigned file the lens did not report reading.
 3. Validates every finding's line against `hunks.tsv` — drops a finding whose line sits outside every hunk of that path+side, and downgrades a multi-line finding to single-line if only its end line is valid.
 4. Removes exact duplicates (same path, line, side and body — e.g. two lenses independently catching the identical dead-parameter case).
-5. Prints counts by lens and by severity (the first character of each `body`).
-6. Checks for a pending review at the current head commit and appends to it (GraphQL), bulk-creates a new one if none exists, or stops if a pending review exists at a different commit.
-7. Verifies the response `state` is `PENDING`.
+5. Keeps only findings whose id is in `approved-ids.txt` (not in `--dry-run`); prints how many triage dropped.
+6. Prints counts by lens and by severity (the first character of each `body`).
+7. Checks for a pending review at the current head commit and appends to it (GraphQL, one call per comment, 1.2s apart — GitHub caps content creation at 80/min and 500/hour per user), bulk-creates a new one if none exists, or stops if a pending review exists at a different commit.
+8. Verifies the response `state` is `PENDING`.
 
-### 7. Report
+### 8. Report
 
 Paste `post.sh`'s own summary output (it already has the counts and the review URL) plus your acceptance-criteria coverage line if the caller supplied `ac.md`.
 
@@ -145,6 +159,7 @@ Write the `Issue` text or the question text in Simplified Technical English (ASD
 - [ ] Local diff file count matches GitHub's `changedFiles` (or the mismatch is explained)
 - [ ] Every lens's `$g-<lens>.jsonl` exists (retried once if missing)
 - [ ] File coverage checked; any gap named in the report
+- [ ] Every finding challenged and triaged; `approved-ids.txt` written
 - [ ] Every finding's line is inside a hunk of the same path + side
 - [ ] Exact duplicates merged
 - [ ] Bulk-create payload has exactly 2 keys: `commit_id`, `comments`; no `body`/`event`
@@ -171,6 +186,8 @@ Context (house rules + AC from caller)
 correctness + conformance + necessity + security + reliability + tests, per group, in parallel (2 batches) — each decides proven vs. ❓ itself
 ↓
 Retry any lens with no output, once
+↓
+post.sh --dry-run → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
 ↓
 post.sh: file coverage report → line validation → dedup → build comments → post (append to same-commit
 pending review | bulk-create | stop on stale pending) → report
