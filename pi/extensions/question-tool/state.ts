@@ -45,11 +45,11 @@ export function customRow(question: QuestionSpec): number {
 }
 
 export function isConfirmTab(state: State, questions: QuestionSpec[]): boolean {
-	return questions.length > 1 && state.tab === questions.length;
+	return state.tab === questions.length;
 }
 
 function lastTab(questions: QuestionSpec[]): number {
-	return questions.length > 1 ? questions.length : 0;
+	return questions.length;
 }
 
 function clamp(value: number, max: number): number {
@@ -135,7 +135,6 @@ function replace<T>(values: T[], index: number, value: T): T[] {
 
 /** Exclusive answers (single-select, or any custom text) move on by themselves: to the next question, or straight out. */
 function advance(state: State, questions: QuestionSpec[]): State {
-	if (questions.length === 1) return { ...state, submitted: true };
 	const newTab = clamp(state.tab + 1, lastTab(questions));
 	return { ...state, tab: newTab, cursor: defaultCursor(state, questions, newTab) };
 }

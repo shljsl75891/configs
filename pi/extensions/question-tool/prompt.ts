@@ -270,7 +270,6 @@ export function askQuestions(
 			lines.push(theme.fg("accent", "─".repeat(renderWidth)));
 
 			function renderTabBar() {
-				if (questions.length <= 1) return;
 				const headers = [...questions.map((q) => q.header), "Confirm"];
 				const ends: number[] = [];
 				let column = 1;

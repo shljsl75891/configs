@@ -50,10 +50,11 @@ describe("answers", () => {
 });
 
 describe("choosing", () => {
-	it("submits immediately when a lone single-select question is answered", () => {
+	it("moves a lone single-select answer to the confirm tab", () => {
 		const state = reduce(createState(one), { type: "choose", index: 1 }, one);
 		assert.deepEqual([...state.selected[0]], [1]);
-		assert.equal(state.submitted, true);
+		assert.equal(state.tab, 1);
+		assert.equal(state.submitted, false);
 	});
 
 	it("replaces the previous choice in a single-select question", () => {
@@ -126,7 +127,7 @@ describe("custom answers", () => {
 
 	it("drops a fixed choice when a custom answer replaces it", () => {
 		let state = reduce(createState(one), { type: "choose", index: 0 }, one);
-		state = reduce({ ...state, submitted: false }, { type: "custom", text: "typed" }, one);
+		state = reduce({ ...state, tab: 0 }, { type: "custom", text: "typed" }, one);
 		assert.deepEqual([...state.selected[0]], []);
 		assert.equal(state.custom[0], "typed");
 	});
@@ -178,8 +179,8 @@ describe("navigation", () => {
 		assert.equal(state.tab, 2, "clamped at the confirm tab");
 	});
 
-	it("has no confirm tab for a single question", () => {
+	it("has a confirm tab for a single question", () => {
 		const state = reduce(createState(one), { type: "tab", delta: 1 }, one);
-		assert.equal(state.tab, 0);
+		assert.equal(state.tab, 1);
 	});
 });
