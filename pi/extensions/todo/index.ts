@@ -109,7 +109,7 @@ export default function todo(pi: ExtensionAPI): void {
 		handler: async (ctx) => {
 			if (open) return;
 			open = true;
-			let changed = false;
+			const before = formatTodos(state);
 			/** Apply a popup edit. The agent can delete an item while the popup is open, so errors go to a notice. */
 			const commit = (change: () => TodoState): boolean => {
 				let next: TodoState;
@@ -121,7 +121,6 @@ export default function todo(pi: ExtensionAPI): void {
 				}
 				if (next === state) return false;
 				state = next;
-				changed = true;
 				pi.appendEntry(ENTRY_TYPE, state);
 				return true;
 			};
@@ -166,6 +165,7 @@ export default function todo(pi: ExtensionAPI): void {
 						box.addChild({
 							render: (width: number) => {
 								const lines: string[] = [];
+								// The agent can delete items while the popup is open.
 								clampSelected();
 								if (state.todos.length === 0) lines.push(theme.fg("dim", "No todos"));
 								const start = Math.max(0, Math.min(selected - Math.floor(MAX_ROWS / 2), state.todos.length - MAX_ROWS));
@@ -183,11 +183,9 @@ export default function todo(pi: ExtensionAPI): void {
 							const current = state.todos[selected];
 							if (matchesKey(data, "escape") || matchesKey(data, "ctrl+c")) done(undefined);
 							else if (matchesKey(data, "shift+up") && current) {
-								commit(() => moveTodo(state, current.id, -1));
-								selected = Math.max(0, selected - 1);
+								if (commit(() => moveTodo(state, current.id, -1))) selected -= 1;
 							} else if (matchesKey(data, "shift+down") && current) {
-								commit(() => moveTodo(state, current.id, 1));
-								selected = Math.min(state.todos.length - 1, selected + 1);
+								if (commit(() => moveTodo(state, current.id, 1))) selected += 1;
 							} else if (matchesKey(data, "up") || matchesKey(data, "ctrl+p")) selected = Math.max(0, selected - 1);
 							else if (matchesKey(data, "down") || matchesKey(data, "ctrl+n")) {
 								selected += 1;
@@ -220,7 +218,7 @@ export default function todo(pi: ExtensionAPI): void {
 				open = false;
 				refresh = undefined;
 				// triggerTurn false: an idle agent reads it with the next prompt; a running agent gets it after the current tool batch.
-				if (changed) {
+				if (formatTodos(state) !== before) {
 					pi.sendMessage(
 						{ customType: UPDATE_TYPE, content: `The user changed the todo list. Current list:\n${formatTodos(state)}`, display: false },
 						{ triggerTurn: false },

@@ -16,7 +16,7 @@ export interface TodoState {
 
 export const EMPTY: Readonly<TodoState> = { todos: [], nextId: 1, rev: 0 };
 
-export const MARKS: Record<Status, string> = { pending: " ", in_progress: "~", done: "x" };
+const MARKS: Record<Status, string> = { pending: " ", in_progress: "~", done: "x" };
 
 function indexOf(state: TodoState, id: number): number {
 	const index = state.todos.findIndex((todo) => todo.id === id);
@@ -76,7 +76,12 @@ export const ENTRY_TYPE = "todo-state";
 
 export function isTodoState(value: unknown): value is TodoState {
 	const candidate = value as Partial<TodoState> | null;
-	return Array.isArray(candidate?.todos) && typeof candidate.nextId === "number" && typeof candidate.rev === "number";
+	return (
+		Array.isArray(candidate?.todos) &&
+		typeof candidate.nextId === "number" &&
+		typeof candidate.rev === "number" &&
+		candidate.todos.every((todo) => typeof todo?.id === "number" && typeof todo.text === "string" && STATUSES.includes(todo.status))
+	);
 }
 
 /** Return the newest saved state in a branch, oldest entry first. A failed tool call saves no state, so such entries are skipped. */

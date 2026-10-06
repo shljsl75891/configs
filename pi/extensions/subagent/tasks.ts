@@ -3,7 +3,7 @@
  * can be unit-tested without importing the full extension module.
  */
 
-export const MAX_CONCURRENT = 4;
+export const MAX_CONCURRENT = 8;
 export const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000;
 export const MIN_TIMEOUT_MS = 1_000;
 export const MAX_TIMEOUT_MS = 60 * 60 * 1_000;

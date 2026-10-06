@@ -132,6 +132,11 @@ describe("restoreState", () => {
 		assert.deepEqual(restoreState([tool(three), tool({})]), three);
 	});
 
+	it("skips state with a malformed item", () => {
+		const bad = { ...other, todos: [{ id: 1, text: "x", status: "bogus" }] };
+		assert.deepEqual(restoreState([tool(three), tool(bad), saved({ ...other, todos: [null] })]), three);
+	});
+
 	it("ignores other tools and entries", () => {
 		const noise = [{ type: "message", message: { role: "toolResult", toolName: "bash", details: other } }, { type: "custom", customType: "x", data: other }];
 		assert.deepEqual(restoreState([tool(three), ...noise]), three);

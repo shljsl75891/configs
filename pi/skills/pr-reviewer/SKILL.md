@@ -58,7 +58,7 @@ If the invoking command supplied project conventions ("house rules") or acceptan
 
 ### 4. Lens runs
 
-Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), batched 4 tasks at a time (the tool's limit), one per lens. Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
+Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8), one per lens. Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
 
 ```
 MODE: PR_LENS_REVIEW
