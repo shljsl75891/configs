@@ -39,6 +39,14 @@ describe("buildPiCommand", () => {
 		assert.ok(buildPiCommand({ task: "x", plan: true }).includes("--plan=true"));
 	});
 
+	it("adds --approve only when approve is set, keeping task last", () => {
+		assert.ok(!buildPiCommand({ task: "x" }).includes("--approve"));
+		assert.ok(!buildPiCommand({ task: "x", approve: false }).includes("--approve"));
+		const cmd = buildPiCommand({ task: "x", approve: true });
+		assert.ok(cmd.includes("'--approve'"));
+		assert.ok(cmd.endsWith("'Task: x'"));
+	});
+
 	it("omits --plan when explicitly false", () => {
 		assert.ok(!buildPiCommand({ task: "x", plan: false }).includes("--plan"));
 	});

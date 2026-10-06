@@ -17,6 +17,7 @@ import { Type } from "typebox";
 import { onPlanModeChange } from "../plan-mode/index.ts";
 import { modelKey } from "../lib/model.ts";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.ts";
+import { onAutoApproveChange } from "../lib/auto-approve.ts";
 import { buildPiCommand } from "./command.ts";
 import { childDepth, ENV } from "./protocol.ts";
 import { clampTimeout, DEFAULT_TIMEOUT_MS, MAX_CONCURRENT, MAX_TIMEOUT_MS, normalizeTasks } from "./tasks.ts";
@@ -41,6 +42,8 @@ interface RunSubagentOptions {
 	depth: number;
 	/** Parent is in plan mode: the child starts with --plan so its own permission rules apply. */
 	plan: boolean;
+	/** Parent has auto-approve on: the child starts with --approve. */
+	approve: boolean;
 	onReview?: (agent: string, windowId: string, reviewing: boolean) => void;
 }
 
@@ -55,6 +58,7 @@ async function runSubagent({
 	signal,
 	depth,
 	plan,
+	approve,
 	onReview,
 }: RunSubagentOptions): Promise<RunResult> {
 	const agent = agents.find((a) => a.name === agentName);
@@ -83,7 +87,7 @@ async function runSubagent({
 		}
 
 		const model = agent.model ?? modelKey(ctx.model);
-		const command = buildPiCommand({ model, systemPromptFile, task, plan });
+		const command = buildPiCommand({ model, systemPromptFile, task, plan, approve });
 
 		if (signal?.aborted) {
 			return { agent: agent.name, agentSource: agent.source, task, status: "aborted", output: "", errorMessage: "Aborted." };
@@ -202,6 +206,10 @@ export default function (pi: ExtensionAPI) {
 	onPlanModeChange(pi, (enabled) => {
 		planActive = enabled;
 	});
+	let approveActive = false;
+	onAutoApproveChange(pi, (enabled) => {
+		approveActive = enabled;
+	});
 
 	// Only root sweeps; children would duplicate the scan (non-critical).
 	if (depth === 0) void sweepStaleTempDirs(pi);
@@ -286,7 +294,7 @@ export default function (pi: ExtensionAPI) {
 
 			// allSettled: a failed spawn must not discard sibling window ids.
 			const settled = await Promise.allSettled(
-				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, plan: planActive, onReview: reportReview })),
+				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, plan: planActive, approve: approveActive, onReview: reportReview })),
 			);
 			const results: RunResult[] = settled.map((outcome, i) =>
 				outcome.status === "fulfilled"

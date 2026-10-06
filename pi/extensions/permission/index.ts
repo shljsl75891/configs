@@ -20,6 +20,7 @@ import { homedir } from "node:os";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { askQuestions } from "../question-tool/prompt.ts";
 import { APPROVE_STATUS_KEY } from "../lib/status-keys.ts";
+import { AUTO_APPROVE_EVENT } from "../lib/auto-approve.ts";
 import { onPlanModeChange } from "../plan-mode/index.ts";
 import { readAgentSetting } from "../lib/settings.ts";
 import { type Action, type Rules, decideBash, matchRule, pathSubjects, strictest } from "./match.ts";
@@ -123,7 +124,11 @@ function describeCall(toolName: string, input: Record<string, unknown>): string 
 export default function (pi: ExtensionAPI) {
   // Raw argv, not registerFlag: registerFlag has no short-alias support (needed for -a).
   let autoApprove = process.argv.some((a) => a === "--approve" || a === "-a");
-  const showApprove = (ctx: ExtensionContext) => ctx.ui.setStatus(APPROVE_STATUS_KEY, autoApprove ? "(auto)" : undefined);
+  /* Also tells the subagent extension. Children get the state when they start. */
+  const showApprove = (ctx: ExtensionContext) => {
+    ctx.ui.setStatus(APPROVE_STATUS_KEY, autoApprove ? "(auto)" : undefined);
+    pi.events.emit(AUTO_APPROVE_EVENT, { enabled: autoApprove });
+  };
   pi.registerCommand("approve", {
     description: "Toggle auto-approve of permission prompts (deny rules still apply)",
     handler: async (_args, ctx) => {

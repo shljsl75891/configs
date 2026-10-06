@@ -24,6 +24,10 @@ export function buildPiCommand(opts: {
 	 *  its own permission extension then denies edit/write/bash-writes the
 	 *  same way the parent's does. */
 	plan?: boolean;
+	/** Gives the child the parent's auto-approve state. The pi `--approve` flag
+	 *  also makes the child trust project-local files. The CLI parser reads it
+	 *  as a boolean flag, so it does not take the next argument. */
+	approve?: boolean;
 }): string {
 	const tokens = ["pi", "-e", MARKER_EXTENSION_PATH, "--no-session"];
 	if (opts.model) tokens.push("--model", opts.model);
@@ -40,6 +44,7 @@ export function buildPiCommand(opts: {
 	 * different branch that never touches the next arg.
 	 */
 	if (opts.plan) tokens.push("--plan=true");
+	if (opts.approve) tokens.push("--approve");
 	tokens.push(`Task: ${opts.task}`);
 	return tokens.map(shellQuote).join(" ");
 }

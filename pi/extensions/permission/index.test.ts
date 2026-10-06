@@ -22,15 +22,23 @@ function fakePi(argv: string[] = []) {
   process.argv = ["node", "pi", ...argv];
   const handlers = new Map<string, Handler>();
   const planHandlers: ((data: { enabled: boolean }) => void)[] = [];
+  const emitted: { channel: string; data: unknown }[] = [];
+  const commands = new Map<string, Handler>();
   const pi = {
-    registerCommand() {},
-    events: { on: (_channel: string, handler: (data: { enabled: boolean }) => void) => planHandlers.push(handler) },
+    registerCommand: (name: string, def: { handler: Handler }) => commands.set(name, def.handler),
+    events: {
+      emit: (channel: string, data: unknown) => emitted.push({ channel, data }),
+      on: (_channel: string, handler: (data: { enabled: boolean }) => void) => planHandlers.push(handler),
+    },
     on: (event: string, handler: Handler) => handlers.set(event, handler),
   };
   permission(pi as unknown as ExtensionAPI);
   process.argv = prevArgv;
   const ctx = (hasUI: boolean) => ({ ui: { setStatus() {}, notify() {} }, hasUI, cwd: "/proj", signal: undefined });
   return {
+    emitted,
+    startSession: () => handlers.get("session_start")!({}, ctx(true)),
+    toggleApprove: () => commands.get("approve")!("", ctx(true)),
     setPlanMode: (enabled: boolean) => planHandlers.forEach((h) => h({ enabled })),
     call: (toolName: string, input: object, hasUI = true) =>
       handlers.get("tool_call")!({ toolName, input }, ctx(hasUI)) as Promise<BlockResult>,
@@ -38,6 +46,18 @@ function fakePi(argv: string[] = []) {
 }
 
 describe("permission tool_call", () => {
+  it("announces auto-approve on at session start when launched with --approve", async () => {
+    const pi = fakePi(["--approve"]);
+    await pi.startSession();
+    assert.deepEqual(pi.emitted, [{ channel: "auto-approve", data: { enabled: true } }]);
+  });
+
+  it("announces auto-approve off after /approve toggles it", async () => {
+    const pi = fakePi(["--approve"]);
+    await pi.toggleApprove();
+    assert.deepEqual(pi.emitted, [{ channel: "auto-approve", data: { enabled: false } }]);
+  });
+
   it("allows an unmatched tool with no settings", async () => {
     useSettings(undefined);
     const pi = fakePi();
