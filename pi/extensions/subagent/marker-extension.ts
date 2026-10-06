@@ -162,12 +162,13 @@ export default function markerExtension(pi: ExtensionAPI) {
 	/**
 	 * Limits only the active set, not the registry: --tools would also drop the
 	 * mcp__* tools, so Alt+M could never turn a server on. codemode stays active
-	 * because it is the only way to call MCP tools.
+	 * because it is the only way to call MCP tools. subagent stays active so any
+	 * agent can nest; at the depth cap the tool is unregistered and pi ignores the name.
 	 */
 	const tools = process.env[ENV.tools];
 	if (tools) {
 		pi.on("session_start", () => {
-			pi.setActiveTools([...tools.split(","), "codemode"]);
+			pi.setActiveTools([...tools.split(","), "codemode", "subagent"]);
 		});
 	}
 
