@@ -23,7 +23,7 @@ import { childDepth, ENV } from "./protocol.ts";
 import { clampTimeout, DEFAULT_TIMEOUT_MS, MAX_CONCURRENT, MAX_TIMEOUT_MS, normalizeTasks } from "./tasks.ts";
 import { formatWindowName } from "./window-name.ts";
 import { renderAgentBlock } from "./agent-block.ts";
-import { errorText } from "./errors.ts";
+import { errorText } from "../lib/errors.ts";
 import { type RunResult, toRunResult, formatResult } from "./run-result.ts";
 import { getCurrentTmuxSession, createTmuxWindow, isWindowAlive, killTmuxWindow } from "./tmux.ts";
 import { type WaitOutcome, waitForResult } from "./wait.ts";

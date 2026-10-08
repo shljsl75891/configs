@@ -21,7 +21,7 @@ import type { AssistantMessage, UserMessage } from "@earendil-works/pi-ai";
 import { askQuestions } from "../question-tool/prompt.ts";
 import { childDepth, ENV, reviewMarkerFor } from "./protocol.ts";
 import type { SubagentResult } from "./result.ts";
-import { errorText } from "./errors.ts";
+import { errorText } from "../lib/errors.ts";
 import { formatWindowName, type WindowState } from "./window-name.ts";
 
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;

@@ -1,5 +1,6 @@
 ---
 description: Teach the user a new skill or concept, within this workspace.
+model: anthropic/claude-opus-5-5:xhigh
 ---
 
 The user has asked you to teach them something: $ARGUMENTS
