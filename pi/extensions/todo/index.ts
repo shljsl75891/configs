@@ -6,7 +6,7 @@
  */
 import { StringEnum } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, Theme } from "@earendil-works/pi-coding-agent";
-import { Box, Input, matchesKey, Text, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import { Box, Input, matchesKey, Text, visibleWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import {
 	addTodo,
@@ -41,9 +41,16 @@ function icon(theme: Theme, status: Status): string {
 	return theme.fg("dim", "○");
 }
 
+function rowPrefix(theme: Theme, todo: Todo): string {
+	return `${icon(theme, todo.status)} ${theme.fg("muted", `#${todo.id}`)} `;
+}
+
+function rowText(theme: Theme, todo: Todo): string {
+	return todo.status === "done" ? theme.fg("dim", todo.text) : todo.text;
+}
+
 function row(theme: Theme, todo: Todo): string {
-	const text = todo.status === "done" ? theme.fg("dim", todo.text) : todo.text;
-	return `${icon(theme, todo.status)} ${theme.fg("muted", `#${todo.id}`)} ${text}`;
+	return rowPrefix(theme, todo) + rowText(theme, todo);
 }
 
 export default function todo(pi: ExtensionAPI): void {
@@ -171,7 +178,11 @@ export default function todo(pi: ExtensionAPI): void {
 								const start = Math.max(0, Math.min(selected - Math.floor(MAX_ROWS / 2), state.todos.length - MAX_ROWS));
 								for (const [i, item] of state.todos.slice(start, start + MAX_ROWS).entries()) {
 									const cursor = start + i === selected ? theme.fg("accent", "▸") : " ";
-									lines.push(truncateToWidth(`${cursor} ${row(theme, item)}`, width));
+									const prefix = `${cursor} ${rowPrefix(theme, item)}`;
+									const indent = " ".repeat(visibleWidth(prefix));
+									for (const [j, l] of wrapTextWithAnsi(rowText(theme, item), Math.max(1, width - indent.length)).entries()) {
+										lines.push((j ? indent : prefix) + l);
+									}
 								}
 								if (editing) lines.push("", ...editing.input.render(width));
 								return lines;
