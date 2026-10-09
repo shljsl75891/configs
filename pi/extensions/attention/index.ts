@@ -47,7 +47,9 @@ export default function attention(pi: ExtensionAPI) {
     }
   }
 
-  pi.on("agent_settled", () => {
+  pi.on("agent_settled", (_event, ctx) => {
+    // Non-interactive runs (e.g. ralph-loop --mode json) have nobody to alert.
+    if (ctx.mode !== "tui") return;
     /**
      * A non-review subagent's window closes itself right after this: sounding
      * an alert nobody will act on just adds noise. Review-enabled subagents
@@ -59,6 +61,7 @@ export default function attention(pi: ExtensionAPI) {
   });
 
   pi.on("ui_prompt_start", (event, ctx) => {
+    if (ctx.mode !== "tui") return;
     // Idle = user-opened UI (e.g. /mcp); only prompts raised mid-run need attention.
     if (ctx.isIdle()) return;
     /**
