@@ -63,3 +63,20 @@ sudo rm /etc/sudoers.d/mdm-suppression
 - **ScaleFusion tamperlock** — ScaleFusion ships an Endpoint Security system extension (`com.promobitech.scalefusion.mac.tamperlock.esextension`) running as root. It may detect and revive killed processes. If that happens, the 10s sleep in `kill-agents.sh` may need to be increased, or the script may need to run periodically (add `StartInterval` to the plist).
 - **macOS updates** — plist paths are hardcoded. Verify after OS or MDM agent updates.
 - **`visudo -c` must pass** — a broken sudoers file can lock you out of sudo. Always validate.
+
+## Linux: USB block (Scalefusion tux-agent)
+
+macOS sections above do not apply here. On Linux, tux-agent's "Block USB Devices" policy writes
+`/etc/udev/rules.d/99-tux-agent-usb-block.rules`, setting `authorized_default=0` on all USB
+buses. New devices are dropped ~4s after attach ("Device is not authorized for usage").
+
+`usb-authorize.sh` polls sysfs and writes `1` to the first blocked device's `authorized` file.
+
+```sh
+ln -sf "$(pwd)/usb-authorize.sh" ~/.local/bin/usb-authorize
+```
+
+Usage: start `usb-authorize` first (self-elevates via sudo), then plug the device in (waits ~60s).
+
+Re-run after every replug or device reboot — the device may re-enumerate in another mode
+(e.g. Android phone `2d95:6001` after reboot) and be blocked again.
