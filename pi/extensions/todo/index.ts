@@ -2,7 +2,7 @@
  * Todo list for the agent and the user.
  * The agent edits it with the `todo` tool. Alt+T opens a popup to add, edit,
  * delete, and reorder items. Only the agent changes status. The list is saved in the
- * session branch. When the popup closes after edits, the agent gets a hidden message with the new list.
+ * session branch. Keys: j/k move, J/K reorder, g/G top/bottom. When the popup closes after edits, the agent gets a hidden message with the new list.
  */
 import { StringEnum } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, Theme } from "@earendil-works/pi-coding-agent";
@@ -193,12 +193,16 @@ export default function todo(pi: ExtensionAPI): void {
 						const handleList = (data: string) => {
 							const current = state.todos[selected];
 							if (matchesKey(data, "escape") || matchesKey(data, "ctrl+c")) done(undefined);
-							else if (matchesKey(data, "shift+up") && current) {
+							else if (matchesKey(data, "shift+k") && current) {
 								if (commit(() => moveTodo(state, current.id, -1))) selected -= 1;
-							} else if (matchesKey(data, "shift+down") && current) {
+							} else if (matchesKey(data, "shift+j") && current) {
 								if (commit(() => moveTodo(state, current.id, 1))) selected += 1;
-							} else if (matchesKey(data, "up") || matchesKey(data, "ctrl+p")) selected = Math.max(0, selected - 1);
-							else if (matchesKey(data, "down") || matchesKey(data, "ctrl+n")) {
+							} else if (matchesKey(data, "shift+g")) {
+								selected = state.todos.length - 1;
+								clampSelected();
+							} else if (matchesKey(data, "g")) selected = 0;
+							else if (matchesKey(data, "k")) selected = Math.max(0, selected - 1);
+							else if (matchesKey(data, "j")) {
 								selected += 1;
 								clampSelected();
 							} else if (matchesKey(data, "a")) startInput();
