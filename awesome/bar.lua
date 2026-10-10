@@ -174,7 +174,7 @@ function theme.at_screen_connect(s)
 		volume = require("awesome-wm-widgets.volume-widget.volume")({
 			widget_type = "icon_and_text",
 			card = 0,
-			device = "default", -- 'pulse' needs libasound2-plugins; 'default' works
+			device = "pulse", -- needs libasound2-plugins; routes amixer to PipeWire default sink
 			mixctrl = "Master",
 			step = 5,
 			-- A known widget_type gets the top-level args table verbatim
