@@ -25,6 +25,7 @@ local palettes = {
 		mod_mem = "#fe8019",
 		mod_backlight = "#fabd2f",
 		mod_volume = "#b8bb26",
+		mod_bluetooth = "#d3869b",
 		mod_battery = "#8ec07c",
 		-- waybar reuses #8ec07c for the clock, but there it sits in
 		-- modules-center, away from the battery. Here they are adjacent, so the
@@ -61,6 +62,7 @@ local theme = {
 	mod_mem = active_palette.mod_mem,
 	mod_backlight = active_palette.mod_backlight,
 	mod_volume = active_palette.mod_volume,
+	mod_bluetooth = active_palette.mod_bluetooth,
 	mod_battery = active_palette.mod_battery,
 	mod_date = active_palette.mod_date,
 	mod_tray = active_palette.mod_tray,

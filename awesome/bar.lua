@@ -7,6 +7,7 @@ local theme = require("./theme")
 local theme_assets = require("beautiful.theme_assets")
 
 local my_table = gears.table
+local bluetooth = require("bluetooth")
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(0)
@@ -231,6 +232,10 @@ function theme.at_screen_connect(s)
 		return container
 	end
 
+	-- Buttons go on the padded module so a click on the padding also works.
+	local bluetooth_module = module(bluetooth.widget, theme.mod_bluetooth)
+	bluetooth_module:buttons(bluetooth.buttons)
+
 	local punch_part = {
 		box = module(punch, theme.bg_urgent),
 		arrow = arrow(theme.mod_date, theme.bg_urgent),
@@ -269,7 +274,9 @@ function theme.at_screen_connect(s)
 					module(widgets.brightness, theme.mod_backlight),
 					arrow(theme.mod_backlight, theme.mod_volume),
 					module(widgets.volume, theme.mod_volume),
-					arrow(theme.mod_volume, theme.mod_battery),
+					arrow(theme.mod_volume, theme.mod_bluetooth),
+					bluetooth_module,
+					arrow(theme.mod_bluetooth, theme.mod_battery),
 					module(widgets.battery, theme.mod_battery),
 					arrow(theme.mod_battery, theme.mod_tray),
 					module(systray_wrapped, theme.mod_tray, theme.fg_normal),
