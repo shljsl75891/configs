@@ -1,97 +1,51 @@
-export const STATUSES = ["pending", "in_progress", "done"] as const;
+export const TOOL_NAME = "todo";
+export const STATUSES = ["pending", "in_progress", "completed", "cancelled"] as const;
 export type Status = (typeof STATUSES)[number];
 
 export interface Todo {
-	id: number;
-	text: string;
+	content: string;
 	status: Status;
 }
 
-export interface TodoState {
-	todos: readonly Todo[];
-	nextId: number;
-	/** Rises with every change. Restore uses it to find the newest state. */
-	rev: number;
-}
+const MARKS: Record<Status, string> = { pending: " ", in_progress: "~", completed: "x", cancelled: "-" };
 
-export const EMPTY: Readonly<TodoState> = { todos: [], nextId: 1, rev: 0 };
-
-const MARKS: Record<Status, string> = { pending: " ", in_progress: "~", done: "x" };
-
-function indexOf(state: TodoState, id: number): number {
-	const index = state.todos.findIndex((todo) => todo.id === id);
-	if (index < 0) throw new Error(`Todo #${id} not found`);
-	return index;
-}
-
-function cleanText(text: string): string {
-	const clean = text.trim();
-	if (!clean) throw new Error("Todo text must not be empty");
+/** Return a clean copy of a new list, or throw so the agent sees why the call failed. */
+export function checkTodos(todos: readonly Todo[]): Todo[] {
+	const clean = todos.map((todo) => {
+		const content = todo.content.trim();
+		if (!content) throw new Error("Todo content must not be empty");
+		return { content, status: todo.status };
+	});
+	if (clean.filter((todo) => todo.status === "in_progress").length > 1) throw new Error("Only one in_progress item is allowed");
 	return clean;
 }
 
-export function addTodo(state: TodoState, text: string): TodoState {
-	const todo: Todo = { id: state.nextId, text: cleanText(text), status: "pending" };
-	return { todos: [...state.todos, todo], nextId: state.nextId + 1, rev: state.rev + 1 };
+export const hasInProgress = (todos: readonly Todo[]): boolean => todos.some((todo) => todo.status === "in_progress");
+
+export const openTodos = (todos: readonly Todo[]): Todo[] => todos.filter((todo) => todo.status === "pending" || todo.status === "in_progress");
+
+export function formatTodos(todos: readonly Todo[]): string {
+	if (todos.length === 0) return "No todos";
+	return todos.map((todo) => `[${MARKS[todo.status]}] ${todo.content}`).join("\n");
 }
 
-export function updateTodo(state: TodoState, id: number, change: Partial<Pick<Todo, "text" | "status">>): TodoState {
-	const index = indexOf(state, id);
-	const old = state.todos[index];
-	const next = { ...old, text: change.text === undefined ? old.text : cleanText(change.text), status: change.status ?? old.status };
-	if (next.text !== old.text && old.status !== "pending") throw new Error(`Todo #${id} is ${old.status}. Set it to pending before you edit the text`);
-	if (next.text === old.text && next.status === old.status) return state;
-	return { ...state, todos: state.todos.map((todo, i) => (i === index ? next : todo)), rev: state.rev + 1 };
-}
-
-export function removeTodo(state: TodoState, id: number): TodoState {
-	const index = indexOf(state, id);
-	return { ...state, todos: state.todos.filter((_, i) => i !== index), rev: state.rev + 1 };
-}
-
-export function moveTodo(state: TodoState, id: number, delta: -1 | 1): TodoState {
-	const from = indexOf(state, id);
-	const to = from + delta;
-	if (to < 0 || to >= state.todos.length) return state;
-	const todos = [...state.todos];
-	[todos[from], todos[to]] = [todos[to], todos[from]];
-	return { ...state, todos, rev: state.rev + 1 };
-}
-
-export function formatTodos(state: TodoState): string {
-	if (state.todos.length === 0) return "No todos";
-	return state.todos.map((todo) => `[${MARKS[todo.status]}] #${todo.id} ${todo.text}`).join("\n");
-}
-
-/** Minimal shape of a session entry that can hold todo state. */
+/** Minimal shape of a session entry that can hold a todo list. */
 export interface SavedEntry {
 	type: string;
-	customType?: string;
-	data?: unknown;
 	message?: { role: string; toolName?: string; details?: unknown };
 }
 
-export const TOOL_NAME = "todo";
-export const ENTRY_TYPE = "todo-state";
-
-export function isTodoState(value: unknown): value is TodoState {
-	const candidate = value as Partial<TodoState> | null;
-	return (
-		Array.isArray(candidate?.todos) &&
-		typeof candidate.nextId === "number" &&
-		typeof candidate.rev === "number" &&
-		candidate.todos.every((todo) => typeof todo?.id === "number" && typeof todo.text === "string" && STATUSES.includes(todo.status))
-	);
+function isTodoList(value: unknown): value is Todo[] {
+	return Array.isArray(value) && value.every((todo) => typeof todo?.content === "string" && STATUSES.includes(todo.status));
 }
 
-/** Return the newest saved state in a branch, oldest entry first. A failed tool call saves no state, so such entries are skipped. */
-export function restoreState(entries: readonly SavedEntry[]): TodoState {
-	let state = EMPTY;
-	for (const entry of entries) {
-		const isSaved = entry.type === "custom" && entry.customType === ENTRY_TYPE;
-		const isToolResult = entry.type === "message" && entry.message?.role === "toolResult" && entry.message.toolName === TOOL_NAME;
-		const saved = isSaved ? entry.data : isToolResult ? entry.message?.details : undefined;
-		if (isTodoState(saved) && saved.rev >= state.rev) state = saved;
+/** Return the list from the last valid todo result in a branch. Old-format and failed results are skipped. */
+export function restoreTodos(entries: readonly SavedEntry[]): Todo[] {
+	let todos: Todo[] = [];
+	for (const { type, message } of entries) {
+		if (type !== "message" || message?.role !== "toolResult" || message.toolName !== TOOL_NAME) continue;
+		const saved = (message.details as { todos?: unknown } | undefined)?.todos;
+		if (isTodoList(saved)) todos = saved;
 	}
-	return state;
+	return todos;
 }

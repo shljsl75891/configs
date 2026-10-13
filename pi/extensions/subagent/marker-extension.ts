@@ -143,8 +143,7 @@ async function review(ctx: ExtensionContext, result: SubagentResult): Promise<Re
 		const answer = choice.answers[0]?.[0];
 		if (!answer) return null;
 		if (answer === SEND) return { send: result };
-		const images = choice.images.map(({ data, mimeType }): FollowUpContent => ({ type: "image", data, mimeType }));
-		return { followUp: [{ type: "text", text: answer }, ...images] };
+		return { followUp: [{ type: "text", text: answer }] };
 	} catch (error) {
 		return { send: { ...result, output: `${result.output}\n\n[review UI failed, sent unreviewed: ${errorText(error)}]` } };
 	} finally {

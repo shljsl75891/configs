@@ -164,7 +164,7 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 						tui.requestRender();
 					},
 				};
-			}, { overlay: true, overlayOptions: { anchor: "center", width: "35%", maxHeight: "90%" } });
+			}, { overlay: true, overlayOptions: { anchor: "center", width: "22%", minWidth: 38, maxHeight: "90%" } });
 			} finally {
 				view = undefined;
 			}

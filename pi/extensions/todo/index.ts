@@ -1,245 +1,196 @@
 /**
- * Todo list for the agent and the user.
- * The agent edits it with the `todo` tool. Alt+T opens a popup to add, edit,
- * delete, and reorder items. Only the agent changes status. The list is saved in the
- * session branch. Keys: j/k move, J/K reorder, g/G top/bottom. When the popup closes after edits, the agent gets a hidden message with the new list.
+ * Todo list the agent must keep for every task. The `todo` tool replaces the whole list.
+ * Code enforces it: file changes need an in_progress item, a run cannot end with open
+ * items without one nudge, and a stale list is shown again. Subagents are exempt.
+ * A panel in the top-right corner shows the whole list, or only the count when collapsed. It starts collapsed. Alt+T toggles it.
+ * The list is saved in the tool results of the session branch.
  */
 import { StringEnum } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, Theme } from "@earendil-works/pi-coding-agent";
-import { Box, Input, matchesKey, Text, visibleWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
+import { Box, visibleWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
-import {
-	addTodo,
-	EMPTY,
-	ENTRY_TYPE,
-	formatTodos,
-	isTodoState,
-	moveTodo,
-	removeTodo,
-	restoreState,
-	type Status,
-	STATUSES,
-	TOOL_NAME,
-	type Todo,
-	type TodoState,
-	updateTodo,
-} from "./state.ts";
+import { isReadOnlyBash } from "../permission/index.ts";
+import { onPlanModeChange } from "../plan-mode/index.ts";
+import { ENV } from "../subagent/protocol.ts";
+import { blockReason, shouldRemind } from "./gate.ts";
+import { checkTodos, formatTodos, openTodos, restoreTodos, STATUSES, TOOL_NAME, type Status, type Todo } from "./state.ts";
 
-const UPDATE_TYPE = "todo-update";
-const MAX_ROWS = 12;
+const PANEL_KEY = "todo";
+const PANEL_WIDTH = 44;
+const PANEL_PAD_X = 2;
+const PANEL_PAD_Y = 1;
+/** Nerd Font glyphs: nf-oct-circle, nf-md-circle, nf-md-check_circle, nf-md-close_circle. */
+const ICONS: Record<Status, string> = { pending: "\u{f111}", in_progress: "\u{f0765}", completed: "\u{f05e0}", cancelled: "\u{f0159}" };
+const REMIND_TYPE = "todo-reminder";
+const FINISH_TYPE = "todo-finish";
+const PLAN_DONE_TYPE = "todo-plan-approved";
 
 const TodoParams = Type.Object({
-	action: StringEnum(["list", "add", "update", "delete"] as const),
-	text: Type.Optional(Type.String({ description: "Todo text (add, update)" })),
-	id: Type.Optional(Type.Number({ description: "Todo id (update, delete)" })),
-	status: Type.Optional(StringEnum(STATUSES)),
+	todos: Type.Array(
+		Type.Object({
+			content: Type.String({ description: "One short step" }),
+			status: StringEnum(STATUSES),
+		}),
+		{ description: "The complete new list. It replaces the old list." },
+	),
 });
 
-function icon(theme: Theme, status: Status): string {
-	if (status === "done") return theme.fg("success", "✓");
-	if (status === "in_progress") return theme.fg("warning", "◐");
-	return theme.fg("dim", "○");
-}
-
-function rowPrefix(theme: Theme, todo: Todo): string {
-	return `${icon(theme, todo.status)} ${theme.fg("muted", `#${todo.id}`)} `;
-}
-
-function rowText(theme: Theme, todo: Todo): string {
-	return todo.status === "done" ? theme.fg("dim", todo.text) : todo.text;
-}
-
-function row(theme: Theme, todo: Todo): string {
-	return rowPrefix(theme, todo) + rowText(theme, todo);
-}
+const DESCRIPTION =
+	"Keep the todo list for the current task. Each call replaces the whole list. " +
+	"Statuses: pending, in_progress, completed, cancelled. " +
+	"Use this tool for EVERY task that changes anything, including one-step tasks. " +
+	"Write the list before your first action. Set an item to in_progress before you start it. Keep only one item in_progress. " +
+	"Mark an item completed right after you finish it. Do not batch updates. Add new steps when you find them. " +
+	"Do not end your turn with pending or in_progress items, unless you wait for the user. Cancel items that you will not do. " +
+	"Edit, write, and file-changing bash commands are blocked while no item is in_progress.";
 
 export default function todo(pi: ExtensionAPI): void {
-	let state = EMPTY;
-	let open = false;
-	let refresh: (() => void) | undefined;
+	let todos: Todo[] = [];
+	let turnsSinceUpdate = 0;
+	let finishNudged = false;
+	let planJustApproved = false;
+	let planMode: boolean | undefined;
+	const isSubagent = process.env[ENV.resultFile] !== undefined;
+
+	/** Set while the panel is shown. */
+	let requestRender: (() => void) | undefined;
+	/** The panel starts collapsed (hidden). */
+	let expanded = false;
+
+	const iconColor = (status: Status) => (status === "completed" ? "success" : status === "in_progress" ? "warning" : "dim");
+
+	const summary = (): string => `Todos ${todos.length - openTodos(todos).length}/${todos.length}`;
+
+	/** Every item. Long items wrap. `width` is the space inside the padding. */
+	const panelLines = (theme: Theme, width: number): string[] =>
+		todos.flatMap((item) => {
+			const done = item.status === "completed" || item.status === "cancelled";
+			const mark = theme.fg(iconColor(item.status), ICONS[item.status]);
+			return wrapTextWithAnsi(item.content, Math.max(1, width - 2)).map((line, i) => (i ? "  " : `${mark} `) + (done ? theme.fg("dim", line) : line));
+		});
+
+	/** Show the panel while an item is open, hide it otherwise. */
+	const showPanel = (ctx: ExtensionContext) => {
+		if (ctx.mode !== "tui") return;
+		if (openTodos(todos).length === 0) {
+			ctx.ui.setWidget(PANEL_KEY, undefined);
+			return;
+		}
+		if (requestRender) {
+			requestRender();
+			return;
+		}
+		// A widget cannot sit in a corner. Its factory gets the TUI, so it opens a non-capturing overlay and hides it on dispose.
+		ctx.ui.setWidget(PANEL_KEY, (tui, theme) => {
+			// Same look as the MCP popup: solid background, padding, no border. The collapsed box has no vertical padding and a lighter background.
+			const bg = (text: string) => theme.bg("userMessageBg", text);
+			const full = new Box(PANEL_PAD_X, PANEL_PAD_Y, bg);
+			full.addChild({ render: (width: number) => panelLines(theme, width), invalidate: () => {} });
+			const collapsed = new Box(PANEL_PAD_X, 0, (text) => theme.bg("selectedBg", text));
+			collapsed.addChild({ render: () => [theme.bold(theme.fg("accent", summary()))], invalidate: () => {} });
+			const panel = {
+				render: (width: number) => (expanded ? full : collapsed).render(width),
+				invalidate: () => {
+					full.invalidate();
+					collapsed.invalidate();
+				},
+			};
+			// The TUI reads the options on every render, so a getter keeps the width in step with the state.
+			const options = {
+				nonCapturing: true,
+				anchor: "top-right" as const,
+				get width() {
+					return expanded ? PANEL_WIDTH : visibleWidth(summary()) + 2 * PANEL_PAD_X;
+				},
+			};
+			const handle = tui.showOverlay(panel, options);
+			requestRender = () => tui.requestRender();
+			return {
+				render: () => [],
+				invalidate: () => {},
+				dispose: () => {
+					handle.hide();
+					requestRender = undefined;
+				},
+			};
+		});
+	};
 
 	const restore = (_event: unknown, ctx: ExtensionContext) => {
-		state = restoreState(ctx.sessionManager.getBranch());
+		todos = restoreTodos(ctx.sessionManager.getBranch());
+		showPanel(ctx);
 	};
+	pi.registerShortcut("alt+t", {
+		description: "Toggle todo panel",
+		handler: () => {
+			expanded = !expanded;
+			requestRender?.();
+		},
+	});
+
 	pi.on("session_start", restore);
 	pi.on("session_tree", restore);
 
 	pi.registerTool({
 		name: TOOL_NAME,
 		label: "Todo",
-		description:
-			"Manage the todo list that the user also sees and can edit. Actions: list, add (text), update (id, text and/or status), delete (id). " +
-			"Status is pending, in_progress, or done. " +
-			"Use it before you start work with 3 or more steps, and right after the user approves a plan: add one item for each step. " +
-			"Set an item to in_progress before you start it. Keep only one item in_progress. Mark it done as soon as you finish it. Add new steps when you find them. " +
-			"Do not use it for one-step or trivial tasks, or to answer questions. " +
-			"The user can change the list. Call list if you are not sure what it holds.",
+		description: DESCRIPTION,
 		parameters: TodoParams,
-		// The tool changes shared state, so calls must not run in parallel.
+		promptSnippet: "Keep a todo list for every task, even one-step tasks",
+		promptGuidelines: [
+			"Call the todo tool before your first action on every task, including one-step tasks. Keep it current: one in_progress item, mark items completed right away.",
+		],
 		executionMode: "sequential",
-		promptSnippet: "Track multi-step work in the shared todo list",
 
-		async execute(_toolCallId, params) {
-			switch (params.action) {
-				case "add":
-					if (!params.text) throw new Error("text required for add");
-					state = addTodo(state, params.text);
-					break;
-				case "update":
-					if (params.id === undefined) throw new Error("id required for update");
-					if (params.text === undefined && params.status === undefined) throw new Error("text or status required for update");
-					state = updateTodo(state, params.id, { text: params.text, status: params.status });
-					break;
-				case "delete":
-					if (params.id === undefined) throw new Error("id required for delete");
-					state = removeTodo(state, params.id);
-					break;
-				case "list":
-					break;
-			}
-			refresh?.();
-			return { content: [{ type: "text", text: formatTodos(state) }], details: state };
-		},
-
-		renderResult(result, _options, theme) {
-			if (!isTodoState(result.details)) {
-				const first = result.content[0];
-				return new Text(first?.type === "text" ? first.text : "", 0, 0);
-			}
-			const { todos } = result.details;
-			return new Text(todos.length ? todos.map((todo) => row(theme, todo)).join("\n") : theme.fg("dim", "No todos"), 0, 0);
+		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+			todos = checkTodos(params.todos);
+			turnsSinceUpdate = 0;
+				showPanel(ctx);
+			return { content: [{ type: "text", text: formatTodos(todos) }], details: { todos } };
 		},
 	});
 
-	pi.registerShortcut("alt+t", {
-		description: "Show todos",
-		handler: async (ctx) => {
-			if (open) return;
-			open = true;
-			const before = formatTodos(state);
-			/** Apply a popup edit. The agent can delete an item while the popup is open, so errors go to a notice. */
-			const commit = (change: () => TodoState): boolean => {
-				let next: TodoState;
-				try {
-					next = change();
-				} catch (error) {
-					ctx.ui.notify(error instanceof Error ? error.message : String(error), "warning");
-					return false;
-				}
-				if (next === state) return false;
-				state = next;
-				pi.appendEntry(ENTRY_TYPE, state);
-				return true;
-			};
-			try {
-				await ctx.ui.custom(
-					(tui, theme, _kb, done) => {
-						let selected = 0;
-						const clampSelected = () => {
-							selected = Math.max(0, Math.min(selected, state.todos.length - 1));
-						};
-						let editing: { input: Input; id?: number } | undefined;
+	if (isSubagent) return;
 
-						const startInput = (id?: number) => {
-							const input = new Input({ prompt: "" });
-							input.focused = true;
-							if (id !== undefined) {
-								input.setValue(state.todos.find((t) => t.id === id)?.text ?? "");
-								// Input has no cursor API; ctrl+e moves the cursor to the end.
-								input.handleInput("\x05");
-							}
-							input.onEscape = () => {
-								editing = undefined;
-							};
-							input.onSubmit = (value) => {
-								const text = value.trim();
-								if (id === undefined) {
-									if (commit(() => addTodo(state, text))) selected = state.todos.length - 1;
-								} else commit(() => updateTodo(state, id, { text }));
-								editing = undefined;
-							};
-							editing = { input, id };
-						};
+	onPlanModeChange(pi, (enabled) => {
+		if (planMode && !enabled) planJustApproved = true;
+		planMode = enabled;
+	});
 
-						const box = new Box(2, 1, (text) => theme.bg("userMessageBg", text));
-						box.addChild({
-							render: (width: number) => {
-								const title = theme.fg("accent", theme.bold("Todos"));
-								return [" ".repeat(Math.max(0, Math.floor((width - visibleWidth(title)) / 2))) + title, ""];
-							},
-							invalidate: () => {},
-						});
-						box.addChild({
-							render: (width: number) => {
-								const lines: string[] = [];
-								// The agent can delete items while the popup is open.
-								clampSelected();
-								if (state.todos.length === 0) lines.push(theme.fg("dim", "No todos"));
-								const start = Math.max(0, Math.min(selected - Math.floor(MAX_ROWS / 2), state.todos.length - MAX_ROWS));
-								for (const [i, item] of state.todos.slice(start, start + MAX_ROWS).entries()) {
-									const cursor = start + i === selected ? theme.fg("accent", "▸") : " ";
-									const prefix = `${cursor} ${rowPrefix(theme, item)}`;
-									const indent = " ".repeat(visibleWidth(prefix));
-									for (const [j, l] of wrapTextWithAnsi(rowText(theme, item), Math.max(1, width - indent.length)).entries()) {
-										lines.push((j ? indent : prefix) + l);
-									}
-								}
-								if (editing) lines.push("", ...editing.input.render(width));
-								return lines;
-							},
-							invalidate: () => {},
-						});
+	pi.on("tool_call", async (event, ctx) => {
+		if (planMode) return undefined;
+		const reason = await blockReason(todos, event.toolName, event.input as Record<string, unknown>, (command) => isReadOnlyBash(command, ctx));
+		return reason ? { block: true, reason } : undefined;
+	});
 
-						const handleList = (data: string) => {
-							const current = state.todos[selected];
-							if (matchesKey(data, "escape") || matchesKey(data, "ctrl+c")) done(undefined);
-							else if (matchesKey(data, "shift+k") && current) {
-								if (commit(() => moveTodo(state, current.id, -1))) selected -= 1;
-							} else if (matchesKey(data, "shift+j") && current) {
-								if (commit(() => moveTodo(state, current.id, 1))) selected += 1;
-							} else if (matchesKey(data, "shift+g")) {
-								selected = state.todos.length - 1;
-								clampSelected();
-							} else if (matchesKey(data, "g")) selected = 0;
-							else if (matchesKey(data, "k")) selected = Math.max(0, selected - 1);
-							else if (matchesKey(data, "j")) {
-								selected += 1;
-								clampSelected();
-							} else if (matchesKey(data, "a")) startInput();
-							else if ((matchesKey(data, "e") || matchesKey(data, "enter")) && current) {
-								if (current.status !== "pending") ctx.ui.notify("Only pending items can be edited", "warning");
-								else startInput(current.id);
-							} else if (matchesKey(data, "d") && current) {
-								commit(() => removeTodo(state, current.id));
-								clampSelected();
-							}
-						};
+	pi.on("before_agent_start", () => {
+		finishNudged = false;
+		if (!planJustApproved) return undefined;
+		planJustApproved = false;
+		return {
+			message: {
+				customType: PLAN_DONE_TYPE,
+				content: `Plan mode is off. Call the ${TOOL_NAME} tool now: turn the approved plan into a todo list. Then start the first step.`,
+				display: false,
+			},
+		};
+	});
 
-						refresh = () => tui.requestRender();
-						return {
-							render: (width: number) => box.render(width),
-							invalidate: () => box.invalidate(),
-							handleInput: (data: string) => {
-								if (matchesKey(data, "alt+t")) return;
-								if (editing) editing.input.handleInput(data);
-								else handleList(data);
-								tui.requestRender();
-							},
-						};
-					},
-					{ overlay: true, overlayOptions: { anchor: "center", width: "35%", maxHeight: "90%" } },
-				);
-			} finally {
-				open = false;
-				refresh = undefined;
-				// triggerTurn false: an idle agent reads it with the next prompt; a running agent gets it after the current tool batch.
-				if (formatTodos(state) !== before) {
-					pi.sendMessage(
-						{ customType: UPDATE_TYPE, content: `The user changed the todo list. Current list:\n${formatTodos(state)}`, display: false },
-						{ triggerTurn: false },
-					);
-				}
-			}
-		},
+	pi.on("turn_end", () => {
+		turnsSinceUpdate++;
+	});
+
+	pi.on("context", (event) => {
+		if (!shouldRemind(todos, turnsSinceUpdate)) return undefined;
+		turnsSinceUpdate = 0;
+		const content = `Todo reminder: you did not update the list for a while. Current list:\n${formatTodos(todos)}\nCall the ${TOOL_NAME} tool to update it.`;
+		return { messages: [...event.messages, { role: "custom", customType: REMIND_TYPE, content, display: false, timestamp: Date.now() }] };
+	});
+
+	pi.on("agent_before_settle", (event) => {
+		if (planMode || finishNudged || event.outcome !== "completed" || openTodos(todos).length === 0) return undefined;
+		finishNudged = true;
+		const content = `The todo list has open items:\n${formatTodos(todos)}\nFinish them, or call ${TOOL_NAME} to complete or cancel them. If you wait for the user, say so.`;
+		return { entries: [{ type: "custom_message", customType: FINISH_TYPE, content, display: false }], continue: true };
 	});
 }

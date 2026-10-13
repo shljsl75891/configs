@@ -116,6 +116,17 @@ async function decide(config: Config, toolName: string, input: Record<string, un
   return strictest(pathSubjects(input.path, cwd, home).map(byRule));
 }
 
+/** True when plan mode's bash rules allow the command, so it cannot write. `ask` and `deny` both count as writing. */
+export async function isReadOnlyBash(command: string, ctx: ExtensionContext): Promise<boolean> {
+  let plan: unknown;
+  try {
+    plan = (readAgentSetting("permission") as { plan?: unknown } | undefined)?.plan;
+  } catch {
+    // Unreadable settings: planConfig(undefined) still gives the safe fallback.
+  }
+  return (await decide(planConfig(plan), "bash", { command }, ctx.cwd, ctx)) === "allow";
+}
+
 function describeCall(toolName: string, input: Record<string, unknown>): string {
   if (toolName === "bash") return `bash: ${String(input.command ?? "")}`;
   return typeof input.path === "string" ? `${toolName}: ${input.path}` : toolName;

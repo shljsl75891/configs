@@ -69,10 +69,7 @@ export default function question(pi: ExtensionAPI) {
 
 			details.answers = result.answers;
 			return {
-				content: [
-					{ type: "text", text: summarize(questions, result.answers) },
-					...result.images.map(({ data, mimeType }) => ({ type: "image" as const, data, mimeType })),
-				],
+				content: [{ type: "text", text: summarize(questions, result.answers) }],
 				details,
 			};
 		},

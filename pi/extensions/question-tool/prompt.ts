@@ -1,4 +1,7 @@
+import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
+import { randomUUID } from "node:crypto";
 import type { ExtensionUIContext } from "@earendil-works/pi-coding-agent";
 import {
 	Editor,
@@ -26,11 +29,11 @@ import { findPiRoot } from "./pi-root.ts";
 
 export const CUSTOM_LABEL = "Type your own answer";
 
-export type PastedImage = { token: string; data: string; mimeType: string };
-export type AskResult = { answers: string[][]; images: PastedImage[] };
+export type AskResult = { answers: string[][] };
 
 type ClipboardApi = {
 	readClipboardImage(): Promise<{ bytes: Uint8Array; mimeType: string } | null>;
+	extensionForImageMimeType(mimeType: string): string | null | undefined;
 	readClipboardText(): Promise<string | null>;
 };
 
@@ -50,6 +53,7 @@ function loadClipboardApi(): Promise<ClipboardApi | null> {
 			const text = await import(path.join(root, "dist/utils/clipboard.js"));
 			return {
 				readClipboardImage: image.readClipboardImage,
+				extensionForImageMimeType: image.extensionForImageMimeType,
 				readClipboardText: text.readClipboardText,
 			};
 		} catch {
@@ -72,7 +76,7 @@ function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): s
 }
 
 /**
- * Renders the question UI. Resolves with answers and pasted images, or null.
+ * Renders the question UI. Resolves with answers, or null.
  * Both cancellation and abort dismissal return null; check the signal
  * afterwards to distinguish them.
  */
@@ -91,7 +95,6 @@ export function askQuestions(
 		let tabBar: { line: number; ends: number[] } | undefined;
 		let questionScroll = 0;
 		let questionTextRegion: { start: number; end: number; total: number } | undefined;
-		const pastedImages: PastedImage[] = [];
 
 		const dismiss = () => done(null);
 		options.signal?.addEventListener("abort", dismiss, { once: true });
@@ -132,8 +135,7 @@ export function askQuestions(
 			state = reduce(state, action, questions);
 			if (state.submitted) {
 				const answers = answersOf(state, questions);
-				const flat = answers.flat();
-				done({ answers, images: pastedImages.filter((img) => flat.some((a) => a.includes(img.token))) });
+				done({ answers });
 				return;
 			}
 			if (state.tab !== prevTab) { questionScroll = 0; questionTextRegion = undefined; }
@@ -157,9 +159,11 @@ export function askQuestions(
 			try {
 				const image = await clipboard.readClipboardImage();
 				if (image) {
-					const token = `[image:${pastedImages.length + 1}]`;
-					pastedImages.push({ token, data: Buffer.from(image.bytes).toString("base64"), mimeType: image.mimeType });
-					editor.insertTextAtCursor(token);
+					// Same as pi's own prompt: save the image, insert its path. The model reads the file.
+					const ext = clipboard.extensionForImageMimeType(image.mimeType) ?? "png";
+					const filePath = path.join(os.tmpdir(), `pi-clipboard-${randomUUID()}.${ext}`);
+					fs.writeFileSync(filePath, Buffer.from(image.bytes));
+					editor.insertTextAtCursor(filePath);
 				} else {
 					const text = await clipboard.readClipboardText();
 					if (text) editor.insertTextAtCursor(text);
@@ -378,7 +382,6 @@ export function askQuestions(
 			handleMouse,
 			dispose: () => {
 				options.signal?.removeEventListener("abort", dismiss);
-				// Images are carried in memory as base64 tokens — nothing to clean up on disk.
 			},
 		};
 	});

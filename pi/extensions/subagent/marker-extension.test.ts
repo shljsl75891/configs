@@ -196,7 +196,7 @@ describe("markerExtension", () => {
 			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
 			assert.ok(!fs.existsSync(resultFile), "result must not be delivered before the user answers");
 			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["Send as-is"]], images: [] };
+			return { answers: [["Send as-is"]] };
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
@@ -238,7 +238,7 @@ describe("markerExtension", () => {
 		const custom = async () => {
 			await fire("ui_prompt_start");
 			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["please also check the edge case"]], images: [] };
+			return { answers: [["please also check the edge case"]] };
 		};
 
 		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
