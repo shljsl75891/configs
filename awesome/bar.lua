@@ -185,8 +185,8 @@ function theme.at_screen_connect(s)
 		}),
 		battery = require("awesome-wm-widgets.battery-widget.battery")({
 			show_current_level = true,
-			timeout = 25,
 			path_to_icons = icon_base_path,
+			timeout = 5,
 			font = theme.font,
 		}),
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({
