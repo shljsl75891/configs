@@ -250,7 +250,7 @@ def download_row(row, outdir):
     out = out_path(row, outdir)
     if os.path.exists(out):
         return "skip"
-    part = out + ".part" + ext
+    part = out + ".part" + os.path.splitext(out)[1]
     if source == "saavn":
         with tempfile.TemporaryDirectory() as tmp:
             audio, cover = os.path.join(tmp, "a.mp4"), os.path.join(tmp, "c.jpg")
