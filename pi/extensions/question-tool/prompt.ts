@@ -64,8 +64,8 @@ function loadClipboardApi(): Promise<ClipboardApi | null> {
 }
 
 const MIN_QUESTION_LINES = 3;
-const MAX_QUESTION_LINES = 20;
-const CHROME_ROWS = 14;
+const MAX_QUESTION_LINES = 26;
+const CHROME_ROWS = 12;
 const PAGE_SCROLL_LINES = 5;
 
 function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): string {
