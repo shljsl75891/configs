@@ -12,17 +12,17 @@ export interface QuestionDetails {
 
 const OptionSchema = Type.Object({
 	label: Type.String({ description: "Short option name. Use 1 to 5 words. End the label of the recommended option with ' [rec]'." }),
-	description: Type.String({ description: "Required. Explain what this option means in plain words: what it does, what happens if the user picks it, and its main tradeoff. Do not assume the user knows project jargon. 1 to 3 sentences." }),
+	description: Type.String({ description: "Required. Explain what this option means in plain words: what it does, what happens if the user picks it, and its main tradeoff. Do not assume the user knows project jargon. 1 to 3 sentences in Simplified Technical English (ASD-STE100)." }),
 });
 
 const QuestionSchema = Type.Object({
-	question: Type.String({ description: "Self-contained question text. First give the background (what is being worked on, why the decision is needed, relevant file or term names explained). Then ask one clear question. The user has not seen your reasoning and may have no context." }),
+	question: Type.String({ description: "Self-contained question text. First give the background (what is being worked on, why the decision is needed, relevant file or term names explained). Then ask one clear question. The user has not seen your reasoning and may have no context. Write in Simplified Technical English (ASD-STE100): short sentences, simple words, active voice." }),
 	header: Type.String({ description: "A tab label. Maximum 30 characters." }),
 	options: Type.Array(OptionSchema, { description: "The options." }),
 	multiple: Type.Optional(Type.Boolean({ description: "Set true to allow more than one choice." })),
 });
 
-const QuestionParams = Type.Object({
+export const QuestionParams = Type.Object({
 	questions: Type.Array(QuestionSchema, { description: "The questions. The tool asks all of them together." }),
 });
 
@@ -40,6 +40,7 @@ export default function question(pi: ExtensionAPI) {
 			"Every question must be self-contained: state the background and why you need the answer, explain any term or file name, then ask. " +
 			"Every option must have a description that says what it is, what happens if chosen, and its tradeoff. " +
 			"Never ask the user to choose between options they cannot understand from the question text alone. " +
+			"Write all question and option text in Simplified Technical English (ASD-STE100): short sentences, simple words, active voice. " +
 			"Each question must have a header and one or more options. The header is a tab label, 30 characters maximum. " +
 			"The tool adds a free-text option. Do not add an 'Other' option. " +
 			"Mark the recommended option: end its label with ' [rec]'. Mark at most one option per question. " +

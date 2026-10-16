@@ -68,6 +68,9 @@ const MAX_QUESTION_LINES = 26;
 const CHROME_ROWS = 12;
 const PAGE_SCROLL_LINES = 5;
 
+/** Max visible lines for the scrollable question text, for a terminal with `rows` rows. */
+export const questionLineBudget = (rows: number) => Math.max(MIN_QUESTION_LINES, Math.min(MAX_QUESTION_LINES, rows - CHROME_ROWS));
+
 function hintFor(state: State, questions: QuestionSpec[], scrolling: boolean): string {
 	if (state.editing) return "Enter to submit \u2022 Ctrl+V to paste an image \u2022 Esc to go back";
 	if (isConfirmTab(state, questions)) return "Enter to submit \u2022 \u2190\u2192 to revisit \u2022 Esc to cancel";
@@ -116,13 +119,9 @@ export function askQuestions(
 			tui.requestRender();
 		}
 
-		/** Returns the max visible lines for the scrollable question text region. */
-		const questionLineBudget = () =>
-			Math.max(MIN_QUESTION_LINES, Math.min(MAX_QUESTION_LINES, tui.terminal.rows - CHROME_ROWS));
-
 		/** Scroll question text by `delta` lines, clamped to valid range. */
 		const scrollQuestion = (delta: number) => {
-			const budget = questionLineBudget();
+			const budget = questionLineBudget(tui.terminal.rows);
 			const max = Math.max(0, (questionTextRegion?.total ?? 0) - budget);
 			questionScroll = Math.max(0, Math.min(questionScroll + delta, max));
 			refresh();
@@ -305,7 +304,7 @@ export function askQuestions(
 				const current = questions[state.tab];
 				const qText = theme.fg("text", current.question);
 				const qWrapped = wrapTextWithAnsi(qText, Math.max(1, renderWidth - 1)).map((l) => ` ${l}`);
-				const budget = questionLineBudget();
+				const budget = questionLineBudget(tui.terminal.rows);
 				if (qWrapped.length <= budget) {
 					questionTextRegion = undefined;
 					for (const l of qWrapped) lines.push(l);
