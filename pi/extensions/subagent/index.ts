@@ -17,7 +17,7 @@ import { Type } from "typebox";
 import { onPlanModeChange } from "../plan-mode/index.ts";
 import { modelKey } from "../lib/model.ts";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.ts";
-import { onAutoApproveChange } from "../lib/auto-approve.ts";
+import { trackAutoApprove } from "../lib/auto-approve.ts";
 import { buildPiCommand } from "./command.ts";
 import { childDepth, ENV } from "./protocol.ts";
 import { clampTimeout, DEFAULT_TIMEOUT_MS, MAX_CONCURRENT, MAX_TIMEOUT_MS, normalizeTasks } from "./tasks.ts";
@@ -206,10 +206,7 @@ export default function (pi: ExtensionAPI) {
 	onPlanModeChange(pi, (enabled) => {
 		planActive = enabled;
 	});
-	let approveActive = false;
-	onAutoApproveChange(pi, (enabled) => {
-		approveActive = enabled;
-	});
+	const approveActive = trackAutoApprove(pi);
 
 	// Only root sweeps; children would duplicate the scan (non-critical).
 	if (depth === 0) void sweepStaleTempDirs(pi);
@@ -294,7 +291,7 @@ export default function (pi: ExtensionAPI) {
 
 			// allSettled: a failed spawn must not discard sibling window ids.
 			const settled = await Promise.allSettled(
-				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, plan: planActive, approve: approveActive, onReview: reportReview })),
+				tasks.map((t) => runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal, depth, plan: planActive, approve: approveActive(), onReview: reportReview })),
 			);
 			const results: RunResult[] = settled.map((outcome, i) =>
 				outcome.status === "fulfilled"

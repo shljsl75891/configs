@@ -8,7 +8,7 @@
  * With review enabled the result is shown to the user first: they can send it,
  * or reply with a follow-up that goes straight back to the agent — Esc leaves
  * it for the user to take over by hand. The parent stops its clock while the
- * `.review` marker file exists.
+ * `.review` marker file exists. Auto-approve (`--approve`, `/approve`) skips review.
  */
 
 import * as fs from "node:fs";
@@ -22,6 +22,7 @@ import { askQuestions } from "../question-tool/prompt.ts";
 import { childDepth, ENV, reviewMarkerFor } from "./protocol.ts";
 import type { SubagentResult } from "./result.ts";
 import { errorText } from "../lib/errors.ts";
+import { trackAutoApprove } from "../lib/auto-approve.ts";
 import { formatWindowName, type WindowState } from "./window-name.ts";
 
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
@@ -171,6 +172,8 @@ export default function markerExtension(pi: ExtensionAPI) {
 		});
 	}
 
+	const autoApprove = trackAutoApprove(pi);
+
 	/** The parent has the result and stopped polling; an ok result's window is about to close. */
 	let delivered = false;
 	/**
@@ -247,7 +250,7 @@ export default function markerExtension(pi: ExtensionAPI) {
 		const result = collectResult(ctx);
 
 		// A broken pipe means no answer can reach the caller; retry silently instead of re-asking.
-		if (!reviewEnabled || deliveryBroken || ctx.mode !== "tui") {
+		if (!reviewEnabled || autoApprove() || deliveryBroken || ctx.mode !== "tui") {
 			await settle(result);
 			return;
 		}

@@ -6,3 +6,12 @@ export const AUTO_APPROVE_EVENT = "auto-approve";
 export function onAutoApproveChange(pi: ExtensionAPI, handler: (enabled: boolean) => void): void {
   pi.events.on(AUTO_APPROVE_EVENT, (data) => handler((data as { enabled: boolean }).enabled));
 }
+
+/** Tracks the latest auto-approve state; returns a getter. Starts off until the first event. */
+export function trackAutoApprove(pi: ExtensionAPI): () => boolean {
+  let enabled = false;
+  onAutoApproveChange(pi, (value) => {
+    enabled = value;
+  });
+  return () => enabled;
+}

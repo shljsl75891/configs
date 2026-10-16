@@ -16,6 +16,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { ENV, reviewMarkerFor } from "./protocol.ts";
 import markerExtension from "./marker-extension.ts";
+import { AUTO_APPROVE_EVENT } from "../lib/auto-approve.ts";
 
 type Handler = (event: object, ctx: object) => Promise<void>;
 
@@ -36,6 +37,7 @@ type FakePi = {
 	on(event: string, handler: Handler): void;
 	exec(cmd: string, args: string[]): Promise<{ code: number; stdout: string; stderr: string }>;
 	sendUserMessage(content: unknown): void;
+	events: { on(event: string, handler: (data: unknown) => void): void };
 };
 
 type FakeUi = {
@@ -54,7 +56,9 @@ function fakePi() {
 	const handlers = new Map<string, Handler>();
 	const renames: string[] = [];
 	const sentMessages: unknown[] = [];
+	const bus = new Map<string, Array<(data: unknown) => void>>();
 	const pi: FakePi = {
+		events: { on(event, handler) { bus.set(event, [...(bus.get(event) ?? []), handler]); } },
 		on(event, handler) { handlers.set(event, handler); },
 		async exec(_cmd, args) {
 			if (args[0] === "rename-window") renames.push(args[args.length - 1] as string);
@@ -84,7 +88,8 @@ function fakePi() {
 			...overrides,
 		});
 	};
-	return { pi, fire, renames, sentMessages };
+	const emit = (event: string, data: unknown) => bus.get(event)?.forEach((h) => h(data));
+	return { pi, fire, renames, sentMessages, emit };
 }
 
 describe("markerExtension", () => {
@@ -175,6 +180,35 @@ describe("markerExtension", () => {
 	});
 
 	// ── review-enabled path: the interaction the earlier fixes targeted ────────
+
+	it("skips review and delivers immediately when auto-approve is on", async () => {
+		process.env[ENV.review] = "1";
+		const { pi, fire, emit, renames } = fakePi();
+		markerExtension(pi);
+		emit(AUTO_APPROVE_EVENT, { enabled: true });
+		const custom = async () => { throw new Error("review prompt must not open"); };
+
+		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
+
+		assert.equal(JSON.parse(fs.readFileSync(resultFile, "utf-8")).status, "ok");
+		assert.ok(!fs.existsSync(reviewMarkerFor(resultFile)), "no review marker without review");
+		assert.ok(renames.at(-1)?.startsWith("✓"), "window marked done");
+	});
+
+	it("reviews again after auto-approve is turned back off", async () => {
+		process.env[ENV.review] = "1";
+		const { pi, fire, emit } = fakePi();
+		markerExtension(pi);
+		emit(AUTO_APPROVE_EVENT, { enabled: true });
+		emit(AUTO_APPROVE_EVENT, { enabled: false });
+		let prompted = false;
+		const custom = async () => { prompted = true; return { answers: [["Send as-is"]] }; };
+
+		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
+		await waitFor(() => fs.existsSync(resultFile));
+
+		assert.ok(prompted, "review prompt should open");
+	});
 
 	it("delivers the result and clears the review marker when the user chooses Send as-is", async () => {
 		process.env[ENV.review] = "1";
