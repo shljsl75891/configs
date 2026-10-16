@@ -5,10 +5,11 @@ description: Load for questions about the pi coding agent, its SDK, extensions, 
 
 # pi documentation
 
-Path is pinned to the active Node version, so compute it:
+Pi is a managed install. The path follows the active release in `install/current-version`, so compute it:
 
 ```bash
-PI_ROOT="$(readlink -f "$(dirname "$(readlink -f "$(which pi)")")/../..")"
+PI_INSTALL="${PI_MANAGED_INSTALL_ROOT:-$(dirname "$(readlink -f "$(which pi)")")/../install}"
+PI_ROOT="$(readlink -f "$PI_INSTALL/releases/$(cat "$PI_INSTALL/current-version")/node_modules/@earendil-works/pi-coding-agent")"
 ```
 
 - Main documentation: `$PI_ROOT/README.md`
