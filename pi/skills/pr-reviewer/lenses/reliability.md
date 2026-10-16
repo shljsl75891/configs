@@ -23,6 +23,8 @@ Goal: find code that fails without anyone knowing, hangs, leaks, or amplifies an
 - **Process lifecycle** — no graceful shutdown for SIGTERM; swallowed `uncaughtException`; startup failing open on missing config.
 - **Observability** — failure path with no log/metric/alert; log without the identifier needed to debug; background job failing with no notification.
 - **Time-bounded damage** — a destructive or bulk operation (delete, update-many, migration, script) with no dry-run, limit, confirmation, or environment guard.
+- **Merge danger: one-way doors** — destructive or irreversible migration; dropped/renamed column, export, route, event, env var or config key; changed persisted/serialized format or cache key; bulk data rewrite (`updateAll`, `noAudit`, raw SQL) with no backup, audit trail, or dry-run; risky behavior change with no feature flag or kill switch. Reverting the code must not be enough to undo it. 🔴 for unsafe migration/rollout or irreversible data change, 🟠 otherwise.
+- **Merge danger: blast radius** — consumers of a shared package or generated template; global CSS (layout shift, mobile); public API/contract changes; a change that affects every tenant/service at once. Name who is hit, with `path:line`.
 - **Angular / RxJS** — `subscribe` with no unsubscribe/`takeUntilDestroyed`/`async` pipe; nested `subscribe`; missing error handler on a stream that then dies; `catchError` returning `EMPTY` silently; `shareReplay` without `refCount`; `switchMap` vs `mergeMap`/`concatMap` choice that drops or duplicates requests; `effect` writing a signal it reads.
 
 ## Output
