@@ -13,6 +13,7 @@ local cairo = require("lgi").cairo
 local M = {}
 
 local wallpaper_dir = os.getenv("HOME") .. "/gitprojects/wallpapers"
+local cache_dir = os.getenv("HOME") .. "/.cache/awesome-wallpapers"
 
 -- gears.wallpaper.maximized() decodes+scales+paints from the source JPEG on
 -- every call, uncached (surface.load_uncached + surf:finish()). Measured
@@ -97,31 +98,55 @@ function M.setup(tag_count)
 			end
 
 			math.randomseed(os.time())
-			for i = 1, tag_count do
-				tag_wallpapers[i] = files[math.random(#files)]
+			local picks = {}
+			for i = 1, math.min(tag_count, #files) do
+				local j = math.random(i, #files)
+				files[i], files[j] = files[j], files[i]
+				picks[i] = files[i]
 			end
 
-			-- Paint whatever tag is currently selected on each screen now
-			-- that images are available (the initial-tag call from rc.lua
-			-- ran before this callback fired and was a no-op).
-			for s in screen do
-				set_tag_wallpaper(s.selected_tag)
+			-- Decoding a 4K JPEG costs ~400ms, so ffmpeg scales each pick to the
+			-- root size once and keeps it in cache_dir. Later logins and tag
+			-- switches decode the small file only.
+			local rw, rh = root.size()
+			local script = [[
+mkdir -p "$1"
+for src in "${@:4}"; do
+  out="$1/$2x$3-$(basename "$src")"
+  [ -f "$out" ] || ffmpeg -loglevel error -y -i "$src" \
+    -vf "scale=$2:$3:force_original_aspect_ratio=increase,crop=$2:$3" -q:v 2 "$out" \
+    || out="$src"
+  echo "$out"
+done
+]]
+			local cmd = { "bash", "-c", script, "wallpaper", cache_dir, tostring(rw), tostring(rh) }
+			for _, src in ipairs(picks) do
+				table.insert(cmd, src)
 			end
+			awful.spawn.easy_async(cmd, function(out)
+				local i = 0
+				for path in out:gmatch("[^\r\n]+") do
+					i = i + 1
+					tag_wallpapers[i] = path
+				end
+				for s in screen do
+					set_tag_wallpaper(s.selected_tag)
+				end
 
-			-- Warm the rest of the tags in the background, one per tick,
-			-- instead of blocking startup for ~380ms x tag_count. Any tag
-			-- switched to before its turn is built on-demand above anyway.
-			local warm_idx = 0
-			local warm_timer = gears.timer({ timeout = 1.5, autostart = true })
-			warm_timer:connect_signal("timeout", function()
-				warm_idx = warm_idx + 1
-				if warm_idx > tag_count then
-					warm_timer:stop()
-					return
-				end
-				if tag_wallpapers[warm_idx] and not tag_surfaces[warm_idx] then
-					tag_surfaces[warm_idx] = build_surface(tag_wallpapers[warm_idx])
-				end
+				-- Warm the other tags one per tick, so startup never blocks on
+				-- all of them. A tag switched to early builds on demand.
+				local warm_idx = 0
+				local warm_timer = gears.timer({ timeout = 1.5, autostart = true })
+				warm_timer:connect_signal("timeout", function()
+					warm_idx = warm_idx + 1
+					if warm_idx > tag_count then
+						warm_timer:stop()
+						return
+					end
+					if tag_wallpapers[warm_idx] and not tag_surfaces[warm_idx] then
+						tag_surfaces[warm_idx] = build_surface(tag_wallpapers[warm_idx])
+					end
+				end)
 			end)
 		end
 	)

@@ -9,8 +9,8 @@ run_once() {
   pgrep -u "$USER" -fx "$cmd" >/dev/null 2>&1 || $cmd &
 }
 
-# Compositor — X11 has none built in, unlike sway. Needed for the 0.95 window
-# opacity set in rc.lua's default rule, and to stop screen tearing.
+# Compositor — X11 has none built in. Needed for window opacity (picom.conf
+# rules) and to stop screen tearing.
 run_once "picom"
 
 run_once "nm-applet --indicator"

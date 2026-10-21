@@ -26,32 +26,6 @@ local globalkeys = mytable.join(
 		{ description = "show help", group = "awesome" }
 	),
 
-	-- By-direction client focus
-	awful.key({ modkey }, "j", function()
-		awful.client.focus.global_bydirection("down")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, { description = "focus down", group = "client" }),
-	awful.key({ modkey }, "k", function()
-		awful.client.focus.global_bydirection("up")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, { description = "focus up", group = "client" }),
-	awful.key({ modkey }, "h", function()
-		awful.client.focus.global_bydirection("left")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, { description = "focus left", group = "client" }),
-	awful.key({ modkey }, "l", function()
-		awful.client.focus.global_bydirection("right")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, { description = "focus right", group = "client" }),
-
 	-- Layout manipulation
 	awful.key(
 		{ modkey },
@@ -88,16 +62,22 @@ local globalkeys = mytable.join(
 		{ description = "jump to urgent client", group = "client" }
 	),
 	awful.key({ modkey }, "Tab", function()
-		awful.screen.focus_relative(-1)
-	end, { description = "toggle focus between screens", group = "screen" }),
+		awful.client.focus.byidx(1)
+		if client.focus then
+			client.focus:raise()
+		end
+	end, { description = "focus next window in tag", group = "client" }),
+	awful.key({ modkey, "Shift" }, "Tab", function()
+		awful.client.focus.byidx(-1)
+		if client.focus then
+			client.focus:raise()
+		end
+	end, { description = "focus previous window in tag", group = "client" }),
 
 	-- Show/hide wibox
 	awful.key({ modkey }, "x", function()
 		for s in screen do
 			s.mywibox.visible = not s.mywibox.visible
-			if s.mybottomwibox then
-				s.mybottomwibox.visible = not s.mybottomwibox.visible
-			end
 		end
 	end, { description = "toggle wibox", group = "awesome" }),
 
@@ -105,12 +85,6 @@ local globalkeys = mytable.join(
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
-	awful.key(
-		{ modkey, "Control" },
-		"r",
-		awesome.restart,
-		{ description = "reload awesome", group = "awesome" }
-	),
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, {
 		description = "reload awesome",
 		group = "awesome",
@@ -127,9 +101,12 @@ local globalkeys = mytable.join(
 		})
 	end, { description = "quit awesome", group = "awesome" }),
 	awful.key({ modkey }, "s", function()
-		awful.spawn.with_shell(
-			"maim -o -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to clipboard'"
-		)
+		awful.spawn({
+			"bash",
+			"-c",
+			"set -o pipefail; maim -o -s | xclip -selection clipboard -t image/png"
+				.. " && notify-send Screenshot 'Copied to clipboard'",
+		})
 	end, { description = "screenshot region to clipboard", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "s", function()
 		awful.spawn.with_shell("~/.config/awesome/scripts/recording.sh")
@@ -138,20 +115,20 @@ local globalkeys = mytable.join(
 		awful.spawn("pcmanfm")
 	end, { description = "open a explorer", group = "launcher" }),
 	awful.key({ modkey }, "p", function()
-		awful.spawn.with_shell("copyq toggle")
+		awful.spawn("copyq toggle")
 	end, { description = "toggle clipboard manager", group = "launcher" }),
 	-- Voice dictation — sway parity (needs `ydotool` + `ydotoold` on X11)
 	awful.key({ modkey }, "d", function()
-		awful.spawn.with_shell("hyprvoice toggle")
+		awful.spawn("hyprvoice toggle")
 	end, { description = "toggle voice dictation", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "d", function()
-		awful.spawn.with_shell("hyprvoice cancel")
+		awful.spawn("hyprvoice cancel")
 	end, { description = "cancel voice dictation", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "l", function()
-		awful.spawn.with_shell("slock")
+		awful.spawn("slock")
 	end, { description = "lock screen", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "o", function()
-		awful.spawn.with_shell("obsidian")
+		awful.spawn("obsidian")
 	end, {
 		description = "launch the note taking app - Obsidian",
 		group = "launcher",
@@ -204,22 +181,34 @@ local globalkeys = mytable.join(
 	end, { description = "show dmenu", group = "launcher" })
 )
 
+for key, direction in pairs({ j = "down", k = "up", h = "left", l = "right" }) do
+	globalkeys = mytable.join(
+		globalkeys,
+		awful.key({ modkey }, key, function()
+			awful.client.focus.global_bydirection(direction)
+			if client.focus then
+				client.focus:raise()
+			end
+		end, { description = "focus " .. direction, group = "client" })
+	)
+end
+
 local clientkeys = mytable.join(
 	-- Resize windows
 	awful.key({ modkey }, "Up", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, -50)
+			c:relative_move(0, 0, 0, 50)
 		else
 			awful.client.incwfact(0.1)
 		end
-	end, { description = "Window Resize Vertical -", group = "client" }),
+	end, { description = "Window Resize Taller", group = "client" }),
 	awful.key({ modkey }, "Down", function(c)
 		if c.floating then
-			c:relative_move(0, 0, 0, 50)
+			c:relative_move(0, 0, 0, -50)
 		else
 			awful.client.incwfact(-0.1)
 		end
-	end, { description = "Window Resize Vertical +", group = "client" }),
+	end, { description = "Window Resize Shorter", group = "client" }),
 	awful.key({ modkey }, "Left", function(c)
 		if c.floating then
 			c:relative_move(0, 0, -50, 0)
@@ -339,6 +328,4 @@ for i = 1, 9 do
 	)
 end
 
-root.keys(globalkeys)
-
-return clientkeys
+return { global = globalkeys, client = clientkeys }

@@ -1,14 +1,11 @@
-local awful = require("awful")
+local wibox = require("wibox")
 local lain = require("lain")
 local theme = require("ui.theme")
 
-local markup = lain.util.markup
-
--- Textclock — waybar custom/date: "Mon DD Month YYYY HH:MM AM/PM"
-local clock =
-	awful.widget.watch("date +'%a %d %b %I:%M %p'", 5, function(widget, stdout)
-		widget:set_markup(markup.font(theme.font, (stdout:gsub("\n", ""))))
-	end)
+local clock = wibox.widget.textclock(
+	string.format("<span font='%s'>%%a %%d %%b %%I:%%M %%p</span>", theme.font),
+	60
+)
 
 -- Calendar — waybar date tooltip runs `ncal -C -3`, lain.cal three=true matches
 theme.cal = lain.widget.cal({

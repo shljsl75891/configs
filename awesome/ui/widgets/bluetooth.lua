@@ -11,7 +11,7 @@ local function sh(cmd, callback)
 end
 
 local function notify(text)
-	naughty.notify({ title = "Bluetooth", text = text })
+	naughty.notify({ title = "Bluetooth", text = gears.string.xml_escape(text) })
 end
 
 --- Parse `bluetoothctl devices` output into a list of { mac, name }.
@@ -37,7 +37,7 @@ local widget, timer = awful.widget.watch(
 		"-c",
 		[[bluetoothctl show | grep -q 'Powered: yes' && echo on || echo off; bluetoothctl devices Connected]],
 	},
-	5,
+	15,
 	function(self, stdout)
 		local powered = stdout:match("^on") ~= nil
 		local connected = parse_devices(stdout)
@@ -148,8 +148,8 @@ local function open_menu()
 end
 
 local buttons = gears.table.join(
-	awful.button({}, 1, toggle_power),
-	awful.button({}, 3, open_menu)
+	awful.button({}, 3, open_menu),
+	awful.button({}, 2, toggle_power)
 )
 
 return { widget = widget, buttons = buttons }

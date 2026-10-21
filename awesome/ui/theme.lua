@@ -41,7 +41,6 @@ local palettes = {
 	},
 }
 
-local os = os
 local active_palette = palettes["gruvbox"]
 
 local theme = {
@@ -99,31 +98,6 @@ theme.taglist_spacing = dpi(8) -- waybar workspace buttons are spaced apart
 theme.menu_height = dpi(20)
 theme.menu_width = dpi(160)
 theme.menu_submenu_icon = theme.dir .. "/icons/submenu.png"
-theme.layout_tile = theme.dir .. "/icons/tile.png"
-theme.layout_tileleft = theme.dir .. "/icons/tileleft.png"
-theme.layout_tilebottom = theme.dir .. "/icons/tilebottom.png"
-theme.layout_tiletop = theme.dir .. "/icons/tiletop.png"
-theme.layout_fairv = theme.dir .. "/icons/fairv.png"
-theme.layout_fairh = theme.dir .. "/icons/fairh.png"
-theme.layout_spiral = theme.dir .. "/icons/spiral.png"
-theme.layout_dwindle = theme.dir .. "/icons/dwindle.png"
-theme.layout_max = theme.dir .. "/icons/max.png"
-theme.layout_fullscreen = theme.dir .. "/icons/fullscreen.png"
-theme.layout_magnifier = theme.dir .. "/icons/magnifier.png"
-theme.layout_floating = theme.dir .. "/icons/floating.png"
-theme.widget_ac = theme.dir .. "/icons/ac.png"
-theme.widget_battery = theme.dir .. "/icons/battery.png"
-theme.widget_battery_low = theme.dir .. "/icons/battery_low.png"
-theme.widget_battery_empty = theme.dir .. "/icons/battery_empty.png"
-theme.widget_mem = theme.dir .. "/icons/mem.png"
-theme.widget_cpu = theme.dir .. "/icons/cpu.png"
-theme.widget_temp = theme.dir .. "/icons/temp.png"
-theme.widget_net = theme.dir .. "/icons/net.png"
-theme.widget_hdd = theme.dir .. "/icons/hdd.png"
-theme.widget_vol = theme.dir .. "/icons/vol.png"
-theme.widget_vol_low = theme.dir .. "/icons/vol_low.png"
-theme.widget_vol_no = theme.dir .. "/icons/vol_no.png"
-theme.widget_vol_mute = theme.dir .. "/icons/vol_mute.png"
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon = true
 theme.useless_gap = dpi(4) -- sway: gaps inner/outer 4

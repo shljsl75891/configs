@@ -4,25 +4,12 @@ local awful = require("awful")
 local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
 local theme = require("ui.theme")
-local theme_assets = require("beautiful.theme_assets")
 
-local my_table = gears.table
 local bluetooth = require("ui.widgets.bluetooth")
 local clock = require("ui.widgets.clock")
 local punch = require("ui.widgets.punch")
 local vars = require("config.vars")
 local buttons = require("config.buttons")
-
--- Generate taglist squares:
-local taglist_square_size = dpi(0)
-theme.taglist_squares_sel = theme_assets.taglist_squares_unsel(
-	taglist_square_size,
-	theme.dir .. "/icons/square_sel.png"
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-	taglist_square_size,
-	theme.dir .. "/icons/square_unsel.png"
-)
 
 local markup = lain.util.markup
 local separators = lain.util.separators
@@ -46,26 +33,6 @@ function theme.at_screen_connect(s)
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
-	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
-	-- We need one layoutbox per screen.
-	s.mylayoutbox = awful.widget.layoutbox(s)
-	s.mylayoutbox:buttons(my_table.join(
-		awful.button({}, 1, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 2, function()
-			awful.layout.set(awful.layout.layouts[1])
-		end),
-		awful.button({}, 3, function()
-			awful.layout.inc(-1)
-		end),
-		awful.button({}, 4, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 5, function()
-			awful.layout.inc(-1)
-		end)
-	))
 	-- Create a taglist widget
 	s.mytaglist = awful.widget.taglist(
 		s,
@@ -115,6 +82,7 @@ function theme.at_screen_connect(s)
 	-- widgets
 	local widgets = {
 		cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")({
+			timeout = 3,
 			width = 40,
 			step_width = 2,
 			step_spacing = 0,
@@ -126,6 +94,7 @@ function theme.at_screen_connect(s)
 			device = "pulse", -- needs libasound2-plugins; routes amixer to PipeWire default sink
 			mixctrl = "Master",
 			step = 5,
+			refresh_rate = 10,
 			-- A known widget_type gets the top-level args table verbatim
 			-- (icon_and_text_args only applies to the unknown-type fallback).
 			font = theme.font,
@@ -134,7 +103,7 @@ function theme.at_screen_connect(s)
 		battery = require("awesome-wm-widgets.battery-widget.battery")({
 			show_current_level = true,
 			path_to_icons = icon_base_path,
-			timeout = 5,
+			timeout = 30,
 			font = theme.font,
 		}),
 		brightness = require("awesome-wm-widgets.brightness-widget.brightness")({

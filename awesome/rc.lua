@@ -13,15 +13,13 @@ require("config.errors")
 local vars = require("config.vars")
 require("config.layouts")
 
-beautiful.init(
+assert(beautiful.init(
 	string.format("%s/.config/awesome/ui/bar.lua", os.getenv("HOME"))
-)
+))
 
 -- Per-tag wallpapers (see ui/wallpaper.lua). Caches a pre-scaled surface per
 -- tag so switches are near-instant after the first (background-warmed) visit.
 local set_tag_wallpaper = require("ui.wallpaper").setup(#vars.tagnames)
-
-require("config.menu")
 
 awful.screen.connect_for_each_screen(function(s)
 	beautiful.at_screen_connect(s)
@@ -30,6 +28,7 @@ awful.screen.connect_for_each_screen(function(s)
 	set_tag_wallpaper(s.selected_tag)
 end)
 
+root.keys(require("config.keys").global)
 require("config.rules")
 require("config.signals")
 

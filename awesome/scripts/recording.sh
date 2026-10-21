@@ -29,6 +29,12 @@ if [ "$stopped" -eq 0 ]; then
 		-f x11grab -framerate 60 -video_size "$geometry" -i "${DISPLAY:-:0}" \
 		-vf 'format=nv12,hwupload' -c:v h264_vaapi -qp 20 \
 		"$file" &
-	echo $! >"$pidfile"
-	notify-send "Recording" "Recording started: $file"
+	pid=$!
+	sleep 1
+	if kill -0 "$pid" 2>/dev/null; then
+		echo "$pid" >"$pidfile"
+		notify-send "Recording" "Recording started: $file"
+	else
+		notify-send -u critical "Recording" "ffmpeg failed to start"
+	fi
 fi
