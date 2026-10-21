@@ -29,7 +29,7 @@ No pass reads the PR title, the PR description, or runs `gh pr view --json body`
 1. **ALWAYS use `side`**: `RIGHT` for additions/context, `LEFT` for deletions. Never the deprecated `position` param.
 2. **Lines MUST be inside a diff hunk** — computed once in `prepare.sh`, checked again in `post.sh`.
 3. **Bulk-create payload**: exactly 2 keys — `commit_id` + `comments` (each: `path`, `line`, `side`, `body`; a multi-line comment adds `start_line` + `start_side` TOGETHER — never one without the other).
-4. **NO `body`/`event` in the bulk-create payload** — omitting `event` keeps the review PENDING. A pending review's `body` is also silently dropped by the GitHub web UI if the human finishes the review without retyping it — never rely on it (evidence: github.com/orgs/community/discussions/188646). The reviewer brief therefore goes out as a separate public issue comment (Step 6, `post.sh`), not as the review body.
+4. **NO `body`/`event` in the bulk-create payload** — omitting `event` keeps the review PENDING. A pending review's `body` is also silently dropped by the GitHub web UI if the human finishes the review without retyping it — never rely on it.
 5. **API version**: every `gh api` call sets `-H "X-GitHub-Api-Version: 2022-11-28"` — this is the only version GitHub currently supports.
 6. **One pending review per user per PR.** If one already exists at the CURRENT head commit, append to it — do not delete it; it may hold the human's own draft comments. If it exists at a DIFFERENT commit, stop and tell the user.
 7. Verify `state === "PENDING"` in the response before reporting success.
@@ -58,7 +58,7 @@ If the invoking command supplied project conventions ("house rules") or acceptan
 
 ### 4. Lens runs
 
-Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8), one per lens. In the first group's call also add a 7th task: the brief (below). Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
+Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8), one per lens. Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
 
 ```
 MODE: PR_LENS_REVIEW
@@ -82,23 +82,9 @@ Comment format (write the finding's "body" field exactly in this shape):
 
 (One task per lens name — `correctness`, `conformance`, `necessity`, `security`, `reliability`, `tests` — each writing its own `$g-<lens>.jsonl`.)
 
-**Brief task** (once per PR, in the first group's call; `agent: general`, `timeoutMs: 3600000`):
+### 5. Retry a crashed lens
 
-```
-MODE: PR_BRIEF
-Worktree: $STATE_DIR/src (read only; never modify)
-Files: $STATE_DIR/files.txt
-Hunks: $STATE_DIR/hunks.tsv
-Output: $STATE_DIR/brief.md
-Do not read the PR title or description.
-
-Follow this method:
-<paste the full content of brief.md here>
-```
-
-### 5. Retry a crashed lens or brief
-
-`post.sh` (Step 6 dry-run) reports any `$g-<lens>.jsonl` or `brief.md` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
+`post.sh` (Step 6 dry-run) reports any `$g-<lens>.jsonl` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
 
 ### 6. Interrogate & triage
 
@@ -109,11 +95,9 @@ Always runs; no skip. Never drop a finding on your own.
    - **Holds** — evidence as `path:line`.
    - **Weak** — cannot prove it; recommend downgrade to ❓.
    - **Wrong** — proof as `path:line` (POLICY drop reasons only).
-3. **Depth + brief + table.** First print a private depth call, based on the findings so far and `brief.md`:
-   `🔍 REVIEW DEPTH: THOROUGH|FOCUSED|SKIM` plus a one-line `why:`. THOROUGH = any 🔴, a one-way door, or wide blast radius. FOCUSED = any 🟣/🟠, or a behavior change with no test. SKIM = otherwise. Never put the depth call in a public place. Then print `brief.md`. Then print `#`, id, severity, lens, `path:line[side]`, title, verdict.
+3. **Table.** Print: `#`, id, severity, lens, `path:line[side]`, title, verdict.
 4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens, ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
-5. **Brief.** Ask once: post `brief.md` as a public PR comment? Options: **Post**, **Skip**; free text edits `brief.md` first. On Post, touch `$STATE_DIR/brief-approved`. The comment goes out immediately when `post.sh` runs, while inline comments stay pending.
-6. **Apply.** Edits and downgrades rewrite `body` in `deduped-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+5. **Apply.** Edits and downgrades rewrite `body` in `deduped-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
 
 ### 7. Post
 
@@ -127,11 +111,10 @@ Run this skill's `scripts/post.sh <PR_NUM>` (needs `approved-ids.txt`; `--dry-ru
 6. Prints counts by lens and by severity (the first character of each `body`).
 7. Checks for a pending review at the current head commit and appends to it (GraphQL, one call per comment, 1.2s apart — GitHub caps content creation at 80/min and 500/hour per user), bulk-creates a new one if none exists, or stops if a pending review exists at a different commit.
 8. Verifies the response `state` is `PENDING`.
-9. If `brief-approved` exists, posts `brief.md` as an issue comment, or updates its own earlier one (found by the `<!-- pr-reviewer:brief -->` marker) — no duplicates.
 
 ### 8. Report
 
-Start with the depth call (`🔍 REVIEW DEPTH: …`). Then paste `post.sh`'s own summary output (it already has the counts, the review URL and the brief comment URL) plus your acceptance-criteria coverage line if the caller supplied `ac.md`.
+Paste `post.sh`'s own summary output (it already has the counts and the review URL) plus your acceptance-criteria coverage line if the caller supplied `ac.md`.
 
 ## SEVERITY TAXONOMY
 
@@ -176,8 +159,6 @@ Write the `Issue` text or the question text in Simplified Technical English (ASD
 - [ ] Local diff file count matches GitHub's `changedFiles` (or the mismatch is explained)
 - [ ] Every lens's `$g-<lens>.jsonl` exists (retried once if missing)
 - [ ] File coverage checked; any gap named in the report
-- [ ] `brief.md` exists (retried once if missing); depth call and brief shown before triage
-- [ ] Brief-comment decision recorded (`brief-approved` or skipped); no duplicate brief comment
 - [ ] Every finding challenged and triaged; `approved-ids.txt` written
 - [ ] Every finding's line is inside a hunk of the same path + side
 - [ ] Exact duplicates merged
@@ -202,11 +183,11 @@ Preconditions → prepare.sh (detached worktree @HEAD_SHA, local diff, hunks, gr
 ↓
 Context (house rules + AC from caller)
 ↓
-correctness + conformance + necessity + security + reliability + tests (+ brief in the first call), per group, in parallel (2 batches) — each decides proven vs. ❓ itself
+correctness + conformance + necessity + security + reliability + tests, per group, in parallel (2 batches) — each decides proven vs. ❓ itself
 ↓
 Retry any lens with no output, once
 ↓
-post.sh --dry-run → depth call + brief → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
+post.sh --dry-run → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
 ↓
 post.sh: file coverage report → line validation → dedup → build comments → post (append to same-commit
 pending review | bulk-create | stop on stale pending) → report

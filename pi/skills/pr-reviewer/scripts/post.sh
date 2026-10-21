@@ -29,7 +29,6 @@ for g in $PR_GROUPS; do
     fi
   done
 done
-[ -f "$STATE_DIR/brief.md" ] || { echo "MISSING: brief.md (re-run the brief task once, then re-run post.sh)"; MISSING=1; }
 [ "$MISSING" = "0" ] && echo "none"
 
 echo "== File coverage (files assigned to a lens vs files it reported reading) =="
@@ -115,23 +114,8 @@ if [ "$DRY_RUN" = "1" ]; then
   exit 0
 fi
 
-# Posts brief.md as a public issue comment when triage approved it. Updates its own earlier comment (marker) instead of duplicating.
-post_brief() {
-  [ -f "$STATE_DIR/brief-approved" ] || return 0
-  local me id
-  me=$(gh api user --jq .login)
-  id=$(gh api --paginate "repos/$REPO/issues/$PR_NUM/comments" \
-    --jq ".[] | select(.user.login==\"$me\" and (.body|contains(\"<!-- pr-reviewer:brief -->\"))) | .id" | head -1)
-  if [ -n "$id" ]; then
-    gh api -X PATCH "repos/$REPO/issues/comments/$id" -F body=@"$STATE_DIR/brief.md" --jq .html_url
-  else
-    gh api -X POST "repos/$REPO/issues/$PR_NUM/comments" -F body=@"$STATE_DIR/brief.md" --jq .html_url
-  fi
-}
-
 if [ "$COMMENT_COUNT" = "0" ]; then
   echo "Nothing to post."
-  echo "Brief comment: $(post_brief)"
   exit 0
 fi
 
@@ -168,4 +152,3 @@ fi
 STATE=$(gh api -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews/$REVIEW_ID" --jq .state)
 echo "Review state: $STATE"
 echo "URL: https://github.com/$REPO/pull/$PR_NUM"
-if [ -f "$STATE_DIR/brief-approved" ]; then echo "Brief comment: $(post_brief)"; fi
