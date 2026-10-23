@@ -21,7 +21,7 @@ keybind = ctrl+shift+t=ignore
 clipboard-read = allow
 clipboard-write = allow
 
-mouse-scroll-multiplier = precision:4
+mouse-scroll-multiplier = precision:2,discrete:1
 
 confirm-close-surface = false
 window-decoration = false
