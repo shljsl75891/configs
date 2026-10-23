@@ -7,8 +7,8 @@
   "spacing": 0,
   "exclusive": true,
 
-  "modules-left": ["custom/punch", "sway/workspaces"],
-  "modules-center": ["custom/date"],
+  "modules-left": ["sway/workspaces"],
+  "modules-center": ["custom/date", "custom/punch"],
   "modules-right": [
     "custom/arr0",
     "cpu",
