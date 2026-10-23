@@ -7,6 +7,10 @@ The user has asked you to teach them something: $ARGUMENTS
 
 This is a stateful request - they intend to learn the topic over multiple sessions.
 
+## Start Routine
+
+Before anything else, read `MISSION.md`, `NOTES.md`, `GLOSSARY.md`, `RESOURCES.md`, the latest files in `./learning-records/`, and `./assets/`. Skip files that do not exist yet. If `$ARGUMENTS` is empty, pick the next lesson by zone of proximal development.
+
 ## Teaching Workspace
 
 Treat the current directory as a teaching workspace. The state of their learning is captured in this directory in several files:
@@ -30,7 +34,7 @@ To learn at a deep level, the user needs three things:
 
 Before the `RESOURCES.md` is well-populated, your focus should be to find high-quality resources which will help the user acquire knowledge. Never trust your parametric knowledge.
 
-To find these resources, delegate to the `subagent` tool with `subagent_type: web-research-expert`. Give it the mission (or topic, if `MISSION.md` doesn't exist yet) and ask it to return high-trust, high-quality sources (books, articles, docs, papers) plus reputable communities, each with a one-line annotation of what it covers and when to use it. Fold its findings into `RESOURCES.md` using the format below. Re-run this delegation whenever the mission shifts or a lesson surfaces a knowledge gap not yet covered in `RESOURCES.md`.
+To find these resources, delegate to the `subagent` tool with `agent: "web-research-expert"`. The subagent cannot see this conversation, so the task text must be self-contained: give it the mission (or topic, if `MISSION.md` doesn't exist yet) and ask it to return high-trust, high-quality sources (books, articles, docs, papers) plus reputable communities, each with a one-line annotation of what it covers and when to use it. Fold its findings into `RESOURCES.md` using the format below. Re-run this delegation whenever the mission shifts or a lesson surfaces a knowledge gap not yet covered in `RESOURCES.md`.
 
 Some topics may require more skills than knowledge. Learning more about theoretical physics might be more knowledge-based. For yoga, more skills-based.
 
@@ -55,22 +59,13 @@ A lesson should be **beautiful**, with clean, readable typography and layout, si
 
 All lesson wording must follow **Simplified Technical English (ASD-STE100)**: short sentences, one instruction per sentence, approved simple words only, active voice, no idioms or filler. This keeps lessons unambiguous and easy to retain.
 
-All HTML pages (lessons, reference documents) must use the **Gruvbox Dark Hard** color theme. Put the palette in the shared stylesheet under `./assets/` so every page stays consistent:
-
-- Background: `#1d2021`
-- Foreground: `#ebdbb2`
-- Palette: red `#fb4934`, green `#b8bb26`, yellow `#fabd2f`, blue `#83a598`, purple `#d3869b`, aqua `#8ec07c`, orange `#fe8019`, gray `#928374`
-
-Fonts:
-
-- Monospace (code, terminal output): **TX02 Nerd Font**, installed at `/usr/share/fonts/TX02*.ttf`.
-- Sans-serif (body text, headings): **NotoSans Nerd Font**, installed at `/usr/share/fonts/NotoSansNerdFont-*.ttf`.
-
-Declare both with `@font-face` in the shared stylesheet, pointing at the local font files, each with a matching generic fallback (`monospace` / `sans-serif`).
-
 The lesson should be short, and completable very quickly. Learners' working memory is very small, and we need to stay within it. But each lesson should give the user a single tangible win that they can build on. It should be directly tied to the mission, and should be in the user's zone of proximal development.
 
-If possible, open the lesson file for the user by running a CLI command.
+Open the lesson for the user with `xdg-open lessons/NNNN-<dash-case-name>.html`.
+
+Start each lesson with 2-3 retrieval questions on earlier lessons (spacing), once earlier lessons exist.
+
+End each lesson with a short results summary (quiz scores, missed topics) that the user can paste back to you. Write learning records only from this evidence or from what the user shows in chat.
 
 Each lesson should link via HTML anchors to other lessons and reference documents.
 
@@ -90,7 +85,7 @@ A shared stylesheet is the first component every workspace earns: every lesson l
 
 Every lesson should be tied into the mission - the reason that the user is interested in learning about the topic.
 
-If the user is unclear about the mission, or the `MISSION.md` is not populated, your first job should be to question the user on why they want to learn this.
+If the user is unclear about the mission, or the `MISSION.md` is not populated, your first job should be to question the user on why they want to learn this. Use the `question` tool for the interview.
 
 Failing to understand the mission will mean knowledge acquisition is not grounded in real-world goals. Lessons will feel too abstract. You will have no way of judging what the user should do next.
 
@@ -127,7 +122,7 @@ Each of these should be based on a **feedback loop**, where the user receives fe
 
 Quizzes must be MCQ or self-graded recall. Never free-text exact-match grading (no "type the answer" checked by string comparison — it punishes correct answers phrased differently).
 
-- **MCQ** (default choice): 3-5 options, one correct. Distractors must be plausible, not obviously wrong. Keep options similar length so formatting doesn't give away the answer.
+- **MCQ** (default choice): 3-5 options, one correct. Distractors must be plausible, not obviously wrong. Make every option the same number of words (and characters, if possible). Vary which position holds the correct answer across questions. Give no clue through formatting or order.
 - **Self-graded recall**: show the question, let the user recall the answer themselves, then reveal the model answer for them to compare against. Use only when the answer is prose or nuanced and MCQ can't capture it well.
 
 ## Acquiring Wisdom
@@ -154,7 +149,7 @@ Some learning topics lend themselves to reference:
 - Exercises and routines for fitness
 - Glossaries for any topic with its own nomenclature
 
-Glossaries, in particular, are an essential reference. Once one is created, it should be adhered to in every lesson.
+`GLOSSARY.md` is the single source for terms. Adhere to it in every lesson. If a printable glossary is useful, generate an HTML view in `./reference/` from `GLOSSARY.md`; never edit the two separately.
 
 ## `NOTES.md`
 
