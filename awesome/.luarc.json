@@ -1,7 +1,0 @@
-{
-  "runtime.version": "LuaJIT",
-  "diagnostics.globals": ["root", "awesome", "client", "screen", "tag"],
-  "workspace.library": {
-    "/usr/share/awesome/lib": true
-  }
-}

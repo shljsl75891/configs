@@ -1,0 +1,28 @@
+# Palette: gruvbox-dark
+
+font=NotoSans Nerd Font 10
+background-color=#1D2021
+text-color=#FBF1C7
+border-color=#792329
+border-size=1
+border-radius=0
+padding=8
+margin=4
+width=300
+max-visible=5
+layer=overlay
+anchor=top-right
+default-timeout=4000
+max-icon-size=32
+markup=1
+actions=1
+format=<b>%s</b>\n%b
+on-button-right=dismiss
+
+[urgency=low]
+border-color=#d3869b
+
+[urgency=critical]
+background-color=#722529
+border-color=#B8BB26
+default-timeout=0

@@ -1,0 +1,8 @@
+# Source from ~/.profile: sway has no env directive, and LightDM runs ~/.profile
+# before it starts the session.
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland
+export XCURSOR_THEME=Bibata-Modern-Classic
+export XCURSOR_SIZE=20
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=gtk3
