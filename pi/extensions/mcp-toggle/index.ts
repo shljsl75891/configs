@@ -142,7 +142,7 @@ export default function mcpToggle(pi: ExtensionAPI): void {
 					{ enableSearch: true },
 				);
 				view = { list, render: () => tui.requestRender() };
-				const container = new Box(2, 1, (text) => theme.bg("userMessageBg", text));
+				const container = new Box(2, 1, (text) => theme.bg("customMessageBg", text));
 				container.addChild({
 					render: (width: number) => {
 						const title = theme.fg("accent", theme.bold("MCP servers"));

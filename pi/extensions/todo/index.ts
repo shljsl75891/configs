@@ -82,8 +82,8 @@ export default function todo(pi: ExtensionAPI): void {
 		}
 		// A widget cannot sit in a corner. Its factory gets the TUI, so it opens a non-capturing overlay and hides it on dispose.
 		ctx.ui.setWidget(PANEL_KEY, (tui, theme) => {
-			// Same look as the MCP popup: solid background, padding, no border. The collapsed box has no vertical padding and a lighter background.
-			const bg = (text: string) => theme.bg("userMessageBg", text);
+			// Same look as the MCP popup: solid background, padding, no border. The collapsed box has no vertical padding.
+			const bg = (text: string) => theme.bg("customMessageBg", text);
 			const full = new Box(PANEL_PAD_X, PANEL_PAD_Y, bg);
 			full.addChild({ render: (width: number) => panelLines(theme, width), invalidate: () => {} });
 			const collapsed = new Box(PANEL_PAD_X, 0, (text) => theme.bg("selectedBg", text));

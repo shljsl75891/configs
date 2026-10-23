@@ -234,6 +234,7 @@ export default function (pi: ExtensionAPI) {
 			`The default agent scope is "user", from ${path.join(getAgentDir(), "agents")}. The system prompt lists these agents under "Available agents".`,
 			`To use a project agent from ${CONFIG_DIR_NAME}/agents, name it and set agentScope to "both" or "project".`,
 			"The window stays open after the run. The user can work in it by hand. You cannot send more messages to the agent.",
+			"Every subagent can launch its own subagents of any type, such as explore or web-research-expert. Do not run research or exploration first just to pass the results on. Give the goal and let the subagent find its own facts.",
 		].join(" "),
 		parameters: SubagentParams,
 
