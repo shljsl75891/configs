@@ -86,6 +86,7 @@
 
 
   "custom/punch": {
+    "tooltip": false,
     "exec": "~/.config/sway/scripts/punch-status.sh",
     "return-type": "json",
     "interval": 300,

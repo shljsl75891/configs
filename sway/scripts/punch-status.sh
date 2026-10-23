@@ -14,5 +14,5 @@ else
 	class=none text="Attendance"
 fi
 
-jq -nc --arg text "󱑆 $text" --arg class "$class" --arg tooltip "${status:-no output}" \
-	'{text:$text, class:$class, tooltip:$tooltip}'
+jq -nc --arg text "󱑆 $text" --arg class "$class" \
+	'{text:$text, class:$class}'

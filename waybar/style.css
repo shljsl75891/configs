@@ -204,7 +204,7 @@ window#waybar.empty #window {
 
 #custom-punch {
   padding: 4px 8px;
-  margin: 6px 2px 0;
+  margin: 6px 2px 0 6px;
   border-radius: 4px;
   opacity: 0.8;
   color: #1d2021;
