@@ -57,7 +57,7 @@ export default function todo(pi: ExtensionAPI): void {
 	/** The panel starts collapsed (hidden). */
 	let expanded = false;
 
-	const iconColor = (status: Status) => (status === "completed" ? "success" : status === "in_progress" ? "warning" : "dim");
+	const iconColor = (status: Status) => (status === "completed" ? "success" : status === "in_progress" ? "warning" : "muted");
 
 	const summary = (): string => `Todos ${todos.length - openTodos(todos).length}/${todos.length}`;
 
@@ -66,7 +66,7 @@ export default function todo(pi: ExtensionAPI): void {
 		todos.flatMap((item) => {
 			const done = item.status === "completed" || item.status === "cancelled";
 			const mark = theme.fg(iconColor(item.status), ICONS[item.status]);
-			return wrapTextWithAnsi(item.content, Math.max(1, width - 2)).map((line, i) => (i ? "  " : `${mark} `) + (done ? theme.fg("dim", line) : line));
+			return wrapTextWithAnsi(item.content, Math.max(1, width - 2)).map((line, i) => (i ? "  " : `${mark} `) + (done ? theme.fg("muted", line) : line));
 		});
 
 	/** Show the panel while an item is open, hide it otherwise. */
