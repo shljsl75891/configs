@@ -47,7 +47,7 @@ input type:touchpad {
     drag enabled
     drag_lock disabled
     click_method button_areas
-    scroll_factor 2.5
+    scroll_factor 1.0
     accel_profile adaptive
     pointer_accel 0.1
     dwt enabled

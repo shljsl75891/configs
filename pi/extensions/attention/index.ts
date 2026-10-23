@@ -1,6 +1,6 @@
 /**
  * Grabs the user's attention when the primary session needs it: focuses the
- * terminal tag (awesome/rc.lua's focus_terminal_tag()) and the tmux pane, and
+ * terminal workspace (sway workspace 2) and the tmux pane, and
  * plays a short sound, when the agent goes idle or a blocking UI prompt opens.
  */
 
@@ -41,7 +41,7 @@ export default function attention(pi: ExtensionAPI) {
 
     if (!tmuxPane) return;
 
-    await pi.exec("awesome-client", ["focus_terminal_tag()"]);
+    await pi.exec("swaymsg", ["workspace", "number", "2"]);
     await pi.exec("tmux", ["select-pane", "-t", tmuxPane]);
     await pi.exec("tmux", ["switch-client", "-t", tmuxPane]);
     if (preselectFirstOption) {
