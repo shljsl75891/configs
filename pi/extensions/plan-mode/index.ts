@@ -3,6 +3,7 @@ import type {
   ExtensionContext,
   SessionEntry,
 } from "@earendil-works/pi-coding-agent";
+import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { Key } from "@earendil-works/pi-tui";
 import { modelKey, parseModelKey } from "../lib/model.ts";
 import { readAgentSetting } from "../lib/settings.ts";
@@ -67,9 +68,29 @@ type Mode = "plan" | "build";
 /** Last model ("provider/id") used in each mode; restored on Tab. */
 type ModeModels = Partial<Record<Mode, string>>;
 
+/** Last thinking level used in each mode; restored on Tab. */
+type ModeThinking = Partial<Record<Mode, ThinkingLevel>>;
+
 interface PlanModeEntry {
   enabled: boolean;
   models?: ModeModels;
+  thinking?: ModeThinking;
+}
+
+const THINKING_LEVELS: readonly string[] = [
+  "off", "minimal", "low", "medium", "high", "xhigh", "max",
+];
+
+/** Narrows an untrusted thinking map (session file or settings.json modeThinking). */
+function readThinking(raw: unknown): ModeThinking {
+  const out: ModeThinking = {};
+  if (typeof raw !== "object" || raw === null) return out;
+  for (const m of ["plan", "build"] as const) {
+    const v = (raw as Record<string, unknown>)[m];
+    if (typeof v === "string" && THINKING_LEVELS.includes(v))
+      out[m] = v as ThinkingLevel;
+  }
+  return out;
 }
 
 /** Narrows an untrusted `models` value (session file or settings.json modeModels): only string entries under known mode keys survive. */
@@ -99,6 +120,7 @@ function readPlanModeEntry(
       return {
         enabled: typeof data?.enabled === "boolean" ? data.enabled : true,
         models: readModels(data?.models),
+        thinking: readThinking(data?.thinking),
       };
     }
   }
@@ -120,6 +142,7 @@ export default function planMode(pi: ExtensionAPI) {
    */
   let turnsSincePlanReminder = 0;
   let models: ModeModels = {};
+  let thinking: ModeThinking = {};
   const mode = (): Mode => (enabled ? "plan" : "build");
   /* Read once at extension init, not per-session: argv doesn't change mid-process. */
   const explicitModel = process.argv.includes("--model");
@@ -138,7 +161,7 @@ export default function planMode(pi: ExtensionAPI) {
   }
 
   function persist(): void {
-    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, { enabled, models });
+    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, { enabled, models, thinking });
   }
 
   /** Switches to the current mode's remembered model, else its settings default. */
@@ -171,6 +194,15 @@ export default function planMode(pi: ExtensionAPI) {
     }
   }
 
+  /** Remembered level for the current mode, else its settings default. */
+  function targetThinking(): ThinkingLevel | undefined {
+    try {
+      return thinking[mode()] ?? readThinking(readAgentSetting("modeThinking"))[mode()];
+    } catch {
+      return thinking[mode()];
+    }
+  }
+
   /** permission extension (and subagent) read the mode from this event. */
   function announce(): void {
     pi.events.emit(PLAN_MODE_EVENT, { enabled } satisfies PlanModePayload);
@@ -183,7 +215,11 @@ export default function planMode(pi: ExtensionAPI) {
     pendingSwitchNotice = true;
     turnsSincePlanReminder = 0;
     updateStatus(ctx);
+    /* Read before the model switch: pi may clamp the level on switch,
+       and the clamp event would overwrite the remembered choice. */
+    const level = targetThinking();
     await applyModeModel(ctx);
+    if (level) pi.setThinkingLevel(level);
     persist();
   }
 
@@ -215,6 +251,10 @@ export default function planMode(pi: ExtensionAPI) {
   // Every model change (/model, cycling, our own switch) is remembered for the current mode.
   pi.on("model_select", (event) => {
     models[mode()] = modelKey(event.model);
+  });
+
+  pi.on("thinking_level_select", (event) => {
+    thinking[mode()] = event.level;
   });
 
   pi.on("before_agent_start", (event) => {
@@ -273,6 +313,7 @@ export default function planMode(pi: ExtensionAPI) {
     // Resumed state wins over --plan: the flag only seeds a fresh session.
     if (persisted) enabled = persisted.enabled;
     models = { ...persisted?.models };
+    thinking = { ...persisted?.thinking };
 
     announce();
     updateStatus(ctx);
@@ -287,11 +328,14 @@ export default function planMode(pi: ExtensionAPI) {
       /* No --model given: modeModels[mode] (falling back to whatever pi
          itself started on) is this mode's default, not an override to
          remember - just switch to it. */
+      const level = targetThinking();
       await applyModeModel(ctx);
+      if (level) pi.setThinkingLevel(level);
     } else if (startupModel) {
       /* Resumed, or --model was a deliberate choice (eg. a plan-mode
          subagent keeping its agent's own model) - keep it. */
       models[mode()] = startupModel;
+      thinking[mode()] ??= pi.getThinkingLevel();
     }
     if (flagEnabled && !persisted) persist();
   });

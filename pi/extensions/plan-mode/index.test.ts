@@ -15,7 +15,7 @@ const HAIKU = "anthropic/claude-haiku-5";
 process.env.PI_CODING_AGENT_DIR = mkdtempSync(join(tmpdir(), "plan-mode-test-"));
 writeFileSync(
   join(process.env.PI_CODING_AGENT_DIR, "settings.json"),
-  JSON.stringify({ modeModels: { plan: OPUS, build: SONNET } }),
+  JSON.stringify({ modeModels: { plan: OPUS, build: SONNET }, modeThinking: { plan: "high" } }),
 );
 
 type Model = { provider: string; id: string };
@@ -35,6 +35,7 @@ function fakePi({
   let tab: ((ctx: object) => void) | undefined;
   let branch = [...initialBranch];
   const announced: boolean[] = [];
+  let level = "medium";
   let model = initialModel ? toModel(initialModel) : undefined;
   /** Pi's /model: sets the model and emits model_select. Delayed a tick, like a real
    *  network/tmux call, so concurrent Tab presses actually race without the queue. */
@@ -48,6 +49,11 @@ function fakePi({
     registerFlag() {},
     getFlag: () => flag,
     setModel: selectModel,
+    getThinkingLevel: () => level,
+    setThinkingLevel: (next: string) => {
+      level = next;
+      handlers.get("thinking_level_select")?.({ level: next }, ctx);
+    },
     registerShortcut: (_key: unknown, opts: { handler: (ctx: object) => void }) => {
       tab = opts.handler;
     },
@@ -78,6 +84,10 @@ function fakePi({
     get model() {
       return modelKey(model);
     },
+    get level() {
+      return level;
+    },
+    pickLevel: (next: string) => pi.setThinkingLevel(next),
     pickModel: (key: string) => selectModel(toModel(key)),
     get branch() {
       return branch;
@@ -220,5 +230,31 @@ describe("per-mode models", () => {
     await pi.start();
     await Promise.all([pi.tab(), pi.tab()]);
     assert.equal(pi.model, SONNET);
+  });
+});
+
+describe("thinking level per mode", () => {
+  it("applies settings default on fresh start, then remembers choices across Tab", async () => {
+    const pi = fakePi({ model: SONNET });
+    await pi.start(); // build: no default -> unchanged
+    assert.equal(pi.level, "medium");
+    pi.pickLevel("low");
+    await pi.tab(); // plan: settings default high
+    assert.equal(pi.level, "high");
+    pi.pickLevel("xhigh");
+    await pi.tab(); // build restored
+    assert.equal(pi.level, "low");
+    await pi.tab();
+    assert.equal(pi.level, "xhigh");
+  });
+
+  it("restores persisted levels on resume", async () => {
+    const e: Entry = { type: "custom", customType: "plan-mode", data: { enabled: false, thinking: { plan: "max", build: "minimal" } } };
+    const pi = fakePi({ branch: [e] });
+    await pi.start();
+    await pi.tab();
+    assert.equal(pi.level, "max");
+    const saved = pi.branch.at(-1)!.data as { thinking: object };
+    assert.deepEqual(saved.thinking, { plan: "max", build: "minimal" });
   });
 });
