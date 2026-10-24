@@ -28,7 +28,7 @@ client.unfocused        #1A1B26 #1A1B26 #D4BE98 #1A1B26
 client.urgent           #9D0006 #9D0006 #D4BE98 #9D0006
 
 # Sway has no blur or rounded corners, so only opacity is kept from picom.
-for_window [all] opacity 0.9
+for_window [all] opacity 0.95
 for_window [app_id="mpv"] opacity 1
 for_window [class="mpv"] opacity 1
 
