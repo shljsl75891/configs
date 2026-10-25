@@ -13,10 +13,10 @@ git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 # Dependencies
 
 ```console
-sudo apt install zsh tmux sway waybar mako-notifier fuzzel swaylock swaybg grim slurp \
+sudo apt install zsh tmux sway waybar mako-notifier wmenu swaylock swaybg grim slurp \
   wf-recorder wl-clipboard ffmpeg brightnessctl playerctl copyq pcmanfm \
   network-manager-gnome bluez blueman xdg-desktop-portal-gtk xdg-desktop-portal-wlr \
-  ghostty qt5ct wtype rbw jq ncal tealdeer cmake libnotify-bin intel-media-va-driver-non-free vainfo
+  ghostty qt5ct wtype jq ncal tealdeer cmake libnotify-bin intel-media-va-driver-non-free vainfo
 ```
 
 ## Sway Setup
@@ -31,7 +31,6 @@ At the LightDM login screen, click the session-type gear icon → select **sway*
 ln -sfn ~/personal/configs/sway    ~/.config/sway
 ln -sfn ~/personal/configs/waybar  ~/.config/waybar
 ln -sfn ~/personal/configs/mako    ~/.config/mako
-ln -sfn ~/personal/configs/fuzzel  ~/.config/fuzzel
 ln -sfn ~/personal/configs/qt5ct   ~/.config/qt5ct
 ln -sfn ~/personal/configs/hyprvoice ~/.config/hyprvoice
 
@@ -118,20 +117,6 @@ each sway start. Without it, wtype fails with "WAYLAND_DISPLAY not set".
 
 - `Super+d` — start recording (speak); press again to stop and transcribe → text injected at cursor
 - `Super+Shift+d` — cancel/discard
-
-## Bitwarden Picker
-
-`Super+Shift+p` — fuzzy-pick a vault entry in fuzzel; password copied via `wl-copy` (auto-cleared after 10s)
-(`sway/scripts/bw-pick.sh`, uses `rbw`). One-time setup:
-
-```bash
-rbw config set email <email>
-rbw config set pinentry pinentry-gnome3
-rbw register && rbw sync
-```
-
-`rbw register` asks for a personal API key (`client_id`, `client_secret`): Bitwarden web vault → Settings → Security → Keys → View API key.
-CopyQ also records the copied password in its history; delete it there if needed.
 
 ## Screen Capture
 

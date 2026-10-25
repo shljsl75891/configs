@@ -68,7 +68,7 @@ bindsym $mod+e exec pcmanfm
 bindsym $mod+b exec $browser --profile-directory='Profile 2'
 bindsym $mod+Shift+b exec $browser --profile-directory='Profile 1'
 bindsym $mod+Shift+o exec obsidian
-bindsym $mod+r exec fuzzel
+bindsym $mod+r exec $scripts/menu.sh -r
 bindsym $mod+p exec copyq toggle
 bindsym $mod+d exec hyprvoice toggle
 bindsym $mod+Shift+d exec hyprvoice cancel
@@ -80,7 +80,6 @@ bindsym $mod+BackSpace exec makoctl dismiss --all
 bindsym $mod+Shift+r reload
 bindsym $mod+x exec pkill -SIGUSR1 waybar
 bindsym $mod+Shift+BackSpace exec swaylock -f -c 1d2021
-bindsym $mod+Shift+p exec ~/.config/sway/scripts/bw-pick.sh
 bindsym $mod+Shift+q exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 # Focus
