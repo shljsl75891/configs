@@ -69,6 +69,8 @@ End each lesson with a short results summary (quiz scores, missed topics) that t
 
 Each lesson should link via HTML anchors to other lessons and reference documents.
 
+Lesson and reference CSS must follow the system theme: set `color-scheme: light dark` and use `prefers-color-scheme`. Define every colour as a CSS variable (no hardcoded colours in components or SVGs). Force light colours under `@media print`.
+
 Each lesson should recommend a primary source for the user to read or watch. This should be the most high-quality, high-trust resource you found on the topic.
 
 Each lesson should contain a reminder to ask followup questions to the agent. The agent is their teacher, and can assist with anything that's unclear.
