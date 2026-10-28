@@ -149,6 +149,8 @@ else
   exit 1
 fi
 
-STATE=$(gh api -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews/$REVIEW_ID" --jq .state)
+read -r STATE REVIEW_URL < <(gh api -H "X-GitHub-Api-Version: 2022-11-28" \
+  "repos/$REPO/pulls/$PR_NUM/reviews/$REVIEW_ID" --jq '"\(.state) \(.html_url)"')
 echo "Review state: $STATE"
-echo "URL: https://github.com/$REPO/pull/$PR_NUM"
+echo "Pending review: $REVIEW_URL"
+echo "Files view (pending comments inline): https://github.com/$REPO/pull/$PR_NUM/files"
