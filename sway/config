@@ -153,6 +153,8 @@ for_window [app_id="pinentry.*"] floating enable
 for_window [app_id="pcmanfm"] floating enable, resize set 800 600
 for_window [app_id="com.github.hluk.copyq"] floating enable, resize set 700 500
 for_window [floating] move position center
+for_window [app_id="brave-origin" title="^(?!.*Brave Origin$)"] floating enable, sticky enable
+for_window [app_id="brave-origin" title="^Picture in picture$"] floating enable, sticky enable
 
 assign [app_id="obsidian"] workspace number 4
 assign [app_id="slack"] workspace number 7
