@@ -79,11 +79,16 @@ echo "Dropped: $DROPPED  Downgraded to single-line: $DOWNGRADED"
 
 echo "== Dedup (same path + line + side + body) =="
 BEFORE=$(wc -l < "$STATE_DIR/valid-findings.jsonl")
-jq -s 'unique_by([.path, .line, .side, .body])' "$STATE_DIR/valid-findings.jsonl" > "$STATE_DIR/deduped-findings.json"
+if [ "$DRY_RUN" = "0" ] && [ -f "$STATE_DIR/merged-findings.json" ]; then
+  echo "Using $STATE_DIR/merged-findings.json (general-agent merge + triage edits)"
+  cp "$STATE_DIR/merged-findings.json" "$STATE_DIR/deduped-findings.json"
+else
+  jq -s 'unique_by([.path, .line, .side, .body])' "$STATE_DIR/valid-findings.jsonl" > "$STATE_DIR/deduped-findings.json"
+fi
 AFTER=$(jq 'length' "$STATE_DIR/deduped-findings.json")
 echo "Before: $BEFORE  After: $AFTER  Merged: $((BEFORE-AFTER))"
 
-echo "== Triage filter (approved-ids.txt, written by SKILL.md Step 6) =="
+echo "== Triage filter (approved-ids.txt, written by SKILL.md Step 7) =="
 if [ "$DRY_RUN" = "0" ]; then
   [ -f "$STATE_DIR/approved-ids.txt" ] || { echo "ERROR: $STATE_DIR/approved-ids.txt missing — run the interrogate & triage step first." >&2; exit 1; }
   jq --rawfile ids "$STATE_DIR/approved-ids.txt" '($ids | split("\n")) as $ok | map(select(.id | IN($ok[])))' \

@@ -18,7 +18,7 @@ Flag every issue you find. No count cap. No confidence score. No filter for "nit
 - an existing PR comment already raises it — cite the comment URL;
 - a lint/type-check rule that actually runs in this repo's CI already catches it — cite the config `path:line`.
 
-Everything else goes to triage (Step 6). Only the human drops a finding there; the agent only recommends. A finding you cannot fully prove stays, as a ❓ question — never silence it. Each lens makes the proven-vs-question call itself when it writes the finding; Step 6 re-checks it and the human decides.
+Everything else goes to triage (Step 7). Only the human drops a finding there; the agent only recommends. A finding you cannot fully prove stays, as a ❓ question — never silence it. Each lens makes the proven-vs-question call itself when it writes the finding; Step 7 re-checks it and the human decides.
 
 A pre-existing bug on a line inside a diff hunk still posts, as a ❓ question. A bug repeated at N sites gets a comment at each site — do not collapse them into one summary comment. Generated and lock files (`package-lock.json`, generated OpenAPI specs, snapshots) are reviewed like any other changed file.
 
@@ -86,33 +86,46 @@ Comment format (write the finding's "body" field exactly in this shape):
 
 `post.sh` (Step 6 dry-run) reports any `$g-<lens>.jsonl` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
 
-### 6. Interrogate & triage
+### 6. Merge duplicates (general agent)
+
+Always runs, after every lens finished (and Step 5 retries), before triage.
+
+1. **Preview.** Run `scripts/post.sh <PR_NUM> --dry-run`. It writes validated, exact-deduped `$STATE_DIR/deduped-findings.json` (each item has `id`, `path`, `line`, `side`, `body`, `lens`). Note N = its item count.
+2. **Merge.** Spawn ONE `subagent` (`agent: general`, `timeoutMs: 3600000`). Substitute the real `$STATE_DIR` first; the task is self-contained:
+   - Read `$STATE_DIR/deduped-findings.json` (and code in `$STATE_DIR/src` if needed to judge).
+   - Two findings are duplicates ONLY if same `path`, `line` and `side` AND they describe the same issue. Different issues on one line are NOT duplicates; keep all.
+   - Merge each duplicate group into one finding: keep the highest severity, combine the best evidence/fix from all copies into one body (same COMMENT FORMAT), keep one member's `id`, set `lens` to all source lenses (comma-joined), add `merged_from: [all ids in the group]`.
+   - NEVER drop, edit, or merge any finding that is not a duplicate. Copy it through unchanged.
+   - Write `$STATE_DIR/merged-findings.json` (JSON array, same item schema) and `$STATE_DIR/merge-log.txt` (each group: ids merged, why).
+3. **Check.** Every original id must appear exactly once as an `id` or in a `merged_from` of `merged-findings.json`, and no id may be invented: `jq` it. On failure, re-run the merge once; if it fails again, `cp deduped-findings.json merged-findings.json`.
+
+### 7. Interrogate & triage
 
 Always runs; no skip. Never drop a finding on your own.
 
-1. **Preview.** Run `scripts/post.sh <PR_NUM> --dry-run`. It writes validated, deduped `$STATE_DIR/deduped-findings.json` (each item has `id`, `path`, `line`, `side`, `body`, `lens`).
+1. **Input.** Work from `$STATE_DIR/merged-findings.json`.
 2. **Challenge.** Re-check every finding against `$STATE_DIR/src`. Give one verdict:
    - **Holds** — evidence as `path:line`.
    - **Weak** — cannot prove it; recommend downgrade to ❓.
    - **Wrong** — proof as `path:line` (POLICY drop reasons only).
 3. **Table.** Print: `#`, id, severity, lens, `path:line[side]`, title, verdict.
-4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens, ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
-5. **Apply.** Edits and downgrades rewrite `body` in `deduped-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
+5. **Apply.** Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
 
-### 7. Post
+### 8. Post
 
 Run this skill's `scripts/post.sh <PR_NUM>` (needs `approved-ids.txt`; `--dry-run` previews without posting). It, in order:
 
-1. Reports any missing lens output (Step 5 above).
+1. Reports any missing lens output (Step 5).
 2. Reports file coverage: for each group and lens, any assigned file the lens did not report reading.
 3. Validates every finding's line against `hunks.tsv` — drops a finding whose line sits outside every hunk of that path+side, and downgrades a multi-line finding to single-line if only its end line is valid.
-4. Removes exact duplicates (same path, line, side and body — e.g. two lenses independently catching the identical dead-parameter case).
+4. Removes exact duplicates (same path, line, side and body). In a real run, if `merged-findings.json` exists (Step 6 + triage edits), it is used as-is instead of rebuilding from raw lens output.
 5. Keeps only findings whose id is in `approved-ids.txt` (not in `--dry-run`); prints how many triage dropped.
 6. Prints counts by lens and by severity (the first character of each `body`).
 7. Checks for a pending review at the current head commit and appends to it (GraphQL, one call per comment, 1.2s apart — GitHub caps content creation at 80/min and 500/hour per user), bulk-creates a new one if none exists, or stops if a pending review exists at a different commit.
 8. Verifies the response `state` is `PENDING`.
 
-### 8. Report
+### 9. Report
 
 Paste `post.sh`'s own summary output (it already has the counts and the review URL) plus your acceptance-criteria coverage line if the caller supplied `ac.md`.
 
@@ -162,6 +175,7 @@ Write the `Issue` text or the question text in Simplified Technical English (ASD
 - [ ] Every finding challenged and triaged; `approved-ids.txt` written
 - [ ] Every finding's line is inside a hunk of the same path + side
 - [ ] Exact duplicates merged
+- [ ] General-agent merge done; id-accounting check passed (no finding lost)
 - [ ] Bulk-create payload has exactly 2 keys: `commit_id`, `comments`; no `body`/`event`
 - [ ] Pending-review state checked BEFORE building comments (append vs. bulk-create vs. stop)
 - [ ] Response `state: "PENDING"` confirmed
@@ -187,7 +201,7 @@ correctness + conformance + necessity + security + reliability + tests, per grou
 ↓
 Retry any lens with no output, once
 ↓
-post.sh --dry-run → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
+post.sh --dry-run → general agent merges same-location duplicates (merged-findings.json) → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
 ↓
 post.sh: file coverage report → line validation → dedup → build comments → post (append to same-commit
 pending review | bulk-create | stop on stale pending) → report
