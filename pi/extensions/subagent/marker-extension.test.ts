@@ -16,7 +16,6 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { ENV, reviewMarkerFor } from "./protocol.ts";
 import markerExtension from "./marker-extension.ts";
-import { AUTO_APPROVE_EVENT } from "../lib/auto-approve.ts";
 
 type Handler = (event: object, ctx: object) => Promise<void>;
 
@@ -102,7 +101,6 @@ describe("markerExtension", () => {
 		dir = fs.mkdtempSync(path.join(os.tmpdir(), "pi-marker-test-"));
 		resultFile = path.join(dir, "result.json");
 		process.env[ENV.resultFile] = resultFile;
-		process.env[ENV.review] = "0"; // keep askQuestions (pi-tui) out of the call path by default
 		process.env[ENV.label] = "test-agent";
 		process.env[ENV.depth] = "1";
 		process.env.TMUX_PANE = "%42";
@@ -177,113 +175,5 @@ describe("markerExtension", () => {
 		await fire("agent_settled");
 
 		assert.equal(fs.readFileSync(resultFile, "utf-8"), "SENTINEL", "follow-up turn must not overwrite the delivered result");
-	});
-
-	// ── review-enabled path: the interaction the earlier fixes targeted ────────
-
-	it("skips review and delivers immediately when auto-approve is on", async () => {
-		process.env[ENV.review] = "1";
-		const { pi, fire, emit, renames } = fakePi();
-		markerExtension(pi);
-		emit(AUTO_APPROVE_EVENT, { enabled: true });
-		const custom = async () => { throw new Error("review prompt must not open"); };
-
-		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
-
-		assert.equal(JSON.parse(fs.readFileSync(resultFile, "utf-8")).status, "ok");
-		assert.ok(!fs.existsSync(reviewMarkerFor(resultFile)), "no review marker without review");
-		assert.ok(renames.at(-1)?.startsWith("✓"), "window marked done");
-	});
-
-	it("reviews again after auto-approve is turned back off", async () => {
-		process.env[ENV.review] = "1";
-		const { pi, fire, emit } = fakePi();
-		markerExtension(pi);
-		emit(AUTO_APPROVE_EVENT, { enabled: true });
-		emit(AUTO_APPROVE_EVENT, { enabled: false });
-		let prompted = false;
-		const custom = async () => { prompted = true; return { answers: [["Send as-is"]] }; };
-
-		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
-		await waitFor(() => fs.existsSync(resultFile));
-
-		assert.ok(prompted, "review prompt should open");
-	});
-
-	it("delivers the result and clears the review marker when the user chooses Send as-is", async () => {
-		process.env[ENV.review] = "1";
-		const { pi, fire } = fakePi();
-		markerExtension(pi);
-		const reviewFile = reviewMarkerFor(resultFile);
-
-		/**
-		 * A faked ui.custom that mimics real pi: fires ui_prompt_start before
-		 * showing the prompt and ui_prompt_end once it resolves. This is a
-		 * legitimate boundary (the terminal UI), not an internal collaborator.
-		 */
-		const custom = async () => {
-			await fire("ui_prompt_start");
-			/**
-			 * The load-bearing assertion: the marker must exist *while* the prompt is up,
-			 * which is what pauses the parent's clock — not just its absence afterward.
-			 */
-			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
-			assert.ok(!fs.existsSync(resultFile), "result must not be delivered before the user answers");
-			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["Send as-is"]] };
-		};
-
-		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
-		await waitFor(() => fs.existsSync(resultFile));
-
-		assert.ok(fs.existsSync(resultFile), "result should be written after Send as-is");
-		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");
-	});
-
-	it("writes nothing and keeps the review marker cleared when the user cancels (Esc)", async () => {
-		process.env[ENV.review] = "1";
-		const { pi, fire, sentMessages } = fakePi();
-		markerExtension(pi);
-		const reviewFile = reviewMarkerFor(resultFile);
-
-		let promptDone = false;
-		const custom = async () => {
-			await fire("ui_prompt_start");
-			assert.ok(fs.existsSync(reviewFile), "marker must be present while the review prompt is up");
-			await fire("ui_prompt_end", { isIdle: () => true });
-			promptDone = true;
-			return null; // Esc / dismissed
-		};
-
-		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
-		await waitFor(() => promptDone);
-
-		assert.ok(!fs.existsSync(resultFile), "no result should be written when the user cancels");
-		assert.ok(!fs.existsSync(reviewFile), "review marker must not linger after the prompt ends");
-		assert.equal(sentMessages.length, 0, "no follow-up should be sent when the user cancels");
-	});
-
-	it("sends a typed follow-up straight to the agent instead of writing a result", async () => {
-		process.env[ENV.review] = "1";
-		const { pi, fire, sentMessages } = fakePi();
-		markerExtension(pi);
-		const reviewFile = reviewMarkerFor(resultFile);
-
-		const custom = async () => {
-			await fire("ui_prompt_start");
-			await fire("ui_prompt_end", { isIdle: () => true });
-			return { answers: [["please also check the edge case"]] };
-		};
-
-		await fire("agent_settled", { mode: "tui", ui: { onTerminalInput: () => () => {}, custom } });
-		await waitFor(() => sentMessages.length > 0);
-
-		assert.ok(!fs.existsSync(resultFile), "a follow-up must not write a result file");
-		assert.ok(!fs.existsSync(reviewFile), "review marker must be cleared once the prompt ends");
-		assert.deepEqual(
-			sentMessages,
-			[[{ type: "text", text: "please also check the edge case" }]],
-			"the typed reply must be forwarded to the agent as a follow-up message",
-		);
 	});
 });

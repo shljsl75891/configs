@@ -18,7 +18,7 @@ export interface RunResult extends Omit<SubagentResult, "status"> {
 	agentSource: AgentConfig["source"] | "unknown";
 	task: string;
 	windowId?: string;
-	status: SubagentResult["status"] | "timeout" | "aborted";
+	status: SubagentResult["status"] | "timeout" | "aborted" | "backgrounded";
 }
 
 /**
@@ -65,6 +65,7 @@ export function toRunResult(
 }
 
 export function formatResult(r: RunResult): string {
+	if (r.status === "backgrounded") return `[${r.agent}] backgrounded\n\nStill running in the background. Its result arrives later as a follow-up message.`;
 	const body = r.status === "ok" ? r.output : (r.errorMessage ?? r.output);
 	const sourceTag = r.agentSource === "project" ? " (project)" : "";
 	const hint = r.windowId && r.status !== "aborted" ? `\n\n${windowHint(r.windowId)}` : "";

@@ -8,7 +8,6 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ENV } from "../subagent/protocol.ts";
-import { trackAutoApprove } from "../lib/auto-approve.ts";
 
 /**
  * Collapses a settle event and the prompt that immediately follows it (e.g. the
@@ -23,7 +22,6 @@ const PROMPT_SOUND = join(ASSETS_DIR, "prompt.wav");
 export default function attention(pi: ExtensionAPI) {
   const tmuxPane = process.env.TMUX_PANE;
   let lastSignalAt = 0;
-  const autoApprove = trackAutoApprove(pi);
 
   async function signalAttention({
     sound,
@@ -53,14 +51,10 @@ export default function attention(pi: ExtensionAPI) {
     // Non-interactive runs (e.g. ralph-loop --mode json) have nobody to alert.
     if (ctx.mode !== "tui") return;
     /**
-     * A non-review subagent's window closes itself right after this: sounding
-     * an alert nobody will act on just adds noise. Auto-approve skips review
-     * (see subagent/marker-extension.ts) so it closes itself too. Other
-     * review-enabled subagents still alert, since the review prompt needs it.
+     * A subagent hands its result to the caller at once and its window closes
+     * itself: sounding an alert nobody will act on just adds noise.
      */
-    const isSubagent = process.env[ENV.resultFile] !== undefined;
-    const closesItself = isSubagent && (process.env[ENV.review] === "0" || autoApprove());
-    if (closesItself) return;
+    if (process.env[ENV.resultFile] !== undefined) return;
     return signalAttention({ sound: DONE_SOUND });
   });
 

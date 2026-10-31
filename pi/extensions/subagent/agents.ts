@@ -12,8 +12,6 @@ export interface AgentConfig {
 	tools?: string[];
 	model?: string;
 	disableModelInvocation: boolean;
-	/** Ask the user to approve the result before it reaches the caller. */
-	review: boolean;
 	systemPrompt: string;
 	source: "user" | "project";
 	filePath: string;
@@ -30,7 +28,6 @@ type AgentFrontmatter = {
 	tools?: unknown;
 	model?: unknown;
 	"disable-model-invocation"?: unknown;
-	review?: unknown;
 };
 
 function parseToolList(value: unknown): string[] | undefined {
@@ -84,8 +81,6 @@ function loadAgentsFromDir(dir: string, source: "user" | "project"): AgentConfig
 			description: frontmatter.description,
 			tools: parseToolList(frontmatter.tools),
 			model: typeof frontmatter.model === "string" ? frontmatter.model : undefined,
-			// Review is the default; only an explicit `false` skips it.
-			review: frontmatter.review !== false,
 			// Only an explicit `true` hides an agent.
 			disableModelInvocation: frontmatter["disable-model-invocation"] === true,
 			systemPrompt: body,

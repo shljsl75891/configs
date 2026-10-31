@@ -98,4 +98,10 @@ describe("formatResult", () => {
 		assert.ok(formatResult(r).includes("boom"));
 		assert.ok(!formatResult(r).includes("partial output"), "error body prefers errorMessage over raw output");
 	});
+
+	it("tells the caller a backgrounded run reports later", () => {
+		const text = formatResult({ agent: "explore", agentSource: "user", task: "t", status: "backgrounded", output: "" });
+		assert.ok(text.startsWith("[explore] backgrounded"));
+		assert.ok(text.includes("arrives later"));
+	});
 });

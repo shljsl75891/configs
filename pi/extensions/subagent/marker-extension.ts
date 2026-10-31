@@ -5,10 +5,9 @@
  * Also owns the tmux window name for the child's whole life, since only this
  * process knows whether the agent is working, waiting on the user, or done.
  *
- * With review enabled the result is shown to the user first: they can send it,
- * or reply with a follow-up that goes straight back to the agent — Esc leaves
- * it for the user to take over by hand. The parent stops its clock while the
- * `.review` marker file exists. Auto-approve (`--approve`, `/approve`) skips review.
+ * The result goes to the parent as soon as the agent settles. While the child
+ * waits on a prompt (for example the question tool), the parent stops its clock
+ * as long as the `.review` marker file exists.
  */
 
 import * as fs from "node:fs";
@@ -18,27 +17,13 @@ import type { AssistantMessage, UserMessage } from "@earendil-works/pi-ai";
  * Static, not dynamic: only pi's extension loader can resolve pi-tui for a
  * sibling extension, so an `import()` at runtime would always fail.
  */
-import { askQuestions } from "../question-tool/prompt.ts";
 import { childDepth, ENV, heartbeatFor, reviewMarkerFor } from "./protocol.ts";
 import type { SubagentResult } from "./result.ts";
-import { errorText } from "../lib/errors.ts";
-import { trackAutoApprove } from "../lib/auto-approve.ts";
 import { formatWindowName, type WindowState } from "./window-name.ts";
 
 const HEARTBEAT_EVERY_MS = 5_000;
-const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
-const SEND = "Send as-is";
-const FOLLOW_UP_LABEL = "Reply with a follow-up";
 
 type AssistantOrUser = AssistantMessage | UserMessage;
-
-type FollowUpContent = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
-
-/**
- * What review() decided: deliver the result, forward a follow-up to the
- * agent, or (null) leave it for the user to take over by hand.
- */
-type ReviewDecision = { send: SubagentResult } | { followUp: FollowUpContent[] } | null;
 
 async function renameWindow(pi: ExtensionAPI, state: WindowState): Promise<void> {
 	const label = process.env[ENV.label];
@@ -114,51 +99,10 @@ async function writeResult(resultFile: string, result: SubagentResult): Promise<
 	await fs.promises.rename(tmpPath, resultFile);
 }
 
-async function review(ctx: ExtensionContext, result: SubagentResult): Promise<ReviewDecision> {
-	/**
-	 * Any stdin byte counts as engagement, including focus/mouse reports — deliberately
-	 * lenient: a false positive only costs a longer wait, a false negative steals the
-	 * user's half-written edit.
-	 */
-	const controller = new AbortController();
-	const timer = setTimeout(() => controller.abort(), REVIEW_TIMEOUT_MS);
-	const unsubscribe = ctx.ui.onTerminalInput(() => {
-		clearTimeout(timer);
-		return undefined;
-	});
-
-	try {
-		const choice = await askQuestions(
-			ctx.ui,
-			[
-				{
-					question: `${result.status === "ok" ? "Agent finished" : "Agent failed"}. Send this to the caller?`,
-					header: "Review",
-					options: [{ label: SEND, description: "Report the result above, unchanged." }],
-				},
-			],
-			{ signal: controller.signal, customLabel: FOLLOW_UP_LABEL },
-		);
-
-		if (controller.signal.aborted) return { send: result };
-		if (!choice) return null; // Esc / dismissed: leave it for the user to take over by hand
-		const answer = choice.answers[0]?.[0];
-		if (!answer) return null;
-		if (answer === SEND) return { send: result };
-		return { followUp: [{ type: "text", text: answer }] };
-	} catch (error) {
-		return { send: { ...result, output: `${result.output}\n\n[review UI failed, sent unreviewed: ${errorText(error)}]` } };
-	} finally {
-		clearTimeout(timer);
-		unsubscribe();
-	}
-}
-
 export default function markerExtension(pi: ExtensionAPI) {
 	const resultFile = process.env[ENV.resultFile];
 	if (!resultFile) return;
 	const reviewFile = reviewMarkerFor(resultFile);
-	const reviewEnabled = process.env[ENV.review] === "1";
 
 	/**
 	 * Limits only the active set, not the registry: --tools would also drop the
@@ -172,8 +116,6 @@ export default function markerExtension(pi: ExtensionAPI) {
 			pi.setActiveTools([...tools.split(","), "codemode", "subagent"]);
 		});
 	}
-
-	const autoApprove = trackAutoApprove(pi);
 
 	/** Throttled touch so a long but active run is not mistaken for a stuck one. */
 	const heartbeatFile = heartbeatFor(resultFile);
@@ -191,7 +133,7 @@ export default function markerExtension(pi: ExtensionAPI) {
 	/** The parent has the result and stopped polling; an ok result's window is about to close. */
 	let delivered = false;
 	/**
-	 * Delivery is known broken (e.g. disk full) — stop advertising review, since
+	 * Delivery is known broken (e.g. disk full) — stop writing the prompt marker, since
 	 * pausing the parent's clock for a result that can no longer arrive buys nothing.
 	 */
 	let deliveryBroken = false;
@@ -203,31 +145,6 @@ export default function markerExtension(pi: ExtensionAPI) {
 		await renameWindow(pi, written ? (result.status === "ok" ? "ok" : "error") : "unreported");
 	};
 
-	/**
-	 * The user's answer can take arbitrarily long, so this must not be awaited by
-	 * agent_settled: pi awaits every extension's handler for an event in turn, and
-	 * awaiting the answer here would also stall the ones registered after this one
-	 * (e.g. attention's done sound; see ./index.ts's `pi -e` load order).
-	 */
-	const reviewAndSettle = async (ctx: ExtensionContext, result: SubagentResult): Promise<void> => {
-		/**
-		 * review() calls askQuestions, which fires ui_prompt_start/end — those
-		 * handlers own the marker file and window rename for the review prompt.
-		 */
-		const decision = await review(ctx, result);
-		if (!decision) {
-			await renameWindow(pi, "waiting");
-			return;
-		}
-		if ("followUp" in decision) {
-			/* delivered stays false: the follow-up turn still owes the caller a result,
-			   so the next agent_settled runs review() again instead of skipping it. */
-			pi.sendUserMessage(decision.followUp);
-			return;
-		}
-		await settle(decision.send);
-	};
-
 	pi.on("agent_start", async () => {
 		await renameWindow(pi, "running");
 	});
@@ -235,7 +152,7 @@ export default function markerExtension(pi: ExtensionAPI) {
 	/**
 	 * pi emits ui_prompt_start only for extension-raised prompts (ui.select/confirm/
 	 * input/editor/custom) — not for the child's own idle editor prompt. So this pauses
-	 * the parent's clock for the review prompt and any extension prompt the child raises,
+	 * the parent's clock for any extension prompt the child raises,
 	 * but a child merely sitting idle after a turn does not pause it.
 	 */
 	pi.on("ui_prompt_start", async () => {
@@ -261,14 +178,6 @@ export default function markerExtension(pi: ExtensionAPI) {
 		 */
 		if (delivered) { await renameWindow(pi, "waiting"); return; }
 
-		const result = collectResult(ctx);
-
-		// A broken pipe means no answer can reach the caller; retry silently instead of re-asking.
-		if (!reviewEnabled || autoApprove() || deliveryBroken || ctx.mode !== "tui") {
-			await settle(result);
-			return;
-		}
-
-		void reviewAndSettle(ctx, result);
+		await settle(collectResult(ctx));
 	});
 }

@@ -2,7 +2,6 @@
 description: Finds facts on the web about libraries, APIs, or external topics. Use to check current API behavior, compare versions, or verify a claim. Cites URLs.
 model: anthropic/claude-sonnet-5-5:xhigh
 tools: read, bash, codemode, question
-review: false
 ---
 
 You are a web research agent specialized in all types of information gathering, verification, and synthesis from authoritative sources.
