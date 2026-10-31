@@ -25,20 +25,8 @@ const BUILD_SWITCH_REMINDER = `[PLAN MODE OFF]
 The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed.`;
 
 const PLAN_SWITCH_TYPE = "plan-mode-plan-switch";
-const PLAN_SWITCH_REMINDER = `[PLAN MODE ON]
-The user just turned plan mode on. Edit and write tools are denied, and bash write commands are denied. Switch to read-only exploration and planning — see the plan-mode instructions above.`;
+const PLAN_SWITCH_REMINDER = `[PLAN MODE ON] The user just turned plan mode on. Follow the plan-mode instructions in the system prompt.`;
 
-const PLAN_PERIODIC_TYPE = "plan-mode-periodic-reminder";
-const PLAN_PERIODIC_REMINDER = `[PLAN MODE REMINDER] Still in plan mode: no edits, no writes, no working around it via bash. Keep exploring/planning, or ask via the \`question\` tool.`;
-
-/**
- * Recency decays: the plan-mode system-prompt section sits at the top of
- * context and doesn't move, so on a long plan-mode stretch it gets buried
- * under turns of exploration transcript. Re-injecting a short reminder
- * near the tail every few turns keeps the rule salient without repeating
- * the full PLAN_REMINDER text each time.
- */
-const PLAN_REMINDER_INTERVAL_TURNS = 4;
 
 /**
  * Session-entry customType (persistence format) — private. Kept separate
@@ -81,28 +69,18 @@ const THINKING_LEVELS: readonly string[] = [
   "off", "minimal", "low", "medium", "high", "xhigh", "max",
 ];
 
-/** Narrows an untrusted thinking map (session file or settings.json modeThinking). */
-function readThinking(raw: unknown): ModeThinking {
-  const out: ModeThinking = {};
+/** Narrows an untrusted per-mode map (session file or settings.json): only accepted values under known mode keys survive. */
+function readModeMap<T extends string>(raw: unknown, accept: (v: string) => boolean): Partial<Record<Mode, T>> {
+  const out: Partial<Record<Mode, T>> = {};
   if (typeof raw !== "object" || raw === null) return out;
   for (const m of ["plan", "build"] as const) {
     const v = (raw as Record<string, unknown>)[m];
-    if (typeof v === "string" && THINKING_LEVELS.includes(v))
-      out[m] = v as ThinkingLevel;
+    if (typeof v === "string" && accept(v)) out[m] = v as T;
   }
   return out;
 }
-
-/** Narrows an untrusted `models` value (session file or settings.json modeModels): only string entries under known mode keys survive. */
-function readModels(raw: unknown): ModeModels {
-  const models: ModeModels = {};
-  if (typeof raw !== "object" || raw === null) return models;
-  for (const m of ["plan", "build"] as const) {
-    const v = (raw as Record<string, unknown>)[m];
-    if (typeof v === "string") models[m] = v;
-  }
-  return models;
-}
+const readThinking = (raw: unknown): ModeThinking => readModeMap<ThinkingLevel>(raw, (v) => THINKING_LEVELS.includes(v));
+const readModels = (raw: unknown): ModeModels => readModeMap<string>(raw, () => true);
 
 function readPlanModeEntry(
   entries: readonly SessionEntry[],
@@ -136,11 +114,6 @@ export default function planMode(pi: ExtensionAPI) {
    * toast.
    */
   let pendingSwitchNotice = false;
-  /**
-   * Turns since the last plan-mode reminder (switch notice or periodic)
-   * was injected into the transcript. See PLAN_REMINDER_INTERVAL_TURNS.
-   */
-  let turnsSincePlanReminder = 0;
   let models: ModeModels = {};
   let thinking: ModeThinking = {};
   const mode = (): Mode => (enabled ? "plan" : "build");
@@ -213,7 +186,6 @@ export default function planMode(pi: ExtensionAPI) {
     enabled = !enabled;
     announce();
     pendingSwitchNotice = true;
-    turnsSincePlanReminder = 0;
     updateStatus(ctx);
     /* Read before the model switch: pi may clamp the level on switch,
        and the clamp event would overwrite the remembered choice. */
@@ -274,8 +246,7 @@ export default function planMode(pi: ExtensionAPI) {
      */
     if (pendingSwitchNotice) {
       pendingSwitchNotice = false;
-      turnsSincePlanReminder = 0;
-      return {
+        return {
         message: {
           customType: enabled ? PLAN_SWITCH_TYPE : BUILD_SWITCH_TYPE,
           content: enabled ? PLAN_SWITCH_REMINDER : BUILD_SWITCH_REMINDER,
@@ -284,23 +255,6 @@ export default function planMode(pi: ExtensionAPI) {
       };
     }
 
-    // The system-prompt section above is static and cache-frozen; on a
-    // long plan-mode stretch it loses salience under turns of exploration
-    // transcript. Re-inject a short reminder near the tail periodically so
-    // the rule stays live, not just present.
-    if (enabled) {
-      turnsSincePlanReminder++;
-      if (turnsSincePlanReminder >= PLAN_REMINDER_INTERVAL_TURNS) {
-        turnsSincePlanReminder = 0;
-        return {
-          message: {
-            customType: PLAN_PERIODIC_TYPE,
-            content: PLAN_PERIODIC_REMINDER,
-            display: false,
-          },
-        };
-      }
-    }
   });
 
   pi.on("session_start", async (_event, ctx) => {

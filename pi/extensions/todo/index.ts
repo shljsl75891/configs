@@ -153,7 +153,7 @@ export default function todo(pi: ExtensionAPI): void {
 	if (isSubagent) return;
 
 	onPlanModeChange(pi, (enabled) => {
-		if (planMode && !enabled) planJustApproved = true;
+		planJustApproved = planMode && !enabled;
 		planMode = enabled;
 	});
 

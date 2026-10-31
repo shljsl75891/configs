@@ -71,13 +71,6 @@ describe("permission tool_call", () => {
     assert.equal((await pi.call("edit", { path: "src/a.ts" }))?.block, true);
   });
 
-  it("denies common bash writes in plan mode even with no permission.plan configured", async () => {
-    useSettings(undefined);
-    const pi = fakePi();
-    pi.setPlanMode(true);
-    assert.equal((await pi.call("bash", { command: "rm -rf x" }))?.block, true);
-  });
-
   it("keeps denying other paths when permission.plan.edit is a partial rules object", async () => {
     useSettings({ plan: { edit: { "*.md": "allow" } } });
     const pi = fakePi();

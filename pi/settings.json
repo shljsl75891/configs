@@ -62,7 +62,20 @@
         "sed * -i*": "deny",
         "git add *": "deny",
         "git commit *": "deny",
-        "git push *": "deny"
+        "git push *": "deny",
+        "tee *": "deny",
+        "chmod *": "deny",
+        "chown *": "deny",
+        "ln *": "deny",
+        "dd *": "deny",
+        "truncate *": "deny",
+        "install *": "deny",
+        "npm install*": "deny",
+        "pnpm add*": "deny",
+        "pip install*": "deny",
+        "git merge *": "deny",
+        "git rebase *": "deny",
+        "git apply *": "deny"
       }
     }
   },

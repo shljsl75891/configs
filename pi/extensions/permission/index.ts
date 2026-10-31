@@ -45,13 +45,6 @@ const PLAN_FALLBACK: Config = {
   edit: "deny",
   write: "deny",
   powershell: "deny",
-  bash: {
-    "> *": "deny",
-    "rm *": "deny",
-    "mv *": "deny",
-    "git commit *": "deny",
-    "git push *": "deny",
-  },
 };
 
 /**
@@ -90,7 +83,6 @@ function planConfig(raw: unknown): Config {
   const plan = sanitizeConfig(raw);
   const merged: Config = { ...PLAN_FALLBACK, ...plan };
   for (const [tool, fallback] of Object.entries(PLAN_FALLBACK)) {
-    if (tool === "bash") continue;
     const rules = plan[tool];
     if (typeof rules !== "object") continue;
     const base = typeof fallback === "object" ? fallback : { "*": fallback };
