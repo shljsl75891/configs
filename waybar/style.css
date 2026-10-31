@@ -242,3 +242,11 @@ tooltip {
 tooltip label {
   color: #ebdbb2;
 }
+
+#scratchpad {
+  background: #fe8019;
+  color: #1d2021;
+  border-radius: 4px;
+  padding: 0 8px;
+  margin: 6px 2px 0 2px;
+}

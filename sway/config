@@ -91,6 +91,12 @@ bindsym $mod+Tab focus next
 bindsym $mod+Shift+Tab focus prev
 bindsym $mod+u [urgent=latest] focus
 
+# Layout
+bindsym $mod+w layout tabbed
+bindsym $mod+Shift+w layout toggle split
+bindsym $mod+v splitv
+bindsym $mod+g splith
+
 # Move
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down

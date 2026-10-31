@@ -7,7 +7,7 @@
   "spacing": 0,
   "exclusive": true,
 
-  "modules-left": ["sway/workspaces"],
+  "modules-left": ["sway/workspaces", "sway/scratchpad"],
   "modules-center": ["custom/date", "custom/punch"],
   "modules-right": [
     "custom/arr0",
@@ -25,6 +25,15 @@
   ],
 
   // ── Left ──────────────────────────────────────────────────────────────────
+
+  "sway/scratchpad": {
+    "format": "{icon} {count}",
+    "show-empty": false,
+    "format-icons": ["", "󰖲"],
+    "tooltip": true,
+    "tooltip-format": "{app}: {title}",
+    "on-click": "swaymsg scratchpad show"
+  },
 
   "sway/workspaces": {
     "format": "{icon}",
