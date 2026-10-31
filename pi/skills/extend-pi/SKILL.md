@@ -32,5 +32,6 @@ When asked about:
 - adding models — `docs/models.md`
 - pi packages — `docs/packages.md`
 - environment variables — `docs/environment-variables.md`
+- sessions / session logs — `docs/sessions.md`, `docs/session-format.md`. Stored in `$PI_CODING_AGENT_SESSION_DIR` (`~/.local/share/pi/sessions/`): flat folder, one JSONL per session. Line 1 is a header with `cwd` and `parentSession`.
 
 Read pi `.md` files completely and follow links to related docs before implementing.
