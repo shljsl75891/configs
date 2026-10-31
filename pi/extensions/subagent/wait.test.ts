@@ -187,3 +187,31 @@ describe("waitForResult", () => {
 		}
 	});
 });
+
+describe("waitForResult heartbeat", () => {
+	it("keeps waiting while the heartbeat is fresh, then returns the result", async () => {
+		const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pi-wait-test-"));
+		try {
+			const resultFile = path.join(dir, "result.json");
+			const beat = setInterval(() => fs.writeFileSync(`${resultFile}.alive`, "x"), 20);
+			setTimeout(() => fs.writeFileSync(resultFile, JSON.stringify({ status: "ok", output: "late" })), 300);
+			const outcome = await waitForResult({ windowId: "@1", resultFile, timeoutMs: 100, checkWindowAlive: async () => true, pollIntervalMs: 10 });
+			clearInterval(beat);
+			assert.equal(outcome.kind, "result");
+		} finally {
+			fs.rmSync(dir, { recursive: true, force: true });
+		}
+	});
+
+	it("times out when the heartbeat is stale", async () => {
+		const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pi-wait-test-"));
+		try {
+			const resultFile = path.join(dir, "result.json");
+			fs.writeFileSync(`${resultFile}.alive`, "x");
+			const outcome = await waitForResult({ windowId: "@1", resultFile, timeoutMs: 100, checkWindowAlive: async () => true, pollIntervalMs: 10 });
+			assert.equal(outcome.kind, "timeout");
+		} finally {
+			fs.rmSync(dir, { recursive: true, force: true });
+		}
+	});
+});

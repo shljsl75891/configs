@@ -6,7 +6,7 @@
 import * as fs from "node:fs";
 import { setTimeout as delay } from "node:timers/promises";
 import { isSubagentResult, type SubagentResult } from "./result.ts";
-import { reviewMarkerFor } from "./protocol.ts";
+import { heartbeatFor, reviewMarkerFor } from "./protocol.ts";
 import { MAX_TIMEOUT_MS } from "./tasks.ts";
 
 const POLL_INTERVAL_MS = 500;
@@ -60,6 +60,7 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 	const { windowId, resultFile, timeoutMs, signal, onReview, checkWindowAlive } = opts;
 	const pollIntervalMs = opts.pollIntervalMs ?? POLL_INTERVAL_MS;
 	const reviewFile = reviewMarkerFor(resultFile);
+	const heartbeatFile = heartbeatFor(resultFile);
 	/**
 	 * Headroom over the caller's own timeout, not a coincident bound — otherwise a
 	 * caller who requests the maximum timeout gets zero review-pause budget.
@@ -88,6 +89,14 @@ export async function waitForResult(opts: WaitOptions): Promise<WaitOutcome> {
 				onReview?.(reviewing);
 			}
 			if (reviewing) deadline = Math.min(Date.now() + timeoutMs, hardDeadline);
+
+			/** Fresh child activity pushes the deadline out: timeoutMs means idle time, not total. */
+			try {
+				const beat = fs.statSync(heartbeatFile).mtimeMs;
+				deadline = Math.max(deadline, Math.min(beat + timeoutMs, hardDeadline));
+			} catch {
+				// No heartbeat yet.
+			}
 
 			const read = await readResult(resultFile);
 			if (read?.ok) return { kind: "result", result: read.result };

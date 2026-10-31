@@ -19,12 +19,13 @@ import type { AssistantMessage, UserMessage } from "@earendil-works/pi-ai";
  * sibling extension, so an `import()` at runtime would always fail.
  */
 import { askQuestions } from "../question-tool/prompt.ts";
-import { childDepth, ENV, reviewMarkerFor } from "./protocol.ts";
+import { childDepth, ENV, heartbeatFor, reviewMarkerFor } from "./protocol.ts";
 import type { SubagentResult } from "./result.ts";
 import { errorText } from "../lib/errors.ts";
 import { trackAutoApprove } from "../lib/auto-approve.ts";
 import { formatWindowName, type WindowState } from "./window-name.ts";
 
+const HEARTBEAT_EVERY_MS = 5_000;
 const REVIEW_TIMEOUT_MS = 2 * 60 * 1000;
 const SEND = "Send as-is";
 const FOLLOW_UP_LABEL = "Reply with a follow-up";
@@ -173,6 +174,19 @@ export default function markerExtension(pi: ExtensionAPI) {
 	}
 
 	const autoApprove = trackAutoApprove(pi);
+
+	/** Throttled touch so a long but active run is not mistaken for a stuck one. */
+	const heartbeatFile = heartbeatFor(resultFile);
+	let lastBeat = 0;
+	const beat = (): void => {
+		const now = Date.now();
+		if (now - HEARTBEAT_EVERY_MS < lastBeat) return;
+		lastBeat = now;
+		void fs.promises.writeFile(heartbeatFile, String(now), "utf-8").catch(() => {});
+	};
+	for (const event of ["turn_start", "turn_end", "tool_execution_start", "tool_execution_end", "message_update"] as const) {
+		pi.on(event, () => { beat(); });
+	}
 
 	/** The parent has the result and stopped polling; an ok result's window is about to close. */
 	let delivered = false;

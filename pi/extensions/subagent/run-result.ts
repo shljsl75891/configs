@@ -50,7 +50,7 @@ export function toRunResult(
 			return { ...base, status: "error", output: "", errorMessage: `Unreadable result file ${ctx.resultFile}: ${outcome.detail}.` };
 
 		case "timeout":
-			return { ...base, status: "timeout", output: "", errorMessage: `Timed out after ${ctx.timeoutMs}ms.` };
+			return { ...base, status: "timeout", output: "", errorMessage: `Timed out: no activity for ${ctx.timeoutMs}ms (or the hard cap was hit). The window may still be running; check it.` };
 
 		case "result": {
 			const { status, output, usage, stopReason, errorMessage } = outcome.result;

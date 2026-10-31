@@ -16,5 +16,8 @@ export const ENV = {
 /** Append this suffix to the result file path to get the review-pending marker. */
 export const reviewMarkerFor = (resultFile: string): string => `${resultFile}.review`;
 
+/** Child touches this file on activity; the parent treats a fresh mtime as proof of life. */
+export const heartbeatFor = (resultFile: string): string => `${resultFile}.alive`;
+
 /** Depth of the current process in the subagent tree (0 = root). */
 export const childDepth = (): number => Number(process.env[ENV.depth]) || 0;
