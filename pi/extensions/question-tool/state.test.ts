@@ -45,7 +45,7 @@ describe("answers", () => {
 	it("reports a custom answer as its own text", () => {
 		let state = reduce(createState(many), { type: "choose", index: 2 }, many);
 		state = reduce(state, { type: "custom", text: "something else" }, many);
-		assert.deepEqual(answersOf(state, many), [["something else"], []]);
+		assert.deepEqual(answersOf(state, many), [["something else"], []]); // single-select
 	});
 });
 
@@ -69,15 +69,29 @@ describe("choosing", () => {
 		assert.equal(state.submitted, false);
 	});
 
-	it("clears a custom answer when a checkbox is toggled", () => {
+	it("keeps a custom answer when a checkbox is toggled", () => {
 		let state = { ...createState(many), tab: 1 };
 		state = reduce(state, { type: "choose", index: 2 }, many); // open editor on multi-select
 		state = reduce(state, { type: "custom", text: "typed" }, many); // store custom
 		assert.equal(state.custom[1], "typed");
-		// Ticking a checkbox should evict the custom answer.
 		state = reduce({ ...state, tab: 1, submitted: false }, { type: "choose", index: 0 }, many);
-		assert.equal(state.custom[1], null, "custom cleared by toggle");
-		assert.deepEqual(answersOf(state, many), [[], ["C"]]);
+		assert.equal(state.custom[1], "typed");
+		assert.deepEqual(answersOf(state, many), [[], ["C", "typed"]]);
+	});
+
+	it("keeps checked boxes when custom text is submitted on multi-select", () => {
+		let state = { ...createState(many), tab: 1 };
+		state = reduce(state, { type: "choose", index: 0 }, many);
+		state = reduce(state, { type: "custom", text: "extra" }, many);
+		assert.deepEqual(answersOf(state, many), [[], ["C", "extra"]]);
+	});
+
+	it("empty text removes the custom answer and stays on the question", () => {
+		let state = { ...createState(many), tab: 1 };
+		state = reduce(state, { type: "custom", text: "extra" }, many);
+		state = reduce({ ...state, tab: 1 }, { type: "custom", text: "" }, many);
+		assert.equal(state.custom[1], null);
+		assert.equal(state.tab, 1);
 	});
 
 	it("advances to next tab when a custom answer is submitted on a multi-select question", () => {

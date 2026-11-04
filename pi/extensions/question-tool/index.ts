@@ -44,7 +44,7 @@ export default function question(pi: ExtensionAPI) {
 			"Each question must have a header and one or more options. The header is a tab label, 30 characters maximum. " +
 			"The tool adds a free-text option. Do not add an 'Other' option. " +
 			"Mark the recommended option: end its label with ' [rec]'. Mark at most one option per question. " +
-			"The tool returns the selected labels. If the user does not answer, the result is empty.",
+			"The tool returns the selected labels, plus the user's typed text when given (multi-select can return both). If the user does not answer, the result is empty.",
 		parameters: QuestionParams,
 		executionMode: "sequential",
 

@@ -79,8 +79,8 @@ export function createState(questions: QuestionSpec[]): State {
 export function answersOf(state: State, questions: QuestionSpec[]): string[][] {
 	return questions.map((question, i) => {
 		const custom = state.custom[i];
-		if (custom != null) return [custom];
-		return question.options.filter((_, index) => state.selected[i].has(index)).map((option) => splitLabel(option.label).text);
+		const labels = question.options.filter((_, index) => state.selected[i].has(index)).map((option) => splitLabel(option.label).text);
+		return custom != null ? [...labels, custom] : labels;
 	});
 }
 
@@ -111,15 +111,18 @@ export function reduce(state: State, action: Action, questions: QuestionSpec[]):
 			const selected = state.selected.map((set, i) => (i === state.tab ? new Set(set) : set));
 			if (question.multiple) {
 				if (!selected[state.tab].delete(index)) selected[state.tab].add(index);
-				// Clear any custom answer so the checkbox selection is authoritative.
-				return { ...state, cursor: index, selected, custom: replace(state.custom, state.tab, null) };
+				return { ...state, cursor: index, selected };
 			}
 			selected[state.tab] = new Set([index]);
 			return advance({ ...state, cursor: index, selected, custom: replace(state.custom, state.tab, null) }, questions);
 		}
 
 		case "custom": {
-			const selected = state.selected.map((set, i) => (i === state.tab ? new Set<number>() : set));
+			// Empty text removes the custom answer and stays on the question.
+			if (action.text === "") return { ...state, custom: replace(state.custom, state.tab, null), editing: false };
+			// Multi-select keeps its checked boxes; single-select is replaced by the text.
+			const keep = questions[state.tab].multiple;
+			const selected = state.selected.map((set, i) => (i === state.tab && !keep ? new Set<number>() : set));
 			const custom = replace(state.custom, state.tab, action.text);
 			return advance({ ...state, selected, custom, editing: false }, questions);
 		}

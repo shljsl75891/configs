@@ -144,7 +144,7 @@ export function askQuestions(
 
 		editor.onSubmit = (value) => {
 			const text = value.trim();
-			if (text) apply({ type: "custom", text });
+			if (text || state.custom[state.tab] != null) apply({ type: "custom", text });
 			else apply({ type: "cancelEdit" });
 		};
 
