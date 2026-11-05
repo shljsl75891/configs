@@ -107,7 +107,7 @@ jq -r '.[].body[0:1]' "$STATE_DIR/deduped-findings.json" | sort | uniq -c
 UNKNOWN=$(jq -r '.[].body[0:1]' "$STATE_DIR/deduped-findings.json" | grep -vcE '🔴|🟣|🟠|🟡|❓' || true)
 [ "$UNKNOWN" != "0" ] && echo "WARNING: $UNKNOWN finding(s) have no recognized severity emoji as their first character — still posting them, just flagging for review."
 
-jq '{comments: [.[] | {path, line, side, body} + (if has("start_line") then {start_line, start_side: .side} else {} end)]}' \
+jq '{comments: [.[] | {path, line, side, body} + (if .start_line != null then {start_line, start_side: .side} else {} end)]}' \
   "$STATE_DIR/deduped-findings.json" > "$STATE_DIR/comments.json"
 
 COMMENT_COUNT=$(jq '.comments | length' "$STATE_DIR/comments.json")
@@ -124,37 +124,76 @@ if [ "$COMMENT_COUNT" = "0" ]; then
   exit 0
 fi
 
+POST_CHUNK="${POST_CHUNK:-50}"
+RETRY_WAIT="${RETRY_WAIT:-60}"
+
+# Runs gh. Retries a GitHub rate limit, a network error or a 5xx up to 5 times, with a longer wait
+# each time. Stops at once on any other error (for example a 422), so a real bug is not hidden.
+gh_retry() {
+  local attempt errf
+  errf=$(mktemp)
+  for attempt in 1 2 3 4 5; do
+    if gh "$@" 2>"$errf"; then rm -f "$errf"; return 0; fi
+    if ! grep -qiE 'rate limit|error connecting|timeout|HTTP (429|5[0-9][0-9])' "$errf"; then
+      cat "$errf" >&2; rm -f "$errf"; return 1
+    fi
+    echo "gh failed (attempt $attempt/5): $(head -c 160 "$errf" | tr '\n' ' '). Retry in $((RETRY_WAIT * attempt))s." >&2
+    sleep $((RETRY_WAIT * attempt))
+  done
+  cat "$errf" >&2; rm -f "$errf"; return 1
+}
+
 HEAD_SHA=$(cd "$SRC_DIR" && git rev-parse HEAD)
-PENDING=$(gh api -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews" \
+PENDING=$(gh_retry api -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews" \
   --jq '[.[]|select(.state=="PENDING")][0] // empty')
 PENDING_SHA=$(jq -r '.commit_id // empty' <<<"$PENDING")
 
-if [ -z "$PENDING" ]; then
-  # No pending review yet — bulk-create in one call. Exactly 2 top-level keys: commit_id, comments.
-  jq --arg sha "$HEAD_SHA" '{commit_id:$sha, comments:.comments}' "$STATE_DIR/comments.json" > "$STATE_DIR/payload.json"
-  gh api -X POST -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews" \
-    --input "$STATE_DIR/payload.json" > "$STATE_DIR/response.json"
-  REVIEW_ID=$(jq -r .id "$STATE_DIR/response.json")
-elif [ "$PENDING_SHA" = "$HEAD_SHA" ]; then
-  # A pending review already sits at the current head — may hold the human's own draft comments.
-  # Append to it via GraphQL; never delete it, never touch its existing threads.
-  NODE_ID=$(jq -r .node_id <<<"$PENDING")
-  REVIEW_ID=$(jq -r .id <<<"$PENDING")
-  jq -c '.comments[]' "$STATE_DIR/comments.json" | while IFS= read -r c; do
-    gh api graphql -f query='mutation($rid:ID!,$path:String!,$body:String!,$line:Int!,$side:DiffSide!,$startLine:Int,$startSide:DiffSide){
-      addPullRequestReviewThread(input:{pullRequestReviewId:$rid,path:$path,body:$body,line:$line,side:$side,startLine:$startLine,startSide:$startSide}){thread{id}}}' \
-      -f rid="$NODE_ID" -f path="$(jq -r .path <<<"$c")" -f body="$(jq -r .body <<<"$c")" \
-      -F line="$(jq -r .line <<<"$c")" -f side="$(jq -r .side <<<"$c")" \
-      -F startLine="$(jq -r '.start_line // "null"' <<<"$c")" -F startSide="$(jq -r '.start_side // "null"' <<<"$c")" > /dev/null
-    sleep 1.2   # GitHub docs: wait >=1s between mutative requests; limit is 80 content-generating/min, 500/hour
-  done
-else
+if [ -n "$PENDING" ] && [ "$PENDING_SHA" != "$HEAD_SHA" ]; then
   echo "STOP: a pending review exists at commit $PENDING_SHA, not the current head $HEAD_SHA."
   echo "Ask the user to submit or discard it in the GitHub UI, then re-run post.sh."
   exit 1
 fi
 
-read -r STATE REVIEW_URL < <(gh api -H "X-GitHub-Api-Version: 2022-11-28" \
+if [ -z "$PENDING" ]; then
+  # No pending review yet. Create it with the first chunk only: one large create call can trip
+  # GitHub's secondary rate limit. Exactly 2 top-level keys: commit_id, comments.
+  jq --arg sha "$HEAD_SHA" --argjson n "$POST_CHUNK" '{commit_id:$sha, comments:.comments[:$n]}' \
+    "$STATE_DIR/comments.json" > "$STATE_DIR/payload.json"
+  gh_retry api -X POST -H "X-GitHub-Api-Version: 2022-11-28" "repos/$REPO/pulls/$PR_NUM/reviews" \
+    --input "$STATE_DIR/payload.json" > "$STATE_DIR/response.json"
+  REVIEW_ID=$(jq -r .id "$STATE_DIR/response.json")
+  NODE_ID=$(jq -r .node_id "$STATE_DIR/response.json")
+  echo "Created pending review with $(jq '.comments | length' "$STATE_DIR/payload.json") comment(s)."
+else
+  # A pending review already sits at the current head. It may hold the human's own draft comments
+  # or a part of an earlier run. Append to it; never delete it, never touch its existing threads.
+  REVIEW_ID=$(jq -r .id <<<"$PENDING")
+  NODE_ID=$(jq -r .node_id <<<"$PENDING")
+fi
+
+# Append every comment that the review does not hold yet. So a re-run after a failure resumes
+# without duplicates. Match on path + body: this endpoint returns line=null for pending comments.
+# GitHub may strip trailing whitespace and \r, so compare normalized bodies.
+gh_retry api --paginate -H "X-GitHub-Api-Version: 2022-11-28" \
+  "repos/$REPO/pulls/$PR_NUM/reviews/$REVIEW_ID/comments?per_page=100" --jq '.[] | {path, body}' \
+  > "$STATE_DIR/posted.jsonl"
+jq -c --slurpfile posted "$STATE_DIR/posted.jsonl" '
+  def key: [.path, (.body | gsub("\r"; "") | sub("\\s+$"; ""))];
+  ($posted | map(key)) as $done
+  | .comments[] | select(key as $k | any($done[]; . == $k) | not)' \
+  "$STATE_DIR/comments.json" > "$STATE_DIR/to-append.jsonl"
+echo "Already in review: $(jq -s length "$STATE_DIR/posted.jsonl")  To append: $(wc -l < "$STATE_DIR/to-append.jsonl")"
+
+while IFS= read -r c; do
+  gh_retry api graphql -f query='mutation($rid:ID!,$path:String!,$body:String!,$line:Int!,$side:DiffSide!,$startLine:Int,$startSide:DiffSide){
+    addPullRequestReviewThread(input:{pullRequestReviewId:$rid,path:$path,body:$body,line:$line,side:$side,startLine:$startLine,startSide:$startSide}){thread{id}}}' \
+    -f rid="$NODE_ID" -f path="$(jq -r .path <<<"$c")" -f body="$(jq -r .body <<<"$c")" \
+    -F line="$(jq -r .line <<<"$c")" -f side="$(jq -r .side <<<"$c")" \
+    -F startLine="$(jq -r '.start_line // "null"' <<<"$c")" -F startSide="$(jq -r '.start_side // "null"' <<<"$c")" > /dev/null
+  sleep 1.2   # GitHub docs: wait >=1s between mutative requests; limit is 80 content-generating/min, 500/hour
+done < "$STATE_DIR/to-append.jsonl"
+
+read -r STATE REVIEW_URL < <(gh_retry api -H "X-GitHub-Api-Version: 2022-11-28" \
   "repos/$REPO/pulls/$PR_NUM/reviews/$REVIEW_ID" --jq '"\(.state) \(.html_url)"')
 echo "Review state: $STATE"
 echo "Pending review: $REVIEW_URL"

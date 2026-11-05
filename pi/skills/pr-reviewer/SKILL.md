@@ -82,9 +82,14 @@ Comment format (write the finding's "body" field exactly in this shape):
 
 (One task per lens name — `correctness`, `conformance`, `necessity`, `security`, `reliability`, `tests` — each writing its own `$g-<lens>.jsonl`.)
 
-### 5. Retry a crashed lens
+### 5. Retry a crashed lens or a coverage gap
 
-`post.sh` (Step 6 dry-run) reports any `$g-<lens>.jsonl` that does not exist. If one is missing, re-run just that one lens task once, then re-run `post.sh`. Do not re-run a lens that produced output, even a small amount — that is its real result, not a crash.
+Run `scripts/post.sh <PR_NUM> --dry-run` and read its first two sections.
+
+- **Missing output.** If a `$g-<lens>.jsonl` does not exist, re-run that one lens task once, unchanged.
+- **Coverage gap.** If the report shows `GAP $g-<lens>: N file(s) not reported as read`, re-run that one lens once, for those files only. Use the same task with three changes: `Files assigned to you: $STATE_DIR/out/$g-<lens>.jsonl.gaps` (`post.sh` writes this file), ID prefix `$g-<lens>-r-` (so no id repeats), and the same output path (append, do not overwrite). Spawn all the gap re-runs in one parallel `subagent` call.
+
+Retry each lens at most once. Then run the dry-run again. Name any gap that is still there in the Step 9 report. Do not re-run a lens that has output and no gap: that is its real result, not a crash.
 
 ### 6. Merge duplicates (general agent)
 
@@ -122,8 +127,12 @@ Run this skill's `scripts/post.sh <PR_NUM>` (needs `approved-ids.txt`; `--dry-ru
 4. Removes exact duplicates (same path, line, side and body). In a real run, if `merged-findings.json` exists (Step 6 + triage edits), it is used as-is instead of rebuilding from raw lens output.
 5. Keeps only findings whose id is in `approved-ids.txt` (not in `--dry-run`); prints how many triage dropped.
 6. Prints counts by lens and by severity (the first character of each `body`).
-7. Checks for a pending review at the current head commit and appends to it (GraphQL, one call per comment, 1.2s apart — GitHub caps content creation at 80/min and 500/hour per user), bulk-creates a new one if none exists, or stops if a pending review exists at a different commit.
-8. Verifies the response `state` is `PENDING`.
+7. Checks for a pending review. It stops if one exists at a different commit. If none exists, it creates one with only the first `POST_CHUNK` comments (default 50; one large create call can trip GitHub's secondary rate limit).
+8. Lists the comments the pending review already holds, and appends only the comments that are not there yet (same path and body — GitHub returns `line: null` for pending comments; GraphQL, one call per comment, 1.2s apart — GitHub caps content creation at 80/min and 500/hour per user).
+9. Retries every `gh` call on a rate limit, a network error or a 5xx (5 attempts, wait `RETRY_WAIT` × attempt, default 60s). It stops at once on any other error.
+10. Verifies the review `state` is `PENDING`.
+
+If `post.sh` stops partway (rate limit, network, Ctrl-C), run it again with no change. It resumes: it skips what is already posted and appends the rest to the same pending review.
 
 ### 9. Report
 
@@ -171,13 +180,14 @@ Write the `Issue` text or the question text in Simplified Technical English (ASD
 - [ ] Not running in plan mode
 - [ ] Local diff file count matches GitHub's `changedFiles` (or the mismatch is explained)
 - [ ] Every lens's `$g-<lens>.jsonl` exists (retried once if missing)
-- [ ] File coverage checked; any gap named in the report
+- [ ] File coverage checked; each gap retried once; any remaining gap named in the report
 - [ ] Every finding challenged and triaged; `approved-ids.txt` written
 - [ ] Every finding's line is inside a hunk of the same path + side
 - [ ] Exact duplicates merged
 - [ ] General-agent merge done; id-accounting check passed (no finding lost)
-- [ ] Bulk-create payload has exactly 2 keys: `commit_id`, `comments`; no `body`/`event`
-- [ ] Pending-review state checked BEFORE building comments (append vs. bulk-create vs. stop)
+- [ ] Bulk-create payload has exactly 2 keys: `commit_id`, `comments`; no `body`/`event`; at most `POST_CHUNK` comments
+- [ ] Pending-review state checked BEFORE building comments (create first chunk + append vs. append vs. stop)
+- [ ] Comment count in the review equals the number approved (re-run `post.sh` to resume if lower)
 - [ ] Response `state: "PENDING"` confirmed
 
 ## 422 ERROR FIXES
@@ -189,6 +199,8 @@ Write the `Issue` text or the question text in Simplified Technical English (ASD
 | "diff hunk can't be blank"                 | No diff context at that line        | Only comment on lines in `hunks.tsv`                        |
 | "user_id can only have one pending review" | A pending review exists             | `post.sh`: append (same commit) or stop (different commit) — never delete |
 | Misleading multi-line 422                  | `start_line` sent without `start_side` | Always send both together                                |
+| "start_line: nil is not a number"          | A finding has `"start_line": null`  | `post.sh` adds `start_line` only when it is not null; never write a null `start_line` |
+| 403 "secondary rate limit"                 | Too much content created too fast   | `post.sh` retries; if it still stops, wait a few minutes and re-run it — it resumes |
 
 ## MENTAL MODEL
 
@@ -199,10 +211,11 @@ Context (house rules + AC from caller)
 ↓
 correctness + conformance + necessity + security + reliability + tests, per group, in parallel (2 batches) — each decides proven vs. ❓ itself
 ↓
-Retry any lens with no output, once
+post.sh --dry-run → retry, once, any lens with no output or with a file-coverage gap (gap files only)
 ↓
 post.sh --dry-run → general agent merges same-location duplicates (merged-findings.json) → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
 ↓
-post.sh: file coverage report → line validation → dedup → build comments → post (append to same-commit
-pending review | bulk-create | stop on stale pending) → report
+post.sh: file coverage report → line validation → dedup → build comments → post (stop on stale pending |
+create with first POST_CHUNK | then append only the comments not yet in the review; gh calls retried) → report
+(re-run post.sh to resume after any stop)
 ```
