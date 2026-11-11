@@ -143,7 +143,7 @@ Paste `post.sh`'s own summary output (it already has the counts and the review U
 - 🔴 **Critical** — security, auth, data loss/corruption, resource/transaction leaks, money/precision errors, silent failure of a write path, unsafe rollout/migration
 - 🟣 **Structural** — ad-hoc conditional bolted onto an unrelated flow | feature logic in shared/general-purpose code | thin wrapper/identity abstraction with no clarity gain | a restructure would delete whole branches/layers instead of adding to them | logic in the wrong layer
 - 🟠 **Major** — missing test for changed behavior | swallowed error | missing timeout/retry bound | performance (N+1, sequential `await` where `Promise.all` applies) | bespoke helper duplicating a canonical utility | boundary/type erosion (`any`/`unknown`/casts hiding an invariant)
-- 🟡 **Improve** — naming, legibility, comment quality, parameter shape
+- 🟡 **Improve** — naming, domain term drift (synonym, one name for two concepts, new term with no source), legibility, comment quality, parameter shape
 - ❓ **Question** — a finding the lens could not fully prove, or a pre-existing issue found on a diff line
 
 ## COMMENT FORMAT

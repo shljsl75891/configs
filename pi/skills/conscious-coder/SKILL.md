@@ -28,6 +28,15 @@ If a senior engineer calls this too complex, make it simple. Do not add anything
 - Name what is confusing and ask rather than guessing
 - If a simpler approach exists, say so; push back when warranted
 
+## Ubiquitous Language
+
+One concept, one word — in code, tests, comments, and commits.
+
+- Before you name a domain concept, find the project's vocabulary. Search for any source: glossary or context docs, domain or knowledge graphs, ADRs, design docs, pointers in `AGENTS.md`/`README`, and the names already in dominant use in the code. Do not assume a path.
+- Use the canonical term. Never use a known synonym for it. Generic tech words (timeout, repository, DTO) are not domain terms.
+- Ask the user with the `question` tool, before you write the name, when: (1) two words name one concept, (2) one word may mean two concepts, (3) the concept has no term yet — propose a name that fits nearby terms, (4) the code contradicts a documented domain rule, or (5) you find no source at all.
+- When the user resolves a term and the repo already has a vocabulary file, offer to add the term. Do not create a new file.
+
 ## Surgical Changes
 
 - Touch only what is needed — every changed line must trace back to the user's request
@@ -132,4 +141,5 @@ Before declaring a task done, re-scan the diff once for over-engineering and rem
 
 - Any abstraction with only one call site? or any parameter/flag with only one use?
 - Any code path added "for later" that no test or requirement needs?
+- Every new domain name canonical, or approved by the user?
 - Re-check every comment against the Comments rules above; fix or delete any that fail.
