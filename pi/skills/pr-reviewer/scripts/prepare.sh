@@ -6,6 +6,8 @@
 set -euo pipefail
 
 PR_NUM="${1:?usage: prepare.sh <pr-number>}"
+PR_NUM="${PR_NUM//[^0-9]/}"   # keep digits only: users may type "#N" or "N,"
+[ -n "$PR_NUM" ] || { echo "ERROR: PR number has no digits: '$1'" >&2; exit 1; }
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   echo "ERROR: not inside a git working tree. cd into a clone of the PR's repo first." >&2
@@ -26,7 +28,7 @@ case "$HEAD_SHA" in
   *) echo "ERROR: could not resolve a head SHA for $REPO#$PR_NUM (got '$HEAD_SHA')." >&2; exit 1 ;;
 esac
 
-STATE_DIR="/tmp/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
 SRC_DIR="$STATE_DIR/src"
 OUT_DIR="$STATE_DIR/out"
 mkdir -p "$OUT_DIR"

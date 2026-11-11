@@ -43,7 +43,7 @@ Stop immediately, before any write, if the session is in plan mode — this skil
 
 ### 2. Setup
 
-Run this skill's `scripts/prepare.sh <PR_NUM>`, resolved relative to this skill's own directory (e.g. `bash /path/to/this/skill/scripts/prepare.sh 2720`). It fetches the base and head refs, builds or reuses a detached worktree at `$STATE_DIR/src`, diffs from the merge-base, and writes into `$STATE_DIR` (printed by the script, deterministically `/tmp/pr-review/<owner>-<repo>-<PR_NUM>`):
+Run this skill's `scripts/prepare.sh <PR_NUM>`, resolved relative to this skill's own directory (e.g. `bash /path/to/this/skill/scripts/prepare.sh 2720`). It fetches the base and head refs, builds or reuses a detached worktree at `$STATE_DIR/src`, diffs from the merge-base, and writes into `$STATE_DIR` (printed by the script, deterministically `${XDG_CACHE_HOME:-~/.cache}/pr-review/<owner>-<repo>-<PR_NUM>`):
 
 - `hunks.tsv` — `path, side, start, end` (1-indexed, inclusive). This is the valid-line table `post.sh` checks against.
 - `files.txt` — every changed file.
@@ -55,6 +55,8 @@ It warns (does not stop) if the local file count disagrees with GitHub's; check 
 ### 3. Context
 
 If the invoking command supplied project conventions ("house rules") or acceptance criteria, write them verbatim to `$STATE_DIR/house-rules.md` and `$STATE_DIR/ac.md` — you already have this content in context from reading the invoking prompt; copy it, do not paraphrase it. Skip either file if the caller gave nothing; the lenses run fine without them.
+
+In codemode, load state JSON with `tools.bash` (`cat` or `jq`), not `tools.read`. `tools.read` cuts output at 50KB, so `JSON.parse` fails on a large file.
 
 ### 4. Lens runs
 
@@ -115,7 +117,10 @@ Always runs; no skip. Never drop a finding on your own.
    - **Wrong** — proof as `path:line` (POLICY drop reasons only).
 3. **Table.** Print: `#`, id, severity, lens, `path:line[side]`, title, verdict.
 4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
-5. **Apply.** Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+   - After each `question` call, parse the answers at once to `{id: "Keep"|"Drop"|"Downgrade"|"<free text>"}`. Merge them into `$STATE_DIR/triage-decisions.json` with `tools.write` before the next call.
+   - Never keep raw answers in codemode `store()`. It has a 256KB limit, and a failed save loses the human's answers.
+   - On a re-run, read `triage-decisions.json` and ask only about ids that are not in it.
+5. **Apply.** Build the result from `triage-decisions.json` only. Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
 
 ### 8. Post
 
@@ -137,6 +142,24 @@ If `post.sh` stops partway (rate limit, network, Ctrl-C), run it again with no c
 ### 9. Report
 
 Paste `post.sh`'s own summary output (it already has the counts and the review URL) plus your acceptance-criteria coverage line if the caller supplied `ac.md`.
+
+## RE-REVIEW (only when the caller asks)
+
+Use this when the author pushed fixes or replied after an earlier review. Thread handling and new findings are separate jobs. Do thread replies first, before any pending review exists: a reply sent while a pending review exists joins that pending review instead of posting.
+
+1. **Fetch.** Run `scripts/threads.sh fetch <PR_NUM>`. It writes `$STATE_DIR/threads.json` (every review thread: `id`, `isResolved`, `isOutdated`, `path`, `line`, `comments`) and prints the unresolved count.
+2. **Verify.** Split the unresolved threads over `general` agents (about 40 per agent, in one parallel call). Each agent checks every thread against the code at HEAD, not against the author's claim. It gives one verdict and a draft reply:
+   - **Fixed** or **AuthorJustified**: reply `✅ Verified at <sha>: <what changed or why the reason holds, path:line>.`
+   - **NotFixed** or **AuthorReasonInvalid**: reply `⚠️ Not fixed at <sha>: <what is still wrong, path:line>. <what to do>.`
+   - Every reply ends with `**Credit:** Pi`.
+3. **Confirm.** Show the human a table of verdicts. Ask only about the non-✅ threads.
+4. **Post.** For each thread, write the reply to a file and run `scripts/threads.sh reply <PR_NUM> <thread_id> <file>`. Then run `scripts/threads.sh resolve <PR_NUM> <thread_id>` for every ✅ thread. Leave ⚠️ threads open. Run `threads.sh fetch` again and report the unresolved count.
+5. **Delta scope for new findings.** If the human also wants new findings, review only what the author changed since the old head:
+   - Run `prepare.sh` again for the new head.
+   - Move the old lens output aside: `out/` → `out-<old head sha>/`. Also move the old `merged-findings.json`, `triage-decisions.json` and `approved-ids.txt`.
+   - For each changed file, compare the +/- lines of `git diff OLDBASE...OLDHEAD -- <f>` and `git diff BASE...HEAD -- <f>`. Keep the files that differ.
+   - For each group `$g`, overwrite `files-$g.txt` and `hunks-$g.tsv` with only those files. `post.sh` reads these lists, so no other change is needed.
+   - Run Steps 4–9 as usual. In each lens task, add: "Raise only lines the author changed between the two diffs above; give both git commands with real SHAs."
 
 ## SEVERITY TAXONOMY
 

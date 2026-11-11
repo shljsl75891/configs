@@ -5,11 +5,13 @@
 set -euo pipefail
 
 PR_NUM="${1:?usage: post.sh <pr-number> [--dry-run]}"
+PR_NUM="${PR_NUM//[^0-9]/}"   # keep digits only: users may type "#N" or "N,"
+[ -n "$PR_NUM" ] || { echo "ERROR: PR number has no digits: '$1'" >&2; exit 1; }
 DRY_RUN=0
 [ "${2:-}" = "--dry-run" ] && DRY_RUN=1
 
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-STATE_DIR="/tmp/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
 SRC_DIR="$STATE_DIR/src"
 OUT_DIR="$STATE_DIR/out"
 
@@ -38,7 +40,9 @@ for g in $PR_GROUPS; do
     f="$OUT_DIR/$g-$lens.jsonl"
     [ -f "$f" ] || continue
     jq -r 'select(.type=="file") | .path' "$f" 2>/dev/null | LC_ALL=C sort -u > "$f.read"
-    LC_ALL=C sort -u "$STATE_DIR/files-$g.txt" > "$f.assigned"
+    # Lockfiles and snapshots are generated: lenses do not report reading them, so they are no gap.
+    grep -vE '(^|/)(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|[^/]+\.snap)$' "$STATE_DIR/files-$g.txt" \
+      | LC_ALL=C sort -u > "$f.assigned" || true
     LC_ALL=C comm -23 "$f.assigned" "$f.read" > "$f.gaps" || true
     if [ -s "$f.gaps" ]; then
       echo "GAP $g-$lens: $(wc -l < "$f.gaps") file(s) not reported as read:"
@@ -107,7 +111,10 @@ jq -r '.[].body[0:1]' "$STATE_DIR/deduped-findings.json" | sort | uniq -c
 UNKNOWN=$(jq -r '.[].body[0:1]' "$STATE_DIR/deduped-findings.json" | grep -vcE '🔴|🟣|🟠|🟡|❓' || true)
 [ "$UNKNOWN" != "0" ] && echo "WARNING: $UNKNOWN finding(s) have no recognized severity emoji as their first character — still posting them, just flagging for review."
 
-jq '{comments: [.[] | {path, line, side, body} + (if .start_line != null then {start_line, start_side: .side} else {} end)]}' \
+# GitHub rejects start_line > line (422). Lenses and triage edits sometimes write the range backwards.
+jq '{comments: [.[]
+    | if (.start_line != null and .start_line > .line) then .start_line as $s | .start_line = .line | .line = $s else . end
+    | {path, line, side, body} + (if .start_line != null then {start_line, start_side: .side} else {} end)]}' \
   "$STATE_DIR/deduped-findings.json" > "$STATE_DIR/comments.json"
 
 COMMENT_COUNT=$(jq '.comments | length' "$STATE_DIR/comments.json")
