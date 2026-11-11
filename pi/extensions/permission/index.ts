@@ -164,11 +164,12 @@ export default function (pi: ExtensionAPI) {
     const input = event.input as Record<string, unknown>;
     const checks = [decide(sanitizeConfig(base), event.toolName, input, ctx.cwd, ctx)];
     if (planMode) checks.push(decide(planConfig(plan), event.toolName, input, ctx.cwd, ctx));
-    const action = strictest(await Promise.all(checks));
+    const [baseAction, planAction] = await Promise.all(checks);
+    const action = strictest([baseAction, planAction ?? "allow"]);
     if (action === "allow") return undefined;
 
     const label = describeCall(event.toolName, input);
-    const where = planMode ? " in plan mode" : "";
+    const where = planAction && planAction !== "allow" ? " in plan mode" : "";
     if (action === "deny") return { block: true, reason: `Denied by permission rule${where}: ${label}` };
 
     if (autoApprove) return undefined;

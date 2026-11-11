@@ -47,6 +47,8 @@ interface RunSubagentOptions {
 	/** Parent has auto-approve on: the child starts with --approve. */
 	approve: boolean;
 	onReview?: (agent: string, windowId: string, reviewing: boolean) => void;
+	/** Called with the report if the agent finishes after the wait timed out. */
+	onLateResult?: (r: RunResult) => void;
 }
 
 async function runSubagent({
@@ -62,6 +64,7 @@ async function runSubagent({
 	plan,
 	approve,
 	onReview,
+	onLateResult,
 }: RunSubagentOptions): Promise<RunResult> {
 	const agent = agents.find((a) => a.name === agentName);
 	if (!agent) {
@@ -137,7 +140,25 @@ async function runSubagent({
 		// Closed like an abort: a successful run has nothing left to review, so the window would just sit there.
 		const closeWindow = outcome.kind === "aborted" || (outcome.kind === "result" && outcome.result.status === "ok");
 		keepTmpDir = !closeWindow && outcome.kind !== "windowGone";
-		const result = toRunResult(outcome, base, { resultFile, timeoutMs });
+		const lateReport = outcome.kind === "timeout" && onLateResult !== undefined;
+		if (lateReport) {
+			keepTmpDir = true;
+			waitForResult({
+				windowId,
+				resultFile,
+				timeoutMs: MAX_TIMEOUT_MS,
+				checkWindowAlive: (wid) => isWindowAlive(pi, wid),
+			})
+				.then(async (late) => {
+					if (late.kind !== "result") return;
+					const lateRun = toRunResult(late, base, { resultFile, timeoutMs });
+					if (lateRun.status === "ok") await killTmuxWindow(pi, windowId);
+					onLateResult(lateRun);
+				})
+				.catch(() => {})
+				.finally(() => fs.rm(tmpDir, { recursive: true, force: true }, () => {}));
+		}
+		const result = toRunResult(outcome, base, { resultFile, timeoutMs, lateReport });
 		if (closeWindow) await killTmuxWindow(pi, windowId);
 		return result;
 	} finally {
@@ -372,7 +393,7 @@ export default function (pi: ExtensionAPI) {
 						else reportReview(agent, windowId, reviewing);
 					};
 					try {
-						return await runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal: runAbort.signal, depth, plan: planActive, approve: approveActive(), onReview });
+						return await runSubagent({ pi, ctx, agents, session, agentName: t.agent, task: t.task, timeoutMs, signal: runAbort.signal, depth, plan: planActive, approve: approveActive(), onReview, onLateResult: depth === 0 ? deliverBackground : undefined });
 					} catch (error) {
 						return { agent: t.agent, agentSource: "unknown", task: t.task, status: "error", output: "", errorMessage: errorText(error) };
 					} finally {

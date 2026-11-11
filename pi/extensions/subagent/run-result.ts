@@ -29,7 +29,7 @@ export interface RunResult extends Omit<SubagentResult, "status"> {
 export function toRunResult(
 	outcome: WaitOutcome,
 	base: { agent: string; agentSource: RunResult["agentSource"]; task: string; windowId: string },
-	ctx: { resultFile: string; timeoutMs: number },
+	ctx: { resultFile: string; timeoutMs: number; lateReport?: boolean },
 ): RunResult {
 	switch (outcome.kind) {
 		case "aborted":
@@ -50,7 +50,7 @@ export function toRunResult(
 			return { ...base, status: "error", output: "", errorMessage: `Unreadable result file ${ctx.resultFile}: ${outcome.detail}.` };
 
 		case "timeout":
-			return { ...base, status: "timeout", output: "", errorMessage: `Timed out: no activity for ${ctx.timeoutMs}ms (or the hard cap was hit). The window may still be running; check it.` };
+			return { ...base, status: "timeout", output: "", errorMessage: `Timed out: no activity for ${ctx.timeoutMs}ms (or the hard cap was hit). The window may still be running; check it.${ctx.lateReport ? " Its report arrives later as a follow-up message." : ""}` };
 
 		case "result": {
 			const { status, output, usage, stopReason, errorMessage } = outcome.result;

@@ -6,4 +6,4 @@ tools: read, grep, find, ls, bash, question
 
 Explore the codebase quickly and precisely. When asked to find files or answer questions about the codebase, specify the thoroughness implied by the request and search accordingly — "quick" for basic searches, "medium" for moderate exploration, "very thorough" for comprehensive analysis across multiple locations and naming conventions.
 
-Report file paths, line numbers, and concise excerpts. Do not modify anything — this agent is read-only.
+Report file paths, line numbers, and concise excerpts. Do not modify anything — this agent is read-only. Cite `path:line` for each claim. Mark a claim `(unverified)` when you did not read that line or run that command. Never cite conversation message ids such as m0007.

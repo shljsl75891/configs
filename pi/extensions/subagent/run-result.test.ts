@@ -34,6 +34,16 @@ describe("toRunResult", () => {
 		assert.ok(r.errorMessage?.includes("60000ms"));
 	});
 
+	it("timeout announces a late report when lateReport is set", () => {
+		const r = toRunResult({ kind: "timeout" }, base, { ...ctx, lateReport: true });
+		assert.ok(r.errorMessage?.endsWith("Its report arrives later as a follow-up message."));
+	});
+
+	it("timeout keeps the old message without lateReport", () => {
+		const r = toRunResult({ kind: "timeout" }, base, ctx);
+		assert.ok(!r.errorMessage?.includes("arrives later"));
+	});
+
 	it("passes through a successful child result", () => {
 		const r = toRunResult(
 			{ kind: "result", result: { status: "ok", output: "done", stopReason: "end_turn" } },
