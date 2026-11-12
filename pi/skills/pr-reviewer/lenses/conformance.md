@@ -17,4 +17,4 @@ Goal: find code that does not follow the patterns already established in this co
 
 ## Output
 
-Same JSONL contract as `correctness.md`: one `"type":"file"` line per file you read, `"type":"finding"` lines whose `body` names the sibling file(s) you compared against in the Issue text, e.g. "...unlike `src/repositories/order.repository.ts:8`, which extends `BaseAuditRepository`." Prefix finding `id`s with the ID prefix you were given.
+JSONL exactly as the "Output format" in your task says. Each finding's `body` names the sibling file(s) you compared against in the Issue text, e.g. "...unlike `src/repositories/order.repository.ts:8`, which extends `BaseAuditRepository`." Prefix finding `id`s with the ID prefix you were given.

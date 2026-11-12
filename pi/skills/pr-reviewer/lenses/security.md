@@ -28,4 +28,4 @@ Goal: find anything that lets an attacker, a bad input, or a leaked secret cause
 
 ## Output
 
-Same JSONL contract as `correctness.md` (one `"type":"file"` line per file read, `"type":"finding"` lines). Severity 🔴 for anything exploitable or leaking secrets/PII. Name source and sink with `path:line` in the Issue text.
+JSONL exactly as the "Output format" in your task says. Severity 🔴 for anything exploitable or leaking secrets/PII. Name source and sink with `path:line` in the Issue text.

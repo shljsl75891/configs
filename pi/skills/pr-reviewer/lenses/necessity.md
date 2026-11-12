@@ -23,4 +23,4 @@ Goal: find code that should not exist as written — because it is not needed, o
 
 ## Output
 
-Same JSONL contract as `correctness.md`. Name the use-count you found in the body's Issue text, e.g. "rg found 1 call site: src/foo.ts:40." Prefix finding `id`s with the ID prefix you were given.
+JSONL exactly as the "Output format" in your task says. Name the use-count you found in the body's Issue text, e.g. "rg found 1 call site: src/foo.ts:40." Prefix finding `id`s with the ID prefix you were given.

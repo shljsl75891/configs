@@ -54,7 +54,7 @@ It warns (does not stop) if the local file count disagrees with GitHub's; check 
 
 ### 3. Context
 
-If the invoking command supplied project conventions ("house rules") or acceptance criteria, write them verbatim to `$STATE_DIR/house-rules.md` and `$STATE_DIR/ac.md` — you already have this content in context from reading the invoking prompt; copy it, do not paraphrase it. Skip either file if the caller gave nothing; the lenses run fine without them.
+If the invoking command supplied project conventions ("house rules"), acceptance criteria, or ticket decisions, write them verbatim to `$STATE_DIR/house-rules.md`, `$STATE_DIR/ac.md` and `$STATE_DIR/ticket-decisions.md` — you already have this content in context from reading the invoking prompt; copy it, do not paraphrase it. Ticket decisions are clarifications agreed on the ticket (for example in its comments); all lenses read them. Skip any file if the caller gave nothing; the lenses run fine without them.
 
 In codemode, load state JSON with `tools.bash` (`cat` or `jq`), not `tools.read`. `tools.read` cuts output at 50KB, so `JSON.parse` fails on a large file.
 
@@ -69,9 +69,15 @@ Files assigned to you: $STATE_DIR/files-$g.txt
 Hunks (path\tside\tstart\tend — valid lines for a finding): $STATE_DIR/hunks-$g.tsv
 Existing PR comments (do not re-raise these): $STATE_DIR/existing-comments.jsonl
 House rules (if present): $STATE_DIR/house-rules.md
+Ticket decisions (if present; never propose a fix that contradicts one): $STATE_DIR/ticket-decisions.md
 Acceptance criteria (if present, correctness lens only): $STATE_DIR/ac.md
 ID prefix for findings: $g-<lens>-
 Output: append JSONL to $STATE_DIR/out/$g-<lens>.jsonl
+
+Output format (exact; a line without "type" is lost): one `"type":"file"` line for every file you opened and read (coverage is checked from these; report every assigned file, even one with no finding), plus one `"type":"finding"` line per issue:
+{"type":"file","path":"src/foo.ts"}
+{"type":"finding","id":"$g-<lens>-1","path":"src/foo.ts","line":85,"side":"RIGHT","body":"🔴 **Correctness: ...**\n\n**Issue:** ...\n\n**Fix:** ...\n\n**Credit:** Pi"}
+A multi-line finding also sets "start_line" (same side). Number ids in sequence after the prefix. `body` must already be in the exact comment format below; it is posted verbatim.
 
 RECALL MANDATE: Assume this diff contains bugs. The human triages every finding before posting, so a missed bug costs more than a noisy comment. List EVERY finding; do not stop at the first. Apply no confidence, nit, style, or "will the author agree" filter. Read outside the diff freely (callers, callees, siblings, config, tests). Flag pre-existing issues on diff lines as ❓. A high-impact issue you cannot prove is a ❓, never dropped. Do not read the PR title or description.
 
@@ -89,6 +95,7 @@ Comment format (write the finding's "body" field exactly in this shape):
 Run `scripts/post.sh <PR_NUM> --dry-run` and read its first two sections.
 
 - **Missing output.** If a `$g-<lens>.jsonl` does not exist, re-run that one lens task once, unchanged.
+- **Schema.** If the report shows `SCHEMA $g-<lens>: N untyped line(s)`, repair that file yourself with the write tool, before any retry: a line with `id`, `path` and `body` gets `"type":"finding"`; add one `{"type":"file","path":...}` line for each path its findings cite. Then run the dry-run again; a file still missing is a coverage gap.
 - **Coverage gap.** If the report shows `GAP $g-<lens>: N file(s) not reported as read`, re-run that one lens once, for those files only. Use the same task with three changes: `Files assigned to you: $STATE_DIR/out/$g-<lens>.jsonl.gaps` (`post.sh` writes this file), ID prefix `$g-<lens>-r-` (so no id repeats), and the same output path (append, do not overwrite). Spawn all the gap re-runs in one parallel `subagent` call.
 
 Retry each lens at most once. Then run the dry-run again. Name any gap that is still there in the Step 9 report. Do not re-run a lens that has output and no gap: that is its real result, not a crash.
@@ -100,11 +107,10 @@ Always runs, after every lens finished (and Step 5 retries), before triage.
 1. **Preview.** Run `scripts/post.sh <PR_NUM> --dry-run`. It writes validated, exact-deduped `$STATE_DIR/deduped-findings.json` (each item has `id`, `path`, `line`, `side`, `body`, `lens`). Note N = its item count.
 2. **Merge.** Spawn ONE `subagent` (`agent: general`, `timeoutMs: 3600000`). Substitute the real `$STATE_DIR` first; the task is self-contained:
    - Read `$STATE_DIR/deduped-findings.json` (and code in `$STATE_DIR/src` if needed to judge).
-   - Two findings are duplicates ONLY if same `path`, `line` and `side` AND they describe the same issue. Different issues on one line are NOT duplicates; keep all.
-   - Merge each duplicate group into one finding: keep the highest severity, combine the best evidence/fix from all copies into one body (same COMMENT FORMAT), keep one member's `id`, set `lens` to all source lenses (comma-joined), add `merged_from: [all ids in the group]`.
-   - NEVER drop, edit, or merge any finding that is not a duplicate. Copy it through unchanged.
-   - Write `$STATE_DIR/merged-findings.json` (JSON array, same item schema) and `$STATE_DIR/merge-log.txt` (each group: ids merged, why).
-3. **Check.** Every original id must appear exactly once as an `id` or in a `merged_from` of `merged-findings.json`, and no id may be invented: `jq` it. On failure, re-run the merge once; if it fails again, `cp deduped-findings.json merged-findings.json`.
+   - Two findings are duplicates if they have the same `path` and `side`, sit within 5 lines of each other or in the same function or template block, AND describe the same issue. Different issues are NOT duplicates, even on one line. Findings in different files are never duplicates.
+   - For each duplicate group, write one merged body: highest severity, the best evidence/fix from all copies, same COMMENT FORMAT. Keep the `id` of the member whose line has the strongest evidence; the body names the other lines as `path:line`.
+   - Write ONLY `$STATE_DIR/merge-spec.json` with the write tool: `[{"keep": "<id>", "merged_from": ["<every id in the group, keep included>"], "body": "<merged body>"}]`, duplicate groups only (`[]` if none). Also write `$STATE_DIR/merge-log.txt` (each group: ids merged, why). Do not write `merged-findings.json`.
+3. **Apply.** Run `scripts/apply-merge.sh <PR_NUM>`. It copies non-duplicates unchanged, builds `merged-findings.json`, and rejects a spec with an unknown or reused id. On failure, re-run the merge agent once with the script's error; if it fails again, `cp deduped-findings.json merged-findings.json`.
 
 ### 7. Interrogate & triage
 
@@ -115,12 +121,13 @@ Always runs; no skip. Never drop a finding on your own.
    - **Holds** — evidence as `path:line`.
    - **Weak** — cannot prove it; recommend downgrade to ❓.
    - **Wrong** — proof as `path:line` (POLICY drop reasons only).
-3. **Table.** Print: `#`, id, severity, lens, `path:line[side]`, title, verdict.
-4. **Ask.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
-   - After each `question` call, parse the answers at once to `{id: "Keep"|"Drop"|"Downgrade"|"<free text>"}`. Merge them into `$STATE_DIR/triage-decisions.json` with `tools.write` before the next call.
+3. **Open.** Do not print a findings table anywhere. Ask one `question` whose text gives counts only: by severity (serious 🔴 🟣 🟠, minor 🟡 ❓) and by your recommendation (Keep / Drop / Downgrade). Options: **Accept all recs** (record every recommendation as the decision, go to Apply) and **Review** (continue).
+4. **Serious findings (🔴 🟣 🟠).** Use the `question` tool, about 5 findings per call, in severity order. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
+5. **Minor findings (🟡 ❓), in bulk.** One `question` tab per up to 10 findings, `multiple: true`; several tabs per call. Question text: "Tick each finding to DROP. Unticked findings are kept. To edit or downgrade one, type its number and the change." One option per finding, Drop recommendations first: label `<n>. <3-5 word title>`; description `path:line`, the issue in one sentence, and `Rec: <Keep|Drop|Downgrade> – <reason>`. Ticked = Drop, unticked = Keep, free text overrides.
+   - After each `question` call (steps 3-5), parse the answers at once to `{id: "Keep"|"Drop"|"Downgrade"|"<free text>"}`. Merge them into `$STATE_DIR/triage-decisions.json` with `tools.write` before the next call.
    - Never keep raw answers in codemode `store()`. It has a 256KB limit, and a failed save loses the human's answers.
    - On a re-run, read `triage-decisions.json` and ask only about ids that are not in it.
-5. **Apply.** Build the result from `triage-decisions.json` only. Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+6. **Apply.** Build the result from `triage-decisions.json` only. Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
 
 ### 8. Post
 
@@ -236,7 +243,7 @@ correctness + conformance + necessity + security + reliability + tests, per grou
 ↓
 post.sh --dry-run → retry, once, any lens with no output or with a file-coverage gap (gap files only)
 ↓
-post.sh --dry-run → general agent merges same-location duplicates (merged-findings.json) → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
+post.sh --dry-run → general agent specs nearby duplicates (merge-spec.json) → apply-merge.sh (merged-findings.json) → challenge each finding → human triage (keep/drop/edit) → approved-ids.txt
 ↓
 post.sh: file coverage report → line validation → dedup → build comments → post (stop on stale pending |
 create with first POST_CHUNK | then append only the comments not yet in the review; gh calls retried) → report

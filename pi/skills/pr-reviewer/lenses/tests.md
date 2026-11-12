@@ -23,4 +23,4 @@ Goal: find behavior that is not proven by a test, and tests that would not catch
 
 ## Output
 
-Same JSONL contract as `correctness.md`. For a missing-test finding, anchor on the changed source line and name the behavior that lacks a test; list the searches you ran in the Issue text.
+JSONL exactly as the "Output format" in your task says. For a missing-test finding, anchor on the changed source line and name the behavior that lacks a test; list the searches you ran in the Issue text.

@@ -7,7 +7,7 @@ Goal: find behavior bugs — logic that will do the wrong thing, at all, under l
 1. **Map the change before judging any line.** For each new or changed entry point (API endpoint, event handler, exported function), trace its call chain forward — what it calls, what that calls, down to the database, queue, or external call. You need this map to judge whether a change is correct, not just plausible.
 2. **For every hunk, trace its callers and its callees.** Open the real function signatures the hunk calls, and open every place that calls the hunk's own function or method (`rg` the name across the whole worktree). Check argument order, types, units, and nullability against what is ACTUALLY there — not what the names suggest.
 3. **Find the closest existing equivalent flow and compare it step by step.** Almost every change is doing something a sibling piece of code already does in some form (another create endpoint, another write path, another calculation). Read that sibling. Every place the new code differs from it is a finding, unless the diff or the code shows a specific reason for the difference.
-4. **If you were given acceptance criteria** (`ac.md`), check each item against the diff: does an actual line implement it? A criterion with no implementing line is a finding. If `ac.md` defines a required comment template for a gap, use it for that finding's body.
+4. **If you were given acceptance criteria** (`ac.md`), check each item against the diff: does an actual line implement it? A criterion with no implementing line is a finding. If `ac.md` defines a required comment template for a gap, use it for every finding that cites an AC item, including one the diff breaks.
 5. **Before writing a finding, check `existing-comments.jsonl`** for the same path and a nearby line. If a comment there already raises the same point, skip it — do not re-raise it.
 6. **Go past the first finding.** After you finish a hunk, re-read it once more as an attacker or a bad-luck production incident would: what input, timing, or failure breaks it? List every issue, not just the best one.
 7. **Decide proven vs. question yourself, right now.** You confirmed it with your own file:line evidence, independent of any assumption → write the Issue/Fix comment format. You could not fully confirm or disprove it → write the ❓ question format instead. There is no later pass that re-checks this — get it right here.
@@ -36,11 +36,4 @@ For each hunk, also check:
 
 ## Output
 
-Append JSONL to the given output path. One `"type":"file"` line for every file you actually opened and read (this is how coverage is checked — report every file you were assigned, even one with no finding), plus one `"type":"finding"` line per issue:
-
-```jsonl
-{"type":"file","path":"src/foo.ts"}
-{"type":"finding","id":"<prefix>1","path":"src/foo.ts","line":85,"side":"RIGHT","body":"🔴 **Correctness: ...**\n\n**Issue:** ...\n\n**Fix:**\n```ts\n...\n```\n\n**Credit:** Pi"}
-```
-
-A multi-line finding also sets `"start_line"` (same `side`). Prefix every finding `id` with the ID prefix you were given, then a sequential number (`<prefix>1`, `<prefix>2`, ...). `body` must already be in the exact COMMENT FORMAT you were given — the orchestrator posts it verbatim, unedited.
+Write JSONL exactly as the "Output format" in your task says.

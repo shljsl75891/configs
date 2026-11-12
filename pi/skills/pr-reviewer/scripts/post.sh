@@ -39,6 +39,8 @@ for g in $PR_GROUPS; do
   for lens in $LENSES; do
     f="$OUT_DIR/$g-$lens.jsonl"
     [ -f "$f" ] || continue
+    untyped=$(jq -c 'select(.type != "file" and .type != "finding")' "$f" 2>/dev/null | wc -l)
+    [ "$untyped" != "0" ] && echo "SCHEMA $g-$lens: $untyped untyped line(s) — repair them (SKILL.md Step 5), else they are ignored"
     jq -r 'select(.type=="file") | .path' "$f" 2>/dev/null | LC_ALL=C sort -u > "$f.read"
     # Lockfiles and snapshots are generated: lenses do not report reading them, so they are no gap.
     grep -vE '(^|/)(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|[^/]+\.snap)$' "$STATE_DIR/files-$g.txt" \

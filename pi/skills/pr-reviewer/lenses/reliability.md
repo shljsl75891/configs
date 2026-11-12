@@ -27,4 +27,4 @@ Goal: find code that fails without anyone knowing, hangs, leaks, or amplifies an
 
 ## Output
 
-Same JSONL contract as `correctness.md`. Name the failing call and the swallowing line with `path:line` in the Issue text.
+JSONL exactly as the "Output format" in your task says. Name the failing call and the swallowing line with `path:line` in the Issue text.
