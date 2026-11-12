@@ -3,7 +3,7 @@ name: wayfinder
 description: Load before you plan or build any requirement, idea, feature, or design that is not fully specified. Questions the user until both reach shared understanding.
 ---
 
-Interview me rentlessly until we reach shared understanding. Map the topic as a design tree. Each decision branches into more decisions.
+Interview me relentlessly until we reach shared understanding. Map the topic as a design tree. Each decision branches into more decisions.
 
 If a part is too hazy to question yet, name it first. Fan out breadth-first. Ask one shallow question per hazy area. Do not resolve the area yet. List all named areas. Resolve one area at a time. Finish an area before you start the next.
 
