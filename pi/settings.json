@@ -43,10 +43,6 @@
       "git stash *": "ask",
       "git stash list*": "allow",
       "git stash show *": "allow",
-      "python*": "ask",
-      "perl *": "ask",
-      "sed -i*": "ask",
-      "sed * -i*": "ask",
       "git clean *": "ask",
       "HUSKY=0 git *": "ask",
       "git commit *": "ask",
@@ -85,9 +81,7 @@
       }
     }
   },
-  "defaultTools": [
-    "+codemode"
-  ],
+  "defaultTools": ["+codemode"],
   "modelThinkingLevels": {
     "anthropic/claude-opus-5-5": "low",
     "anthropic/claude-haiku-5-5": "medium",
