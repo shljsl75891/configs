@@ -122,12 +122,11 @@ Always runs; no skip. Never drop a finding on your own.
    - **Weak** — cannot prove it; recommend downgrade to ❓.
    - **Wrong** — proof as `path:line` (POLICY drop reasons only).
 3. **Open.** Do not print a findings table anywhere. Ask one `question` whose text gives counts only: by severity (serious 🔴 🟣 🟠, minor 🟡 ❓) and by your recommendation (Keep / Drop / Downgrade). Options: **Accept all recs** (record every recommendation as the decision, go to Apply) and **Review** (continue).
-4. **Serious findings (🔴 🟣 🟠).** Use the `question` tool, about 5 findings per call, in severity order. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
-5. **Minor findings (🟡 ❓), in bulk.** One `question` tab per up to 10 findings, `multiple: true`; several tabs per call. Question text: "Tick each finding to DROP. Unticked findings are kept. To edit or downgrade one, type its number and the change." One option per finding, Drop recommendations first: label `<n>. <3-5 word title>`; description `path:line`, the issue in one sentence, and `Rec: <Keep|Drop|Downgrade> – <reason>`. Ticked = Drop, unticked = Keep, free text overrides.
-   - After each `question` call (steps 3-5), parse the answers at once to `{id: "Keep"|"Drop"|"Downgrade"|"<free text>"}`. Merge them into `$STATE_DIR/triage-decisions.json` with `tools.write` before the next call.
+4. **Findings.** Use the `question` tool, about 5 findings per call, ordered 🔴 🟣 🟠 🟡 ❓. One tab per finding, containing: file and line (range if `start_line`), lens (and `merged_from` if present), ±3 lines of code from the worktree, full comment body, your challenge with evidence and any extra context. Options: **Keep**, **Drop**, **Downgrade to ❓**; mark your verdict `[rec]`. The human edits via free text.
+   - After each `question` call (steps 3-4), parse the answers at once to `{id: "Keep"|"Drop"|"Downgrade"|"<free text>"}`. Merge them into `$STATE_DIR/triage-decisions.json` with `tools.write` before the next call.
    - Never keep raw answers in codemode `store()`. It has a 256KB limit, and a failed save loses the human's answers.
    - On a re-run, read `triage-decisions.json` and ask only about ids that are not in it.
-6. **Apply.** Build the result from `triage-decisions.json` only. Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
+5. **Apply.** Build the result from `triage-decisions.json` only. Edits and downgrades rewrite `body` in `merged-findings.json` (a downgraded body uses the ❓ format, no Fix block). Write kept ids, one per line, to `$STATE_DIR/approved-ids.txt`. An unanswered finding is kept.
 
 ### 8. Post
 
