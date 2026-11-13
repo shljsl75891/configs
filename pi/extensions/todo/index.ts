@@ -41,7 +41,7 @@ const DESCRIPTION =
 	"Use this tool for EVERY task that changes anything, including one-step tasks. " +
 	"Write the list before your first action. Set an item to in_progress before you start it. Keep only one item in_progress. " +
 	"Mark an item completed right after you finish it. Do not batch updates. Add new steps when you find them. " +
-	"Do not end your turn with pending or in_progress items, unless you wait for the user. Cancel items that you will not do. " +
+	"Before your final answer, call this tool to mark the last item completed, in the same response. Do not end your turn with pending or in_progress items, unless you wait for the user. Cancel items that you will not do. " +
 	"Edit, write, and file-changing bash commands are blocked while no item is in_progress.";
 
 export default function todo(pi: ExtensionAPI): void {
