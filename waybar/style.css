@@ -118,12 +118,20 @@ window#waybar {
 
 /* ── Tooltip ─────────────────────────────────────────────────────────────── */
 
-tooltip {
-  background: rgba(29, 32, 33, 0.9);
+tooltip.background {
+  background: #3c3836;
+  border: 1px solid #504945;
   border-radius: 8px;
   color: #ebdbb2;
 }
 
+tooltip.background > *,
+tooltip decoration {
+  background: transparent;
+  border-radius: 8px;
+}
+
 tooltip label {
   color: #ebdbb2;
+  padding: 4px 6px;
 }
