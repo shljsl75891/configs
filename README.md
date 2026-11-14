@@ -4,12 +4,6 @@
 git clone --recurse-submodules https://github.com/shljsl75891/configs.git
 ```
 
-> **History note:** this machine ran Sway, moved to awesome/X11 because of a touchpad/cursor
-> stutter (root cause partly fixed by an I²C runtime-PM udev rule,
-> `/etc/udev/rules.d/90-i2c-no-runtime-pm.rules`), then came back to Sway because the stutter
-> also happened on X11. If you see `WLR_DRM_NO_ATOMIC` or `WLR_NO_HARDWARE_CURSORS` anywhere,
-> those were dead-end workarounds from that investigation. Do not reintroduce them.
-
 # Dependencies
 
 ```console
@@ -56,7 +50,6 @@ echo '. ~/.config/sway/env' >> ~/.profile
 swaymsg -t get_outputs
 swaymsg output HDMI-A-1 pos 1920 0
 ```
-
 
 ### Voice Dictation (hyprvoice)
 
@@ -143,8 +136,8 @@ entry point.
 
 ## Screenshots
 
-#### Previous setup (Awesome WM)
+#### Current setup (SwayFX WM)
 
-![](/assets/2025-05-14-06-57-57.png)
+![](/assets/2026-11-14-07-56-30.png)
 
-![](/assets/2025-05-14-06-58-17.png)
+![](/assets/2026-11-14-07-55-56.png)
