@@ -46,7 +46,7 @@ scratchpad_minimize enable
 layer_effects "waybar" blur enable; blur_ignore_transparent enable; corner_radius 10
 layer_effects "notifications" blur enable; blur_ignore_transparent enable; corner_radius 10
 
-for_window [all] opacity 0.90
+for_window [all] opacity 0.85
 for_window [app_id="mpv"] opacity 1, blur disable, dim_inactive 0
 for_window [class="mpv"] opacity 1
 
