@@ -81,7 +81,7 @@ window#waybar {
 #battery { color: #8ec07c; background-image: linear-gradient(rgba(142,192,124,0.18), rgba(142,192,124,0.18)); border: 1px solid rgba(142,192,124,0.45); }
 #custom-date { color: #83a598; background-image: linear-gradient(rgba(131,165,152,0.18), rgba(131,165,152,0.18)); border: 1px solid rgba(131,165,152,0.45); }
 #mpris { color: #83a598; }
-#scratchpad { color: #fe8019; font-size: 15px; padding: 6px 14px; }
+#scratchpad { color: #fe8019; font-size: 15px; padding: 3px 14px; }
 #workspaces,
 #scratchpad,
 #tray { background-image: linear-gradient(rgba(146,131,116,0.18), rgba(146,131,116,0.18)); border: 1px solid rgba(146,131,116,0.45); }
