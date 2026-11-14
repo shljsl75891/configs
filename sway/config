@@ -41,7 +41,7 @@ smart_corner_radius enable
 default_dim_inactive 0.25
 dim_inactive_colors.unfocused #000000FF
 
-animation_duration_ms 0
+animation_duration_ms 150
 
 layer_effects "waybar" blur enable; blur_ignore_transparent enable; corner_radius 10
 layer_effects "notifications" blur enable; blur_ignore_transparent enable; corner_radius 10
