@@ -39,6 +39,7 @@ const DESCRIPTION =
 	"Keep the todo list for the current task. Each call replaces the whole list. " +
 	"Statuses: pending, in_progress, completed, cancelled. " +
 	"Use this tool for EVERY task that changes anything, including one-step tasks. " +
+	"A new user message that asks for any change is a new task, also a short follow-up after a completed list. " +
 	"Write the list before your first action. Set an item to in_progress before you start it. Keep only one item in_progress. " +
 	"Mark an item completed right after you finish it. Do not batch updates. Add new steps when you find them. " +
 	"Before your final answer, call this tool to mark the last item completed, in the same response. Do not end your turn with pending or in_progress items, unless you wait for the user. Cancel items that you will not do. " +
