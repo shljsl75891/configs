@@ -17,9 +17,9 @@ exec mako
 exec waybar
 
 # ─── Look & feel ──────────────────────────────────────────────────────────────
-default_border pixel 2
-gaps inner 4
-gaps outer 4
+default_border none
+gaps inner 6
+gaps outer 8
 font pango:NotoSans Nerd Font 10
 
 client.focused          #FE8019 #FE8019 #1D2021 #FE8019
@@ -27,9 +27,27 @@ client.focused_inactive #1A1B26 #1A1B26 #D4BE98 #1A1B26
 client.unfocused        #1A1B26 #1A1B26 #D4BE98 #1A1B26
 client.urgent           #9D0006 #9D0006 #D4BE98 #9D0006
 
-# Sway has no blur or rounded corners, so only opacity is kept from picom.
-for_window [all] opacity 0.95
-for_window [app_id="mpv"] opacity 1
+# swayfx effects (needs the swayfx build, see sway/swayfx-build)
+blur enable
+blur_passes 2
+blur_radius 5
+blur_noise 0.02
+blur_brightness 0.9
+blur_xray disable
+
+corner_radius 8
+smart_corner_radius enable
+
+default_dim_inactive 0.25
+dim_inactive_colors.unfocused #000000FF
+
+scratchpad_minimize enable
+
+layer_effects "waybar" blur enable; blur_ignore_transparent enable; corner_radius 10
+layer_effects "notifications" blur enable; blur_ignore_transparent enable; corner_radius 10
+
+for_window [all] opacity 0.90
+for_window [app_id="mpv"] opacity 1, blur disable, dim_inactive 0
 for_window [class="mpv"] opacity 1
 
 seat seat0 xcursor_theme Bibata-Modern-Classic 20

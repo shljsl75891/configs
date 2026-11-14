@@ -1,7 +1,6 @@
-/* Waybar style — V7 island layout, gruvbox-dark palette
+/* Waybar style — floating pills, gruvbox-dark palette
  *
- *  bg  = #1D2021   module background
- *  fg  = #ebdbb2   primary text
+ *  pill = rgba(29,32,33,0.75)   fg = #ebdbb2   accent = #fe8019
  */
 
 * {
@@ -14,41 +13,56 @@
   margin: 0;
 }
 
-/* ── Bar ──────────────────────────────────────────────────────────────────── */
-
 window#waybar {
   background: transparent;
   color: #ebdbb2;
 }
 
-window#waybar.empty #window {
-  background: transparent;
-  color: transparent;
-  padding: 0;
-  margin: 0;
+/* ── Pills ───────────────────────────────────────────────────────────────── */
+
+#workspaces,
+#scratchpad,
+#custom-date,
+#custom-punch,
+#cpu,
+#memory,
+#backlight,
+#pulseaudio,
+#battery,
+#tray,
+#mpris {
+  background: rgba(29, 32, 33, 0.75);
+  color: #ebdbb2;
+  border-radius: 10px;
+  padding: 6px 12px;
+  margin: 0 3px;
 }
 
 /* ── Workspaces ──────────────────────────────────────────────────────────── */
 
 #workspaces {
-  background: #928374;
-  border-radius: 4px;
-  padding: 0;
-  margin: 6px 2px 0 8px;
-  opacity: 0.8;
+  padding: 3px 4px;
 }
 
 #workspaces button {
-  padding: 0;
-  color: #1d2021;
+  color: #928374;
   background: transparent;
-  border-radius: 0;
+  border-radius: 8px;
+  min-width: 0;
+  padding: 2px 10px;
+  margin: 0;
+  font-size: 12px;
   transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+  background: rgba(235, 219, 178, 0.12);
+  color: #ebdbb2;
 }
 
 #workspaces button.focused,
 #workspaces button.active {
-  background: #689d6a;
+  background: #fe8019;
   color: #1d2021;
 }
 
@@ -57,196 +71,59 @@ window#waybar.empty #window {
   color: #ebdbb2;
 }
 
-#workspaces button:first-child {
-  border-radius: 4px 0 0 4px;
-}
+/* ── Module colors ───────────────────────────────────────────────────────── */
 
-#workspaces button:last-child {
-  border-radius: 0 4px 4px 0;
-}
+/* tint = accent @0.18 over dark base; border = accent @0.45 */
+#cpu { color: #fb4934; background-image: linear-gradient(rgba(251,73,52,0.18), rgba(251,73,52,0.18)); border: 1px solid rgba(251,73,52,0.45); }
+#memory { color: #fe8019; background-image: linear-gradient(rgba(254,128,25,0.18), rgba(254,128,25,0.18)); border: 1px solid rgba(254,128,25,0.45); }
+#backlight { color: #fabd2f; background-image: linear-gradient(rgba(250,189,47,0.18), rgba(250,189,47,0.18)); border: 1px solid rgba(250,189,47,0.45); }
+#pulseaudio { color: #b8bb26; background-image: linear-gradient(rgba(184,187,38,0.18), rgba(184,187,38,0.18)); border: 1px solid rgba(184,187,38,0.45); }
+#battery { color: #8ec07c; background-image: linear-gradient(rgba(142,192,124,0.18), rgba(142,192,124,0.18)); border: 1px solid rgba(142,192,124,0.45); }
+#custom-date { color: #83a598; background-image: linear-gradient(rgba(131,165,152,0.18), rgba(131,165,152,0.18)); border: 1px solid rgba(131,165,152,0.45); }
+#mpris { color: #83a598; }
+#scratchpad { color: #fe8019; font-size: 15px; padding: 6px 14px; }
+#workspaces,
+#scratchpad,
+#tray { background-image: linear-gradient(rgba(146,131,116,0.18), rgba(146,131,116,0.18)); border: 1px solid rgba(146,131,116,0.45); }
 
-#workspaces button:hover {
-  background: #1d2021;
-  color: #ebdbb2;
-  transition: all 0.2s ease;
-}
+#pulseaudio.muted { color: #928374; }
 
-/* ── Clock (shared layout) ───────────────────────────────────────────────── */
-
-#custom-date,
-#mpris {
-  color: #1d2021;
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin: 6px 2px 0;
-  opacity: 0.8;
-}
-
-/* ── Right-side modules — continuous connected strip ─────────────────────── */
-
-#cpu,
-#memory,
-#backlight,
-#pulseaudio,
-#battery,
-#tray {
-  color: #1d2021;
-  border-radius: 0;
-  padding: 4px 3px;
-  margin: 6px 0 0;
-  opacity: 0.8;
-}
-
-/* ── Per-module colors (Gruvbox Dark Hard, bright variants) ───────────────── */
-
-#cpu {
-  background: #fb4934;
-} /* red    */
-#memory {
-  background: #fe8019;
-} /* orange */
-#backlight {
-  background: #fabd2f;
-} /* yellow */
-#pulseaudio {
-  background: #b8bb26;
-} /* green  */
-#battery {
-  background: #8ec07c;
-} /* aqua   */
-#tray {
-  background: #1d2021;
-  color: #ebdbb2;
-}
-#mpris {
-  background: #83a598;
-} /* blue   */
-#custom-date {
-  background: #8ec07c;
-}
-
-/* ── Arrows between right-side modules ───────────────────────────────────── */
-/* color = left-module bg (triangle fill), background = right-module bg      */
-
-#custom-arr0,
-#custom-arr1,
-#custom-arr2,
-#custom-arr3,
-#custom-arr4,
-#custom-arr6 {
-  font-size: 20px;
-  padding: 0;
-  margin: 6px 0 0;
-  border-radius: 0;
-  opacity: 0.8;
-}
-
-/* ◀ rule: color = RIGHT module bg (triangle fill), background = LEFT side  */
-#custom-arr0 {
-  color: #fb4934;
-  background: transparent;
-  border-radius: 4px 0 0 4px;
-} /* entry → red   */
-#custom-arr1 {
-  color: #fe8019;
-  background: #fb4934;
-} /* red    → orange  */
-#custom-arr2 {
+#battery.charging,
+#battery.plugged {
   color: #fabd2f;
-  background: #fe8019;
-} /* orange → yellow  */
-#custom-arr3 {
-  color: #b8bb26;
-  background: #fabd2f;
-} /* yellow → green   */
-#custom-arr4 {
-  color: #8ec07c;
-  background: #b8bb26;
-} /* green  → aqua    */
-#custom-arr6 {
-  color: #1d2021;
-  background: #8ec07c;
-} /* aqua   → dark    */
-
-/* ── Clock (center) ───────────────────────────────────────────────────────── */
-
-#custom-date {
-  padding: 4px 10px;
-  margin: 6px 0 0;
+  background-image: linear-gradient(rgba(250,189,47,0.18), rgba(250,189,47,0.18));
+  border: 1px solid rgba(250,189,47,0.45);
 }
 
-/* ── Battery states ───────────────────────────────────────────────────────── */
-
-#battery.warning {
-  background: #8ec07c;
-  color: #1d2021;
-}
-
+#battery.warning { color: #fabd2f; }
 #battery.critical {
-  background: #8ec07c;
-  color: #1d2021;
+  color: #fb4934;
   animation: blink 0.5s linear infinite;
 }
 
-/* ── Pulseaudio muted ─────────────────────────────────────────────────────── */
-
-#pulseaudio.muted {
-  color: #1d2021;
-}
-
-/* ── Tray ─────────────────────────────────────────────────────────────────── */
-
-#tray {
-  padding: 4px 3px;
-  border-radius: 0 4px 4px 0;
-  margin-right: 8px;
-}
-
-#custom-punch {
-  padding: 4px 8px;
-  margin: 6px 2px 0 6px;
-  border-radius: 4px;
-  opacity: 0.8;
-  color: #1d2021;
-}
-#custom-punch.none { background: #9d0006; color: #ebdbb2; }
-#custom-punch.in { background: #fe8019; }
-#custom-punch.out { background: #fabd2f; }
+#custom-punch.none { background: #cc241d; color: #ebdbb2; }
+#custom-punch.in { color: #fe8019; background-image: linear-gradient(rgba(254,128,25,0.18), rgba(254,128,25,0.18)); border: 1px solid rgba(254,128,25,0.45); }
+#custom-punch.out { color: #fabd2f; background-image: linear-gradient(rgba(250,189,47,0.18), rgba(250,189,47,0.18)); border: 1px solid rgba(250,189,47,0.45); }
 
 #tray > .needs-attention {
   background: #fb4934;
+  border-radius: 8px;
 }
-
-/* ── mpris ────────────────────────────────────────────────────────────────── */
-
-#mpris {
-  padding: 4px 12px;
-}
-
-/* ── Blink animation ──────────────────────────────────────────────────────── */
 
 @keyframes blink {
   to {
-    color: #fb4934;
+    color: #ebdbb2;
   }
 }
 
-/* ── Tooltip ──────────────────────────────────────────────────────────────── */
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
 
 tooltip {
-  background: #1d2021;
-  border-radius: 4px;
+  background: rgba(29, 32, 33, 0.9);
+  border-radius: 8px;
   color: #ebdbb2;
 }
 
 tooltip label {
   color: #ebdbb2;
-}
-
-#scratchpad {
-  background: #fe8019;
-  color: #1d2021;
-  border-radius: 4px;
-  padding: 0 8px;
-  margin: 6px 2px 0 2px;
 }
