@@ -212,6 +212,10 @@ for_window [app_id="^Zoom Workplace$" title="^(zoom|Zoom|About)$"] floating enab
 for_window [title="^(zoom_linux_float_video_window|as_toolbar)$"] floating enable, sticky enable, border none
 for_window [title="^Microsoft Teams Notification$"] floating enable, sticky enable
 no_focus [title="^Microsoft Teams Notification$"]
+
+## Workspace assignment
+assign [class="(?i)^bruno$"] workspace number 9
+assign [app_id="(?i)^bruno$"] workspace number 9
 for_window [title="^Slack \| mini panel$"] floating enable, sticky enable
 for_window [app_id="^discord$" title="^Discord Updater$"] floating enable, border none, move position center
 no_focus [app_id="^discord$" title="^Discord Updater$"]
