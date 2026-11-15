@@ -21,7 +21,7 @@ User asked for a **retrospective**. Goal: suggest changes to the agent **environ
 
 - **Navigation**: slow search for files or facts. Fix: a pointer in `AGENTS.md` or a doc. _Use when_ the session spent many calls finding something.
 - **Automated checks**: a lint, type, test, or hook would catch the agent's mistake. Read the repo's own check scripts and CI first. An unwired or broken check is the finding. No guardrail at all is a finding.
-- **Coding standards**: classify the miss. **Mechanical** (fixed pattern, banned API, import shape): build a deterministic check. **Judgement** (consistency, style): add or clarify a rule in `agents/code-reviewer.md`.
+- **Coding standards**: classify the miss. **Mechanical** (fixed pattern, banned API, import shape): build a deterministic check. **Judgement** (consistency, style): add or clarify a rule in a `skills/code-review/lenses/` file.
 - **Steering size**: `AGENTS.md`, `SYSTEM.md`, or skill descriptions are large. Move rules to reviewer rules or checks.
 - **Tool economy**: expensive calls, big reads, repeated calls, missed subagent use, token-heavy tools or MCP.
 - **No-ops**: steering lines that did not change behavior.
@@ -42,7 +42,7 @@ User actions on drafted comments are the main evidence. Each maps to a `pr-revie
 
 - Implementation agent has high context pressure: exploring, coding, debugging. Reviewer agent gets a diff, so pressure is low. Put standards in the reviewer, not the implementer.
 - `AGENTS.md`: always in context. Keep to navigation pointers.
-- `agents/code-reviewer.md`: judgement rules, read at review.
+- `skills/code-review/lenses/*.md`: judgement rules, read at review.
 - Skills: docs (description is always in context) or user commands.
 - Prefer a deterministic check over a written rule.
 - Pi docs: load `extend-pi` skill.

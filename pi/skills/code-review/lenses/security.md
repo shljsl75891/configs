@@ -24,6 +24,7 @@ Goal: find anything that lets an attacker, a bad input, or a leaked secret cause
 - **Angular / frontend** — `bypassSecurityTrust*`, `innerHTML`/`[innerHTML]` with dynamic data, `document.write`, `target=_blank` without `noopener`, tokens in `localStorage`, secrets in the bundle/environment files, `postMessage` without origin check.
 - **Supply chain** — new or bumped dependency (name typo-squat risk, unmaintained, install scripts), lockfile changes that do not match `package.json`, `git`/URL dependencies, unpinned versions.
 - **CI / infra / config** — GitHub Actions: `${{ github.event.* }}`/`head_ref` interpolated in `run:`, `pull_request_target` with checkout of PR code, `permissions` broader than needed, unpinned third-party actions, secrets echoed. Dockerfile: runs as root, `latest` tag, secrets in layers/ARG, `ADD` of remote URL. IaC/config: public bucket, `0.0.0.0/0`, wildcard IAM, debug flags on, default credentials.
+- **Hardening (OWASP A04/A05/A09)** — insecure default (fail-open auth, debug on, permissive config); missing rate limit on login/reset/expensive routes; no lockout or throttle on credential checks; security-relevant event not logged; error path that skips cleanup of a secret or session; dependency with a known CVE (cite advisory if you can).
 - **Logging/audit** — a security-relevant action (auth change, permission change, money movement, deletion) with no audit trail.
 
 ## Output

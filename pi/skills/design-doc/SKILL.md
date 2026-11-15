@@ -1,5 +1,5 @@
 ---
-name: tdd-crafter
+name: design-doc
 description: |
   Writes a Technical Design Document (TDD), a design doc (not test-driven
   development). Always asks first for a template or a reference TDD. Makes a

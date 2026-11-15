@@ -53,7 +53,7 @@ One concept, one word — in code, tests, comments, and commits.
 
 ## Testing
 
-Test Driven Development is the default workflow. Follow it unless the user explicitly opts out.
+Test Driven Development is the default workflow. Follow it unless the user explicitly opts out. Test only at the seams agreed in `SPEC.md`. Do not refactor inside the red/green loop; refactor at review.
 
 #### Good vs Bad Tests
 
@@ -84,7 +84,7 @@ Accept dependencies, don't create them. Return results, don't produce side effec
 
 **Deep module = small interface + lots of implementation.** Hide complexity inside; expose minimal surface.
 
-Avoid shallow modules that just pass through. When designing interfaces ask:
+Avoid shallow modules that just pass through. Deletion test: if deleting a module makes its complexity vanish, it was a pass-through. One adapter is a guess at a seam; two make it real. When designing interfaces ask:
 
 - Can I reduce the number of methods?
 - Can I simplify the parameters?
@@ -135,9 +135,23 @@ RIGHT (vertical):
 
 Bulk tests guess at behavior before you understand the implementation — they test _shape_, not behavior.
 
+## Slice Gate
+
+Build one task as one vertical slice. After each slice, run the tests, mark its todo done, then start the next. Do not start a slice on a red test run.
+
+## Debug Loop
+
+Build a fast loop that shows the bug first. Do not guess-fix. Follow [DEBUG.md](DEBUG.md).
+
+See [RED-FLAGS.md](RED-FLAGS.md) when you feel like skipping a test or a step.
+
+## Review Hand-Off
+
+After the last todo, load the `code-review` skill and run it on the diff with the `general` agent. Fix findings or report them.
+
 ## Pre-Finish Self-Audit
 
-Before declaring a task done, re-scan the diff once for over-engineering and remove them:
+Before declaring a task done, read `SPEC.md` in the ticket's `.pi/specs/` directory if it exists and check every constraint and Developer AC item. Then re-scan the diff once for over-engineering and remove them:
 
 - Any abstraction with only one call site? or any parameter/flag with only one use?
 - Any code path added "for later" that no test or requirement needs?

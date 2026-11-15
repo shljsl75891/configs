@@ -60,7 +60,7 @@ In codemode, load state JSON with `tools.bash` (`cat` or `jq`), not `tools.read`
 
 ### 4. Lens runs
 
-Read each lens file, relative to this skill's own directory: `lenses/correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`. For each group `$g`, spawn 6 tasks as parallel `subagent` calls (`agent: code-reviewer`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8), one per lens. Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
+Load the `code-review` skill. Read each lens file in its `lenses/` directory: `correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`, `simplification.md`, `performance.md`, and `clean-code-ts.md` only if the PR has TS/JS files. For each group `$g`, spawn one task per lens as parallel `subagent` calls (`agent: general`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8; use more calls if needed). Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
 
 ```
 MODE: PR_LENS_REVIEW
@@ -82,13 +82,13 @@ A multi-line finding also sets "start_line" (same side). Number ids in sequence 
 RECALL MANDATE: Assume this diff contains bugs. The human triages every finding before posting, so a missed bug costs more than a noisy comment. List EVERY finding; do not stop at the first. Apply no confidence, nit, style, or "will the author agree" filter. Read outside the diff freely (callers, callees, siblings, config, tests). Flag pre-existing issues on diff lines as ❓. A high-impact issue you cannot prove is a ❓, never dropped. Do not read the PR title or description.
 
 Follow this method:
-<paste the full content of lenses/<lens>.md here>
+<paste the full content of the code-review skill's lenses/<lens>.md here>
 
 Comment format (write the finding's "body" field exactly in this shape):
 <paste the COMMENT FORMAT section below here>
 ```
 
-(One task per lens name — `correctness`, `conformance`, `necessity`, `security`, `reliability`, `tests` — each writing its own `$g-<lens>.jsonl`.)
+(One task per lens name — `correctness`, `conformance`, `necessity`, `security`, `reliability`, `tests`, `simplification`, `performance`, `clean-code-ts` — each writing its own `$g-<lens>.jsonl`.)
 
 ### 5. Retry a crashed lens or a coverage gap
 

@@ -22,7 +22,7 @@ You are in plan mode: read-only exploration and planning.
 
 const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
 const BUILD_SWITCH_REMINDER = `[PLAN MODE OFF]
-The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed.`;
+The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed. Load the plan tasks into the todo tool, then follow conscious-coder.`;
 
 const PLAN_SWITCH_TYPE = "plan-mode-plan-switch";
 const PLAN_SWITCH_REMINDER = `[PLAN MODE ON] The user just turned plan mode on. Follow the plan-mode instructions in the system prompt.`;
