@@ -1,6 +1,8 @@
 return {
 	{
-		"samir-roy/code-bridge.nvim",
+		-- until https://github.com/samir-roy/code-bridge.nvim/pull/20 is merged
+		dir = vim.fn.expand("~/personal/code-bridge.nvim"),
+		name = "code-bridge.nvim",
 		cmd = {
 			"CodeBridgeTmux",
 			"CodeBridgeResumePrompt",
@@ -83,6 +85,7 @@ return {
 			},
 			chat = {
 				model = "anthropic/claude-haiku-5-5",
+				pi_no_session = true,
 			},
 		},
 	},
