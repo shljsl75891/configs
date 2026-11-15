@@ -15,7 +15,7 @@ Goal: find code that fails without anyone knowing, hangs, leaks, or amplifies an
 - **Swallowed errors** — empty `catch`; `catch` that only logs then continues; catch-all that hides unrelated error types; error converted to `null`/`undefined`/`[]`/`false`/default; `?.` or `??` that silently skips a failing operation; original `cause` lost on rethrow; error message with no operation, id, or next step.
 - **Fail-open** — on error the code allows, skips validation, or uses a mock/stub/fallback value outside tests.
 - **Promises** — floating promise (no `await`/`.catch`/`void`); `arr.forEach(async …)`; promise used in `if`; `return promise` inside `try` without `await` (catch never runs); `Promise.all` where one rejection orphans the rest; unhandled rejection in event handlers/timers.
-- **Timeouts** — HTTP/DB/RPC/queue call with no timeout (`fetch` has none; use `AbortSignal.timeout`); callee timeout larger than the caller's.
+- **Timeouts** — HTTP/DB/RPC/queue call with no timeout (`fetch` has no total timeout; Node's undici only has a long header/body default of about 5 minutes; use `AbortSignal.timeout`); callee timeout larger than the caller's.
 - **Retries** — retry of a non-idempotent call; no cap, no backoff/jitter; retries stacked across layers; retries that exhaust silently.
 - **Queues / events** — ack before work completes; no poison-message cap or DLQ; handler not safe to run twice; ordering assumed; DB write plus event publish as two steps with no outbox/transaction.
 - **Cleanup / leaks** — connection, transaction, file handle, stream, timer, listener, lock opened without `finally`/`using`; transaction not rolled back on error; unbounded `Map`/cache/array growth; event listeners added per call.

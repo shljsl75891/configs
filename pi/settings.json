@@ -53,6 +53,10 @@
       "docker volume rm *": "ask"
     },
     "plan": {
+      "write": {
+        "*/.pi/specs/*": "allow",
+        ".pi/specs/*": "allow"
+      },
       "bash": {
         "> *": "deny",
         "rm *": "deny",

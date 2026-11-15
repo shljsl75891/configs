@@ -7,7 +7,23 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
-import { type Action, type Rules, decideBash, matchRule } from "./match.ts";
+import { type Action, type Rules, decideBash, matchRule, pathSubjects, strictest } from "./match.ts";
+
+describe("plan write rules (settings.json)", () => {
+  const settings = JSON.parse(readFileSync(new URL("../../settings.json", import.meta.url), "utf8"));
+  // Same merge as planConfig: write defaults to deny, settings rules override.
+  const rules: Rules = { "*": "deny", ...settings.permission.plan.write };
+  const decide = (p: string) =>
+    strictest(pathSubjects(p, "/proj", "/home/u").map((s) => matchRule(rules, s, "/home/u") ?? "deny"));
+  const cases: [string, Action][] = [
+    [".pi/specs/ABC-1/SPEC.md", "allow"],
+    ["/proj/.pi/specs/ABC-1/SPEC.md", "allow"],
+    ["src/a.ts", "deny"],
+    [".pi/specs/../../src/a.ts", "deny"],
+    ["/proj/.pi/mcp-servers.json", "deny"],
+  ];
+  for (const [p, want] of cases) it(p, () => assert.equal(decide(p), want));
+});
 
 describe("plan rules (settings.json)", () => {
   const settings = JSON.parse(readFileSync(new URL("../../settings.json", import.meta.url), "utf8"));

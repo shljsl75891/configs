@@ -18,7 +18,9 @@ OUT_DIR="$STATE_DIR/out"
 [ -d "$STATE_DIR" ] || { echo "ERROR: no state dir for $REPO#$PR_NUM — run prepare.sh first." >&2; exit 1; }
 
 PR_GROUPS=$(cut -f2 "$STATE_DIR/file-groups.tsv" | LC_ALL=C sort -u)
-LENSES="correctness conformance necessity security reliability tests"
+LENSES="correctness conformance necessity security reliability tests simplification performance"
+# clean-code-ts runs only on TS/JS PRs, so its file may be absent; read it when present.
+OPTIONAL_LENSES="clean-code-ts"
 
 echo "== Missing lens output =="
 MISSING=0
@@ -36,7 +38,7 @@ done
 echo "== File coverage (files assigned to a lens vs files it reported reading) =="
 : > "$STATE_DIR/all-findings.jsonl"
 for g in $PR_GROUPS; do
-  for lens in $LENSES; do
+  for lens in $LENSES $OPTIONAL_LENSES; do
     f="$OUT_DIR/$g-$lens.jsonl"
     [ -f "$f" ] || continue
     untyped=$(jq -c 'select(.type != "file" and .type != "finding")' "$f" 2>/dev/null | wc -l)

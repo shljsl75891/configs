@@ -14,10 +14,10 @@ Goal: find avoidable cost. Measure or reason from the code; do not guess micro-g
 - **Recompute** — same value computed in a loop or render; move out or memoize.
 - **Iteration** — repeated passes over one collection; wrong data structure (array `find` in a loop where a `Map` fits).
 - **N+1** — a query or call per item in a loop.
-- **Async** — sequential `await` that can use `Promise.all`; missing timeout via `Promise.race`; unbounded parallelism.
+- **Async** — sequential `await` that can use `Promise.all`; missing timeout or cancellation (`Promise.race` does not cancel the losing work; use `AbortSignal.timeout`); unbounded parallelism.
 - **Leaks** — missing cleanup of subscriptions, listeners, timers, effects, streams; growing caches.
 - **Payload** — fetching or returning more data than used; no pagination; large bundle import where a small one fits.
-- **Frontend** — change detection or re-render storms, missing `trackBy`/keys, layout thrash.
+- **Frontend** — change detection or re-render storms, missing `track`/`trackBy`/keys, layout thrash.
 - **Constraints** — any performance limit in `SPEC.md` that the change breaks.
 
 ## Output

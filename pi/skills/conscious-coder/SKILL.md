@@ -1,6 +1,6 @@
 ---
 name: conscious-coder
-description: Load before you design a solution, select a library or dependency, or write, edit, or review code. Also load immediately after plan approval like "Go Ahead".
+description: Load before you design a solution, select a library or dependency, or write or edit code. Also load immediately after plan approval like "Go Ahead".
 ---
 
 ## The Ladder
@@ -53,7 +53,9 @@ One concept, one word — in code, tests, comments, and commits.
 
 ## Testing
 
-Test Driven Development is the default workflow. Follow it unless the user explicitly opts out. Test only at the seams agreed in `SPEC.md`. Do not refactor inside the red/green loop; refactor at review.
+Test Driven Development is the default workflow. Follow it unless the user explicitly opts out. If `SPEC.md` exists in the ticket's `.pi/specs/` directory, test only at the seams it lists. Otherwise pick the highest existing seam and confirm it with the user. Do not refactor inside the red/green loop; refactor at review.
+
+Cadence: run the typecheck and the single test you work on often. Run the full suite once per slice. Write only enough code to pass the current test.
 
 #### Good vs Bad Tests
 
@@ -73,6 +75,13 @@ test("checkout calls paymentService.process", async () => {
 ```
 
 Red flags: mocking internal collaborators, testing private methods, verifying via DB queries instead of the interface.
+
+#### Writing Tests
+
+- The public interface is the test surface. Replace old tests that cover the same behavior; do not layer new ones on top.
+- A test name says WHAT the behavior is, not how the code works.
+- One logical assertion per test.
+- Do not assert call counts.
 
 #### Testability
 
@@ -137,7 +146,7 @@ Bulk tests guess at behavior before you understand the implementation — they t
 
 ## Slice Gate
 
-Build one task as one vertical slice. After each slice, run the tests, mark its todo done, then start the next. Do not start a slice on a red test run.
+Build one task as one vertical slice. Before you start a slice, the previous slice must have a green test run. After each slice, run the tests, mark its todo done, then start the next. A red test inside the slice (the RED step) is fine.
 
 ## Debug Loop
 
@@ -147,7 +156,7 @@ See [RED-FLAGS.md](RED-FLAGS.md) when you feel like skipping a test or a step.
 
 ## Review Hand-Off
 
-After the last todo, load the `code-review` skill and run it on the diff with the `general` agent. Fix findings or report them.
+After the last todo, load the `code-review` skill in this session and follow it. It launches the lens subagents. Fix findings or report them.
 
 ## Pre-Finish Self-Audit
 

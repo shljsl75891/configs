@@ -60,7 +60,7 @@ In codemode, load state JSON with `tools.bash` (`cat` or `jq`), not `tools.read`
 
 ### 4. Lens runs
 
-Load the `code-review` skill. Read each lens file in its `lenses/` directory: `correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`, `simplification.md`, `performance.md`, and `clean-code-ts.md` only if the PR has TS/JS files. For each group `$g`, spawn one task per lens as parallel `subagent` calls (`agent: general`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 8; use more calls if needed). Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
+Load the `code-review` skill. Read each lens file in its `lenses/` directory: `correctness.md`, `conformance.md`, `necessity.md`, `security.md`, `reliability.md`, `tests.md`, `simplification.md`, `performance.md`, and `clean-code-ts.md` only if the PR has TS/JS files. For each group `$g`, spawn one task per lens as parallel `subagent` calls (`agent: general`, `timeoutMs: 3600000` — the tool's max), all in one call (the tool's limit is 12; use more calls if needed). Substitute real values for every `$VAR` below before sending the task — it becomes the subagent's task string verbatim, and a subagent starts a brand-new process with no access to your shell variables. Each task:
 
 ```
 MODE: PR_LENS_REVIEW
@@ -238,7 +238,7 @@ Preconditions → prepare.sh (detached worktree @HEAD_SHA, local diff, hunks, gr
 ↓
 Context (house rules + AC from caller)
 ↓
-correctness + conformance + necessity + security + reliability + tests, per group, in parallel (2 batches) — each decides proven vs. ❓ itself
+correctness + conformance + necessity + security + reliability + tests + simplification + performance (+ clean-code-ts for TS/JS), per group, in parallel (batches of up to 12) — each decides proven vs. ❓ itself
 ↓
 post.sh --dry-run → retry, once, any lens with no output or with a file-coverage gap (gap files only)
 ↓
