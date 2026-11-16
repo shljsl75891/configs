@@ -186,6 +186,7 @@ for_window [app_id="^xdg-desktop-portal-gtk$"] floating enable, resize set 900 6
 
 ## Browsers: PiP + screen-share bars (Chrome/Brave/Firefox)
 for_window [title="(?i)^Picture[ -]in[ -]Picture$"] floating enable, sticky enable, resize set 480 270, move position 75 ppt 70 ppt
+for_window [app_id="^brave-origin$" title="^Meet - [a-z]+-[a-z]+-[a-z]+$"] floating enable, sticky enable, resize set 320 550, move position 83 ppt 47 ppt
 for_window [title="^.+ is sharing (your screen|a window|a \w+ tab)( and audio)?\.$"] floating enable, sticky enable, border none, move position 35 ppt 94 ppt
 for_window [title="^(Firefox|Firefox Developer Edition|Firefox Nightly|LibreWolf) (—|-) Sharing Indicator$"] floating enable, sticky enable, border none
 for_window [app_id="^(org\.mozilla\.)?firefox$" title="^(Library|About Mozilla Firefox)$"] floating enable, resize set 900 600, move position center
