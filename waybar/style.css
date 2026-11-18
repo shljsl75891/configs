@@ -97,6 +97,7 @@ window#waybar {
 #workspaces button:nth-child(7n+7) { color: #d3869b; }
 #workspaces button.focused,
 #workspaces button.active { color: #1d2021; }
+#workspaces button.urgent { background: #fb4934; color: #1d2021; }
 
 #pulseaudio.muted { color: #928374; }
 
