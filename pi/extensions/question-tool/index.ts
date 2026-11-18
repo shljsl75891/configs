@@ -16,7 +16,7 @@ const OptionSchema = Type.Object({
 });
 
 const QuestionSchema = Type.Object({
-	question: Type.String({ description: "Self-contained question text. First give the background (what is being worked on, why the decision is needed, relevant file or term names explained). Then ask one clear question. The user has not seen your reasoning and may have no context. Write in Simplified Technical English (ASD-STE100): short sentences, simple words, active voice." }),
+	question: Type.String({ description: "Self-contained question text. First give the background (what is being worked on, why the decision is needed, relevant file or term names explained). Then ask one clear question. The user has not seen your reasoning and may have no context. Write in Simplified Technical English (ASD-STE100): short sentences, simple words, active voice. Format for easy reading: put each point on its own line, separate sections with a blank line, and use numbered lists with '- ' sub-bullets. Never write one long paragraph. When a flow, sequence, or structure is easier to see as a picture, add a small ASCII diagram (for example A --> B --> C, or a box or tree layout) on its own lines." }),
 	header: Type.String({ description: "A tab label. Maximum 30 characters." }),
 	options: Type.Array(OptionSchema, { description: "The options." }),
 	multiple: Type.Optional(Type.Boolean({ description: "Set true to allow more than one choice." })),
