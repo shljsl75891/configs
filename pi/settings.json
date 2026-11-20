@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.5.2",
+  "lastChangelogVersion": "1.6.0",
   "theme": "gruvbox-dark-hard",
   "quietStartup": "header",
   "defaultProvider": "anthropic",
@@ -85,7 +85,9 @@
       }
     }
   },
-  "defaultTools": ["+codemode"],
+  "defaultTools": [
+    "+codemode"
+  ],
   "modelThinkingLevels": {
     "anthropic/claude-opus-5-5": "low",
     "anthropic/claude-haiku-5-5": "medium",
