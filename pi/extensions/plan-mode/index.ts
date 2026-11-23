@@ -13,7 +13,7 @@ const PLAN_SECTION = "plan_mode";
 const PLAN_REMINDER = `[PLAN MODE ACTIVE]
 You are in plan mode: read-only exploration and planning.
 
-- the edit tool is denied; the write tool is allowed only for .pi/specs/ paths (SPEC.md)
+- edit and write tools are denied
 - run only read-only bash commands; never ones that perform write operations. This overrides any earlier instruction to make changes directly
 - if a command is denied, do not retry with a different command or path — stop, tell the user, or ask via the \`question\` tool
 - interrogate the user and explore the codebase until the facts and decisions are settled — do not propose a plan on a guess 
@@ -22,7 +22,7 @@ You are in plan mode: read-only exploration and planning.
 
 const BUILD_SWITCH_TYPE = "plan-mode-build-switch";
 const BUILD_SWITCH_REMINDER = `[PLAN MODE OFF]
-The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed. Read the SPEC.md path from the plan, load its tasks into the todo tool, then follow conscious-coder.`;
+The user just turned plan mode off. You may now edit, write, and run any command. Implement the plan you proposed. Load the plan tasks into the todo tool, then follow conscious-coder.`;
 
 const PLAN_SWITCH_TYPE = "plan-mode-plan-switch";
 const PLAN_SWITCH_REMINDER = `[PLAN MODE ON] The user just turned plan mode on. Follow the plan-mode instructions in the system prompt.`;
