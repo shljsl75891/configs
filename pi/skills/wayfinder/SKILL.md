@@ -15,7 +15,7 @@ Do not present a plan until my confirmation that we share understanding and ever
 
 ## Plan
 
-Always present the plan in chat. Works with any issue tracker.
+Always present the plan in chat.
 
 1. If I give a ticket key, fetch it first with the tracker MCP or CLI that the project provides, before you ask questions. If none exists, ask me to paste it. Its acceptance criteria are the product's. Ask only about gaps.
 2. Agree the test seams with me: the public interfaces where tests attach. Prefer an existing seam. Prefer the highest seam that covers the behavior. Use as few seams as you can (ideally one). For each seam, state what it catches and what it misses. Do not plan a test at a seam I did not confirm.
