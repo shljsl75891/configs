@@ -43,7 +43,7 @@ Stop immediately, before any write, if the session is in plan mode — this skil
 
 ### 2. Setup
 
-Run this skill's `scripts/prepare.sh <PR_NUM>`, resolved relative to this skill's own directory (e.g. `bash /path/to/this/skill/scripts/prepare.sh 2720`). It fetches the base and head refs, builds or reuses a detached worktree at `$STATE_DIR/src`, diffs from the merge-base, and writes into `$STATE_DIR` (printed by the script, deterministically `${XDG_CACHE_HOME:-~/.cache}/pr-review/<owner>-<repo>-<PR_NUM>`):
+Run this skill's `scripts/prepare.sh <PR_NUM>`, resolved relative to this skill's own directory (e.g. `bash /path/to/this/skill/scripts/prepare.sh 2720`). It fetches the base and head refs, builds or reuses a detached worktree at `$STATE_DIR/src`, diffs from the merge-base, and writes into `$STATE_DIR` (printed by the script, deterministically `${TMPDIR:-/tmp}/pr-review/<owner>-<repo>-<PR_NUM>`):
 
 - `hunks.tsv` — `path, side, start, end` (1-indexed, inclusive). This is the valid-line table `post.sh` checks against.
 - `files.txt` — every changed file.

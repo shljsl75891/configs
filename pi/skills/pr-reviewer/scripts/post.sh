@@ -11,7 +11,7 @@ DRY_RUN=0
 [ "${2:-}" = "--dry-run" ] && DRY_RUN=1
 
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${TMPDIR:-/tmp}/pr-review/${REPO//\//-}-${PR_NUM}"
 SRC_DIR="$STATE_DIR/src"
 OUT_DIR="$STATE_DIR/out"
 

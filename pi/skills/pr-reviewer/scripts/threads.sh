@@ -14,7 +14,7 @@ PR_NUM="${PR_NUM//[^0-9]/}"   # keep digits only: users may type "#N" or "N,"
 [ -n "$PR_NUM" ] || { echo "ERROR: PR number has no digits: '$2'" >&2; exit 1; }
 
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${TMPDIR:-/tmp}/pr-review/${REPO//\//-}-${PR_NUM}"
 mkdir -p "$STATE_DIR"
 GH_VER=(-H "X-GitHub-Api-Version: 2022-11-28")
 

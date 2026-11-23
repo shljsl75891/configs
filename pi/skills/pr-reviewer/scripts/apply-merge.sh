@@ -8,7 +8,7 @@ set -euo pipefail
 PR_NUM="${1:?usage: apply-merge.sh <pr-number>}"
 PR_NUM="${PR_NUM//[^0-9]/}"
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${TMPDIR:-/tmp}/pr-review/${REPO//\//-}-${PR_NUM}"
 FINDINGS="$STATE_DIR/deduped-findings.json"
 SPEC="$STATE_DIR/merge-spec.json"
 

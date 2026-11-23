@@ -28,7 +28,7 @@ case "$HEAD_SHA" in
   *) echo "ERROR: could not resolve a head SHA for $REPO#$PR_NUM (got '$HEAD_SHA')." >&2; exit 1 ;;
 esac
 
-STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/pr-review/${REPO//\//-}-${PR_NUM}"
+STATE_DIR="${TMPDIR:-/tmp}/pr-review/${REPO//\//-}-${PR_NUM}"
 SRC_DIR="$STATE_DIR/src"
 OUT_DIR="$STATE_DIR/out"
 mkdir -p "$OUT_DIR"
