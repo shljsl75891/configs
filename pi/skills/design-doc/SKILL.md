@@ -66,6 +66,9 @@ Use the section list from step 0 as the skeleton, in order. For each section:
 - Fill it in only if it applies. Drop sections that don't apply — never leave "N/A" as filler. If omitting a section might surprise a reviewer, say why in one line instead of a heading.
 - Write decisions, not steps. "We use Postgres logical replication for X" — not "first we connect, then we query, then we close."
 - Prefer a table over a paragraph for comparisons (trade-offs, options, schema fields).
+- Put a rule with more than two conditions in a decision table: one column for each condition, one for the result. Fill every cell. An empty cell is an open question for the reviewers.
+- Give one worked example with numbers for each rule that depends on dates or amounts.
+- Keep each paragraph under about 80 words. Split a longer one, or turn it into a list or a table.
 - Keep one section == one idea. Don't blend architecture and testing in the same paragraph.
 - No code blocks. Show an API as a table of names, options and defaults. Mermaid diagrams and `path:line` references are fine.
 - End Purpose with the kickstart line: "This document starts the work. The code can change after the review."
@@ -141,6 +144,7 @@ Look at the page images before you send the file (for example `pdftoppm -png -r 
 - [ ] wayfinder interrogation done, user confirmed shared understanding
 - [ ] every section in the doc is either filled with real content or removed — no "N/A"
 - [ ] no code blocks; at most 2 diagrams, in Mermaid, each earning its place
+- [ ] rules with many conditions are in a decision table with no empty cell; date or amount rules have a worked example; no paragraph over about 80 words
 - [ ] every section passed through humanizer
 - [ ] ASD-STE100: short sentences, active voice, no jargon left unexplained
 - [ ] over 3 pages: Purpose ends with a "Read first" line
