@@ -1,9 +1,9 @@
+import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import type {
   ExtensionAPI,
   ExtensionContext,
   SessionEntry,
 } from "@earendil-works/pi-coding-agent";
-import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { Key } from "@earendil-works/pi-tui";
 import { modelKey, parseModelKey } from "../lib/model.ts";
 import { readAgentSetting } from "../lib/settings.ts";
@@ -14,7 +14,6 @@ const PLAN_REMINDER = `[PLAN MODE ACTIVE]
 You are in plan mode: read-only exploration and planning.
 
 - edit and write tools are denied
-- run only read-only bash commands; never ones that perform write operations. This overrides any earlier instruction to make changes directly
 - if a command is denied, do not retry with a different command or path — stop, tell the user, or ask via the \`question\` tool
 - interrogate the user and explore the codebase until the facts and decisions are settled — do not propose a plan on a guess 
 - at the end of plan, ask all unresolved questions using the \`question\` tool
@@ -26,7 +25,6 @@ The user just turned plan mode off. You may now edit, write, and run any command
 
 const PLAN_SWITCH_TYPE = "plan-mode-plan-switch";
 const PLAN_SWITCH_REMINDER = `[PLAN MODE ON] The user just turned plan mode on. Follow the plan-mode instructions in the system prompt.`;
-
 
 /**
  * Session-entry customType (persistence format) — private. Kept separate
@@ -66,11 +64,20 @@ interface PlanModeEntry {
 }
 
 const THINKING_LEVELS: readonly string[] = [
-  "off", "minimal", "low", "medium", "high", "xhigh", "max",
+  "off",
+  "minimal",
+  "low",
+  "medium",
+  "high",
+  "xhigh",
+  "max",
 ];
 
 /** Narrows an untrusted per-mode map (session file or settings.json): only accepted values under known mode keys survive. */
-function readModeMap<T extends string>(raw: unknown, accept: (v: string) => boolean): Partial<Record<Mode, T>> {
+function readModeMap<T extends string>(
+  raw: unknown,
+  accept: (v: string) => boolean,
+): Partial<Record<Mode, T>> {
   const out: Partial<Record<Mode, T>> = {};
   if (typeof raw !== "object" || raw === null) return out;
   for (const m of ["plan", "build"] as const) {
@@ -79,8 +86,10 @@ function readModeMap<T extends string>(raw: unknown, accept: (v: string) => bool
   }
   return out;
 }
-const readThinking = (raw: unknown): ModeThinking => readModeMap<ThinkingLevel>(raw, (v) => THINKING_LEVELS.includes(v));
-const readModels = (raw: unknown): ModeModels => readModeMap<string>(raw, () => true);
+const readThinking = (raw: unknown): ModeThinking =>
+  readModeMap<ThinkingLevel>(raw, (v) => THINKING_LEVELS.includes(v));
+const readModels = (raw: unknown): ModeModels =>
+  readModeMap<string>(raw, () => true);
 
 function readPlanModeEntry(
   entries: readonly SessionEntry[],
@@ -134,7 +143,11 @@ export default function planMode(pi: ExtensionAPI) {
   }
 
   function persist(): void {
-    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, { enabled, models, thinking });
+    pi.appendEntry<PlanModeEntry>(PLAN_MODE_ENTRY, {
+      enabled,
+      models,
+      thinking,
+    });
   }
 
   /** Switches to the current mode's remembered model, else its settings default. */
@@ -170,7 +183,10 @@ export default function planMode(pi: ExtensionAPI) {
   /** Remembered level for the current mode, else its settings default. */
   function targetThinking(): ThinkingLevel | undefined {
     try {
-      return thinking[mode()] ?? readThinking(readAgentSetting("modeThinking"))[mode()];
+      return (
+        thinking[mode()] ??
+        readThinking(readAgentSetting("modeThinking"))[mode()]
+      );
     } catch {
       return thinking[mode()];
     }
@@ -246,7 +262,7 @@ export default function planMode(pi: ExtensionAPI) {
      */
     if (pendingSwitchNotice) {
       pendingSwitchNotice = false;
-        return {
+      return {
         message: {
           customType: enabled ? PLAN_SWITCH_TYPE : BUILD_SWITCH_TYPE,
           content: enabled ? PLAN_SWITCH_REMINDER : BUILD_SWITCH_REMINDER,
@@ -254,7 +270,6 @@ export default function planMode(pi: ExtensionAPI) {
         },
       };
     }
-
   });
 
   pi.on("session_start", async (_event, ctx) => {

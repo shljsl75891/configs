@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.6.1",
+  "lastChangelogVersion": "1.7.0",
   "theme": "gruvbox-dark-hard",
   "quietStartup": "header",
   "defaultProvider": "anthropic",
@@ -14,6 +14,7 @@
     "anthropicExtraUsage": false
   },
   "hideThinkingBlock": true,
+  "steeringMode": "all",
   "treeFilterMode": "default",
   "permission": {
     "edit": {
